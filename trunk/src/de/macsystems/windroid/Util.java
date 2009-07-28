@@ -194,7 +194,7 @@ public final class Util
 		return stationID != null && stationName != null && spotKeyword != null && preferredUnit != null;
 	}
 
-	spublic final static SpotConfigurationVO getSpotConfiguration(final Context _context)
+	public final static SpotConfigurationVO getSpotConfiguration(final Context _context)
 	{
 		if (!isSpotConfigured(_context))
 		{

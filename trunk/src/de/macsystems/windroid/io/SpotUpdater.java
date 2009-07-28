@@ -113,13 +113,13 @@ public class SpotUpdater
 					parseWindDirection(forecastDetailMap, builder);
 
 					final JSONObject waterTemperatureMap = forecastDetailMap.getJSONObject("water_temperature");
-					Log.d(LOG_TAG, "waterTemperatureMap:" + wavePeriodMap.toString());
-					Log.d(LOG_TAG, "waterTemperatureMap length:" + wavePeriodMap.length());
+					Log.d(LOG_TAG, "waterTemperatureMap:" + waterTemperatureMap.toString());
+					Log.d(LOG_TAG, "waterTemperatureMap length:" + waterTemperatureMap.length());
 					parseWaterTemperatureMap(waterTemperatureMap, builder);
 
 					final JSONObject windGustsMap = forecastDetailMap.getJSONObject("wind_gusts");
-					Log.d(LOG_TAG, "windGustsMap:" + wavePeriodMap.toString());
-					Log.d(LOG_TAG, "windGustsMap length:" + wavePeriodMap.length());
+					Log.d(LOG_TAG, "windGustsMap:" + windGustsMap.toString());
+					Log.d(LOG_TAG, "windGustsMap length:" + windGustsMap.length());
 					parseWindGustsMap(windGustsMap, builder);
 
 					final JSONObject windSpeedMap = forecastDetailMap.getJSONObject("wind_speed");
@@ -217,6 +217,14 @@ public class SpotUpdater
 
 	}
 
+	/**
+	 * Fail safe returns an float. null is interpreted as '0f'
+	 * 
+	 * @param _jsonObject
+	 * @param _key
+	 * @return
+	 * @throws JSONException
+	 */
 	private static float getFloat(final JSONObject _jsonObject, final String _key) throws JSONException
 	{
 		if (_jsonObject.isNull(_key))
@@ -249,7 +257,9 @@ public class SpotUpdater
 
 	private static void parseWavePeriod(final JSONObject wavePeriodMap, final Builder builder) throws JSONException
 	{
-		final float value = (float) wavePeriodMap.getDouble("value");
+		Log.d(LOG_TAG, "wavePeriodMap :" + wavePeriodMap.toString());
+
+		final float value = (float) getFloat(wavePeriodMap, "value");
 		final String unit = wavePeriodMap.getString("unit");
 
 		final WavePeriod wavePeriod = WavePeriod.create(unit, value);
@@ -259,7 +269,7 @@ public class SpotUpdater
 	private static void parsePrecipitationMap(final JSONObject precipitationMap, final Builder builder)
 			throws JSONException
 	{
-		final float value = (float) precipitationMap.getDouble("value");
+		final float value = (float) getFloat(precipitationMap, "value");
 		final String unit = precipitationMap.getString("unit");
 
 		final Precipitation precipitation = Precipitation.create(value, unit);

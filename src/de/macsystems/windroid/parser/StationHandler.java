@@ -131,7 +131,7 @@ public class StationHandler extends DefaultHandler
 	private void handleContinent(final Attributes attributes)
 	{
 		final int indexID = attributes.getIndex("", "id");
-		final int indexName = attributes.getIndex("", "name");
+		// final int indexName = attributes.getIndex("", "name");
 		currentContinent = Continent.getById(attributes.getValue(indexID));
 	}
 

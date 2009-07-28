@@ -72,8 +72,7 @@ public class WindUtils
 	}
 
 	/**
-	 * Converts "1" into <code>true</code> else false will be returned. "0"
-	 * represents <code>false</code>.
+	 * Converts "1" into <code>true</code> else false will be returned.
 	 * 
 	 * @param _value
 	 * @return

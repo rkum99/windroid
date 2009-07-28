@@ -7,15 +7,12 @@ package de.macsystems.windroid.identifyable;
  */
 public enum WindUnit implements IdentifyAble
 {
-	/**
-	 * ALARM_MAXSPEED_BFT: 12, ALARM_MAXSPEED_KTS: 63, ALARM_MAXSPEED_MS: 37,
-	 * ALARM_MAXSPEED_KMH: 133, ALARM_MAXSPEED_MPH: 83, *
-	 * 
-	 * 
-	 */
 
-	BEAUFORT("bft", "Beaufort", 12), KNOTS("kts", "Knots", 63), MPS("mps", "Meter per Second (m/s)", 37), MPH("mph",
-			"Miles per Hour", 83), KMH("kmh", "Kilometer per Hour", 133);
+	BEAUFORT("bft", "Beaufort", 12), //
+	KNOTS("kts", "Knots", 63),
+	MPS("mps", "Meter per Second (m/s)", 37),
+	MPH("mph", "Miles per Hour", 83),
+	KMH("kmh", "Kilometer per Hour", 133);
 
 	private final String description;
 

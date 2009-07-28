@@ -168,6 +168,11 @@ public final class Util
 		editor.commit();
 	}
 
+	/**
+	 * 
+	 * @param _context
+	 * @return
+	 */
 	public static final boolean isSpotConfigured(final Context _context)
 	{
 		final SharedPreferences prefs = getSharedPreferences(_context);
@@ -181,13 +186,15 @@ public final class Util
 		final boolean hasStatistic = prefs.getBoolean(SPOT_STATION_HAS_STATISTIC, false);
 
 		// Actual we don't care about wind directions
-		final String winddirectionFrom = prefs.getString(SPOT_WINDDIRECTION_FROM_ID, null);
-		final String winddirectionTo = prefs.getString(SPOT_WINDDIRECTION_TO_ID, null);
+		// final String winddirectionFrom =
+		// prefs.getString(SPOT_WINDDIRECTION_FROM_ID, null);
+		// final String winddirectionTo =
+		// prefs.getString(SPOT_WINDDIRECTION_TO_ID, null);
 		//
 		return stationID != null && stationName != null && spotKeyword != null && preferredUnit != null;
 	}
 
-	public final static SpotConfigurationVO getSpotConfiguration(final Context _context)
+	spublic final static SpotConfigurationVO getSpotConfiguration(final Context _context)
 	{
 		if (!isSpotConfigured(_context))
 		{

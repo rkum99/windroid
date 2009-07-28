@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string
+		name="title_spot_selection">Bitte wählen Sie einen Spot aus:</string>
+	<string
+		name="confirm_spot_selection">Auswählen</string>
+	<string
+		name="continent_spot_selection">Kontinent</string>
+	<string
+		name="country_spot_selection">Land</string>
+	<string
+		name="region_spot_selection">Region</string>
+	<string
+		name="station_spot_selection">Station</string>
+</resources>

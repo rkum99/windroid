@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:app="http://schemas.android.com/apk/res/de.macsystems.windroid.api"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content">
+	<ScrollView
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_weight="1">
+		<LinearLayout
+			xmlns:app="http://schemas.android.com/apk/res/de.macsystems.windroid.api"
+			xmlns:android="http://schemas.android.com/apk/res/android"
+			android:orientation="vertical"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content">
+
+
+			<TextView
+				android:id="@+id/spotsummary_description"
+				android:text="Zusammenfassung"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content" />
+
+			<View
+				android:id="@+id/dummy"
+				android:layout_width="fill_parent"
+				android:layout_height="5sp" />
+
+
+			<TextView
+				android:id="@+id/spotsummary_alarm_details"
+				android:text="Zusammenfassung"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:gravity="center" />
+
+			<View
+				android:id="@+id/dummy"
+				android:layout_width="fill_parent"
+				android:layout_height="25sp" />
+
+			<LinearLayout
+				xmlns:android="http://schemas.android.com/apk/res/android"
+				android:orientation="horizontal"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:gravity="center"
+				android:background="#ffffff">
+
+				<View
+					android:id="@+id/dummy"
+					android:layout_width="100dip"
+					android:layout_height="fill_parent" />
+
+				<de.macsystems.windroid.CompassView
+					android:id="@+id/compass"
+					android:background="@drawable/windrose_200x200"
+					android:layout_width="200dip"
+					android:layout_height="200dip" />
+
+				<View
+					android:id="@+id/dummy"
+					android:layout_width="100dip"
+					android:layout_height="fill_parent" />
+			</LinearLayout>
+
+			<View
+				android:id="@+id/dummy"
+				android:layout_width="fill_parent"
+				android:layout_height="25sp" />
+
+			<Button
+				android:id="@+id/spotsummary_accept"
+				android:text="Spot zufügen"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content" />
+			<Button
+				android:id="@+id/spotsummary_cancel"
+				android:text="Spot verwerfen"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content" />
+		</LinearLayout>
+	</ScrollView>
+</LinearLayout>

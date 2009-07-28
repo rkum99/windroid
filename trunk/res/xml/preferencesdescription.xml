@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<!--
+		It seems Android dont wants dialog:title there, when we use it all
+		ListPreferences are empty.
+	-->
+<PreferenceScreen
+	xmlns:android="http://schemas.android.com/apk/res/android">
+	<PreferenceCategory
+		android:title="Bevorzugte Einstellungen">
+		<ListPreference
+			android:entries="@array/unit_names"
+			android:entryValues="@array/unit_ids"
+			android:key="preferred_unit"
+			android:title="Einheiten"
+			android:summary="Wählen Sie ihre bevorzugte Windeinheit" />
+		<ListPreference
+			android:entries="@array/continent_names"
+			android:entryValues="@array/continent_ids"
+			android:key="preferred_continent"
+			android:title="Kontinent"
+			android:summary="Wählen Sie ihren bevorzugten Kontinent" />
+	</PreferenceCategory>
+	<PreferenceCategory
+		android:title="Sonstiges">
+		<CheckBoxPreference
+			android:key="launch_on_boot"
+			android:summary="Starte selbständig nach dem Booten"
+			android:title="Autostart"
+			android:defaultValue="true" />
+		<CheckBoxPreference
+			android:key="update_while_roaming"
+			android:summary="Überprüfe Alarme bei Roaming"
+			android:title="Roaming"
+			android:defaultValue="false" />
+
+		<CheckBoxPreference
+			android:key="vibrate_on_alarm"
+			android:summary="Wärend Alarms Vibrieren"
+			android:title="Vibration"
+			android:defaultValue="false" />
+
+		<CheckBoxPreference
+			android:key="music_on_alarm"
+			android:summary="Wärend Alarms Audio abspielen"
+			android:title="Audio Alarm"
+			android:defaultValue="false" />
+
+		<RingtonePreference
+			android:key="alarmtone"
+			android:title="Alarm"
+			android:showDefault="true"
+			android:showSilent="false"
+			android:summary="Alarm Ton auswählen" />
+
+		<CheckBoxPreference
+			android:key="warn_when_update_failed"
+			android:summary="Alarm wenn Update fehlschlägt"
+			android:title="Update Alarm"
+			android:defaultValue="false" />
+	</PreferenceCategory>
+</PreferenceScreen>

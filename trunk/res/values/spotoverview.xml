@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string
+		name="no_entrys">Keine Einträge vorhanden.</string>
+	<string
+		name="spot_overview_title">Übersicht</string>
+
+</resources>

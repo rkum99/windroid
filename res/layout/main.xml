@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content">
+	<ScrollView
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_weight="1">
+		<LinearLayout
+			xmlns:android="http://schemas.android.com/apk/res/android"
+			android:orientation="vertical"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content">
+			<TextView
+				android:id="@+id/welcome_message"
+				android:gravity="center_horizontal"
+				android:text="@string/welcome_message"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content" />
+
+			<TextView
+				android:id="@+id/description"
+				android:gravity="fill"
+				android:text="@string/description"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:paddingTop="25px" />
+
+			<LinearLayout
+				xmlns:android="http://schemas.android.com/apk/res/android"
+				android:orientation="vertical"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:paddingTop="25px">
+
+				<Button
+					android:id="@+id/button_show_station_selection"
+					android:text="@string/button_show_station_selection"
+					android:layout_width="fill_parent"
+					android:layout_height="fill_parent" />
+
+				<Button
+					android:id="@+id/button_show_station_preferences"
+					android:text="@string/button_show_station_preferences"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content" />
+
+				<Button
+					android:id="@+id/button_show_station_help"
+					android:text="@string/button_show_station_help"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content" />
+
+
+				<Button
+					android:id="@+id/button_show_spot_overview"
+					android:text="@string/button_show_spot_overview"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content" />
+
+
+				<View
+					android:layout_width="fill_parent"
+					android:layout_height="10dip" />
+
+				<Button
+					android:id="@+id/button_simulate_wind_alert"
+					android:text="@string/button_simulate_wind_alert_button"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content" />
+
+				<ToggleButton
+					android:id="@+id/button_toogle_service"
+					android:textOn="@string/button_toogle_service_selected"
+					android:textOff="@string/button_toogle_service_unselected"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:enabled="false" />
+
+			</LinearLayout>
+		</LinearLayout>
+	</ScrollView>
+</LinearLayout>

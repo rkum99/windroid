@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string
+		name="version_nr">0.1 beta</string>
+	<string
+		name="author">Jens Hohl</string>
+	<string
+		name="version_info">This Software comes without warranty!</string>
+	<string
+		name="website_windroid">www.mac-systems.de</string>
+	<string
+		name="website_windfinder">www.windfinder.com</string>
+</resources>

@@ -15,8 +15,12 @@ public final class PrefConstants
 	 * @see Continents.xml
 	 */
 	public static final String PREFERRED_CONTINENT_ID = "preferred_continent";
-
+	/**
+	 * @see preferencesdescription.xml
+	 */
 	public static final String LAUNCH_ON_BOOT = "launch_on_boot";
-
+	/**
+	 * @see preferencesdescription.xml
+	 */
 	public static final String UPDATE_WHILE_ROAMING = "update_while_roaming";
 }

@@ -89,7 +89,7 @@ public class SpotService extends Service
 				long start = System.currentTimeMillis();
 				final Forecast update = SpotUpdater.getUpdate(spot);
 				long end = System.currentTimeMillis();
-				Log.d(LOG_TAG, "Brauchte " + (end - start) + "ms für das update.");
+				Log.d(LOG_TAG, "Brauchte " + (end - start) + " ms für das update.");
 				// Log.d(LOG_TAG, "Recieved ForecastDetail : " +
 				// update.toString());
 				Log.d(LOG_TAG, "--------------------------------------------------");

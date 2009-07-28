@@ -1,6 +1,3 @@
-/**
- * 
- */
 package de.macsystems.windroid.identifyable;
 
 /**

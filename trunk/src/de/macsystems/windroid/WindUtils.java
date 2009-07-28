@@ -80,7 +80,7 @@ public class WindUtils
 	 */
 	public final static boolean toBoolean(final String _value)
 	{
-		return "1".equals(_value) ? true : false;
+		return "1".equals(_value);
 	}
 
 	/**

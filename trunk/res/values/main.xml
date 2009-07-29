@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+	<!--  
+    		@version $Id$
+	 -->
+
 <resources>
 	<string
 		name="application_title">Windroid</string>

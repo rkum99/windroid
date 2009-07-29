@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+	<!--  
+    		@version $Id$
+	 -->
+
 <resources>
 	<string
 		name="spot_summary_delete_alert_text">Möchten Sie wirklich den Spot verwerfen ?</string>

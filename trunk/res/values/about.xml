@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+	<!--  
+    		@version $Id$
+	 -->
 <resources>
 	<string
 		name="about_text">Windroid by Jens Hohl\n\nSee

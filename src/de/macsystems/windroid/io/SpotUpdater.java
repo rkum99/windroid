@@ -8,7 +8,6 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Iterator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,6 +40,13 @@ public class SpotUpdater
 
 	private final static String LOG_TAG = SpotUpdater.class.getSimpleName();
 
+	/**
+	 * 
+	 * @param _spotConfiguration
+	 * @return
+	 * @throws IOException
+	 * @throws NullPointerException
+	 */
 	public static Forecast getUpdate(final SpotConfigurationVO _spotConfiguration) throws IOException,
 			NullPointerException
 	{
@@ -60,6 +66,11 @@ public class SpotUpdater
 		{
 
 			connection = (HttpURLConnection) url.openConnection();
+			final int responseCode = connection.getResponseCode();
+			if (responseCode != HttpURLConnection.HTTP_OK)
+			{
+				throw new IOException("Server response code was " + responseCode);
+			}
 			connection.connect();
 			//
 			final StringBuilder stringBuilder = readResult(connection);
@@ -70,88 +81,38 @@ public class SpotUpdater
 				Log.d(LOG_TAG, "json timestamp: " + jsonRoot.getString("timestamp"));
 
 				final JSONArray stations = jsonRoot.getJSONArray("stations");
-				Log.d(LOG_TAG, "Stations :" + stations.toString());
-				Log.d(LOG_TAG, "Stations lenght:" + stations.length());
 				final JSONObject forecasts = stations.getJSONObject(0);
-				Log.d(LOG_TAG, "forecasts:" + forecasts.toString());
-				Log.d(LOG_TAG, "forecasts lenght:" + forecasts.length());
-				final Iterator<?> keys = forecasts.keys();
-				while (keys.hasNext())
-				{
-					Log.d(LOG_TAG, "forecasts key:" + keys.next());
-				}
-
 				final JSONArray forecastArray = forecasts.getJSONArray("forecasts");
-				Log.d(LOG_TAG, "forecastArray:" + forecastArray.toString());
-				Log.d(LOG_TAG, "forecastArray lenght:" + forecastArray.length());
 
 				for (int i = 0; i < forecastArray.length(); i++)
 				{
 					final Builder builder = new ForecastDetail.Builder("dummy id");
 
 					final JSONObject forecastDetailMap = forecastArray.getJSONObject(i);
-					Log.d(LOG_TAG, "forecastDetailMap:" + forecastDetailMap.toString());
-					Log.d(LOG_TAG, "forecastDetailMap length:" + forecastDetailMap.length());
-
 					final JSONObject precipitationMap = forecastDetailMap.getJSONObject("precipitation");
-					Log.d(LOG_TAG, "precipitationMap:" + precipitationMap.toString());
-					Log.d(LOG_TAG, "precipitationMap length:" + precipitationMap.length());
-
 					parsePrecipitationMap(precipitationMap, builder);
-
 					final JSONObject wavePeriodMap = forecastDetailMap.getJSONObject("wave_period");
-					Log.d(LOG_TAG, "wavePeriodMap:" + wavePeriodMap.toString());
-					Log.d(LOG_TAG, "wavePeriodMap length:" + wavePeriodMap.length());
-
 					parseWavePeriod(wavePeriodMap, builder);
 					final JSONObject waveHeightMap = forecastDetailMap.getJSONObject("wave_height");
 					parseWaveHeight(waveHeightMap, builder);
-
-					// final String windDirectionMap =
-					// forecastDetailMap.getString("wind_direction");
-
 					parseWindDirection(forecastDetailMap, builder);
-
 					final JSONObject waterTemperatureMap = forecastDetailMap.getJSONObject("water_temperature");
-					Log.d(LOG_TAG, "waterTemperatureMap:" + waterTemperatureMap.toString());
-					Log.d(LOG_TAG, "waterTemperatureMap length:" + waterTemperatureMap.length());
 					parseWaterTemperatureMap(waterTemperatureMap, builder);
-
 					final JSONObject windGustsMap = forecastDetailMap.getJSONObject("wind_gusts");
-					Log.d(LOG_TAG, "windGustsMap:" + windGustsMap.toString());
-					Log.d(LOG_TAG, "windGustsMap length:" + windGustsMap.length());
 					parseWindGustsMap(windGustsMap, builder);
-
 					final JSONObject windSpeedMap = forecastDetailMap.getJSONObject("wind_speed");
-					Log.d(LOG_TAG, "windSpeedMap:" + windSpeedMap.toString());
-					Log.d(LOG_TAG, "windSpeedMap length:" + windSpeedMap.length());
 					parseWindSpeedMap(windSpeedMap, builder);
-
 					parseWeather(forecastDetailMap, builder);
 					parseClouds(forecastDetailMap, builder);
-
 					final JSONObject airePressureMap = forecastDetailMap.getJSONObject("air_pressure");
 					parseAirPresure(airePressureMap, builder);
 
 					forecast.add(builder.build());
 				}
-
-				// final JSONObject generalStationInfos =
-				// stations.getJSONObject(0);
-				//
-				// final String stationName =
-				// generalStationInfos.getString("name");
-				// final String stationID = generalStationInfos.getString("id");
-				// final String stationTimezone =
-				// generalStationInfos.getString("timezone");
-
-				// spotForecastDetail = new ForecastDetail(stationID,
-				// stationName);
-				// forecast = null;
 			}
 			catch (final JSONException e)
 			{
-				final IOException ioe = new IOException();
+				final IOException ioe = new IOException("Server Answer was: " + stringBuilder.toString());
 				ioe.initCause(e);
 				throw ioe;
 			}
@@ -200,6 +161,7 @@ public class SpotUpdater
 
 	private static void parseWindSpeedMap(final JSONObject windSpeedMap, final Builder builder) throws JSONException
 	{
+		Log.d(LOG_TAG, "windSpeedMap :" + windSpeedMap.toString());
 		final float value = getFloat(windSpeedMap, "value");
 		final String unit = windSpeedMap.getString("unit");
 
@@ -209,6 +171,7 @@ public class SpotUpdater
 
 	private static void parseWindGustsMap(final JSONObject windGustsMap, final Builder builder) throws JSONException
 	{
+		Log.d(LOG_TAG, "windGustsMap :" + windGustsMap.toString());
 		final float value = getFloat(windGustsMap, "value");
 		final String unit = windGustsMap.getString("unit");
 
@@ -239,6 +202,7 @@ public class SpotUpdater
 	private static void parseWaterTemperatureMap(final JSONObject waterTemperatureMap, final Builder builder)
 			throws JSONException
 	{
+		Log.d(LOG_TAG, "waterTemperatureMap :" + waterTemperatureMap.toString());
 		final float value = getFloat(waterTemperatureMap, "value");
 		final String unit = waterTemperatureMap.getString("unit");
 
@@ -269,6 +233,7 @@ public class SpotUpdater
 	private static void parsePrecipitationMap(final JSONObject precipitationMap, final Builder builder)
 			throws JSONException
 	{
+		Log.d(LOG_TAG, "precipitationMap :" + precipitationMap.toString());
 		final float value = (float) getFloat(precipitationMap, "value");
 		final String unit = precipitationMap.getString("unit");
 

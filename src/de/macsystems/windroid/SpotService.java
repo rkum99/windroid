@@ -1,8 +1,11 @@
 package de.macsystems.windroid;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import android.app.Service;
 import android.content.Intent;
@@ -21,6 +24,7 @@ import de.macsystems.windroid.io.SpotUpdater;
 public class SpotService extends Service
 {
 
+	private static final int UPDATE_INVERVAL = 1000 * 1;
 	private final static String LOG_TAG = SpotService.class.getSimpleName();
 	/**
 	 * Name of Action which will start this Service
@@ -32,13 +36,18 @@ public class SpotService extends Service
 	 */
 	public static final String DE_MACSYSTEMS_WINDROID_SPOT_UPDATE_ACTION = "de.macsystems.windroid.SPOT_UPDATE_ACTION";
 
+	private static final int POOLSIZE = 1;
+
 	private Timer timer;
+
+	private ScheduledThreadPoolExecutor threadPool;
+
 	/**
 	 * Holds state of Service
 	 */
 	private volatile boolean isServiceRunning;
 
-	private TimerTask spotUpdateTask = new TimerTask()
+	private final Runnable spotUpdateTask = new Runnable()
 	{
 
 		@Override
@@ -62,54 +71,66 @@ public class SpotService extends Service
 			{
 				Log.d(LOG_TAG, "Network not reachable. Waiting.");
 				return;
-
 			}
-			final SpotConfigurationVO spot = Util.getSpotConfiguration(SpotService.this);
-			Log.d(LOG_TAG, "--------------------------------------------------");
-			Log.d(LOG_TAG, "Following Spot is Configured:");
-			Log.d(LOG_TAG, "Spot Name:" + spot.getStation().getName());
-			Log.d(LOG_TAG, "Spot ID:" + spot.getStation().getId());
-			Log.d(LOG_TAG, "Spot Keyword:" + spot.getStation().getKeyword());
 
-			Log.d(LOG_TAG, "has stats:" + spot.getStation().hasStatistic());
-			Log.d(LOG_TAG, "has superforecast:" + spot.getStation().hasSuperforecast());
-
-			Log.d(LOG_TAG, "Windspeed min:" + spot.getWindspeedMin());
-			Log.d(LOG_TAG, "Windspeed max:" + spot.getWindspeedMax());
-
-			Log.d(LOG_TAG, "Wind from::" + spot.getFromDirection());
-			Log.d(LOG_TAG, "Wind to:" + spot.getToDirection());
-
-			Log.d(LOG_TAG, "preferred Windunit :" + spot.getPreferredWindUnit());
-			Log.d(LOG_TAG, "--------------------------------------------------");
-
-			try
+			final List<SpotConfigurationVO> spots = Util.FAKEgetSpotConfiguration(SpotService.this);
+			for (final SpotConfigurationVO spot : spots)
 			{
-
-				long start = System.currentTimeMillis();
-				final Forecast update = SpotUpdater.getUpdate(spot);
-				long end = System.currentTimeMillis();
-				Log.d(LOG_TAG, "Brauchte " + (end - start) + " ms für das update.");
-				// Log.d(LOG_TAG, "Recieved ForecastDetail : " +
-				// update.toString());
-				Log.d(LOG_TAG, "--------------------------------------------------");
-				Log.d(LOG_TAG, "--------------------------------------------------");
-				Log.d(LOG_TAG, "--------------------------------------------------");
-				Log.d(LOG_TAG, "--------------------------------------------------");
-			}
-			catch (NullPointerException e)
-			{
-				Log.e(LOG_TAG, "Failed to update Spot.", e);
-			}
-			catch (IOException e)
-			{
-				Log.e(LOG_TAG, "Failed to update Spot.", e);
+				getUpdate(spot);
 			}
 
 			sendBroadcast(intent);
-
 		}
 	};
+
+	/**
+	 * 
+	 * @param _spot
+	 * @return Forecast
+	 */
+	private Forecast getUpdate(final SpotConfigurationVO _spot)
+	{
+		Log.d(LOG_TAG, "--------------------------------------------------");
+		Log.d(LOG_TAG, "Following Spot is Configured:");
+		Log.d(LOG_TAG, "Spot Name:" + _spot.getStation().getName());
+		Log.d(LOG_TAG, "Spot ID:" + _spot.getStation().getId());
+		Log.d(LOG_TAG, "Spot Keyword:" + _spot.getStation().getKeyword());
+
+		Log.d(LOG_TAG, "has stats:" + _spot.getStation().hasStatistic());
+		Log.d(LOG_TAG, "has superforecast:" + _spot.getStation().hasSuperforecast());
+
+		Log.d(LOG_TAG, "Windspeed min:" + _spot.getWindspeedMin());
+		Log.d(LOG_TAG, "Windspeed max:" + _spot.getWindspeedMax());
+
+		Log.d(LOG_TAG, "Wind from::" + _spot.getFromDirection());
+		Log.d(LOG_TAG, "Wind to:" + _spot.getToDirection());
+
+		Log.d(LOG_TAG, "preferred Windunit :" + _spot.getPreferredWindUnit());
+		Log.d(LOG_TAG, "--------------------------------------------------");
+		final Forecast update;
+		try
+		{
+			final long start = System.currentTimeMillis();
+			update = SpotUpdater.getUpdate(_spot);
+			final long end = System.currentTimeMillis();
+			Log.d(LOG_TAG, "Brauchte " + (end - start) + " ms für das update.");
+			// Log.d(LOG_TAG, "Recieved ForecastDetail : " +
+			// update.toString());
+			Log.d(LOG_TAG, "--------------------------------------------------");
+			Log.d(LOG_TAG, "--------------------------------------------------");
+			Log.d(LOG_TAG, "--------------------------------------------------");
+			Log.d(LOG_TAG, "--------------------------------------------------");
+		}
+		catch (final NullPointerException e)
+		{
+			Log.e(LOG_TAG, "Failed to update Spot.", e);
+		}
+		catch (final IOException e)
+		{
+			Log.e(LOG_TAG, "Failed to update Spot.", e);
+		}
+		return null;
+	}
 
 	/**
 	 * @return the isServiceRunning
@@ -123,7 +144,7 @@ public class SpotService extends Service
 	 * @param isServiceRunning
 	 *            the isServiceRunning to set
 	 */
-	private synchronized void setServiceRunning(boolean isServiceRunning)
+	private synchronized void setServiceRunning(final boolean isServiceRunning)
 	{
 		this.isServiceRunning = isServiceRunning;
 	}
@@ -174,6 +195,7 @@ public class SpotService extends Service
 	{
 		super.onCreate();
 		Log.i(LOG_TAG, "Service created");
+		createThreadPool();
 	}
 
 	/*
@@ -182,16 +204,22 @@ public class SpotService extends Service
 	 * @see android.app.Service#onStart(android.content.Intent, int)
 	 */
 	@Override
-	public void onStart(Intent intent, int startId)
+	public void onStart(final Intent intent, final int startId)
 	{
 		super.onStart(intent, startId);
-
-		if (timer != null)
-		{
-			timer.cancel();
-		}
-		timer = new Timer("Spot update timer");
-		timer.scheduleAtFixedRate(spotUpdateTask, 0, 1000 * 5);
 		Log.i(LOG_TAG, "Service started");
+		createThreadPool();
+	}
+
+	/**
+	 * Checks if ThreadPool already instantiated, when not it creates it
+	 */
+	private void createThreadPool()
+	{
+		if (threadPool == null)
+		{
+			threadPool = new ScheduledThreadPoolExecutor(POOLSIZE);
+			threadPool.scheduleAtFixedRate(spotUpdateTask, 0, 1, TimeUnit.SECONDS);
+		}
 	}
 }

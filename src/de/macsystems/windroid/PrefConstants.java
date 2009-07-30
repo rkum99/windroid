@@ -10,7 +10,7 @@ public final class PrefConstants
 	/**
 	 * @see WindUnits.xml
 	 */
-	public static final String PREFERRED_UNIT_ID = "preferred_unit";
+	public static final String PREFERRED_WIND_UNIT_ID = "preferred_unit";
 	/**
 	 * @see Continents.xml
 	 */

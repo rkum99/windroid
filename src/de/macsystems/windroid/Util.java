@@ -1,5 +1,8 @@
 package de.macsystems.windroid;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.SharedPreferences;
@@ -17,9 +20,11 @@ import de.macsystems.windroid.identifyable.WindUnit;
  */
 public final class Util
 {
+	private static int FAKE_STATION_ID = 0;
+
 	public static final String SPOT_STATION_HAS_STATISTIC = "spot_station_has_statistic";
 	public static final String SPOT_STATION_HAS_SUPERFORECAST = "spot_station_has_superforecast";
-	public static final String SPOT_PREFERRED_UNIT = "spot_preferred_unit";
+	public static final String SPOT_PREFERRED_WIND_UNIT = "spot_preferred_unit";
 	public static final String SPOT_WINDDIRECTION_TO_ID = "spot_winddirection_to";
 	public static final String SPOT_WINDDIRECTION_FROM_ID = "spot_winddirection_from";
 	public static final String SPOT_STATION_KEYWORD = "spot_station_keyword";
@@ -29,9 +34,9 @@ public final class Util
 	public static final String SPOT_WINDSPEED_MAX = "spot_windspeed_max";
 
 	/**
-	 * {@value #DEFAULT_UNIT}
+	 * {@value #DEFAULT_WIND_UNIT}
 	 */
-	private final static String DEFAULT_UNIT = WindUnit.KNOTS.getId();
+	private final static String DEFAULT_WIND_UNIT = WindUnit.KNOTS.getId();
 	/**
 	 * {@value #DEFAULT_CONTINENT}
 	 */
@@ -86,13 +91,13 @@ public final class Util
 	 * 
 	 * @param _pref
 	 * @return
-	 * @see #DEFAULT_UNIT
+	 * @see #DEFAULT_WIND_UNIT
 	 * @see WindUnit
 	 */
 
 	public final static String getSelectedUnitID(final SharedPreferences _pref)
 	{
-		return _pref.getString(PrefConstants.PREFERRED_UNIT_ID, DEFAULT_UNIT);
+		return _pref.getString(PrefConstants.PREFERRED_WIND_UNIT_ID, DEFAULT_WIND_UNIT);
 	}
 
 	/**
@@ -157,11 +162,9 @@ public final class Util
 		editor.putString(SPOT_STATION_KEYWORD, _configuration.getStation().getKeyword());
 		editor.putString(SPOT_WINDDIRECTION_FROM_ID, _configuration.getFromDirection().getShortName());
 		editor.putString(SPOT_WINDDIRECTION_TO_ID, _configuration.getToDirection().getShortName());
-		editor.putString(SPOT_PREFERRED_UNIT, _configuration.getPreferredWindUnit().getId());
-
+		editor.putString(SPOT_PREFERRED_WIND_UNIT, _configuration.getPreferredWindUnit().getId());
 		editor.putBoolean(SPOT_STATION_HAS_STATISTIC, _configuration.getStation().hasStatistic());
 		editor.putBoolean(SPOT_STATION_HAS_SUPERFORECAST, _configuration.getStation().hasSuperforecast());
-
 		editor.putInt(SPOT_WINDSPEED_MIN, _configuration.getWindspeedMin());
 		editor.putInt(SPOT_WINDSPEED_MAX, _configuration.getWindspeedMax());
 
@@ -169,6 +172,7 @@ public final class Util
 	}
 
 	/**
+	 * A Configured Spot has a id, name, keyword and preferred unit.
 	 * 
 	 * @param _context
 	 * @return
@@ -180,21 +184,15 @@ public final class Util
 		final String stationID = prefs.getString(SPOT_STATION_ID, null);
 		final String stationName = prefs.getString(SPOT_STATION_NAME, null);
 		final String spotKeyword = prefs.getString(SPOT_STATION_KEYWORD, null);
-		final String preferredUnit = prefs.getString(SPOT_PREFERRED_UNIT, null);
+		final String preferredUnit = prefs.getString(SPOT_PREFERRED_WIND_UNIT, null);
 
-		final boolean hasSuperForecast = prefs.getBoolean(SPOT_STATION_HAS_SUPERFORECAST, false);
-		final boolean hasStatistic = prefs.getBoolean(SPOT_STATION_HAS_STATISTIC, false);
+		// Actual we don't care about wind directions,statistics or
+		// superforecast
 
-		// Actual we don't care about wind directions
-		// final String winddirectionFrom =
-		// prefs.getString(SPOT_WINDDIRECTION_FROM_ID, null);
-		// final String winddirectionTo =
-		// prefs.getString(SPOT_WINDDIRECTION_TO_ID, null);
-		//
 		return stationID != null && stationName != null && spotKeyword != null && preferredUnit != null;
 	}
 
-	public final static SpotConfigurationVO getSpotConfiguration(final Context _context)
+	public final static List<SpotConfigurationVO> FAKEgetSpotConfiguration(final Context _context)
 	{
 		if (!isSpotConfigured(_context))
 		{
@@ -205,10 +203,11 @@ public final class Util
 		//
 		final SpotConfigurationVO spotConfiguration = new SpotConfigurationVO();
 		//
-		final String stationID = prefs.getString(SPOT_STATION_ID, null);
+		final String stationID = "za" + FAKE_STATION_ID++;
+
 		final String stationName = prefs.getString(SPOT_STATION_NAME, null);
 		final String spotKeyword = prefs.getString(SPOT_STATION_KEYWORD, null);
-		final String preferredUnit = prefs.getString(SPOT_PREFERRED_UNIT, null);
+		final String preferredUnit = prefs.getString(SPOT_PREFERRED_WIND_UNIT, null);
 
 		final boolean hasSuperForecast = prefs.getBoolean(SPOT_STATION_HAS_SUPERFORECAST, false);
 		final boolean hasStatistic = prefs.getBoolean(SPOT_STATION_HAS_STATISTIC, false);
@@ -231,7 +230,53 @@ public final class Util
 
 		spotConfiguration.setFromDirection(fromWindDirection);
 		spotConfiguration.setToDirection(toWindDirection);
+		//
+		final List<SpotConfigurationVO> configurations = new ArrayList<SpotConfigurationVO>();
+		configurations.add(spotConfiguration);
+		return configurations;
+	}
 
-		return spotConfiguration;
+	public final static List<SpotConfigurationVO> getSpotConfiguration(final Context _context)
+	{
+		if (!isSpotConfigured(_context))
+		{
+			throw new IllegalArgumentException();
+		}
+
+		final SharedPreferences prefs = getSharedPreferences(_context);
+		//
+		final SpotConfigurationVO spotConfiguration = new SpotConfigurationVO();
+		//
+		final String stationID = prefs.getString(SPOT_STATION_ID, null);
+		final String stationName = prefs.getString(SPOT_STATION_NAME, null);
+		final String spotKeyword = prefs.getString(SPOT_STATION_KEYWORD, null);
+		final String preferredUnit = prefs.getString(SPOT_PREFERRED_WIND_UNIT, null);
+
+		final boolean hasSuperForecast = prefs.getBoolean(SPOT_STATION_HAS_SUPERFORECAST, false);
+		final boolean hasStatistic = prefs.getBoolean(SPOT_STATION_HAS_STATISTIC, false);
+
+		final String winddirectionFrom = prefs.getString(SPOT_WINDDIRECTION_FROM_ID, null);
+		final String winddirectionTo = prefs.getString(SPOT_WINDDIRECTION_TO_ID, null);
+		//
+		final Station station = new Station(stationName, stationID, spotKeyword, hasSuperForecast, hasStatistic);
+		spotConfiguration.setStation(station);
+		//
+		final int indexPreferredWindUnit = IdentityUtil.indexOf(preferredUnit, WindUnit.values());
+		final WindUnit preferredWindUnit = WindUnit.values()[indexPreferredWindUnit];
+		spotConfiguration.setPreferredWindUnit(preferredWindUnit);
+		//
+		final int indexFromWindID = IdentityUtil.indexOf(winddirectionFrom, WindDirection.values());
+		final int indexToWindID = IdentityUtil.indexOf(winddirectionTo, WindDirection.values());
+
+		final WindDirection fromWindDirection = WindDirection.values()[indexFromWindID];
+		final WindDirection toWindDirection = WindDirection.values()[indexToWindID];
+
+		spotConfiguration.setFromDirection(fromWindDirection);
+		spotConfiguration.setToDirection(toWindDirection);
+		//
+		final List<SpotConfigurationVO> configurations = new ArrayList<SpotConfigurationVO>();
+		configurations.add(spotConfiguration);
+		return configurations;
+
 	}
 }

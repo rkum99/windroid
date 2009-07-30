@@ -243,7 +243,7 @@ public class Main extends Activity
 		{
 			Log.d(LOG_TAG, "Starting Service");
 			final Intent startServiceIntent = new Intent();
-			startServiceIntent.setAction("de.macsystems.windroid.START_SPOT_SERVICE_ACTION");
+			startServiceIntent.setAction(SpotService.DE_MACSYSTEMS_WINDROID_START_SPOT_SERVICE_ACTION);
 			startService(startServiceIntent);
 		}
 		else

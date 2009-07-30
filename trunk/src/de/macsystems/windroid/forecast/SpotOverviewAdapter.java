@@ -124,14 +124,6 @@ public class SpotOverviewAdapter extends BaseAdapter
 		}
 
 		/**
-		 * @return the base
-		 */
-		public View getBase()
-		{
-			return base;
-		}
-
-		/**
 		 * @return the spotnameTextView
 		 */
 		public TextView getSpotnameTextView()

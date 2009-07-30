@@ -35,12 +35,12 @@ package de.macsystems.windroid.identifyable;
  */
 public enum Cavok implements IdentifyAble
 {
-	SKC("sky", "sky clear"),
-	FEW("few", "few"),
-	SCT("sct", "scattered"),
-	BKN("bkn", "broken"),
-	OVC("ovc", "overcast"),
-	OBS("obs", "obscured");
+	SKC("SKC", "sky clear"),
+	FEW("FEW", "few"),
+	SCT("SCT", "scattered"),
+	BKN("BKN", "broken"),
+	OVC("OVC", "overcast"),
+	OBS("OBS", "obscured");
 
 	private final String id;
 

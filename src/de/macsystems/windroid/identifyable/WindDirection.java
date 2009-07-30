@@ -31,7 +31,7 @@ public enum WindDirection implements IdentifyAble
 	 * define no wind direction
 	 */
 
-	NO_DIRECTION(0, "n/a", "No Direction", 0);
+	NO_DIRECTION(0, "n/a", "No Direction", -1);
 
 	private final float degrees;
 	private final String longName;
@@ -42,8 +42,8 @@ public enum WindDirection implements IdentifyAble
 	/**
 	 * 
 	 * @param _degrees
-	 * @param longName
-	 * @param shortName
+	 * @param _longName
+	 * @param _shortName
 	 */
 	private WindDirection(final float _degrees, final String _shortName, final String _longName, final int _imageID)
 	{

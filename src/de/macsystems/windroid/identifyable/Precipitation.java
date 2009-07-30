@@ -13,6 +13,11 @@ public final class Precipitation extends MeasureValue
 		super(_value, _measure);
 	}
 
+	/**
+	 * @param _value
+	 * @param _unit
+	 * @return
+	 */
 	public static Precipitation create(final float _value, final String _unit)
 	{
 		final int index = IdentityUtil.indexOf(_unit, Measure.values());

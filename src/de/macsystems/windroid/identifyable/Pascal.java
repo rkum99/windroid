@@ -5,26 +5,23 @@ package de.macsystems.windroid.identifyable;
  * @version $Id$
  * 
  */
-public enum Pascal implements IdentifyAble
+public class Pascal extends MeasureValue
 {
 
-	HEKTOPASCAL("hpa");
-
-	private final String id;
-
-	private Pascal(final String _id)
+	private Pascal(final float _value, final Measure _measure)
 	{
-		id = _id;
+		super(_value, _measure);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.macsystems.windroid.identifyable.IdentifyAble#getId()
+	/**
+	 * @param _value
+	 * @param _unit
+	 * @return
 	 */
-	public String getId()
+	public static Pascal create(final float _value, final String _unit)
 	{
-		return id;
+		final int index = IdentityUtil.indexOf(_unit, Measure.values());
+		final Measure unit = Measure.values()[index];
+		return new Pascal(_value, unit);
 	}
-
 }

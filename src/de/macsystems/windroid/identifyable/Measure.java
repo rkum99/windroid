@@ -13,7 +13,8 @@ public enum Measure implements IdentifyAble
 	MILLIMETER("mm"),
 	SECONDS("s"),
 	FAHRENHEIT("fahrenheit"),
-	CELSIUS("celsius");
+	CELSIUS("celsius"),
+	HEKTOPASCAL("hpa");
 
 	private final String id;
 

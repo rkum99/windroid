@@ -1,9 +1,10 @@
 package de.macsystems.windroid;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -13,8 +14,9 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
 import de.macsystems.windroid.forecast.Forecast;
-import de.macsystems.windroid.io.IOUtils;
+import de.macsystems.windroid.io.RetryLaterException;
 import de.macsystems.windroid.io.SpotUpdater;
+import de.macsystems.windroid.io.task.UpdateSpotsTask;
 
 /**
  * @author Jens Hohl
@@ -24,7 +26,6 @@ import de.macsystems.windroid.io.SpotUpdater;
 public class SpotService extends Service
 {
 
-	private static final int UPDATE_INVERVAL = 1000 * 1;
 	private final static String LOG_TAG = SpotService.class.getSimpleName();
 	/**
 	 * Name of Action which will start this Service
@@ -36,9 +37,7 @@ public class SpotService extends Service
 	 */
 	public static final String DE_MACSYSTEMS_WINDROID_SPOT_UPDATE_ACTION = "de.macsystems.windroid.SPOT_UPDATE_ACTION";
 
-	private static final int POOLSIZE = 1;
-
-	private Timer timer;
+	private static final int POOLSIZE = 2;
 
 	private ScheduledThreadPoolExecutor threadPool;
 
@@ -47,9 +46,8 @@ public class SpotService extends Service
 	 */
 	private volatile boolean isServiceRunning;
 
-	private final Runnable spotUpdateTask = new Runnable()
+	private final Runnable enqueConfiguredSpotsTask = new Runnable()
 	{
-
 		@Override
 		public void run()
 		{
@@ -60,26 +58,46 @@ public class SpotService extends Service
 				return;
 			}
 
-			final Intent intent = new Intent(DE_MACSYSTEMS_WINDROID_SPOT_UPDATE_ACTION);
 			if (!Util.isSpotConfigured(SpotService.this))
 			{
 				Log.i(LOG_TAG, "No spot configured.");
 				return;
 			}
 
-			if (!IOUtils.isNetworkReachable(SpotService.this))
-			{
-				Log.d(LOG_TAG, "Network not reachable. Waiting.");
-				return;
-			}
-
 			final List<SpotConfigurationVO> spots = Util.FAKEgetSpotConfiguration(SpotService.this);
+			final List<ScheduledFuture<Forecast>> futures = new ArrayList<ScheduledFuture<Forecast>>(spots.size());
 			for (final SpotConfigurationVO spot : spots)
 			{
-				getUpdate(spot);
+				// final FutureTask<Forecast> futureForecast = new
+				// FutureTask<Forecast>(new UpdateSpotsTask(spot,
+				// SpotService.this));
+
+				final UpdateSpotsTask futureForecast = new UpdateSpotsTask(spot, SpotService.this);
+				final ScheduledFuture<Forecast> future = threadPool.schedule(futureForecast, 1, TimeUnit.SECONDS);
+				futures.add(future);
 			}
 
-			sendBroadcast(intent);
+			for (final ScheduledFuture<Forecast> future : futures)
+			{
+				try
+				{
+					final Forecast forecast = future.get();
+
+				}
+//				catch (final RetryLaterException e)
+//				{
+//					e.printStackTrace();					
+//				}
+				catch (final InterruptedException e)
+				{
+					e.printStackTrace();
+				}
+				catch (final ExecutionException e)
+				{
+					e.printStackTrace();
+				}
+			}
+
 		}
 	};
 
@@ -121,11 +139,16 @@ public class SpotService extends Service
 			Log.d(LOG_TAG, "--------------------------------------------------");
 			Log.d(LOG_TAG, "--------------------------------------------------");
 		}
-		catch (final NullPointerException e)
+		catch (final RetryLaterException e)
+		{
+			// threadPool.schedule(command, delay, unit);
+			Log.w(LOG_TAG, "Failed to update Spot.", e);
+		}
+		catch (final IOException e)
 		{
 			Log.e(LOG_TAG, "Failed to update Spot.", e);
 		}
-		catch (final IOException e)
+		catch (final NullPointerException e)
 		{
 			Log.e(LOG_TAG, "Failed to update Spot.", e);
 		}
@@ -214,12 +237,11 @@ public class SpotService extends Service
 	/**
 	 * Checks if ThreadPool already instantiated, when not it creates it
 	 */
-	private void createThreadPool()
+	private synchronized void createThreadPool()
 	{
 		if (threadPool == null)
 		{
 			threadPool = new ScheduledThreadPoolExecutor(POOLSIZE);
-			threadPool.scheduleAtFixedRate(spotUpdateTask, 0, 1, TimeUnit.SECONDS);
 		}
 	}
 }

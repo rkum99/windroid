@@ -44,11 +44,12 @@ public class SpotUpdater
 	 * 
 	 * @param _spotConfiguration
 	 * @return
+	 * @throws RetryLaterException
 	 * @throws IOException
 	 * @throws NullPointerException
 	 */
-	public static Forecast getUpdate(final SpotConfigurationVO _spotConfiguration) throws IOException,
-			NullPointerException
+	public static Forecast getUpdate(final SpotConfigurationVO _spotConfiguration) throws RetryLaterException,
+			IOException, NullPointerException
 	{
 
 		if (_spotConfiguration == null)
@@ -69,7 +70,7 @@ public class SpotUpdater
 			final int responseCode = connection.getResponseCode();
 			if (responseCode != HttpURLConnection.HTTP_OK)
 			{
-				throw new IOException("Server response code was " + responseCode);
+				throw new RetryLaterException("Server response code was :" + responseCode);
 			}
 			connection.connect();
 			//

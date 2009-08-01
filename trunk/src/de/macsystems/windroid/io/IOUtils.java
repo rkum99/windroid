@@ -46,6 +46,7 @@ public class IOUtils
 	 * 
 	 * @param _context
 	 * @return
+	 * @todo also check configuration if roaming needs to be checked.
 	 */
 	public static boolean isNetworkReachable(final Context _context)
 	{
@@ -53,7 +54,7 @@ public class IOUtils
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 
 		/**
-		 * Avoid nullpointerexception when offline
+		 * Avoid NullPointerException when offline
 		 */
 		if (systemService.getActiveNetworkInfo() == null)
 		{

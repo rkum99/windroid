@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 /**
  * @author mac
- * @version $Id
+ * @version $Id$
  * 
  */
 public class UpdateProblem extends Activity

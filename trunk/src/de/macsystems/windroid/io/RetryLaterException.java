@@ -2,6 +2,7 @@ package de.macsystems.windroid.io;
 
 /**
  * @author mac
+ * @version $Id$
  * 
  */
 public class RetryLaterException extends Exception

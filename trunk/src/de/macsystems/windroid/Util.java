@@ -192,18 +192,27 @@ public final class Util
 		return stationID != null && stationName != null && spotKeyword != null && preferredUnit != null;
 	}
 
-	public final static List<SpotConfigurationVO> FAKEgetSpotConfiguration(final Context _context)
+	/**
+	 * FAKE Method: Simulates the Configuration
+	 * 
+	 * @param _context
+	 * @return
+	 * @throws IllegalArgumentException
+	 * @Deprecated
+	 */
+	public final static List<SpotConfigurationVO> FAKE_getSpotConfiguration(final Context _context)
+			throws IllegalArgumentException
 	{
 		if (!isSpotConfigured(_context))
 		{
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("No Spot Configured.");
 		}
 
 		final SharedPreferences prefs = getSharedPreferences(_context);
 		//
 		final SpotConfigurationVO spotConfiguration = new SpotConfigurationVO();
 		//
-		final String stationID = "za" + FAKE_STATION_ID++;
+		final String stationID = "za" + ++FAKE_STATION_ID;
 
 		final String stationName = prefs.getString(SPOT_STATION_NAME, null);
 		final String spotKeyword = prefs.getString(SPOT_STATION_KEYWORD, null);
@@ -236,11 +245,20 @@ public final class Util
 		return configurations;
 	}
 
+	/**
+	 * 
+	 * @param _context
+	 * @return
+	 * @throws IllegalArgumentException
+	 *             if no spot configured
+	 * @see #isSpotConfigured(Context)
+	 */
 	public final static List<SpotConfigurationVO> getSpotConfiguration(final Context _context)
+			throws IllegalArgumentException
 	{
 		if (!isSpotConfigured(_context))
 		{
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("No Spot Configured.");
 		}
 
 		final SharedPreferences prefs = getSharedPreferences(_context);

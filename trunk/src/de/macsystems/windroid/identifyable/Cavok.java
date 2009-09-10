@@ -46,6 +46,11 @@ public enum Cavok implements IdentifyAble
 
 	private final String description;
 
+	/**
+	 * 
+	 * @param _id
+	 * @param _desciption
+	 */
 	private Cavok(final String _id, final String _desciption)
 	{
 		id = _id;

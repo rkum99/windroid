@@ -212,8 +212,8 @@ public class WindUtils
 			throw new IllegalArgumentException("Illegal StationID \"" + _stationID + "\".");
 		}
 
-		return new URL("http://www.windfinder.com/wind-cgi/xmlforecast.pl?CUSTOMER=windfox&FORMAT=JSON&VERSION=1"
-				+ "&STATIONS=" + _stationID);
+   		              //http://www.windfinder.com/wind-cgi/xmlforecast.pl?CUSTOMER=windfox&FORMAT=JSON&VERSION=1&STATIONS=nl158
+		return new URL("http://www.windfinder.com/wind-cgi/xmlforecast.pl?CUSTOMER=windfox&FORMAT=JSON&VERSION=1"+ "&STATIONS=" + _stationID);
 	}
 
 	/**

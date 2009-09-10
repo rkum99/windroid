@@ -37,7 +37,9 @@ public class Station implements IdentifyAble, Serializable
 	 * 
 	 * @param _name
 	 * @param _id
-	 * @param _timezone
+	 * @param _keyWord
+	 * @param _hasSuperforecast
+	 * @param _hasStatistic
 	 */
 	public Station(final String _name, final String _id, final String _keyWord, final boolean _hasSuperforecast,
 			final boolean _hasStatistic)

@@ -7,6 +7,10 @@ package de.macsystems.windroid.identifyable;
  */
 public final class WaveDirection extends MeasureValue
 {
+	/**
+	 * @param _value
+	 * @param _measure
+	 */
 	private WaveDirection(final float _value, final Measure _measure)
 	{
 		super(_value, _measure);

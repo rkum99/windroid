@@ -142,7 +142,7 @@ public class IOUtils
 			}
 			if (Log.isLoggable(LOG_TAG, Log.DEBUG))
 			{
-				Log.d(LOG_TAG, stationsXMLFilePath + " was updated");
+				Log.d(LOG_TAG, stationsXMLFilePath + " updated");
 			}
 		}
 		catch (final IOException e)
@@ -354,5 +354,10 @@ public class IOUtils
 		builder.append(R.raw.wind_chime);
 
 		return Uri.parse(builder.toString());
+	}
+
+	public static boolean renameFile(Context _context) throws SecurityException
+	{
+		return _context.getFileStreamPath("test").renameTo(new File("echterfilname"));
 	}
 }

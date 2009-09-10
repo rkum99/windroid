@@ -3,6 +3,7 @@ package de.macsystems.windroid.identifyable;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author Jens Hohl
@@ -11,15 +12,22 @@ import java.util.TreeSet;
  */
 public enum Continent implements IdentifyAble
 {
-	AFRICA("Africa"), EUROPE("Europe"), ASIA("Asia"), AUSTRALIA_OCEANIA("Australia & Oceania"), NORTH_AMERICA(
-			"North America"), SOUTH_AMERICA("South America");
+	AFRICA("Africa"), EUROPE("Europe"), //
+	ASIA("Asia"),
+	AUSTRALIA_OCEANIA("Australia & Oceania"),
+	NORTH_AMERICA("North America"),
+	SOUTH_AMERICA("South America");
 
 	private final Set<Country> countrys = new TreeSet<Country>(new Country.CountryComparator());
 
 	private final String id;
 
-	private static boolean isParsed = false;
+	private static AtomicBoolean isParsed = new AtomicBoolean(false);
 
+	/**
+	 * 
+	 * @param _id
+	 */
 	private Continent(final String _id)
 	{
 		id = _id;
@@ -27,12 +35,12 @@ public enum Continent implements IdentifyAble
 
 	public static void setParsed()
 	{
-		isParsed = true;
+		isParsed.set(true);
 	}
 
 	public static boolean isParsed()
 	{
-		return isParsed;
+		return isParsed.get();
 	}
 
 	/*
@@ -73,8 +81,13 @@ public enum Continent implements IdentifyAble
 	 * 
 	 * @param _country
 	 */
-	public void addCountry(final Country _country)
+	public void addCountry(final Country _country) throws NullPointerException
 	{
+		if (_country == null)
+		{
+			throw new NullPointerException();
+		}
+
 		countrys.add(_country);
 	}
 

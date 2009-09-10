@@ -40,7 +40,12 @@ public class Country implements IdentifyAble
 	}
 
 	public void addRegion(final Region _region)
+	throws NullPointerException
 	{
+		if (_region == null)
+		{
+			throw new NullPointerException();
+		}
 		regions.add(_region);
 	}
 

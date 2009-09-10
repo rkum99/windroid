@@ -7,7 +7,11 @@ package de.macsystems.windroid.identifyable;
  */
 public class Temperature extends MeasureValue
 {
-
+	/**
+	 * 
+	 * @param _value
+	 * @param _measure
+	 */
 	private Temperature(final float _value, final Measure _measure)
 	{
 		super(_value, _measure);

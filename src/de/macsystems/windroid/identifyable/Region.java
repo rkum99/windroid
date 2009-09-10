@@ -57,7 +57,12 @@ public class Region implements IdentifyAble
 	}
 
 	public void addStation(final Station _bean)
+	throws NullPointerException
 	{
+		if (_bean == null)
+		{
+			throw new NullPointerException();
+		}
 		stations.add(_bean);
 	}
 

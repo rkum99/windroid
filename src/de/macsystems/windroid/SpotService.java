@@ -103,22 +103,19 @@ public class SpotService extends Service
 				return;
 			}
 			// A Spot is Configured, show Update Icon
-			final int alarmID = showUpdateOnStatusBar(SpotService.this, (NotificationManager) SpotService.this
-					.getSystemService(Context.NOTIFICATION_SERVICE), 999, "", "");
 
-			final List<SpotConfigurationVO> spots = Util.FAKE_getSpotConfiguration(SpotService.this);
+			final List<SpotConfigurationVO> spots = Util.getSpotConfiguration(SpotService.this);
+
 			final List<ScheduledFuture<Forecast>> futures = new ArrayList<ScheduledFuture<Forecast>>(spots.size());
 			for (final SpotConfigurationVO spot : spots)
 			{
-				// final FutureTask<Forecast> futureForecast = new
-				// FutureTask<Forecast>(new UpdateSpotsTask(spot,
-				// SpotService.this));
-
 				final UpdateSpotsTask futureForecast = new UpdateSpotsTask(spot, SpotService.this);
 				final ScheduledFuture<Forecast> future = threadPool.schedule(futureForecast, 1, TimeUnit.SECONDS);
 				futures.add(future);
 			}
 
+			final int alarmID = showUpdateOnStatusBar(SpotService.this, (NotificationManager) SpotService.this
+					.getSystemService(Context.NOTIFICATION_SERVICE), 999, "", "");
 			for (final ScheduledFuture<Forecast> future : futures)
 			{
 				try

@@ -13,6 +13,9 @@ import de.macsystems.windroid.ISpotService;
 import de.macsystems.windroid.SpotService;
 
 /**
+ * Proxy Class with implements the ISpotService Interface to control the
+ * SpotService Implementation.
+ * 
  * @author Jens Hohl
  * @version $Id$
  * 
@@ -29,6 +32,7 @@ public final class SpotServiceConnection implements ServiceConnection, ISpotServ
 	/**
 	 * 
 	 * @param _viewToEnable
+	 *            typical a Button which toggle service on/off
 	 * @param _context
 	 * @throws NullPointerException
 	 */

@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import de.macsystems.windroid.identifyable.WindDirection;
 
 /**
+ * View that renders the Compass and the chosen direction of Wind.
  * 
  * @author Jens Hohl
  * @version $Id$

@@ -91,7 +91,7 @@ public class Main extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
-		isServiceRunning();
+		startSpotService();
 
 		final Button selectSpotButton = (Button) findViewById(R.id.button_show_station_selection);
 		selectSpotButton.setOnClickListener(new View.OnClickListener()
@@ -210,7 +210,11 @@ public class Main extends Activity
 		return listener;
 	}
 
-	private void isServiceRunning()
+	/**
+	 * Checks if Background SpotService already running. If not it will be
+	 * started.
+	 */
+	private void startSpotService()
 	{
 		final ActivityManager activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
 		final List<RunningServiceInfo> services = activityManager.getRunningServices(Integer.MAX_VALUE);
@@ -226,14 +230,8 @@ public class Main extends Activity
 
 			if ("de.macsystems.windroid".equals(services.get(i).service.getPackageName()))
 			{
-				Log.d(LOG_TAG, "packagename stimmt überein !!!");
-				// Log.d(LOG_TAG, "SpotService" + " : " +
-				// services.get(i).service.getClassName());
-
 				if ("de.macsystems.windroid.SpotService".equals(services.get(i).service.getClassName()))
 				{
-					Log.d(LOG_TAG, "getClassName stimmt überein !!!");
-
 					isServiceFound = true;
 				}
 			}
@@ -248,7 +246,7 @@ public class Main extends Activity
 		}
 		else
 		{
-			Log.i(LOG_TAG, "Nothing to do, Service already running !!!!!");
+			Log.i(LOG_TAG, "Nothing to do, SpotService already running !!!!!");
 		}
 	}
 

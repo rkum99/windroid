@@ -12,8 +12,13 @@ public class Station implements IdentifyAble, Serializable
 {
 	private static final long serialVersionUID = 1L;
 
-	public static class StationComparator implements Comparator<Station>
+	public static class StationComparator implements Comparator<Station>, Serializable
 	{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
 		/*
 		 * (non-Javadoc)
 		 * 

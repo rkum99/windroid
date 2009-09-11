@@ -167,11 +167,11 @@ public class WindUtils
 		final StringBuilder builder = new StringBuilder(128);
 		final URL md5ChecksumURL = getStationMD5URL();
 		InputStream inStream = null;
-
+		BufferedReader reader = null;
 		try
 		{
 			inStream = md5ChecksumURL.openStream();
-			final BufferedReader reader = new BufferedReader(new InputStreamReader(inStream));
+			reader = new BufferedReader(new InputStreamReader(inStream));
 			String line;
 			while ((line = reader.readLine()) != null)
 			{
@@ -181,6 +181,7 @@ public class WindUtils
 		}
 		finally
 		{
+			IOUtils.close(reader);
 			IOUtils.close(inStream);
 		}
 		//
@@ -271,7 +272,7 @@ public class WindUtils
 	 * 
 	 * @throws IOException
 	 */
-	public static URL createSuperforecast(final String _stationID) throws IOException
+	public static URL createSuperforecastURL(final String _stationID) throws IOException
 	{
 		if (_stationID == null)
 		{

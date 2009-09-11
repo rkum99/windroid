@@ -1,5 +1,6 @@
 package de.macsystems.windroid.identifyable;
 
+import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Set;
@@ -14,8 +15,10 @@ import java.util.TreeSet;
 public class Region implements IdentifyAble
 {
 
-	public static class RegionComparator implements Comparator<Region>
+	public static class RegionComparator implements Comparator<Region>, Serializable
 	{
+		private static final long serialVersionUID = 1L;
+
 		/*
 		 * (non-Javadoc)
 		 * 
@@ -56,8 +59,7 @@ public class Region implements IdentifyAble
 		return stations.toArray(new Station[stations.size()]);
 	}
 
-	public void addStation(final Station _bean)
-	throws NullPointerException
+	public void addStation(final Station _bean) throws NullPointerException
 	{
 		if (_bean == null)
 		{

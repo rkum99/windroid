@@ -1,5 +1,6 @@
 package de.macsystems.windroid.identifyable;
 
+import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Set;
@@ -17,8 +18,10 @@ public class Country implements IdentifyAble
 
 	private final String name;
 
-	public static class CountryComparator implements Comparator<Country>
+	public static class CountryComparator implements Comparator<Country>, Serializable
 	{
+		private static final long serialVersionUID = 1L;
+
 		/*
 		 * (non-Javadoc)
 		 * 
@@ -39,8 +42,7 @@ public class Country implements IdentifyAble
 		name = _name;
 	}
 
-	public void addRegion(final Region _region)
-	throws NullPointerException
+	public void addRegion(final Region _region) throws NullPointerException
 	{
 		if (_region == null)
 		{

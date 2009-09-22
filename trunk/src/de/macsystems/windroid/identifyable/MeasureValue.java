@@ -105,5 +105,17 @@ public abstract class MeasureValue
 	{
 		return measure;
 	}
+	
+	/**
+	 * @param _unit
+	 * @return
+	 */
+	protected static Measure getUnit(final String _unit)
+	{
+		final int index = IdentityUtil.indexOf(_unit, Measure.values());
+		final Measure unit = Measure.values()[index];
+		return unit;
+	}
+
 
 }

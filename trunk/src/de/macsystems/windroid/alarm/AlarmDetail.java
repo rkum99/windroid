@@ -80,6 +80,9 @@ public class AlarmDetail implements Parcelable
 		out.writeString(stationID);
 	}
 
+	/**
+	 * @see Creator
+	 */
 	public static final Parcelable.Creator<AlarmDetail> CREATOR = new Parcelable.Creator<AlarmDetail>()
 	{
 		public AlarmDetail createFromParcel(final Parcel in)

@@ -24,8 +24,6 @@ public final class WaveDirection extends MeasureValue
 	 */
 	public static WaveDirection create(final String _unit, float _value)
 	{
-		final int index = IdentityUtil.indexOf(_unit, Measure.values());
-		final Measure unit = Measure.values()[index];
-		return new WaveDirection(_value, unit);
+		return new WaveDirection(_value, getUnit(_unit));
 	}
 }

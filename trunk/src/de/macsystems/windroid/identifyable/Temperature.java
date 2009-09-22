@@ -25,9 +25,7 @@ public class Temperature extends MeasureValue
 	 */
 	public static Temperature create(float _value, final String _unit)
 	{
-		final int index = IdentityUtil.indexOf(_unit, Measure.values());
-		final Measure unit = Measure.values()[index];
-		return new Temperature(_value, unit);
+		return new Temperature(_value, getUnit(_unit));
 	}
 
 	/**

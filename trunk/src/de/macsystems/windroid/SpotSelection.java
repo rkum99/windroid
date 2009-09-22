@@ -23,6 +23,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
+import de.macsystems.windroid.db.DBSpotUpdate;
+import de.macsystems.windroid.db.Database;
 import de.macsystems.windroid.identifyable.Continent;
 import de.macsystems.windroid.identifyable.Country;
 import de.macsystems.windroid.identifyable.IdentityUtil;
@@ -96,7 +98,7 @@ public class SpotSelection extends Activity
 		final String networkName = IOUtils.getNetworkName(this);
 
 		final ProgressDialog dialog = ProgressDialog.show(this, "Bitte Warten", "Lese Daten über \n" + networkName
-				+ ".\n Je nach Verbindung kann dies etwas Zeit in anspruch nehmen.");
+				+ ".\nDanach wir die Datenbank aktualisiert.\nJe nach Verbindung kann dies etwas Zeit in anspruch nehmen. ");
 
 		final Thread parseThread = new Thread("Parse XML")
 		{
@@ -121,6 +123,11 @@ public class SpotSelection extends Activity
 						final SAXParser parser = factory.newSAXParser();
 						inStream = new BufferedInputStream(IOUtils.getStationXML(SpotSelection.this));
 						parser.parse(inStream, new StationHandler());
+
+						final Database database = new Database(SpotSelection.this);
+						final DBSpotUpdate updater = new DBSpotUpdate(database);
+						updater.update();
+
 						handler.post(populateParsingResults(Continent.values(), Continent.AFRICA.getCoutrys(),
 								Continent.AFRICA.getCoutrys()[0].getRegions()));
 						// runOnUiThread(populateParsingResults(Continent.values(),

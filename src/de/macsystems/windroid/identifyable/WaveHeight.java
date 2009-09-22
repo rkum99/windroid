@@ -22,8 +22,6 @@ public final class WaveHeight extends MeasureValue
 	 */
 	public static WaveHeight create(final String _unit, float _value)
 	{
-		final int index = IdentityUtil.indexOf(_unit, Measure.values());
-		final Measure unit = Measure.values()[index];
-		return new WaveHeight(_value, unit);
+		return new WaveHeight(_value, getUnit(_unit));
 	}
 }

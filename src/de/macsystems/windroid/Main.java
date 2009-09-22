@@ -31,6 +31,7 @@ import android.widget.CompoundButton;
 import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import de.macsystems.windroid.alarm.AlarmDetail;
+import de.macsystems.windroid.db.Database;
 import de.macsystems.windroid.forecast.SpotOverview;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.proxy.SpotServiceConnection;
@@ -89,9 +90,10 @@ public class Main extends Activity
 	protected void onCreate(final Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.main);
+		new Database(this);
 
 		startSpotService();
+		setContentView(R.layout.main);
 
 		final Button selectSpotButton = (Button) findViewById(R.id.button_show_station_selection);
 		selectSpotButton.setOnClickListener(new View.OnClickListener()
@@ -331,8 +333,7 @@ public class Main extends Activity
 		aboutBuilder.setMessage(R.string.about_text);
 		aboutBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener()
 		{
-			@Override
-			public void onClick(final DialogInterface dialog, final int which)
+			public final void onClick(final DialogInterface dialog, final int which)
 			{
 				dialog.dismiss();
 			}

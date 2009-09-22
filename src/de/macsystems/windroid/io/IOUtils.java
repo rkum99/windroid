@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.Properties;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.net.NetworkInfo.State;
@@ -356,6 +357,25 @@ public class IOUtils
 		return Uri.parse(builder.toString());
 	}
 
+	/**
+	 * 
+	 * @param _db
+	 */
+	public final static void close(SQLiteDatabase _db)
+	{
+		if (_db != null)
+		{
+			_db.close();
+		}
+	}
+
+	/**
+	 * Untested yet.
+	 * 
+	 * @param _context
+	 * @return
+	 * @throws SecurityException
+	 */
 	public static boolean renameFile(Context _context) throws SecurityException
 	{
 		return _context.getFileStreamPath("test").renameTo(new File("echterfilname"));

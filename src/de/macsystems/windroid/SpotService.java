@@ -52,6 +52,15 @@ public class SpotService extends Service
 	 */
 	private AtomicBoolean isServiceRunning = new AtomicBoolean(false);
 
+	/**
+	 * 
+	 * @param context
+	 * @param notificationManager
+	 * @param alarmID
+	 * @param notificationTitle
+	 * @param notificationDetails
+	 * @return
+	 */
 	private static int showUpdateOnStatusBar(final Context context, final NotificationManager notificationManager,
 			final int alarmID, final String notificationTitle, final String notificationDetails)
 	{
@@ -84,6 +93,9 @@ public class SpotService extends Service
 		_notificationManager.cancel(_cancelIntentID);
 	}
 
+	/**
+	 * Task which checks for Updates on configured Spots.
+	 */
 	private final Runnable enqueConfiguredSpotsTask = new Runnable()
 	{
 		@Override

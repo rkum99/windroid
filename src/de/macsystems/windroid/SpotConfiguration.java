@@ -336,9 +336,6 @@ public class SpotConfiguration extends Activity
 	{
 		final TextView deltaView = (TextView) findViewById(R.id.unit_delta_textview);
 		deltaView.setText(unit.toString() + " " + Integer.valueOf(min) + " - " + Integer.valueOf(max));
-		// this is a bit dirty as method should only update view, not also store
-		// values
-
 	}
 
 }

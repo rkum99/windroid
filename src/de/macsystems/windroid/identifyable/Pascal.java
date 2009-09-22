@@ -20,8 +20,6 @@ public class Pascal extends MeasureValue
 	 */
 	public static Pascal create(final float _value, final String _unit)
 	{
-		final int index = IdentityUtil.indexOf(_unit, Measure.values());
-		final Measure unit = Measure.values()[index];
-		return new Pascal(_value, unit);
+		return new Pascal(_value, getUnit(_unit));
 	}
 }

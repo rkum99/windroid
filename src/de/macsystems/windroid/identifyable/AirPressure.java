@@ -21,8 +21,6 @@ public final class AirPressure extends MeasureValue
 	 */
 	public static AirPressure create(float _value, final String _unit)
 	{
-		final int index = IdentityUtil.indexOf(_unit, Measure.values());
-		final Measure unit = Measure.values()[index];
-		return new AirPressure(_value, unit);
+		return new AirPressure(_value, getUnit(_unit));
 	}
 }

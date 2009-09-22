@@ -24,8 +24,6 @@ public final class WavePeriod extends MeasureValue
 	 */
 	public static WavePeriod create(final String _unit, float _value)
 	{
-		final int index = IdentityUtil.indexOf(_unit, Measure.values());
-		final Measure unit = Measure.values()[index];
-		return new WavePeriod(_value, unit);
+		return new WavePeriod(_value, getUnit(_unit));
 	}
 }

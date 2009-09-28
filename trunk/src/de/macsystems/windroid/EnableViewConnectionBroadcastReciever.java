@@ -21,13 +21,14 @@ import android.view.View;
  * 
  * 
  * @author Jens Hohl
- * @version $Id$
+ * @version $Id: EnableViewConnectionBroadcastReciever.java 2 2009-07-28
+ *          02:15:38Z jens.hohl $
  * 
  */
 public class EnableViewConnectionBroadcastReciever extends BroadcastReceiver
 {
 
-	private final static String TAG = "UpdateViewReciever";
+	private final static String LOG_TAG = "UpdateViewReciever";
 
 	private final List<View> viewsToEnable;
 
@@ -57,23 +58,23 @@ public class EnableViewConnectionBroadcastReciever extends BroadcastReceiver
 		super();
 		if (_viewsToEnable == null)
 		{
-			throw new NullPointerException();
+			throw new NullPointerException("Collection");
 		}
 		if (_viewsToEnable.isEmpty())
 		{
-			throw new IllegalArgumentException("No views given.");
+			throw new IllegalArgumentException("Collection is empty.");
 		}
 		if (_contextToRegister == null)
 		{
-			throw new NullPointerException("Need valid Context to register BroadcastReciever.");
+			throw new NullPointerException("Need valid Context.");
 		}
 		// Create a Copy of the View List
 		viewsToEnable = new ArrayList<View>(_viewsToEnable);
 		_contextToRegister.registerReceiver(this, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
-		if (Log.isLoggable(TAG, Log.DEBUG))
+		if (Log.isLoggable(LOG_TAG, Log.DEBUG))
 		{
-			Log.d(TAG, "EnableViewConnectionBroadcastReciever created.");
+			Log.d(LOG_TAG, "EnableViewConnectionBroadcastReciever created.");
 		}
 	}
 
@@ -83,9 +84,9 @@ public class EnableViewConnectionBroadcastReciever extends BroadcastReceiver
 		try
 		{
 			final boolean isConnected = intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
-			if (Log.isLoggable(TAG, Log.DEBUG))
+			if (Log.isLoggable(LOG_TAG, Log.DEBUG))
 			{
-				Log.i(TAG, "EnableViewConnectionBroadcastReciever: "
+				Log.i(LOG_TAG, "EnableViewConnectionBroadcastReciever: "
 						+ (isConnected ? "connection established" : "connection lost"));
 			}
 
@@ -94,7 +95,7 @@ public class EnableViewConnectionBroadcastReciever extends BroadcastReceiver
 		}
 		catch (final Exception e)
 		{
-			Log.e(TAG, "Failed to update views", e);
+			Log.e(LOG_TAG, "Failed to update views", e);
 		}
 	}
 

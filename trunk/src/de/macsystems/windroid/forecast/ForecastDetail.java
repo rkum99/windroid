@@ -16,16 +16,16 @@ import de.macsystems.windroid.identifyable.WindSpeed;
  * @author Jens Hohl
  * @version $Id$
  * 
- *         { "date": "20090722", "time": "140000",
- *         "air_temperature":{"unit":"celsius" ,"value":"20.60"},
- *         "water_temperature":{"unit":"celsius", "value":null}
- *         ,"wind_direction":"SW", "wind_speed":{"unit":"kts","value" :"14"},
- *         "wind_gusts":{"unit":"kts", "value": null},
- *         "weather":null," clouds":"BKN","precipitation": { "unit":
- *         "mm","value": 0.05 }, "wave_height": {
- *         "unit":"m","value":1.6},"wave_direction":"SW","wave_period": {
- *         "unit":"s","value":5},"air_pressure": {
- *         "unit":"hpa","value":1006.20}}
+ *          { "date": "20090722", "time": "140000",
+ *          "air_temperature":{"unit":"celsius" ,"value":"20.60"},
+ *          "water_temperature":{"unit":"celsius", "value":null}
+ *          ,"wind_direction":"SW", "wind_speed":{"unit":"kts","value" :"14"},
+ *          "wind_gusts":{"unit":"kts", "value": null},
+ *          "weather":null," clouds":"BKN","precipitation": { "unit":
+ *          "mm","value": 0.05 }, "wave_height": {
+ *          "unit":"m","value":1.6},"wave_direction":"SW","wave_period": {
+ *          "unit":"s","value":5},"air_pressure": {
+ *          "unit":"hpa","value":1006.20}}
  * 
  */
 public class ForecastDetail
@@ -249,7 +249,7 @@ public class ForecastDetail
 		 * @param spotName
 		 *            the spotName to set
 		 */
-		public Builder setSpotName(String spotName)
+		public Builder setSpotName(final String spotName)
 		{
 			this.spotName = spotName;
 			return this;
@@ -259,7 +259,7 @@ public class ForecastDetail
 		 * @param date
 		 *            the date to set
 		 */
-		public Builder setDate(Date date)
+		public Builder setDate(final Date date)
 		{
 			this.date = date;
 			return this;
@@ -269,7 +269,7 @@ public class ForecastDetail
 		 * @param time
 		 *            the time to set
 		 */
-		public Builder setTime(int time)
+		public Builder setTime(final int time)
 		{
 			this.time = time;
 			return this;
@@ -279,7 +279,7 @@ public class ForecastDetail
 		 * @param airTemperature
 		 *            the airTemperature to set
 		 */
-		public Builder setAirTemperature(Temperature airTemperature)
+		public Builder setAirTemperature(final Temperature airTemperature)
 		{
 			this.airTemperature = airTemperature;
 			return this;
@@ -289,7 +289,7 @@ public class ForecastDetail
 		 * @param waterTemperature
 		 *            the waterTemperature to set
 		 */
-		public Builder setWaterTemperature(Temperature waterTemperature)
+		public Builder setWaterTemperature(final Temperature waterTemperature)
 		{
 			this.waterTemperature = waterTemperature;
 			return this;
@@ -299,7 +299,7 @@ public class ForecastDetail
 		 * @param winddirection
 		 *            the winddirection to set
 		 */
-		public Builder setWinddirection(WindDirection winddirection)
+		public Builder setWinddirection(final WindDirection winddirection)
 		{
 			this.winddirection = winddirection;
 			return this;
@@ -309,7 +309,7 @@ public class ForecastDetail
 		 * @param windSpeed
 		 *            the windSpeed to set
 		 */
-		public Builder setWindSpeed(WindSpeed windSpeed)
+		public Builder setWindSpeed(final WindSpeed windSpeed)
 		{
 			this.windSpeed = windSpeed;
 			return this;
@@ -319,7 +319,7 @@ public class ForecastDetail
 		 * @param windGusts
 		 *            the windGusts to set
 		 */
-		public Builder setWindGusts(WindSpeed windGusts)
+		public Builder setWindGusts(final WindSpeed windGusts)
 		{
 			this.windGusts = windGusts;
 			return this;
@@ -329,7 +329,7 @@ public class ForecastDetail
 		 * @param clouds
 		 *            the clouds to set
 		 */
-		public Builder setClouds(Cavok clouds)
+		public Builder setClouds(final Cavok clouds)
 		{
 			this.clouds = clouds;
 			return this;
@@ -339,7 +339,7 @@ public class ForecastDetail
 		 * @param precipitation
 		 *            the precipitation to set
 		 */
-		public Builder setPrecipitation(Precipitation precipitation)
+		public Builder setPrecipitation(final Precipitation precipitation)
 		{
 			this.precipitation = precipitation;
 			return this;
@@ -349,7 +349,7 @@ public class ForecastDetail
 		 * @param waveHeight
 		 *            the waveHeight to set
 		 */
-		public Builder setWaveHeight(WaveHeight waveHeight)
+		public Builder setWaveHeight(final WaveHeight waveHeight)
 		{
 			this.waveHeight = waveHeight;
 			return this;
@@ -359,7 +359,7 @@ public class ForecastDetail
 		 * @param wavePeriod
 		 *            the wavePeriod to set
 		 */
-		public Builder setWavePeriod(WavePeriod wavePeriod)
+		public Builder setWavePeriod(final WavePeriod wavePeriod)
 		{
 			this.wavePeriod = wavePeriod;
 			return this;
@@ -369,7 +369,7 @@ public class ForecastDetail
 		 * @param waveDirection
 		 *            the waveDirection to set
 		 */
-		public Builder setWaveDirection(MeasureValue waveDirection)
+		public Builder setWaveDirection(final MeasureValue waveDirection)
 		{
 			this.waveDirection = waveDirection;
 			return this;
@@ -379,7 +379,7 @@ public class ForecastDetail
 		 * @param airPressure
 		 *            the airPressure to set
 		 */
-		public Builder setAirPressure(AirPressure airPressure)
+		public Builder setAirPressure(final AirPressure airPressure)
 		{
 			this.airPressure = airPressure;
 			return this;

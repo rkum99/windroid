@@ -38,6 +38,18 @@ public final class WindSpeed
 		return value;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString()
+	{
+
+		return "" + value + unit.toString();
+	}
+
 	/**
 	 * 
 	 * @param _value

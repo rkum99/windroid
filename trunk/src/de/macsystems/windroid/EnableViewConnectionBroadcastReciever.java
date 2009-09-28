@@ -49,7 +49,10 @@ public class EnableViewConnectionBroadcastReciever extends BroadcastReceiver
 	 * 
 	 * 
 	 * @param _viewsToEnable
+	 * @param _contextToRegister
+	 *            a valid context to register as broadcast receiver
 	 * @throws NullPointerException
+	 *             if any parameter will be null.
 	 * @throws IllegalArgumentException
 	 *             when empty collection was given.
 	 */

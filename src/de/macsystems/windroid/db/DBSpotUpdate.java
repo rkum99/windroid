@@ -45,9 +45,8 @@ public class DBSpotUpdate implements ISpot
 	 * 
 	 * @param _database
 	 * @throws NullPointerException
-	 * @throws SQLException
 	 */
-	public DBSpotUpdate(final Database _database) throws NullPointerException, SQLException
+	public DBSpotUpdate(final Database _database) throws NullPointerException
 	{
 		if (_database == null)
 		{

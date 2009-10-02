@@ -16,12 +16,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
 import de.macsystems.windroid.db.DBSpotUpdate;
 import de.macsystems.windroid.db.Database;
@@ -32,6 +34,8 @@ import de.macsystems.windroid.identifyable.Region;
 import de.macsystems.windroid.identifyable.Station;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.parser.StationHandler;
+import de.macsystems.windroid.progress.IProgress;
+import de.macsystems.windroid.progress.ProgressAdapter;
 
 /*
  * 
@@ -97,8 +101,19 @@ public class SpotSelection extends Activity
 	{
 		final String networkName = IOUtils.getNetworkName(this);
 
-		final ProgressDialog dialog = ProgressDialog.show(this, "Bitte Warten", "Lese Daten über \n" + networkName
-				+ ".\nDanach wir die Datenbank aktualisiert.\nJe nach Verbindung kann dies etwas Zeit in anspruch nehmen. ");
+		// final ProgressDialog progress = ProgressDialog.show(this,
+
+		final ProgressDialog dialog = new ProgressDialog(this);
+		dialog.setTitle("Bitte Warten");
+		dialog
+				.setMessage("Lese Daten über \n"
+						+ networkName
+						+ ".\nDanach wir die Datenbank aktualisiert.\nJe nach Verbindung kann dies etwas Zeit in anspruch nehmen. ");
+		dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+
+		dialog.show();
+
+		final IProgress progress = new ProgressAdapter(dialog);
 
 		final Thread parseThread = new Thread("Parse XML")
 		{
@@ -122,10 +137,18 @@ public class SpotSelection extends Activity
 						final SAXParserFactory factory = SAXParserFactory.newInstance();
 						final SAXParser parser = factory.newSAXParser();
 						inStream = new BufferedInputStream(IOUtils.getStationXML(SpotSelection.this));
-						parser.parse(inStream, new StationHandler());
+						final StationHandler stationHandler = new StationHandler();
+						parser.parse(inStream, stationHandler);
+
+						final int stationsParsed = stationHandler.getNrOfStations();
+
+						dialog.setMax(stationsParsed);
+
+						Looper.prepare();
+						Toast.makeText(SpotSelection.this, "DB Insert Start", Toast.LENGTH_LONG).show();
 
 						final Database database = new Database(SpotSelection.this);
-						final DBSpotUpdate updater = new DBSpotUpdate(database);
+						final DBSpotUpdate updater = new DBSpotUpdate(database, progress);
 						updater.update();
 
 						handler.post(populateParsingResults(Continent.values(), Continent.AFRICA.getCoutrys(),

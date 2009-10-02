@@ -36,7 +36,7 @@ public class SpotOverview extends ListActivity
 			final SpotConfigurationVO vo = new SpotConfigurationVO();
 			vo.setFromDirection(WindDirection.E);
 			vo.setToDirection(WindDirection.W);
-			vo.setStation(new Station("Test Station", "id", "keyword", true, true));
+			vo.setStation(new Station("Test Station", "id", "keyword", true, true,true,true,true,true));
 			vo.setPreferredWindUnit(WindUnit.KNOTS);
 			spotConfigurations.add(vo);
 		}

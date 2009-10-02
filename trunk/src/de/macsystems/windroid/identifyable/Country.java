@@ -49,6 +49,7 @@ public class Country implements IdentifyAble
 			throw new NullPointerException();
 		}
 		regions.add(_region);
+		
 	}
 
 	public String getName()

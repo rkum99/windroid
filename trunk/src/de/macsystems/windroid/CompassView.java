@@ -27,7 +27,7 @@ public class CompassView extends ImageView
 	/**
 	 * Dimension of overlay.
 	 */
-	private final int CIRCLE_DIMENSION = 165;
+	private final float CIRCLE_DIMENSION = 165f;
 	/**
 	 * Start direction of Wind
 	 */

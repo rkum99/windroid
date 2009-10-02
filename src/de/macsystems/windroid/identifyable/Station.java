@@ -35,25 +35,39 @@ public class Station implements IdentifyAble, Serializable
 	private final String name;
 	private final String id;
 	private final String keyWord;
+	private final boolean hasForecast;
 	private final boolean hasSuperforecast;
 	private final boolean hasStatistic;
+	private final boolean hasReport;
+	private final boolean hasWaveReport;
+
+	private final boolean hasWaveforecast;
 
 	/**
 	 * 
 	 * @param _name
 	 * @param _id
 	 * @param _keyWord
+	 * @param _hasForecast
 	 * @param _hasSuperforecast
 	 * @param _hasStatistic
+	 * @param _hasWaveforecast
+	 * @param _hasWaveReport
+	 * @param _hasReport
 	 */
-	public Station(final String _name, final String _id, final String _keyWord, final boolean _hasSuperforecast,
-			final boolean _hasStatistic)
+	public Station(final String _name, final String _id, final String _keyWord, final boolean _hasForecast,
+			final boolean _hasSuperforecast, final boolean _hasStatistic, final boolean _hasReport,
+			final boolean _hasWaveReport, final boolean _hasWaveforecast)
 	{
 		name = _name;
 		id = _id;
 		keyWord = _keyWord;
+		hasForecast = _hasForecast;
 		hasSuperforecast = _hasSuperforecast;
 		hasStatistic = _hasStatistic;
+		hasReport = _hasReport;
+		hasWaveforecast = _hasWaveforecast;
+		hasWaveReport = _hasWaveReport;
 	}
 
 	public String getName()
@@ -75,6 +89,38 @@ public class Station implements IdentifyAble, Serializable
 	public String getKeyword()
 	{
 		return keyWord;
+	}
+
+	/**
+	 * @return the hasForecast
+	 */
+	public boolean hasForecast()
+	{
+		return hasForecast;
+	}
+
+	/**
+	 * @return the hasReport
+	 */
+	public boolean hasReport()
+	{
+		return hasReport;
+	}
+
+	/**
+	 * @return the hasWaveReport
+	 */
+	public boolean hasWaveReport()
+	{
+		return hasWaveReport;
+	}
+
+	/**
+	 * @return the hasWaveforecast
+	 */
+	public boolean hasWaveforecast()
+	{
+		return hasWaveforecast;
 	}
 
 	public boolean hasSuperforecast()

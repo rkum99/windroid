@@ -101,7 +101,6 @@ public class SpotService extends Service
 		@Override
 		public void run()
 		{
-
 			Log.d(LOG_TAG, "Entering enqueConfiguredSpotsTask.....................");
 			if (!isServiceRunning())
 			{
@@ -239,10 +238,14 @@ public class SpotService extends Service
 	 */
 	private synchronized void createThreadPool()
 	{
+
+		final long initialDelay = 5L;
+		final long updateDelay = 60L;
+
 		if (threadPool == null)
 		{
 			threadPool = Executors.newScheduledThreadPool(POOLSIZE);
-			threadPool.scheduleAtFixedRate(enqueConfiguredSpotsTask, 5L, 15L, TimeUnit.SECONDS);
+			threadPool.scheduleAtFixedRate(enqueConfiguredSpotsTask, initialDelay, updateDelay, TimeUnit.SECONDS);
 			Log.d(LOG_TAG, "Thread Pool Created.");
 		}
 	}

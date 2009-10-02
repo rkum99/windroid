@@ -19,6 +19,8 @@ import de.macsystems.windroid.identifyable.Station;
 public class StationHandler extends DefaultHandler
 {
 
+	private static final String NAMESPACE = "";
+
 	private final static String LOG_TAG = StationHandler.class.getSimpleName();
 
 	private static final String CONTINENT = "continent";
@@ -36,12 +38,24 @@ public class StationHandler extends DefaultHandler
 	private long startTime;
 	private long endTime;
 
+	private volatile int nrOfStations = 0;
+
 	/**
 	 * 
 	 */
 	public StationHandler()
 	{
 		super();
+	}
+
+	/**
+	 * returns the nr of stations found in parsed XML.
+	 * 
+	 * @return
+	 */
+	public int getNrOfStations()
+	{
+		return nrOfStations;
 	}
 
 	@Override
@@ -88,17 +102,20 @@ public class StationHandler extends DefaultHandler
 		{
 			handleStation(attributes);
 		}
-
-		super.startElement(uri, localName, name, attributes);
 	}
 
 	private void handleStation(final Attributes attributes)
 	{
-		final int indexID = attributes.getIndex("", "id");
-		final int indexName = attributes.getIndex("", "name");
-		final int indexKeyword = attributes.getIndex("", "keyword");
-		final int indexSuperforecast = attributes.getIndex("", "superforecast");
-		final int indexStatistic = attributes.getIndex("", "statistic");
+		final int indexID = attributes.getIndex(NAMESPACE, "id");
+		final int indexName = attributes.getIndex(NAMESPACE, "name");
+		final int indexKeyword = attributes.getIndex(NAMESPACE, "keyword");
+		final int indexSuperforecast = attributes.getIndex(NAMESPACE, "superforecast");
+		final int indexStatistic = attributes.getIndex(NAMESPACE, "statistic");
+
+		final int indexReport = attributes.getIndex(NAMESPACE, "report");
+		final int indexWaveReport = attributes.getIndex(NAMESPACE, "wavereport");
+		final int indexWaveforecast = attributes.getIndex(NAMESPACE, "waveforecast");
+		final int indexForecast = attributes.getIndex(NAMESPACE, "forecast");
 
 		final String stationid = attributes.getValue(indexID);
 		final String stationName = attributes.getValue(indexName);
@@ -106,23 +123,34 @@ public class StationHandler extends DefaultHandler
 		final boolean hasStatistic = WindUtils.toBoolean(attributes.getValue(indexStatistic));
 		final String keyword = attributes.getValue(indexKeyword);
 
-		final Station station = new Station(stationName, stationid, keyword, hasSuperforecast, hasStatistic);
+		final boolean hasReport = WindUtils.toBoolean(attributes.getValue(indexReport));
+		final boolean hasWaveReport = WindUtils.toBoolean(attributes.getValue(indexWaveReport));
+		final boolean hasWaveforecast = WindUtils.toBoolean(attributes.getValue(indexWaveforecast));
+		final boolean hasForecast = WindUtils.toBoolean(attributes.getValue(indexForecast));
+
+		final Station station = new Station(stationName, stationid, keyword, hasForecast, hasSuperforecast,
+				hasStatistic, hasReport, hasWaveReport, hasWaveforecast);
 		currentRegion.addStation(station);
+		nrOfStations++;
 	}
 
 	private void handleRegion(final Attributes attributes)
 	{
-		final int indexID = attributes.getIndex("", "id");
-		final int indexName = attributes.getIndex("", "name");
+		final int indexID = attributes.getIndex(NAMESPACE, "id");
+		final int indexName = attributes.getIndex(NAMESPACE, "name");
 
 		currentRegion = new Region(attributes.getValue(indexID), attributes.getValue(indexName));
 		currentCountry.addRegion(currentRegion);
+
+		// Log.d(LOG_TAG, "Region id=" + currentRegion.getId() + " name=" +
+		// currentRegion.getName());
+
 	}
 
 	private void handleCountry(final Attributes attributes)
 	{
-		final int indexID = attributes.getIndex("", "id");
-		final int indexName = attributes.getIndex("", "name");
+		final int indexID = attributes.getIndex(NAMESPACE, "id");
+		final int indexName = attributes.getIndex(NAMESPACE, "name");
 
 		currentCountry = new Country(attributes.getValue(indexID), attributes.getValue(indexName));
 		currentContinent.addCountry(currentCountry);
@@ -130,7 +158,7 @@ public class StationHandler extends DefaultHandler
 
 	private void handleContinent(final Attributes attributes)
 	{
-		final int indexID = attributes.getIndex("", "id");
+		final int indexID = attributes.getIndex(NAMESPACE, "id");
 		// final int indexName = attributes.getIndex("", "name");
 		currentContinent = Continent.getById(attributes.getValue(indexID));
 	}

@@ -24,6 +24,12 @@ public final class Util
 
 	public static final String SPOT_STATION_HAS_STATISTIC = "spot_station_has_statistic";
 	public static final String SPOT_STATION_HAS_SUPERFORECAST = "spot_station_has_superforecast";
+
+	public static final String SPOT_STATION_HAS_FORECAST = "spot_station_has_forecast";
+	public static final String SPOT_STATION_HAS_WAVERFORECAST = "spot_station_has_waveforecast";
+	public static final String SPOT_STATION_HAS_WAVEREPORT = "spot_station_has_wavereport";
+	public static final String SPOT_STATION_HAS_REPORT = "spot_station_has_report";
+
 	public static final String SPOT_PREFERRED_WIND_UNIT = "spot_preferred_unit";
 	public static final String SPOT_WINDDIRECTION_TO_ID = "spot_winddirection_to";
 	public static final String SPOT_WINDDIRECTION_FROM_ID = "spot_winddirection_from";
@@ -223,8 +229,14 @@ public final class Util
 
 		final String winddirectionFrom = prefs.getString(SPOT_WINDDIRECTION_FROM_ID, null);
 		final String winddirectionTo = prefs.getString(SPOT_WINDDIRECTION_TO_ID, null);
+
+		final boolean hasReport = prefs.getBoolean(SPOT_STATION_HAS_REPORT, false);
+		final boolean hasForecast = prefs.getBoolean(SPOT_STATION_HAS_FORECAST, false);
+		final boolean hasWavereport = prefs.getBoolean(SPOT_STATION_HAS_WAVEREPORT, false);
+		final boolean hasWaveforecast = prefs.getBoolean(SPOT_STATION_HAS_WAVERFORECAST, false);
 		//
-		final Station station = new Station(stationName, stationID, spotKeyword, hasSuperForecast, hasStatistic);
+		final Station station = new Station(stationName, stationID, spotKeyword, hasForecast, hasSuperForecast,
+				hasStatistic, hasReport, hasWavereport, hasWaveforecast);
 		spotConfiguration.setStation(station);
 		//
 		final int indexPreferredWindUnit = IdentityUtil.indexOf(preferredUnit, WindUnit.values());
@@ -275,8 +287,16 @@ public final class Util
 
 		final String winddirectionFrom = prefs.getString(SPOT_WINDDIRECTION_FROM_ID, null);
 		final String winddirectionTo = prefs.getString(SPOT_WINDDIRECTION_TO_ID, null);
+
+		final boolean hasReport = prefs.getBoolean(SPOT_STATION_HAS_REPORT, false);
+		final boolean hasForecast = prefs.getBoolean(SPOT_STATION_HAS_FORECAST, false);
+		final boolean hasWavereport = prefs.getBoolean(SPOT_STATION_HAS_WAVEREPORT, false);
+		final boolean hasWaveforecast = prefs.getBoolean(SPOT_STATION_HAS_WAVERFORECAST, false);
 		//
-		final Station station = new Station(stationName, stationID, spotKeyword, hasSuperForecast, hasStatistic);
+		// Some parameter not readed yet so we put default values
+		//
+		final Station station = new Station(stationName, stationID, spotKeyword, hasForecast, hasSuperForecast,
+				hasStatistic, hasReport, hasWavereport, hasWaveforecast);
 		spotConfiguration.setStation(station);
 		//
 		final int indexPreferredWindUnit = IdentityUtil.indexOf(preferredUnit, WindUnit.values());

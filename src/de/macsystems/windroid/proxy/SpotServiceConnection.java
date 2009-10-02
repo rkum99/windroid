@@ -86,6 +86,7 @@ public final class SpotServiceConnection implements ServiceConnection, ISpotServ
 		Log.d(LOG_TAG, "public void onServiceDisconnected(ComponentName name)");
 
 		delegate = null;
+		
 		viewToEnable.setEnabled(false);
 	}
 

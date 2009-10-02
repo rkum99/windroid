@@ -53,6 +53,10 @@
 			android:name="de.macsystems.windroid.AlarmNotificationDetail"
 			android:label="@string/app_name" />
 		<activity
+			android:name="de.macsystems.windroid.HomeScreenConfigure"
+			android:label="@string/app_name" />
+
+		<activity
 			android:name="de.macsystems.windroid.forecast.SpotOverview"
 			android:label="@string/app_name" />
 		<receiver
@@ -65,13 +69,23 @@
 					android:name="android.intent.action.BOOT_COMPLETED" />
 			</intent-filter>
 		</receiver>
+		<receiver
+			android:name="de.macsystems.windroid.HomeScreenWidget">
+			<intent-filter>
+				<action
+					android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+			</intent-filter>
+			<meta-data
+				android:name="android.appwidget.provider"
+				android:resource="@xml/homescreen_appwidget_info" />
+		</receiver>
 		<service
 			android:name="de.macsystems.windroid.SpotService"
 			android:label="@string/app_name"
 			android:enabled="true">
 			<intent-filter>
 				<action
-	android:name="de.macsystems.windroid.START_SPOT_SERVICE_ACTION" />
+					android:name="de.macsystems.windroid.START_SPOT_SERVICE_ACTION" />
 			</intent-filter>
 		</service>
 	</application>

@@ -8,6 +8,9 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 /**
+ * Broadcast Reciever which gets called when Boot is complete. When called it
+ * starts the Background Service when configured.
+ * 
  * @author Jens Hohl
  * @version $Id: BootCompletedBroadcastReceiver.java 2 2009-07-28 02:15:38Z
  *          jens.hohl $

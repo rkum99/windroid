@@ -45,7 +45,7 @@ public class UpdateSpotsTask implements Callable<Forecast>
 	 * @param _spot
 	 * @param _context
 	 */
-	public UpdateSpotsTask(final SpotConfigurationVO _spot, final Context _context)
+	public UpdateSpotsTask(final SpotConfigurationVO _spot, final Context _context) throws NullPointerException
 	{
 		if (_spot == null)
 		{

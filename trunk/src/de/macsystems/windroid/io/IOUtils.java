@@ -12,6 +12,12 @@ import java.net.URL;
 import java.util.Date;
 import java.util.Properties;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
@@ -19,6 +25,8 @@ import android.net.Uri;
 import android.net.NetworkInfo.State;
 import android.util.Log;
 import de.macsystems.windroid.R;
+import de.macsystems.windroid.WindUtils;
+import de.macsystems.windroid.parser.ForecastParser;
 
 /**
  * @author Jens Hohl
@@ -125,9 +133,33 @@ public class IOUtils
 	 * @param _context
 	 * @param _stationXMLURL
 	 * @throws IOException
+	 * @deprecated Use HttpClient instead
 	 */
 	public static void updateCachedStationXML(final Context _context, final URL _stationXMLURL) throws IOException
 	{
+		/**
+		 * if (!IOUtils.isNetworkReachable(context)) { Log.d(LOG_TAG,
+		 * "Skipping update, Network not reachable."); throw new
+		 * RetryLaterException("Skipping update, Network not reachable."); }
+		 * 
+		 * final HttpClient httpclient = new DefaultHttpClient();
+		 * 
+		 * try { final HttpGet httpGet = new
+		 * HttpGet(WindUtils.getJSONForcastURL(
+		 * spot.getStation().getId()).toExternalForm());
+		 * httpGet.addHeader("User-Agent", MOZILLA_5_0);
+		 * 
+		 * final HttpResponse response = httpclient.execute(httpGet);
+		 * Log.d(LOG_TAG, "Server Response Code:" +
+		 * response.getStatusLine().getStatusCode()); if
+		 * (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+		 * throw new RetryLaterException("Server reponse was : " +
+		 * response.getStatusLine().getStatusCode()); } final StringBuilder
+		 * builder = readResult(response.getEntity().getContent()); return
+		 * ForecastParser.parse(builder); } finally {
+		 * httpclient.getConnectionManager().shutdown(); }
+		 */
+
 		FileOutputStream fout = null;
 		BufferedInputStream inStream = null;
 		try

@@ -1,6 +1,9 @@
 package de.macsystems.windroid.io;
 
 /**
+ * Exception which indicates that a current called method cannot be executed but
+ * may can called later successfully.
+ * 
  * @author mac
  * @version $Id$
  * 

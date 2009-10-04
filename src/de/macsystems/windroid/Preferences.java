@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 
 /**
+ * Main Preferences Screen of Windroid
+ * 
  * @author Jens Hohl
  * @version $Id$
  * 

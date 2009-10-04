@@ -22,6 +22,8 @@ import de.macsystems.windroid.io.RetryLaterException;
 import de.macsystems.windroid.parser.ForecastParser;
 
 /**
+ * Callable which will update the current forecast of a spot.
+ * 
  * @author mac
  * @version $Id$
  * 

@@ -16,14 +16,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.Toast;
 import android.widget.AdapterView.OnItemSelectedListener;
 import de.macsystems.windroid.db.DBSpotUpdate;
 import de.macsystems.windroid.db.Database;
@@ -37,8 +35,11 @@ import de.macsystems.windroid.parser.StationHandler;
 import de.macsystems.windroid.progress.IProgress;
 import de.macsystems.windroid.progress.ProgressAdapter;
 
-/*
+/**
+ * Activity which allows User to select a Spot using Spinners.
  * 
+ * @author mac
+ * @version $Id$
  */
 public class SpotSelection extends Activity
 {
@@ -106,12 +107,12 @@ public class SpotSelection extends Activity
 		final ProgressDialog dialog = new ProgressDialog(this);
 		dialog.setTitle("Bitte Warten");
 		dialog
-				.setMessage("Lese Daten über \n"
+				.setMessage("Lese Daten über "
 						+ networkName
 						+ ".\nDanach wir die Datenbank aktualisiert.\nJe nach Verbindung kann dies etwas Zeit in anspruch nehmen. ");
 		dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-
 		dialog.show();
+		dialog.setMax(1);
 
 		final IProgress progress = new ProgressAdapter(dialog);
 
@@ -143,9 +144,6 @@ public class SpotSelection extends Activity
 						final int stationsParsed = stationHandler.getNrOfStations();
 
 						dialog.setMax(stationsParsed);
-
-						Looper.prepare();
-						Toast.makeText(SpotSelection.this, "DB Insert Start", Toast.LENGTH_LONG).show();
 
 						final Database database = new Database(SpotSelection.this);
 						final DBSpotUpdate updater = new DBSpotUpdate(database, progress);

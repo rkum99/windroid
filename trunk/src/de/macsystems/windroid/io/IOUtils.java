@@ -1,22 +1,15 @@
 package de.macsystems.windroid.io;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.net.HttpURLConnection;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Date;
 import java.util.Properties;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -25,8 +18,7 @@ import android.net.Uri;
 import android.net.NetworkInfo.State;
 import android.util.Log;
 import de.macsystems.windroid.R;
-import de.macsystems.windroid.WindUtils;
-import de.macsystems.windroid.parser.ForecastParser;
+import de.macsystems.windroid.io.task.StationXMLUpdateTask;
 
 /**
  * @author Jens Hohl
@@ -38,7 +30,9 @@ public class IOUtils
 
 	private static final String LOG_TAG = IOUtils.class.getSimpleName();
 
-	private static final int BUFFER_SIZE = 1024 * 32;
+	public static final int DEFAULT_BUFFER_SIZE = 1024 * 32;
+
+	public static final String MOZILLA_5_0 = "Mozilla/5.0";
 
 	/**
 	 * Complete Path to configuration file.
@@ -48,7 +42,7 @@ public class IOUtils
 	/**
 	 * Complete Path to Cached Stations.xml.
 	 */
-	private final static String stationsXMLFilePath = "stations.xml";
+	public final static String stationsXMLFilePath = "stations.xml";
 
 	/**
 	 * Returns <code>true</code> when Network is reachable and connected.
@@ -132,63 +126,80 @@ public class IOUtils
 	 * 
 	 * @param _context
 	 * @param _stationXMLURL
+	 * @throws RetryLaterException
 	 * @throws IOException
-	 * @deprecated Use HttpClient instead
 	 */
-	public static void updateCachedStationXML(final Context _context, final URL _stationXMLURL) throws IOException
+	public static void updateCachedStationXML(final Context _context, final URL _stationXMLURL)
+			throws RetryLaterException, IOException
 	{
-		/**
-		 * if (!IOUtils.isNetworkReachable(context)) { Log.d(LOG_TAG,
-		 * "Skipping update, Network not reachable."); throw new
-		 * RetryLaterException("Skipping update, Network not reachable."); }
-		 * 
-		 * final HttpClient httpclient = new DefaultHttpClient();
-		 * 
-		 * try { final HttpGet httpGet = new
-		 * HttpGet(WindUtils.getJSONForcastURL(
-		 * spot.getStation().getId()).toExternalForm());
-		 * httpGet.addHeader("User-Agent", MOZILLA_5_0);
-		 * 
-		 * final HttpResponse response = httpclient.execute(httpGet);
-		 * Log.d(LOG_TAG, "Server Response Code:" +
-		 * response.getStatusLine().getStatusCode()); if
-		 * (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
-		 * throw new RetryLaterException("Server reponse was : " +
-		 * response.getStatusLine().getStatusCode()); } final StringBuilder
-		 * builder = readResult(response.getEntity().getContent()); return
-		 * ForecastParser.parse(builder); } finally {
-		 * httpclient.getConnectionManager().shutdown(); }
-		 */
 
-		FileOutputStream fout = null;
-		BufferedInputStream inStream = null;
 		try
 		{
-
-			fout = _context.openFileOutput(stationsXMLFilePath, Context.MODE_PRIVATE);
-			inStream = new BufferedInputStream(_stationXMLURL.openStream(), BUFFER_SIZE * 2);
-			final byte[] buffer = new byte[BUFFER_SIZE];
-			int bytesRead = -1;
-			while ((bytesRead = inStream.read(buffer)) > -1)
-			{
-				fout.write(buffer, 0, bytesRead);
-			}
-			if (Log.isLoggable(LOG_TAG, Log.DEBUG))
-			{
-				Log.d(LOG_TAG, stationsXMLFilePath + " updated");
-			}
+			final StationXMLUpdateTask task = new StationXMLUpdateTask(_stationXMLURL.toURI(), stationsXMLFilePath);
+			task.execute(_context);
 		}
-		catch (final IOException e)
+		catch (final URISyntaxException e)
 		{
-			final IOException ioe = new IOException("Failed to update " + stationsXMLFilePath);
+			final IOException ioe = new IOException();
 			ioe.initCause(e);
 			throw ioe;
 		}
-		finally
-		{
-			close(fout);
-			close(inStream);
-		}
+
+		// final HttpClient httpclient = new DefaultHttpClient();
+		//
+		// try
+		// {
+		// final HttpGet httpGet = new HttpGet(_stationXMLURL.toExternalForm());
+		// httpGet.addHeader("User-Agent", "MOZILLA_5_0");
+		//
+		// final HttpResponse response = httpclient.execute(httpGet);
+		// Log.d(LOG_TAG, "Server Response Code:" +
+		// response.getStatusLine().getStatusCode());
+		// if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK)
+		// {
+		// throw new RetryLaterException("Server response was : " +
+		// response.getStatusLine().getStatusCode() + " "
+		// + response.getStatusLine().getReasonPhrase());
+		// }
+		//
+		// FileOutputStream fout = null;
+		// final BufferedInputStream inStream = new
+		// BufferedInputStream(response.getEntity().getContent(), 8192);
+		// try
+		// {
+		//
+		// fout = _context.openFileOutput(stationsXMLFilePath,
+		// Context.MODE_PRIVATE);
+		// final byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
+		// int bytesRead = -1;
+		// while ((bytesRead = inStream.read(buffer)) > -1)
+		// {
+		// fout.write(buffer, 0, bytesRead);
+		// }
+		// if (Log.isLoggable(LOG_TAG, Log.DEBUG))
+		// {
+		// Log.d(LOG_TAG, stationsXMLFilePath + " updated");
+		// }
+		// }
+		// catch (final IOException e)
+		// {
+		// final IOException ioe = new IOException("Failed to update " +
+		// stationsXMLFilePath);
+		// ioe.initCause(e);
+		// throw ioe;
+		// }
+		// finally
+		// {
+		// close(fout);
+		// close(inStream);
+		// }
+		//
+		// }
+		// finally
+		// {
+		// httpclient.getConnectionManager().shutdown();
+		// }
+
 	}
 
 	/**
@@ -201,17 +212,6 @@ public class IOUtils
 	public final static InputStream getStationXML(final Context _context) throws IOException
 	{
 		return _context.openFileInput(stationsXMLFilePath);
-	}
-
-	/**
-	 * Returns <code>URL</code> to local cached station.xml file
-	 * 
-	 * @return
-	 * @throws IOException
-	 */
-	public final static URL getCachedStationURL() throws IOException
-	{
-		return new URL("file", null, stationsXMLFilePath);
 	}
 
 	/**
@@ -393,7 +393,7 @@ public class IOUtils
 	 * 
 	 * @param _db
 	 */
-	public final static void close(SQLiteDatabase _db)
+	public final static void close(final SQLiteDatabase _db)
 	{
 		if (_db != null)
 		{
@@ -408,7 +408,7 @@ public class IOUtils
 	 * @return
 	 * @throws SecurityException
 	 */
-	public static boolean renameFile(Context _context) throws SecurityException
+	public static boolean renameFile(final Context _context) throws SecurityException
 	{
 		return _context.getFileStreamPath("test").renameTo(new File("echterfilname"));
 	}

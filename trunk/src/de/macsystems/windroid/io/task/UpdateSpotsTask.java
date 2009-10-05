@@ -33,8 +33,6 @@ public class UpdateSpotsTask implements Callable<Forecast>
 
 	private final static String LOG_TAG = UpdateSpotsTask.class.getSimpleName();
 
-	private static final String MOZILLA_5_0 = "Mozilla/5.0";
-
 	final SpotConfigurationVO spot;
 
 	final private Context context;
@@ -74,7 +72,7 @@ public class UpdateSpotsTask implements Callable<Forecast>
 		try
 		{
 			final HttpGet httpGet = new HttpGet(WindUtils.getJSONForcastURL(spot.getStation().getId()).toExternalForm());
-			httpGet.addHeader("User-Agent", MOZILLA_5_0);
+			httpGet.addHeader("User-Agent", IOUtils.MOZILLA_5_0);
 
 			final HttpResponse response = httpclient.execute(httpGet);
 			Log.d(LOG_TAG, "Server Response Code:" + response.getStatusLine().getStatusCode());

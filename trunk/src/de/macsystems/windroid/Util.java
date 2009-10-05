@@ -1,5 +1,8 @@
 package de.macsystems.windroid;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -317,4 +320,18 @@ public final class Util
 		return configurations;
 
 	}
+
+	/**
+	 * 
+	 * @param aThrowable
+	 * @return
+	 */
+	public static String getStackTrace(final Throwable aThrowable)
+	{
+		final Writer result = new StringWriter();
+		final PrintWriter printWriter = new PrintWriter(result);
+		aThrowable.printStackTrace(printWriter);
+		return result.toString();
+	}
+
 }

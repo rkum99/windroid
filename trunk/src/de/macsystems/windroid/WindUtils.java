@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import de.macsystems.windroid.io.IOUtils;
+import de.macsystems.windroid.io.RetryLaterException;
 
 /**
  * @author Jens Hohl
@@ -129,7 +130,14 @@ public class WindUtils
 		return result;
 	}
 
-	public final static void updateStationList(final Context _context) throws IOException
+	/**
+	 * 
+	 * @param _context
+	 * @throws RetryLaterException
+	 * @throws IOException
+	 */
+	public final static void updateStationList(final Context _context) throws RetryLaterException, IOException
+
 	{
 		Log.d(LOG_TAG, "Updating cache.");
 		final Properties config = IOUtils.getConfigProperties(_context);
@@ -213,8 +221,9 @@ public class WindUtils
 			throw new IllegalArgumentException("Illegal StationID \"" + _stationID + "\".");
 		}
 
-   		              //http://www.windfinder.com/wind-cgi/xmlforecast.pl?CUSTOMER=windfox&FORMAT=JSON&VERSION=1&STATIONS=nl158
-		return new URL("http://www.windfinder.com/wind-cgi/xmlforecast.pl?CUSTOMER=windfox&FORMAT=JSON&VERSION=1"+ "&STATIONS=" + _stationID);
+		// http://www.windfinder.com/wind-cgi/xmlforecast.pl?CUSTOMER=windfox&FORMAT=JSON&VERSION=1&STATIONS=nl158
+		return new URL("http://www.windfinder.com/wind-cgi/xmlforecast.pl?CUSTOMER=windfox&FORMAT=JSON&VERSION=1"
+				+ "&STATIONS=" + _stationID);
 	}
 
 	/**

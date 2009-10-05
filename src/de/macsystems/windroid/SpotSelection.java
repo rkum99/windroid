@@ -1,16 +1,12 @@
 package de.macsystems.windroid;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
-import org.xml.sax.SAXException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -31,7 +27,8 @@ import de.macsystems.windroid.identifyable.IdentityUtil;
 import de.macsystems.windroid.identifyable.Region;
 import de.macsystems.windroid.identifyable.Station;
 import de.macsystems.windroid.io.IOUtils;
-import de.macsystems.windroid.parser.StationHandler;
+import de.macsystems.windroid.io.RetryLaterException;
+import de.macsystems.windroid.io.task.XMLParseTask;
 import de.macsystems.windroid.progress.IProgress;
 import de.macsystems.windroid.progress.ProgressAdapter;
 
@@ -121,71 +118,52 @@ public class SpotSelection extends Activity
 			@Override
 			public final void run()
 			{
+				boolean isFailure = false;
+				Throwable exception = null;
 				if (Log.isLoggable(LOG_TAG, Log.DEBUG))
 				{
 					Log.d(LOG_TAG, "Parsing Thread started.");
 				}
 				try
 				{
-					InputStream inStream = null;
-					try
+					if (WindUtils.isStationListUpdateAvailable(SpotSelection.this))
 					{
-						if (WindUtils.isStationListUpdateAvailable(SpotSelection.this))
-						{
-							WindUtils.updateStationList(SpotSelection.this);
-						}
-
-						final SAXParserFactory factory = SAXParserFactory.newInstance();
-						final SAXParser parser = factory.newSAXParser();
-						inStream = new BufferedInputStream(IOUtils.getStationXML(SpotSelection.this));
-						final StationHandler stationHandler = new StationHandler();
-						parser.parse(inStream, stationHandler);
-
-						final int stationsParsed = stationHandler.getNrOfStations();
-
-						dialog.setMax(stationsParsed);
-
-						final Database database = new Database(SpotSelection.this);
-						final DBSpotUpdate updater = new DBSpotUpdate(database, progress);
-						updater.update();
-
-						handler.post(populateParsingResults(Continent.values(), Continent.AFRICA.getCoutrys(),
-								Continent.AFRICA.getCoutrys()[0].getRegions()));
-						// runOnUiThread(populateParsingResults(Continent.values(),
-						// Continent.AFRICA.getCoutrys(),
-						// Continent.AFRICA.getCoutrys()[0].getRegions()));
+						WindUtils.updateStationList(SpotSelection.this);
 					}
-					catch (final IOException e)
-					{
-						Log.e(LOG_TAG, "Failed to read XML", e);
-						throw e;
-					}
-					catch (final ParserConfigurationException e)
-					{
-						Log.e(LOG_TAG, "Failed to create Parser", e);
-						throw e;
-					}
-					catch (final SAXException e)
-					{
-						Log.e(LOG_TAG, "Failed to parse xml.", e);
-						throw e;
-					}
-					finally
-					{
-						IOUtils.close(inStream);
-					}
+
+					final XMLParseTask task = new XMLParseTask(new URI(IOUtils.stationsXMLFilePath));
+					task.execute(SpotSelection.this);
+
+					dialog.setMax(task.getNrOfStations());
+
+					final Database database = new Database(SpotSelection.this);
+					final DBSpotUpdate updater = new DBSpotUpdate(database, progress);
+					updater.update();
+
+					handler.post(populateParsingResults(Continent.values(), Continent.AFRICA.getCoutrys(),
+							Continent.AFRICA.getCoutrys()[0].getRegions()));
 
 				}
 				catch (final Exception e)
 				{
+					isFailure = true;
+					exception = e;
 					Log.e(LOG_TAG, "Failed to parse xml.", e);
+
 				}
 				finally
 				{
-					dialog.dismiss();
 					if (Log.isLoggable(LOG_TAG, Log.DEBUG))
 					{
 						Log.d(LOG_TAG, "Parsing Thread ended.");
+					}
+					dialog.dismiss();
+					if (isFailure)
+					{
+
+						new AlertDialog.Builder(SpotSelection.this).setMessage(Util.getStackTrace(exception)).setTitle(
+								"Fatal Error.").setCancelable(false).show();
+
 					}
 
 				}

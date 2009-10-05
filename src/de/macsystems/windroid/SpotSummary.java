@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.Button;
 
 /**
+ * Activity which shows spot configuration and allows user finally to select or
+ * discard.
+ * 
  * @author Jens Hohl
  * @version $Id$
  * 

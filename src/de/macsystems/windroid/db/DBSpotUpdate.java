@@ -2,7 +2,6 @@ package de.macsystems.windroid.db;
 
 import java.util.Iterator;
 
-import android.app.ProgressDialog;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;

@@ -8,17 +8,16 @@ import java.net.URI;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import android.content.Context;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.io.RetryLaterException;
 import de.macsystems.windroid.parser.StationHandler;
-
-import android.content.Context;
 
 /**
  * @author mac
  * @version $Id$
  */
-public class XMLParseTask extends IOTask<Void>
+public class XMLParseTask extends IOTask<Void, InputStream>
 {
 
 	private int nrOfStationsFound = -1;
@@ -57,6 +56,13 @@ public class XMLParseTask extends IOTask<Void>
 		return null;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.macsystems.windroid.io.task.IOTask#process(android.content.Context,
+	 * java.io.InputStream)
+	 */
 	@Override
 	public Void process(final Context _context, final InputStream _instream) throws IOException, Exception
 	{

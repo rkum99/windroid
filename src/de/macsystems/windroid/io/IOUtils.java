@@ -288,6 +288,16 @@ public class IOUtils
 		}
 	}
 
+	public static boolean existFile(final String _filename, final Context _context)
+	{
+		final File root = _context.getFilesDir();
+		final File neededFile = new File(root, _filename);
+
+		Log.d(LOG_TAG, "checking File exist " + neededFile.getAbsolutePath());
+
+		return neededFile.exists();
+	}
+
 	/**
 	 * 
 	 * @param _inputStream

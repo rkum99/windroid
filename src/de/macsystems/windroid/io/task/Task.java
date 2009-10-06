@@ -1,7 +1,6 @@
 package de.macsystems.windroid.io.task;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import android.content.Context;
 import de.macsystems.windroid.io.RetryLaterException;
@@ -12,7 +11,7 @@ import de.macsystems.windroid.io.RetryLaterException;
  * @author mac
  * @version $Id$
  */
-public interface Task<V>
+public interface Task<V, I>
 {
 	/**
 	 * 
@@ -24,10 +23,12 @@ public interface Task<V>
 	public V execute(final Context _context) throws RetryLaterException, IOException;
 
 	/**
-	 * @param _instream
+	 * 
+	 * @param _context
+	 * @param _input
 	 * @return
 	 * @throws IOException
 	 * @throws Exception
 	 */
-	public V process(final Context _context, final InputStream _instream) throws IOException, Exception;
+	V process(final Context _context, final I _input) throws IOException, Exception;
 }

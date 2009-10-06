@@ -3,7 +3,7 @@ package de.macsystems.windroid.progress;
 import android.app.ProgressDialog;
 
 /**
- * Adapter Class to decouple classes which want to update a progress progress more
+ * Adapter Class to decouple classes which want to update a progress more
  * flexible.
  * 
  * @author mac

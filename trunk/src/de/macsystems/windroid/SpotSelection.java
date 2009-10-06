@@ -1,12 +1,8 @@
 package de.macsystems.windroid;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
-import java.net.URISyntaxException;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,7 +23,6 @@ import de.macsystems.windroid.identifyable.IdentityUtil;
 import de.macsystems.windroid.identifyable.Region;
 import de.macsystems.windroid.identifyable.Station;
 import de.macsystems.windroid.io.IOUtils;
-import de.macsystems.windroid.io.RetryLaterException;
 import de.macsystems.windroid.io.task.XMLParseTask;
 import de.macsystems.windroid.progress.IProgress;
 import de.macsystems.windroid.progress.ProgressAdapter;
@@ -158,13 +153,17 @@ public class SpotSelection extends Activity
 						Log.d(LOG_TAG, "Parsing Thread ended.");
 					}
 					dialog.dismiss();
-					if (isFailure)
-					{
-
-						new AlertDialog.Builder(SpotSelection.this).setMessage(Util.getStackTrace(exception)).setTitle(
-								"Fatal Error.").setCancelable(false).show();
-
-					}
+					
+					
+					
+					// if (isFailure)
+					// {
+					//
+					// new
+					// AlertDialog.Builder(SpotSelection.this).setMessage(Util.getStackTrace(exception)).setTitle(
+					// "Fatal Error.").setCancelable(false).show();
+					//
+					// }
 
 				}
 			}

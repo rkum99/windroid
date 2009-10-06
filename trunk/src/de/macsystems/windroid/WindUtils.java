@@ -115,6 +115,13 @@ public class WindUtils
 	public final static boolean isStationListUpdateAvailable(final Context _context) throws IOException
 	{
 		Log.d(LOG_TAG, "Updating cache.");
+
+		if (!isCachedStationXmlValid(_context))
+		{
+			Log.d(LOG_TAG, "Station file is not valid, force update.");
+			return true;
+		}
+
 		final Properties config = IOUtils.getConfigProperties(_context);
 		final String md5 = config.getProperty(STATION_MD5);
 
@@ -128,6 +135,16 @@ public class WindUtils
 		Log.i(LOG_TAG, result ? "Cache must be updated." + serverMD5 : "Cache is uptodate.");
 
 		return result;
+	}
+
+	/**
+	 * 
+	 * @param _context
+	 * @return
+	 */
+	private static boolean isCachedStationXmlValid(final Context _context)
+	{
+		return IOUtils.existFile(IOUtils.stationsXMLFilePath, _context);
 	}
 
 	/**

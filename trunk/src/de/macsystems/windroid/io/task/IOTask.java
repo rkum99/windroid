@@ -17,12 +17,15 @@ import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.io.RetryLaterException;
 
 /**
- * Abstract base class for io tasks using http client.
+ * Abstract base class for io tasks using http client. <br>
+ * <br>
+ * Parameter V is the return value.<br>
+ * Parameter I mean the parameter which allows to work with that data.
  * 
  * @author mac
  * @version $Id$
  */
-public abstract class IOTask<V> implements Task<V>
+public abstract class IOTask<V, I> implements Task<V, I>
 {
 	private final static String LOG_TAG = IOTask.class.getSimpleName();
 
@@ -30,7 +33,7 @@ public abstract class IOTask<V> implements Task<V>
 
 	private URI uri;
 
-	public IOTask(final URI _uri)
+	public IOTask(final URI _uri) throws NullPointerException
 	{
 		if (_uri == null)
 		{
@@ -62,12 +65,15 @@ public abstract class IOTask<V> implements Task<V>
 		final HttpGet httpGet = new HttpGet(uri);
 		httpGet.addHeader("User-Agent", IOUtils.MOZILLA_5_0);
 
-		final HttpResponse response = client.execute(httpGet);
+		final HttpResponse response = getHTTPClient().execute(httpGet);
 		if (HttpStatus.SC_OK != response.getStatusLine().getStatusCode())
 		{
 			final StatusLine status = response.getStatusLine();
-			throw new RetryLaterException("Server reponse was : " + status.getStatusCode() + " - "
-					+ status.getReasonPhrase());
+			final StringBuilder builder = new StringBuilder(256);
+			builder.append("Failed to connect to:").append(uri.toString()).append("\n");
+			builder.append("HTTP reponse was : ").append(status.getStatusCode()).append(" - ").append(
+					status.getReasonPhrase());
+			throw new RetryLaterException(builder.toString());
 		}
 		/**
 		 * Every Exception behind is catched using 'Exception Firewall' and

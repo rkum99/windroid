@@ -14,7 +14,7 @@ import de.macsystems.windroid.io.IOUtils;
  * @author mac
  * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
  */
-public class StationXMLUpdateTask extends IOTask<Void>
+public class StationXMLUpdateTask extends IOTask<Void, InputStream>
 {
 
 	private final static String LOG_TAG = StationXMLUpdateTask.class.getSimpleName();
@@ -36,6 +36,13 @@ public class StationXMLUpdateTask extends IOTask<Void>
 		stationsXMLFilePath = _stationsXMLFilePath;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.macsystems.windroid.io.task.IOTask#process(android.content.Context,
+	 * java.io.InputStream)
+	 */
 	@Override
 	public Void process(final Context _context, final InputStream _instream) throws IOException, Exception
 	{

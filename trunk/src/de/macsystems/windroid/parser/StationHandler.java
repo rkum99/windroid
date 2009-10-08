@@ -36,7 +36,6 @@ public class StationHandler extends DefaultHandler
 	private Country currentCountry;
 
 	private long startTime;
-	private long endTime;
 
 	private volatile int nrOfStations = 0;
 
@@ -59,17 +58,10 @@ public class StationHandler extends DefaultHandler
 	}
 
 	@Override
-	public void characters(final char[] ch, final int start, final int length) throws SAXException
-	{
-		super.characters(ch, start, length);
-	}
-
-	@Override
 	public void endDocument() throws SAXException
 	{
-		endTime = System.currentTimeMillis();
-		final long parsingTime = endTime - startTime;
-		Log.d(LOG_TAG, "Parsing End. Time took:" + parsingTime + " ms.");
+		final long parsingTime = System.currentTimeMillis() - startTime;
+		Log.d(LOG_TAG, "Parsing End. Parsing time :" + parsingTime + " ms.");
 		Continent.setParsed();
 		super.endDocument();
 	}
@@ -78,7 +70,7 @@ public class StationHandler extends DefaultHandler
 	public void startDocument() throws SAXException
 	{
 		startTime = System.currentTimeMillis();
-		Log.i(LOG_TAG, "Start");
+		Log.d(LOG_TAG, "Parsing Start");
 		super.startDocument();
 	}
 

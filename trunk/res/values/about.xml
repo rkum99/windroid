@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-	<!--  
-    		@version $Id$
-	 -->
+	<!--
+		@version $Id$
+	-->
 <resources>
 	<string
-		name="about_text">Windroid by Jens Hohl\n\nSee
-		www.mac-systems.de for
-		further information.\n\nWindroid is licensed under
-		http://creativecommons.org/licenses/by-nc-sa/3.0/\n
+		name="about_text">Windroid\n\nSee
+		http://code.google.com/p/windroid/
+		for
+		further information.\n\nWindroid is licensed under General Public
+		Licence 3 (GPLv3)\n
+
 		\n
-		Data provided by
+		Data provided by\n
 		Windfinder.com</string>
+<string name="about_button_text">Über</string>
 </resources>

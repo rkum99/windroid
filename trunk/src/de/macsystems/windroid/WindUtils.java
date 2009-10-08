@@ -1,9 +1,7 @@
 package de.macsystems.windroid;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Properties;
 
@@ -13,6 +11,9 @@ import android.content.Intent;
 import android.util.Log;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.io.RetryLaterException;
+import de.macsystems.windroid.io.task.MD5Task;
+import de.macsystems.windroid.progress.IProgress;
+import de.macsystems.windroid.progress.NullProgressAdapter;
 
 /**
  * @author Jens Hohl
@@ -95,7 +96,7 @@ public class WindUtils
 	}
 
 	/**
-	 * Returns URL where MD5 Hash of stations.xml is located.
+	 * Returns URL on server where MD5 Hash of stations.xml is located.
 	 * 
 	 * @return
 	 * @throws IOException
@@ -127,7 +128,7 @@ public class WindUtils
 
 		Log.d(LOG_TAG, "Cached MD5 " + md5);
 
-		final String serverMD5 = getLatestStationMD5();
+		final String serverMD5 = getLatestStationMD5(_context);
 		Log.i(LOG_TAG, "Server MD5 " + serverMD5);
 
 		final boolean result = md5 != null ? md5.equals(serverMD5) : true;
@@ -150,10 +151,12 @@ public class WindUtils
 	/**
 	 * 
 	 * @param _context
+	 * @param _downloadProgress
 	 * @throws RetryLaterException
 	 * @throws IOException
 	 */
-	public final static void updateStationList(final Context _context) throws RetryLaterException, IOException
+	public final static void updateStationList(final Context _context, final IProgress _downloadProgress)
+			throws RetryLaterException, IOException
 
 	{
 		Log.d(LOG_TAG, "Updating cache.");
@@ -162,12 +165,12 @@ public class WindUtils
 
 		Log.d(LOG_TAG, "Cached MD5 " + md5);
 
-		final String latestMD5 = getLatestStationMD5();
+		final String latestMD5 = getLatestStationMD5(_context);
 		Log.i(LOG_TAG, "Server MD5 " + latestMD5);
 		if (md5 == null || !md5.equals(latestMD5))
 		{
 			Log.i(LOG_TAG, "Station.xml will be updated.");
-			IOUtils.updateCachedStationXML(_context, getStationXMLUrl());
+			IOUtils.updateCachedStationXML(_context, getStationXMLUrl(), _downloadProgress);
 
 			md5 = latestMD5;
 			config.put(STATION_MD5, md5);
@@ -183,46 +186,35 @@ public class WindUtils
 	/**
 	 * Returns MD5 checksum of Station.xml file on Server.
 	 * 
+	 * @param _context
 	 * @return
 	 * @throws IOException
 	 */
-	public final static String getLatestStationMD5() throws IOException
+	public final static String getLatestStationMD5(final Context _context) throws IOException
 	{
-
-		final StringBuilder builder = new StringBuilder(128);
-		final URL md5ChecksumURL = getStationMD5URL();
-		InputStream inStream = null;
-		BufferedReader reader = null;
+		final MD5Task task;
 		try
 		{
-			inStream = md5ChecksumURL.openStream();
-			reader = new BufferedReader(new InputStreamReader(inStream));
-			String line;
-			while ((line = reader.readLine()) != null)
-			{
-				builder.append(line);
-			}
-
+			task = new MD5Task(getStationMD5URL().toURI(), NullProgressAdapter.INSTANCE);
 		}
-		finally
+		catch (final URISyntaxException e)
 		{
-			IOUtils.close(reader);
-			IOUtils.close(inStream);
+			final IOException exe = new IOException("Failed to launch task");
+			exe.initCause(e);
+			throw exe;
 		}
-		//
-		String md5Hash = "";
+
 		try
 		{
-			final String md5Line = builder.toString();
-			final int indexStart = md5Line.indexOf("<md5>") + "<md5>".length();
-			final int indexEnd = md5Line.indexOf("</md5>");
-			md5Hash = md5Line.substring(indexStart, indexEnd);
+			return task.execute(_context);
 		}
-		catch (final IndexOutOfBoundsException e)
+		catch (final RetryLaterException e)
 		{
-			Log.e(LOG_TAG, "Failed to parse MD5 String. String was \"" + builder.toString() + "\".", e);
+			final IOException exe = new IOException("Failed to launch task");
+			exe.initCause(e);
+			throw exe;
 		}
-		return md5Hash;
+
 	}
 
 	/**

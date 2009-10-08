@@ -31,7 +31,7 @@ public abstract class MeasureValue
 	@Override
 	public String toString()
 	{
-		return "[MeasureValue measure=" + measure.toString() + ", value=" + value + "]";
+		return "[MeasureValue measure=" + measure.name() + ", value=" + value + "]";
 	}
 
 	/*

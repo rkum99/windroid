@@ -1,9 +1,6 @@
 package de.macsystems.windroid;
 
-import java.net.URI;
-
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,17 +12,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
-import de.macsystems.windroid.db.DBSpotUpdate;
-import de.macsystems.windroid.db.Database;
 import de.macsystems.windroid.identifyable.Continent;
 import de.macsystems.windroid.identifyable.Country;
 import de.macsystems.windroid.identifyable.IdentityUtil;
 import de.macsystems.windroid.identifyable.Region;
 import de.macsystems.windroid.identifyable.Station;
-import de.macsystems.windroid.io.IOUtils;
-import de.macsystems.windroid.io.task.XMLParseTask;
-import de.macsystems.windroid.progress.IProgress;
-import de.macsystems.windroid.progress.ProgressAdapter;
 
 /**
  * Activity which allows User to select a Spot using Spinners.
@@ -54,16 +45,16 @@ public class SpotSelection extends Activity
 		/**
 		 * Test if Parsing already done.
 		 */
-		if (!Continent.isParsed())
-		{
-			parseXML();
-
-		}
-		else
-		{
-			handler.post(populateParsingResults(Continent.values(), Continent.AFRICA.getCoutrys(), Continent.AFRICA
-					.getCoutrys()[0].getRegions()));
-		}
+		// if (!Continent.isParsed())
+		// {
+		// parseXML();
+		//
+		// }
+		// else
+		// {
+		handler.post(populateParsingResults(Continent.values(), Continent.AFRICA.getCoutrys(), Continent.AFRICA
+				.getCoutrys()[0].getRegions()));
+		// }
 
 		final Button selectButton = (Button) findViewById(R.id.stationSelect);
 		selectButton.setOnClickListener(new View.OnClickListener()
@@ -90,86 +81,84 @@ public class SpotSelection extends Activity
 		});
 	}
 
-	private void parseXML()
-	{
-		final String networkName = IOUtils.getNetworkName(this);
-
-		// final ProgressDialog progress = ProgressDialog.show(this,
-
-		final ProgressDialog dialog = new ProgressDialog(this);
-		dialog.setTitle("Bitte Warten");
-		dialog
-				.setMessage("Lese Daten über "
-						+ networkName
-						+ ".\nDanach wir die Datenbank aktualisiert.\nJe nach Verbindung kann dies etwas Zeit in anspruch nehmen. ");
-		dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-		dialog.show();
-		dialog.setMax(1);
-
-		final IProgress progress = new ProgressAdapter(dialog);
-
-		final Thread parseThread = new Thread("Parse XML")
-		{
-			@Override
-			public final void run()
-			{
-				boolean isFailure = false;
-				Throwable exception = null;
-				if (Log.isLoggable(LOG_TAG, Log.DEBUG))
-				{
-					Log.d(LOG_TAG, "Parsing Thread started.");
-				}
-				try
-				{
-					if (WindUtils.isStationListUpdateAvailable(SpotSelection.this))
-					{
-						WindUtils.updateStationList(SpotSelection.this);
-					}
-
-					final XMLParseTask task = new XMLParseTask(new URI(IOUtils.stationsXMLFilePath));
-					task.execute(SpotSelection.this);
-
-					dialog.setMax(task.getNrOfStations());
-
-					final Database database = new Database(SpotSelection.this);
-					final DBSpotUpdate updater = new DBSpotUpdate(database, progress);
-					updater.update();
-
-					handler.post(populateParsingResults(Continent.values(), Continent.AFRICA.getCoutrys(),
-							Continent.AFRICA.getCoutrys()[0].getRegions()));
-
-				}
-				catch (final Exception e)
-				{
-					isFailure = true;
-					exception = e;
-					Log.e(LOG_TAG, "Failed to parse xml.", e);
-
-				}
-				finally
-				{
-					if (Log.isLoggable(LOG_TAG, Log.DEBUG))
-					{
-						Log.d(LOG_TAG, "Parsing Thread ended.");
-					}
-					dialog.dismiss();
-					
-					
-					
-					// if (isFailure)
-					// {
-					//
-					// new
-					// AlertDialog.Builder(SpotSelection.this).setMessage(Util.getStackTrace(exception)).setTitle(
-					// "Fatal Error.").setCancelable(false).show();
-					//
-					// }
-
-				}
-			}
-		};
-		parseThread.start();
-	}
+//	private void parseXML()
+//	{
+//		final String networkName = IOUtils.getNetworkName(this);
+//
+//		// final ProgressDialog progress = ProgressDialog.show(this,
+//
+//		final ProgressDialog dialog = new ProgressDialog(this);
+//		dialog.setTitle("Bitte Warten");
+//		dialog
+//				.setMessage("Lese Daten über "
+//						+ networkName
+//						+ ".\nDanach wir die Datenbank aktualisiert.\nJe nach Verbindung kann dies etwas Zeit in anspruch nehmen. ");
+//		dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+//		dialog.show();
+//		dialog.setMax(1);
+//
+//		final IProgress progress = new ProgressDialogAdapter(dialog);
+//
+//		final Thread parseThread = new Thread("Parse XML")
+//		{
+//			@Override
+//			public final void run()
+//			{
+//				boolean isFailure = false;
+//				Throwable exception = null;
+//				if (Log.isLoggable(LOG_TAG, Log.DEBUG))
+//				{
+//					Log.d(LOG_TAG, "Parsing Thread started.");
+//				}
+//				try
+//				{
+//					if (WindUtils.isStationListUpdateAvailable(SpotSelection.this))
+//					{
+//						WindUtils.updateStationList(SpotSelection.this);
+//					}
+//
+//					final XMLParseTask task = new XMLParseTask(new URI(IOUtils.stationsXMLFilePath));
+//					task.execute(SpotSelection.this);
+//
+//					dialog.setMax(task.getNrOfStations());
+//
+//					final Database database = new Database(SpotSelection.this);
+//					final DBSpotUpdate updater = new DBSpotUpdate(database, progress);
+//					updater.update();
+//
+//					handler.post(populateParsingResults(Continent.values(), Continent.AFRICA.getCoutrys(),
+//							Continent.AFRICA.getCoutrys()[0].getRegions()));
+//
+//				}
+//				catch (final Exception e)
+//				{
+//					isFailure = true;
+//					exception = e;
+//					Log.e(LOG_TAG, "Failed to parse xml.", e);
+//
+//				}
+//				finally
+//				{
+//					if (Log.isLoggable(LOG_TAG, Log.DEBUG))
+//					{
+//						Log.d(LOG_TAG, "Parsing Thread ended.");
+//					}
+//					dialog.dismiss();
+//
+//					// if (isFailure)
+//					// {
+//					//
+//					// new
+//					// AlertDialog.Builder(SpotSelection.this).setMessage(Util.getStackTrace(exception)).setTitle(
+//					// "Fatal Error.").setCancelable(false).show();
+//					//
+//					// }
+//
+//				}
+//			}
+//		};
+//		parseThread.start();
+//	}
 
 	private Runnable populateParsingResults(final Continent[] continents, final Country[] countrys,
 			final Region[] regions)

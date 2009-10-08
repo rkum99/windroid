@@ -20,7 +20,7 @@ public class Database extends SQLiteOpenHelper
 	private final static String LOG_TAG = Database.class.getSimpleName();
 
 	final static String DATABASE_NAME = "windroid.db";
-	final static int VERSION = 28;
+	final static int VERSION = 29;
 
 	final List<String> createScripts;
 
@@ -39,6 +39,8 @@ public class Database extends SQLiteOpenHelper
 		temp.add("DROP TABLE IF EXISTS country;");
 		temp.add("DROP TABLE IF EXISTS region;");
 
+		// Create Config Table
+		temp.add("create TABLE IF NOT EXISTS internal (id TEXT PRIMARY KEY, value text)");
 		//
 		temp
 				.add("CREATE TABLE IF NOT EXISTS spot (_id INTEGER PRIMARY KEY AUTOINCREMENT, spotid TEXT NOT NULL, continentid INTEGER, countryid INTEGER, regionid INTEGER, name TEXT NOT NULL, keyword TEXT not null, superforecast BOOLEAN, forecast BOOLEAN, statistic BOOLEAN, wavereport BOOLEAN, waveforecast BOOLEAN);");
@@ -56,6 +58,7 @@ public class Database extends SQLiteOpenHelper
 		temp.add("CREATE INDEX conid ON continent (id);");
 		temp.add("CREATE INDEX regid ON region (id);");
 		temp.add("CREATE INDEX coid ON country (id);");
+		//
 		createScripts = Collections.unmodifiableList(temp);
 	}
 

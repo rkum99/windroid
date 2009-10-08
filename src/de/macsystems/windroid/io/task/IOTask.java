@@ -15,6 +15,7 @@ import android.content.Context;
 import android.util.Log;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.io.RetryLaterException;
+import de.macsystems.windroid.progress.IProgress;
 
 /**
  * Abstract base class for io tasks using http client. <br>
@@ -24,6 +25,7 @@ import de.macsystems.windroid.io.RetryLaterException;
  * 
  * @author mac
  * @version $Id$
+ * @TODO use IProgress
  */
 public abstract class IOTask<V, I> implements Task<V, I>
 {
@@ -31,15 +33,22 @@ public abstract class IOTask<V, I> implements Task<V, I>
 
 	private final static HttpClient client = new DefaultHttpClient();
 
-	private URI uri;
+	private final URI uri;
 
-	public IOTask(final URI _uri) throws NullPointerException
+	private final IProgress progress;
+
+	public IOTask(final URI _uri, final IProgress _progress) throws NullPointerException
 	{
 		if (_uri == null)
 		{
 			throw new NullPointerException();
 		}
+		if (_progress == null)
+		{
+			throw new NullPointerException();
+		}
 		uri = _uri;
+		progress = _progress;
 	}
 
 	protected URI getURI()
@@ -79,13 +88,19 @@ public abstract class IOTask<V, I> implements Task<V, I>
 		 * Every Exception behind is catched using 'Exception Firewall' and
 		 * translated into a RetryLaterException
 		 */
+		InputStream instream = null;
 		try
 		{
-			return process(_context, response.getEntity().getContent());
+			instream = response.getEntity().getContent();
+			return process(_context, instream);
 		}
 		catch (final Exception e)
 		{
 			throw new RetryLaterException(e);
+		}
+		finally
+		{
+			IOUtils.close(instream);
 		}
 	}
 
@@ -100,6 +115,11 @@ public abstract class IOTask<V, I> implements Task<V, I>
 	protected HttpClient getHTTPClient()
 	{
 		return client;
+	}
+
+	protected IProgress getProgress()
+	{
+		return progress;
 	}
 
 }

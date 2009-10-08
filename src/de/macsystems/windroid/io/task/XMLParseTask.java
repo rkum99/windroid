@@ -12,23 +12,24 @@ import android.content.Context;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.io.RetryLaterException;
 import de.macsystems.windroid.parser.StationHandler;
+import de.macsystems.windroid.progress.IProgress;
 
 /**
+ * XML 
  * @author mac
  * @version $Id$
  */
-public class XMLParseTask extends IOTask<Void, InputStream>
+public class XMLParseTask extends IOTask<Integer, InputStream>
 {
-
-	private int nrOfStationsFound = -1;
 
 	/**
 	 * 
 	 * @param _uri
+	 * @param _progress
 	 */
-	public XMLParseTask(final URI _uri)
+	public XMLParseTask(final URI _uri, final IProgress _progress)
 	{
-		super(_uri);
+		super(_uri, _progress);
 	}
 
 	/*
@@ -38,7 +39,7 @@ public class XMLParseTask extends IOTask<Void, InputStream>
 	 * de.macsystems.windroid.io.task.IOTask#execute(android.content.Context)
 	 */
 	@Override
-	public Void execute(final Context _context) throws RetryLaterException, IOException
+	public Integer execute(final Context _context) throws RetryLaterException, IOException
 	{
 		final InputStream inStream = _context.openFileInput(getURI().toString());
 		/**
@@ -47,13 +48,12 @@ public class XMLParseTask extends IOTask<Void, InputStream>
 		 */
 		try
 		{
-			process(_context, inStream);
+			return process(_context, inStream);
 		}
 		catch (final Exception e)
 		{
 			throw new RetryLaterException(e);
 		}
-		return null;
 	}
 
 	/*
@@ -64,7 +64,7 @@ public class XMLParseTask extends IOTask<Void, InputStream>
 	 * java.io.InputStream)
 	 */
 	@Override
-	public Void process(final Context _context, final InputStream _instream) throws IOException, Exception
+	public Integer process(final Context _context, final InputStream _instream) throws IOException, Exception
 	{
 		final BufferedInputStream buffInStream = new BufferedInputStream(_instream);
 		try
@@ -74,19 +74,11 @@ public class XMLParseTask extends IOTask<Void, InputStream>
 			final StationHandler stationHandler = new StationHandler();
 			parser.parse(buffInStream, stationHandler);
 
-			nrOfStationsFound = stationHandler.getNrOfStations();
+			return stationHandler.getNrOfStations();
 		}
 		finally
 		{
 			IOUtils.close(buffInStream);
-			IOUtils.close(_instream);
 		}
-
-		return null;
-	}
-
-	public int getNrOfStations()
-	{
-		return nrOfStationsFound;
 	}
 }

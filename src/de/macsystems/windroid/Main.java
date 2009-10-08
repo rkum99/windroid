@@ -106,7 +106,9 @@ public class Main extends Activity
 				 * If user wants to configure a Spot we create an Transport
 				 * Object to collect all properties
 				 */
-				final Intent intent = new Intent(Main.this, SpotSelection.class);
+				// final Intent intent = new Intent(Main.this,
+				// SpotSelection.class);
+				final Intent intent = new Intent(Main.this, DownloadActivity.class);
 				intent.putExtra(IntentConstants.SPOT_TO_CONFIGURE, new SpotConfigurationVO());
 				Main.this.startActivity(intent);
 			}
@@ -302,7 +304,7 @@ public class Main extends Activity
 	public boolean onCreateOptionsMenu(final Menu menu)
 	{
 		super.onCreateOptionsMenu(menu);
-		menu.add(Menu.NONE, ABOUT_MENU_ID, Menu.NONE, "Über");
+		menu.add(Menu.NONE, ABOUT_MENU_ID, Menu.NONE, R.string.about_button_text);
 		return true;
 	}
 
@@ -331,7 +333,7 @@ public class Main extends Activity
 		aboutBuilder.setIcon(R.drawable.icon);
 		aboutBuilder.setTitle(R.string.app_name);
 		aboutBuilder.setMessage(R.string.about_text);
-		aboutBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener()
+		aboutBuilder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
 		{
 			public final void onClick(final DialogInterface dialog, final int which)
 			{

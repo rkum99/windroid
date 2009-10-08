@@ -45,5 +45,6 @@ public class SpotOverview extends ListActivity
 				spotConfigurations);
 
 		setListAdapter(adapter);
+		
 	}
 }

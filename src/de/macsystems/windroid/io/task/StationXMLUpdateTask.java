@@ -9,10 +9,11 @@ import java.net.URI;
 import android.content.Context;
 import android.util.Log;
 import de.macsystems.windroid.io.IOUtils;
+import de.macsystems.windroid.progress.IProgress;
 
 /**
  * @author mac
- * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
+ * @version $Id$
  */
 public class StationXMLUpdateTask extends IOTask<Void, InputStream>
 {
@@ -24,14 +25,15 @@ public class StationXMLUpdateTask extends IOTask<Void, InputStream>
 	/**
 	 * 
 	 * @param _uri
+	 * @param _progress
 	 * @param _stationsXMLFilePath
 	 */
-	public StationXMLUpdateTask(final URI _uri, final String _stationsXMLFilePath)
+	public StationXMLUpdateTask(final URI _uri, final String _stationsXMLFilePath, final IProgress _progress)
 	{
-		super(_uri);
+		super(_uri, _progress);
 		if (_stationsXMLFilePath == null)
 		{
-			throw new NullPointerException();
+			throw new NullPointerException("file");
 		}
 		stationsXMLFilePath = _stationsXMLFilePath;
 	}
@@ -47,11 +49,11 @@ public class StationXMLUpdateTask extends IOTask<Void, InputStream>
 	public Void process(final Context _context, final InputStream _instream) throws IOException, Exception
 	{
 		FileOutputStream fout = null;
-		final BufferedInputStream inStream = new BufferedInputStream(_instream, IOUtils.DEFAULT_BUFFER_SIZE);
+		final BufferedInputStream inStream = new BufferedInputStream(_instream, IOUtils.BIG_BUFFER_SIZE);
 		try
 		{
 			fout = _context.openFileOutput(stationsXMLFilePath, Context.MODE_PRIVATE);
-			final byte[] buffer = new byte[IOUtils.DEFAULT_BUFFER_SIZE];
+			final byte[] buffer = new byte[IOUtils.BIG_BUFFER_SIZE];
 			int bytesRead = -1;
 			while ((bytesRead = inStream.read(buffer)) > -1)
 			{
@@ -71,7 +73,6 @@ public class StationXMLUpdateTask extends IOTask<Void, InputStream>
 		finally
 		{
 			IOUtils.close(fout);
-			IOUtils.close(inStream);
 		}
 
 		return null;

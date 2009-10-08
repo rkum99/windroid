@@ -115,7 +115,8 @@ public class DBSpotUpdate implements ISpot
 		final SQLiteStatement insertCountryStatement = db.compileStatement(INSERT_COUNTRY);
 		final SQLiteStatement insertRegionStatement = db.compileStatement(INSERT_REGION);
 
-		// db.beginTransaction();
+		
+		db.beginTransaction();
 
 		if (!Continent.isParsed())
 		{
@@ -163,7 +164,7 @@ public class DBSpotUpdate implements ISpot
 		}
 		finally
 		{
-			// db.endTransaction();
+			db.endTransaction();
 			insertSpotStatement.close();
 			insertCountryStatement.close();
 			insertRegionStatement.close();

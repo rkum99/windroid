@@ -38,6 +38,10 @@
 			</intent-filter>
 		</activity>
 		<activity
+			android:name="de.macsystems.windroid.DownloadActivity"
+			android:label="@string/app_name" />
+
+		<activity
 			android:name="de.macsystems.windroid.SpotSelection"
 			android:label="@string/app_name" />
 		<activity

@@ -24,6 +24,8 @@ import de.macsystems.windroid.identifyable.WindDirection;
 import de.macsystems.windroid.identifyable.WindSpeed;
 
 /**
+ * Parses the JSON forecast response and returns an {@link Forecast}
+ * 
  * @author Jens Hohl
  * @version $Id$
  */
@@ -42,7 +44,7 @@ public final class ForecastParser
 	{
 	}
 
-	private static void parseAirPresure(JSONObject airPresureMap, Builder builder) throws JSONException
+	private static void parseAirPresure(final JSONObject airPresureMap, final Builder builder) throws JSONException
 	{
 		final float value = getFloat(airPresureMap, VALUE);
 		final String unit = airPresureMap.getString(UNIT);
@@ -141,7 +143,7 @@ public final class ForecastParser
 	{
 		Log.d(LOG_TAG, "wavePeriodMap :" + wavePeriodMap.toString());
 
-		final float value = (float) getFloat(wavePeriodMap, VALUE);
+		final float value = getFloat(wavePeriodMap, VALUE);
 		final String unit = wavePeriodMap.getString(UNIT);
 
 		final WavePeriod wavePeriod = WavePeriod.create(unit, value);
@@ -152,7 +154,7 @@ public final class ForecastParser
 			throws JSONException
 	{
 		Log.d(LOG_TAG, "precipitationMap :" + precipitationMap.toString());
-		final float value = (float) getFloat(precipitationMap, VALUE);
+		final float value = getFloat(precipitationMap, VALUE);
 		final String unit = precipitationMap.getString(UNIT);
 
 		final Precipitation precipitation = Precipitation.create(value, unit);

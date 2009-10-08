@@ -1,8 +1,10 @@
 package de.macsystems.windroid.io;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.net.HttpURLConnection;
@@ -19,6 +21,7 @@ import android.net.NetworkInfo.State;
 import android.util.Log;
 import de.macsystems.windroid.R;
 import de.macsystems.windroid.io.task.StationXMLUpdateTask;
+import de.macsystems.windroid.progress.IProgress;
 
 /**
  * @author Jens Hohl
@@ -30,7 +33,9 @@ public class IOUtils
 
 	private static final String LOG_TAG = IOUtils.class.getSimpleName();
 
-	public static final int DEFAULT_BUFFER_SIZE = 1024 * 32;
+	public static final int BIG_BUFFER_SIZE = 1024 * 32;
+
+	public static final int DEFAULT_BUFFER_SIZE = 1024;
 
 	public static final String MOZILLA_5_0 = "Mozilla/5.0";
 
@@ -126,16 +131,18 @@ public class IOUtils
 	 * 
 	 * @param _context
 	 * @param _stationXMLURL
+	 * @param _progress
 	 * @throws RetryLaterException
 	 * @throws IOException
 	 */
-	public static void updateCachedStationXML(final Context _context, final URL _stationXMLURL)
+	public static void updateCachedStationXML(final Context _context, final URL _stationXMLURL, IProgress _progress)
 			throws RetryLaterException, IOException
 	{
 
 		try
 		{
-			final StationXMLUpdateTask task = new StationXMLUpdateTask(_stationXMLURL.toURI(), stationsXMLFilePath);
+			final StationXMLUpdateTask task = new StationXMLUpdateTask(_stationXMLURL.toURI(), stationsXMLFilePath,
+					_progress);
 			task.execute(_context);
 		}
 		catch (final URISyntaxException e)
@@ -170,7 +177,7 @@ public class IOUtils
 		//
 		// fout = _context.openFileOutput(stationsXMLFilePath,
 		// Context.MODE_PRIVATE);
-		// final byte[] buffer = new byte[DEFAULT_BUFFER_SIZE];
+		// final byte[] buffer = new byte[BIG_BUFFER_SIZE];
 		// int bytesRead = -1;
 		// while ((bytesRead = inStream.read(buffer)) > -1)
 		// {
@@ -288,6 +295,14 @@ public class IOUtils
 		}
 	}
 
+	/**
+	 * Checks if a file exists in directory returned by
+	 * {@link Context#getFilesDir()} with given name.
+	 * 
+	 * @param _filename
+	 * @param _context
+	 * @return
+	 */
 	public static boolean existFile(final String _filename, final Context _context)
 	{
 		final File root = _context.getFilesDir();
@@ -421,5 +436,32 @@ public class IOUtils
 	public static boolean renameFile(final Context _context) throws SecurityException
 	{
 		return _context.getFileStreamPath("test").renameTo(new File("echterfilname"));
+	}
+
+	/**
+	 * @param _instream
+	 * @return
+	 * @throws IOException
+	 */
+	public static StringBuilder asString(final InputStream _instream) throws IOException
+	{
+		final BufferedReader reader = new BufferedReader(new InputStreamReader(_instream), 4000);
+
+		try
+		{
+			String line;
+			final StringBuilder builder = new StringBuilder(1024);
+			while ((line = reader.readLine()) != null)
+			{
+				builder.append(line);
+			}
+			return builder;
+
+		}
+		finally
+		{
+			IOUtils.close(reader);
+		}
+
 	}
 }

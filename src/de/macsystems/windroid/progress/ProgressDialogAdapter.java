@@ -9,7 +9,7 @@ import android.app.ProgressDialog;
  * @author mac
  * @version $Id$
  */
-public class ProgressAdapter implements IProgress
+public class ProgressDialogAdapter implements IProgress
 {
 	private final ProgressDialog delegate;
 
@@ -17,7 +17,7 @@ public class ProgressAdapter implements IProgress
 	 * 
 	 * @param _dialog
 	 */
-	public ProgressAdapter(ProgressDialog _dialog)
+	public ProgressDialogAdapter(final ProgressDialog _dialog)
 	{
 		if (_dialog == null)
 		{
@@ -44,9 +44,21 @@ public class ProgressAdapter implements IProgress
 	 * @see de.macsystems.windroid.IProgress#incrementBy(int)
 	 */
 	@Override
-	public void incrementBy(int value)
+	public void incrementBy(final int value)
 	{
 		delegate.incrementProgressBy(value);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.macsystems.windroid.progress.IProgress#setMax(int)
+	 */
+	@Override
+	public void setMax(final int _maximum)
+	{
+		delegate.setMax(_maximum);
+
 	}
 
 }

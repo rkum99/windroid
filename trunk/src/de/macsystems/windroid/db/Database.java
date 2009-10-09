@@ -34,9 +34,6 @@ public class Database extends SQLiteOpenHelper
 	public Database(final Context context)
 	{
 		super(context, DATABASE_NAME, null, VERSION);
-		//
-		final List<String> temp = new ArrayList<String>();
-
 		newDatabase = createNewDatabaseScript();
 		upgradeDatabase = createUpgradeScript();
 	}

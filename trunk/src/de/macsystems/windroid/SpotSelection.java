@@ -123,7 +123,7 @@ public class SpotSelection extends Activity
 //					dialog.setMax(task.getNrOfStations());
 //
 //					final Database database = new Database(SpotSelection.this);
-//					final DBSpotUpdate updater = new DBSpotUpdate(database, progress);
+//					final SpotDAO updater = new SpotDAO(database, progress);
 //					updater.update();
 //
 //					handler.post(populateParsingResults(Continent.values(), Continent.AFRICA.getCoutrys(),

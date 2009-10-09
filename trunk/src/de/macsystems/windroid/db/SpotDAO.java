@@ -1,7 +1,9 @@
 package de.macsystems.windroid.db;
 
+import java.util.Arrays;
 import java.util.Iterator;
 
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
@@ -18,7 +20,7 @@ import de.macsystems.windroid.progress.IProgress;
  * @author mac
  * @version $Id$
  */
-public class DBSpotUpdate implements ISpot
+public class SpotDAO implements ISpotDAO
 {
 	final Database database;
 	final IProgress progress;
@@ -26,7 +28,7 @@ public class DBSpotUpdate implements ISpot
 	// final SQLiteStatement insertStatement;
 	// final SQLiteStatement insertTest;
 
-	final static String LOG_TAG = DBSpotUpdate.class.getSimpleName();
+	final static String LOG_TAG = SpotDAO.class.getSimpleName();
 
 	// ("CREATE TABLE IF NOT EXISTS spot (id INTEGER PRIMARY KEY AUTOINCREMENT,
 	// spotid TEXT NOT NULL, continentid INTEGER, countryid INTEGER,
@@ -55,7 +57,7 @@ public class DBSpotUpdate implements ISpot
 	 * @param _database
 	 * @throws NullPointerException
 	 */
-	public DBSpotUpdate(final Database _database, final IProgress _progress) throws NullPointerException
+	public SpotDAO(final Database _database, final IProgress _progress) throws NullPointerException
 	{
 		if (_database == null)
 		{
@@ -106,7 +108,12 @@ public class DBSpotUpdate implements ISpot
 
 	}
 
-	public void update()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.macsystems.windroid.db.ISpotDAO#insertSpots()
+	 */
+	public void insertSpots()
 	{
 		clearAllSpots();
 		final SQLiteDatabase db = database.getWritableDatabase();
@@ -115,17 +122,14 @@ public class DBSpotUpdate implements ISpot
 		final SQLiteStatement insertCountryStatement = db.compileStatement(INSERT_COUNTRY);
 		final SQLiteStatement insertRegionStatement = db.compileStatement(INSERT_REGION);
 
-		
-		db.beginTransaction();
-
 		if (!Continent.isParsed())
 		{
 			throw new IllegalStateException("Please parse Continents");
 		}
-
 		Log.d(LOG_TAG, "executeInsert");
 
 		final long start = System.currentTimeMillis();
+		db.beginTransaction();
 		int index = 0;
 		try
 		{
@@ -152,6 +156,7 @@ public class DBSpotUpdate implements ISpot
 						while (stations.hasNext())
 						{
 							updateSpotTable(insertSpotStatement, continent, country, region, stations.next());
+							insertSpotStatement.executeInsert();
 							index++;
 							if (index % 100 == 0)
 							{
@@ -161,6 +166,7 @@ public class DBSpotUpdate implements ISpot
 					}
 				}
 			}
+			db.setTransactionSuccessful();
 		}
 		finally
 		{
@@ -227,5 +233,46 @@ public class DBSpotUpdate implements ISpot
 		insertStatement.bindLong(8, 0);
 		insertStatement.bindLong(9, 0);
 		insertStatement.bindLong(10, 0);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.macsystems.windroid.db.ISpotDAO#hasSpots()
+	 */
+	@Override
+	public boolean hasSpots()
+	{
+		final SQLiteDatabase db = database.getReadableDatabase();
+		Cursor c = null;
+		try
+		{
+			c = db.rawQuery("SELECT count(*) from spot", null);
+			if (!c.moveToFirst())
+			{
+				Log.d(LOG_TAG, "no spots in db.");
+				return false;
+			}
+			Log.d(LOG_TAG, "Colums " + Arrays.toString(c.getColumnNames()));
+			Log.d(LOG_TAG, "count " + c.getCount());
+			Log.d(LOG_TAG, "Colum index " + c.getColumnIndexOrThrow("count(*)"));
+			Log.d(LOG_TAG, "return value " + c.getInt(0));
+
+			final int index = c.getColumnIndexOrThrow("count(*)");
+			final int value = c.getInt(index);
+			return 0 < value;
+
+		}
+		catch (final SQLException e)
+		{
+			Log.e(LOG_TAG, "hasSpots", e);
+		}
+		finally
+		{
+			IOUtils.close(db);
+			IOUtils.close(c);
+		}
+
+		return false;
 	}
 }

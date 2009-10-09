@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.Properties;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -461,6 +462,20 @@ public class IOUtils
 		finally
 		{
 			IOUtils.close(reader);
+		}
+
+	}
+
+	/**
+	 * Closes Cursor.
+	 * 
+	 * @param _c
+	 */
+	public static void close(final Cursor _c)
+	{
+		if (_c != null)
+		{
+			_c.close();
 		}
 
 	}

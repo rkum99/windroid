@@ -2,6 +2,7 @@ package de.macsystems.windroid.db;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import android.content.Context;
@@ -20,9 +21,11 @@ public class Database extends SQLiteOpenHelper
 	private final static String LOG_TAG = Database.class.getSimpleName();
 
 	final static String DATABASE_NAME = "windroid.db";
-	final static int VERSION = 29;
+	final static int VERSION = 31;
 
-	final List<String> createScripts;
+	final List<String> newDatabase;
+
+	final List<String> upgradeDatabase;
 
 	/**
 	 * 
@@ -34,12 +37,46 @@ public class Database extends SQLiteOpenHelper
 		//
 		final List<String> temp = new ArrayList<String>();
 
+		newDatabase = createNewDatabaseScript();
+		upgradeDatabase = createUpgradeScript();
+	}
+
+	private List<String> createUpgradeScript()
+	{
+		final List<String> temp = new ArrayList<String>(64);
+		temp.add("create TABLE IF NOT EXISTS internal (id TEXT PRIMARY KEY, value text)");
+		//
+		temp
+				.add("CREATE TABLE IF NOT EXISTS spot (_id INTEGER PRIMARY KEY AUTOINCREMENT, spotid TEXT NOT NULL, continentid INTEGER, countryid INTEGER, regionid INTEGER, name TEXT NOT NULL, keyword TEXT not null, superforecast BOOLEAN, forecast BOOLEAN, statistic BOOLEAN, wavereport BOOLEAN, waveforecast BOOLEAN);");
+		temp
+				.add("CREATE TABLE IF NOT EXISTS continent (_id INTEGER PRIMARY KEY AUTOINCREMENT ,id INTEGER, name TEXT);");
+		temp.add("CREATE TABLE IF NOT EXISTS country (_id INTEGER PRIMARY KEY AUTOINCREMENT,id INTEGER, name TEXT);");
+		temp.add("CREATE TABLE IF NOT EXISTS region (_id INTEGER PRIMARY KEY AUTOINCREMENT,id INTEGER, name TEXT);");
+		//
+		temp.add("CREATE INDEX IF NOT EXISTS spotindex ON spot (spotid);");
+		temp.add("CREATE INDEX IF NOT EXISTS countryindex ON country (id);");
+		temp.add("CREATE INDEX IF NOT EXISTS regionindex ON region (id);");
+		temp.add("CREATE INDEX IF NOT EXISTS continentindex ON continent (id);");
+
+		// //
+		temp.add("CREATE INDEX IF NOT EXISTS conid ON continent (id);");
+		temp.add("CREATE INDEX IF NOT EXISTS regid ON region (id);");
+		temp.add("CREATE INDEX IF NOT EXISTS coid ON country (id);");
+
+		return Collections.unmodifiableList(temp);
+	}
+
+	/**
+	 * @param temp
+	 */
+	private List<String> createNewDatabaseScript()
+	{
+		final List<String> temp = new ArrayList<String>(64);
 		temp.add("DROP TABLE IF EXISTS spot;");
 		temp.add("DROP TABLE IF EXISTS continent;");
 		temp.add("DROP TABLE IF EXISTS country;");
 		temp.add("DROP TABLE IF EXISTS region;");
-
-		// Create Config Table
+		// Create ConfigDAO Table
 		temp.add("create TABLE IF NOT EXISTS internal (id TEXT PRIMARY KEY, value text)");
 		//
 		temp
@@ -59,7 +96,7 @@ public class Database extends SQLiteOpenHelper
 		temp.add("CREATE INDEX regid ON region (id);");
 		temp.add("CREATE INDEX coid ON country (id);");
 		//
-		createScripts = Collections.unmodifiableList(temp);
+		return Collections.unmodifiableList(temp);
 	}
 
 	/*
@@ -74,10 +111,10 @@ public class Database extends SQLiteOpenHelper
 	{
 		Log.d(LOG_TAG, "onCreate Database");
 
-		for (int i = 0; i < createScripts.size(); i++)
+		for (int i = 0; i < newDatabase.size(); i++)
 		{
-			Log.d(LOG_TAG, createScripts.get(i));
-			database.execSQL(createScripts.get(i));
+			Log.d(LOG_TAG, newDatabase.get(i));
+			database.execSQL(newDatabase.get(i));
 		}
 		Log.d(LOG_TAG, "onCreate Database finished");
 	}
@@ -94,12 +131,18 @@ public class Database extends SQLiteOpenHelper
 	{
 		Log.d(LOG_TAG, "onUpgrade Database");
 
-		for (int i = 0; i < createScripts.size(); i++)
+		for (final Iterator<String> iter = upgradeDatabase.iterator(); iter.hasNext();)
 		{
-			Log.d(LOG_TAG, createScripts.get(i));
-			database.execSQL(createScripts.get(i));
+			final String sql = iter.next();
+			Log.d(LOG_TAG, sql);
+			database.execSQL(sql);
 		}
 		Log.d(LOG_TAG, "onUpgrade Database finished");
+	}
+
+	public int getVersion()
+	{
+		return VERSION;
 	}
 
 }

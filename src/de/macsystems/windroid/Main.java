@@ -32,8 +32,11 @@ import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import de.macsystems.windroid.alarm.AlarmDetail;
 import de.macsystems.windroid.db.Database;
+import de.macsystems.windroid.db.ISpotDAO;
+import de.macsystems.windroid.db.SpotDAO;
 import de.macsystems.windroid.forecast.SpotOverview;
 import de.macsystems.windroid.io.IOUtils;
+import de.macsystems.windroid.progress.NullProgressAdapter;
 import de.macsystems.windroid.proxy.SpotServiceConnection;
 
 /**
@@ -102,16 +105,9 @@ public class Main extends Activity
 			@Override
 			public void onClick(final View v)
 			{
-				/**
-				 * If user wants to configure a Spot we create an Transport
-				 * Object to collect all properties
-				 */
-				// final Intent intent = new Intent(Main.this,
-				// SpotSelection.class);
-				final Intent intent = new Intent(Main.this, DownloadActivity.class);
-				intent.putExtra(IntentConstants.SPOT_TO_CONFIGURE, new SpotConfigurationVO());
-				Main.this.startActivity(intent);
+				launchSetupOrSpotSelectionActivity();
 			}
+
 		});
 		final Button selectPreferencesButton = (Button) findViewById(R.id.button_show_station_preferences);
 		selectPreferencesButton.setOnClickListener(new View.OnClickListener()
@@ -363,5 +359,41 @@ public class Main extends Activity
 		final Uri uri = Uri.parse("http://windfinder.com");
 		final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 		startActivity(intent);
+	}
+
+	/**
+	 * Launches {@link DownloadActivity} Activity or the {@link SpotSelection}
+	 * Activity which depends on database
+	 * 
+	 * @param _spotsfound
+	 */
+	private void launchSetupOrSpotSelectionActivity()
+	{
+		final ISpotDAO dao = new SpotDAO(new Database(Main.this), NullProgressAdapter.INSTANCE);
+		final boolean spotsfound = dao.hasSpots();
+
+		final SpotConfigurationVO spotConfigurationVO = new SpotConfigurationVO();
+
+		if (spotsfound)
+		{
+			/**
+			 * If user wants to configure a Spot we create an Transport Object
+			 * to collect all properties
+			 */
+			final Intent intent = new Intent(Main.this, SpotSelection.class);
+			intent.putExtra(IntentConstants.SPOT_TO_CONFIGURE, spotConfigurationVO);
+			Main.this.startActivity(intent);
+		}
+		else
+		{
+			/**
+			 * If user wants to configure a Spot we create an Transport Object
+			 * to collect all properties
+			 */
+			final Intent intent = new Intent(Main.this, DownloadActivity.class);
+			intent.putExtra(IntentConstants.SPOT_TO_CONFIGURE, spotConfigurationVO);
+			Main.this.startActivity(intent);
+
+		}
 	}
 }

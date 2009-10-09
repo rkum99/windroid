@@ -13,7 +13,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import de.macsystems.windroid.db.DBSpotUpdate;
+import de.macsystems.windroid.db.ISpotDAO;
+import de.macsystems.windroid.db.SpotDAO;
 import de.macsystems.windroid.db.Database;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.io.task.XMLParseTask;
@@ -93,9 +94,9 @@ public class DownloadActivity extends Activity
 					databaseProgress.setMax(stationsFound);
 
 					final Database database = new Database(DownloadActivity.this);
-					final DBSpotUpdate updater = new DBSpotUpdate(database, databaseProgress);
-					updater.update();
-					// final Config config = new Config(database);
+					final ISpotDAO updater = new SpotDAO(database, databaseProgress);
+					updater.insertSpots();
+					// final ConfigDAO config = new ConfigDAO(database);
 					// config.setDatabaseStatus("succsess");
 					showInstallSucceed();
 				}
@@ -104,7 +105,7 @@ public class DownloadActivity extends Activity
 					Log.e(LOG_TAG, "Failed to parse xml.", e);
 					// final Database database = new
 					// Database(DownloadActivity.this);
-					// final Config config = new Config(database);
+					// final ConfigDAO config = new ConfigDAO(database);
 					// config.setDatabaseStatus("falied");
 					showInstallationFailed(e);
 				}

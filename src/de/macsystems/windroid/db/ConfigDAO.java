@@ -8,13 +8,13 @@ import android.database.sqlite.SQLiteDatabase;
  * @author mac
  * @version $Id$
  */
-public class Config
+public class ConfigDAO implements IConfigDAO
 {
 	private final Database database;
 
 	public final String DB_STATUS = "db_status";
 
-	public Config(Database _dataDatabase)
+	public ConfigDAO(Database _dataDatabase)
 	{
 		if (_dataDatabase == null)
 		{
@@ -23,6 +23,9 @@ public class Config
 		database = _dataDatabase;
 	}
 
+	/* (non-Javadoc)
+	 * @see de.macsystems.windroid.db.IConfigDAO#getDatabaseStatus()
+	 */
 	public String getDatabaseStatus()
 	{
 		SQLiteDatabase db = database.getReadableDatabase();
@@ -32,6 +35,9 @@ public class Config
 		return "false";
 	}
 
+	/* (non-Javadoc)
+	 * @see de.macsystems.windroid.db.IConfigDAO#setDatabaseStatus(java.lang.String)
+	 */
 	public boolean setDatabaseStatus(final String status)
 	{
 		SQLiteDatabase db = database.getWritableDatabase();

@@ -1,5 +1,10 @@
 package de.macsystems.windroid.db;
 
+/**
+ * 
+ * @author mac
+ * @version $Id$
+ */
 public interface ISpotDAO
 {
 	public final static int SPOT_INDEX = 0;

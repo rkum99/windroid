@@ -1,3 +1,6 @@
+sqlite3 /data/data/de.macsystems.windroid/databases/windroid.db
+
+
 select * from continent;
 select * from region;
 select * from country;

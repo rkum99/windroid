@@ -21,7 +21,7 @@ public class Database extends SQLiteOpenHelper
 	private final static String LOG_TAG = Database.class.getSimpleName();
 
 	final static String DATABASE_NAME = "windroid.db";
-	final static int VERSION = 33;
+	final static int VERSION = 36;
 
 	final List<String> newDatabase;
 
@@ -65,10 +65,10 @@ public class Database extends SQLiteOpenHelper
 				.add("CREATE TABLE IF NOT EXISTS selected (_id INTEGER PRIMARY KEY AUTOINCREMENT,spotid text NOT NULL,activ BOOLEAN);");
 		temp.add("CREATE INDEX IF NOT EXISTS selectedsid ON selected (spotid);");
 
-		temp.add("INSERT INTO selected (spotid,activ) VALUES ('nl146','true');");
-		temp.add("INSERT INTO selected (spotid,activ) VALUES ('nl146','true');");
-		temp.add("INSERT INTO selected (spotid,activ) VALUES ('nl146','true');");
-		temp.add("INSERT INTO selected (spotid,activ) VALUES ('nl146','true');");
+		for (int i = 0; i < 100; i++)
+		{
+			temp.add("INSERT INTO selected (spotid,activ) VALUES ('nl" + i + "','" + (i % 5 == 0) + "');");
+		}
 
 		return Collections.unmodifiableList(temp);
 	}

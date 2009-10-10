@@ -21,7 +21,7 @@ public class Database extends SQLiteOpenHelper
 	private final static String LOG_TAG = Database.class.getSimpleName();
 
 	final static String DATABASE_NAME = "windroid.db";
-	final static int VERSION = 31;
+	final static int VERSION = 33;
 
 	final List<String> newDatabase;
 
@@ -60,6 +60,16 @@ public class Database extends SQLiteOpenHelper
 		temp.add("CREATE INDEX IF NOT EXISTS regid ON region (id);");
 		temp.add("CREATE INDEX IF NOT EXISTS coid ON country (id);");
 
+		// selected table
+		temp
+				.add("CREATE TABLE IF NOT EXISTS selected (_id INTEGER PRIMARY KEY AUTOINCREMENT,spotid text NOT NULL,activ BOOLEAN);");
+		temp.add("CREATE INDEX IF NOT EXISTS selectedsid ON selected (spotid);");
+
+		temp.add("INSERT INTO selected (spotid,activ) VALUES ('nl146','true');");
+		temp.add("INSERT INTO selected (spotid,activ) VALUES ('nl146','true');");
+		temp.add("INSERT INTO selected (spotid,activ) VALUES ('nl146','true');");
+		temp.add("INSERT INTO selected (spotid,activ) VALUES ('nl146','true');");
+
 		return Collections.unmodifiableList(temp);
 	}
 
@@ -73,6 +83,7 @@ public class Database extends SQLiteOpenHelper
 		temp.add("DROP TABLE IF EXISTS continent;");
 		temp.add("DROP TABLE IF EXISTS country;");
 		temp.add("DROP TABLE IF EXISTS region;");
+		temp.add("DROP TABLE IF EXISTS selected;");
 		// Create ConfigDAO Table
 		temp.add("create TABLE IF NOT EXISTS internal (id TEXT PRIMARY KEY, value text)");
 		//
@@ -92,7 +103,11 @@ public class Database extends SQLiteOpenHelper
 		temp.add("CREATE INDEX conid ON continent (id);");
 		temp.add("CREATE INDEX regid ON region (id);");
 		temp.add("CREATE INDEX coid ON country (id);");
-		//
+		// selected table
+		temp
+				.add("CREATE TABLE IF NOT EXISTS selected (_id INTEGER PRIMARY KEY AUTOINCREMENT,spotid text NOT NULL,activ BOOLEAN);");
+		temp.add("CREATE INDEX IF NOT EXISTS selectedsid ON selected (spotid);");
+
 		return Collections.unmodifiableList(temp);
 	}
 
@@ -126,7 +141,7 @@ public class Database extends SQLiteOpenHelper
 	@Override
 	public void onUpgrade(final SQLiteDatabase database, final int oldVersion, final int newVersion)
 	{
-		Log.d(LOG_TAG, "onUpgrade Database");
+		Log.d(LOG_TAG, "onUpgrade Database  from version" + oldVersion + " to " + newVersion);
 
 		for (final Iterator<String> iter = upgradeDatabase.iterator(); iter.hasNext();)
 		{

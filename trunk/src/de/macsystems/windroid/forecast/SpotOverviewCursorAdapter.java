@@ -13,10 +13,6 @@ import android.widget.TextView;
 public class SpotOverviewCursorAdapter implements SimpleCursorAdapter.ViewBinder
 {
 
-	// this cursor is built by calling a function that returns a few things.
-	// right now I'm interested in the first (title) and the third
-	// (downloaded status)
-
 	private static final int SPOTID_COLUMN = 1;
 	private static final int ACTIVE_COLUMN = 2;
 	boolean retval = false;
@@ -38,7 +34,7 @@ public class SpotOverviewCursorAdapter implements SimpleCursorAdapter.ViewBinder
 		{
 			final int isActive = cursor.getInt(ACTIVE_COLUMN);
 			final TextView tv = (TextView) view;
-			tv.setText(isActive);
+			tv.setText(""+isActive);
 			return true;
 		}
 		return true;

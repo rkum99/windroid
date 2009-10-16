@@ -13,10 +13,10 @@ import android.util.Log;
 import de.macsystems.windroid.forecast.Forecast;
 import de.macsystems.windroid.forecast.ForecastDetail;
 import de.macsystems.windroid.forecast.ForecastDetail.Builder;
-import de.macsystems.windroid.identifyable.AirPressure;
 import de.macsystems.windroid.identifyable.Cavok;
 import de.macsystems.windroid.identifyable.IdentityUtil;
 import de.macsystems.windroid.identifyable.Precipitation;
+import de.macsystems.windroid.identifyable.Pressure;
 import de.macsystems.windroid.identifyable.Temperature;
 import de.macsystems.windroid.identifyable.WaveHeight;
 import de.macsystems.windroid.identifyable.WavePeriod;
@@ -49,7 +49,7 @@ public final class ForecastParser
 		final float value = getFloat(airPresureMap, VALUE);
 		final String unit = airPresureMap.getString(UNIT);
 
-		final AirPressure airPressure = AirPressure.create(value, unit);
+		final Pressure airPressure = Pressure.create(value, unit);
 		builder.setAirPressure(airPressure);
 	}
 

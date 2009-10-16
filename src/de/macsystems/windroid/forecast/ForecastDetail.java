@@ -2,10 +2,10 @@ package de.macsystems.windroid.forecast;
 
 import java.util.Date;
 
-import de.macsystems.windroid.identifyable.AirPressure;
 import de.macsystems.windroid.identifyable.Cavok;
 import de.macsystems.windroid.identifyable.MeasureValue;
 import de.macsystems.windroid.identifyable.Precipitation;
+import de.macsystems.windroid.identifyable.Pressure;
 import de.macsystems.windroid.identifyable.Temperature;
 import de.macsystems.windroid.identifyable.WaveHeight;
 import de.macsystems.windroid.identifyable.WavePeriod;
@@ -57,7 +57,7 @@ public class ForecastDetail
 
 	private final MeasureValue waveDirection;
 
-	private final AirPressure airPressure;
+	private final Pressure airPressure;
 
 	private ForecastDetail(final Builder _builder)
 	{
@@ -91,9 +91,9 @@ public class ForecastDetail
 	}
 
 	/**
-	 * @return the airPressure
+	 * @return the air pressure
 	 */
-	public AirPressure getAirPressure()
+	public Pressure getAirPressure()
 	{
 		return airPressure;
 	}
@@ -238,7 +238,7 @@ public class ForecastDetail
 
 		private MeasureValue waveDirection;
 
-		private AirPressure airPressure;
+		private Pressure airPressure;
 
 		public Builder(final String _id)
 		{
@@ -379,7 +379,7 @@ public class ForecastDetail
 		 * @param airPressure
 		 *            the airPressure to set
 		 */
-		public Builder setAirPressure(final AirPressure airPressure)
+		public Builder setAirPressure(final Pressure airPressure)
 		{
 			this.airPressure = airPressure;
 			return this;

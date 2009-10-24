@@ -12,7 +12,7 @@ import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.progress.IProgress;
 
 /**
- * @author mac
+ * @author Jens Hohl
  * @version $Id$
  */
 public class StationXMLUpdateTask extends IOTask<Void, InputStream>
@@ -33,7 +33,7 @@ public class StationXMLUpdateTask extends IOTask<Void, InputStream>
 		super(_uri, _progress);
 		if (_stationsXMLFilePath == null)
 		{
-			throw new NullPointerException("file");
+			throw new NullPointerException("stationsXMLFilePath");
 		}
 		stationsXMLFilePath = _stationsXMLFilePath;
 	}

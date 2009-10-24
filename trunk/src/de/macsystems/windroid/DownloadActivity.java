@@ -13,9 +13,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import de.macsystems.windroid.db.Database;
+import de.macsystems.windroid.db.DAOFactory;
 import de.macsystems.windroid.db.ISpotDAO;
-import de.macsystems.windroid.db.SpotDAO;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.io.task.XMLParseTask;
 import de.macsystems.windroid.progress.IProgress;
@@ -25,7 +24,7 @@ import de.macsystems.windroid.progress.ProgressBarAdapter;
  * Activity which downloads station.xml and updates the database. The User can
  * see the progress while waiting and is able to cancel this.
  * 
- * @author mac
+ * @author Jens Hohl
  * @version $Id$
  */
 public class DownloadActivity extends Activity
@@ -93,10 +92,9 @@ public class DownloadActivity extends Activity
 
 					databaseProgress.setMax(stationsFound);
 
-					final Database database = new Database(DownloadActivity.this);
-					final ISpotDAO updater = new SpotDAO(database, databaseProgress);
+					final ISpotDAO updater = DAOFactory.getSpotDAO(DownloadActivity.this, databaseProgress);
 					updater.insertSpots();
-					// final ConfigDAO config = new ConfigDAO(database);
+					// final ConfigImpl config = new ConfigImpl(database);
 					// config.setDatabaseStatus("succsess");
 					showInstallSucceed();
 				}
@@ -105,7 +103,7 @@ public class DownloadActivity extends Activity
 					Log.e(LOG_TAG, "Failed to parse xml.", e);
 					// final Database database = new
 					// Database(DownloadActivity.this);
-					// final ConfigDAO config = new ConfigDAO(database);
+					// final ConfigImpl config = new ConfigImpl(database);
 					// config.setDatabaseStatus("falied");
 					showInstallationFailed(e);
 				}

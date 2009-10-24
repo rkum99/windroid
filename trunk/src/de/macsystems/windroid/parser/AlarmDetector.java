@@ -8,7 +8,7 @@ import de.macsystems.windroid.forecast.ForecastDetail;
 import de.macsystems.windroid.identifyable.WindSpeed;
 
 /**
- * @author mac
+ * @author Jens Hohl
  * @version $Id$
  * 
  */

@@ -1,4 +1,4 @@
-package de.macsystems.windroid.db;
+package de.macsystems.windroid.db.sqlite;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 /**
- * @author mac
+ * @author Jens Hohl
  * @version $Id$
  * 
  */
@@ -21,7 +21,8 @@ public class Database extends SQLiteOpenHelper
 	private final static String LOG_TAG = Database.class.getSimpleName();
 
 	final static String DATABASE_NAME = "windroid.db";
-	final static int VERSION = 36;
+
+	final static int VERSION = 42;
 
 	final List<String> newDatabase;
 
@@ -29,11 +30,11 @@ public class Database extends SQLiteOpenHelper
 
 	/**
 	 * 
-	 * @param context
+	 * @param _context
 	 */
-	public Database(final Context context)
+	public Database(final Context _context)
 	{
-		super(context, DATABASE_NAME, null, VERSION);
+		super(_context, DATABASE_NAME, null, VERSION);
 		newDatabase = createNewDatabaseScript();
 		upgradeDatabase = createUpgradeScript();
 	}
@@ -41,13 +42,21 @@ public class Database extends SQLiteOpenHelper
 	private List<String> createUpgradeScript()
 	{
 		final List<String> temp = new ArrayList<String>(64);
+
+		temp.add("DROP TABLE IF EXISTS spot;");
+		temp.add("DROP TABLE IF EXISTS continent;");
+		temp.add("DROP TABLE IF EXISTS country;");
+		temp.add("DROP TABLE IF EXISTS region;");
+		// temp.add("DROP TABLE IF EXISTS selected;");
+
 		temp.add("create TABLE IF NOT EXISTS internal (id TEXT PRIMARY KEY, value text)");
-		//
+
 		temp
-				.add("CREATE TABLE IF NOT EXISTS spot (_id INTEGER PRIMARY KEY AUTOINCREMENT, spotid TEXT NOT NULL, continentid INTEGER, countryid INTEGER, regionid INTEGER, name TEXT NOT NULL, keyword TEXT not null, superforecast BOOLEAN, forecast BOOLEAN, statistic BOOLEAN, wavereport BOOLEAN, waveforecast BOOLEAN);");
+				.add("CREATE TABLE IF NOT EXISTS spot (_id INTEGER PRIMARY KEY AUTOINCREMENT, spotid TEXT NOT NULL, continentid TEXT NOT NULL, countryid TEXT NOT NULL, regionid TEXT NOT NULL, name TEXT NOT NULL, keyword TEXT NOT NULL, superforecast BOOLEAN, forecast BOOLEAN, statistic BOOLEAN, wavereport BOOLEAN, waveforecast BOOLEAN);");
 		temp
 				.add("CREATE TABLE IF NOT EXISTS continent (_id INTEGER PRIMARY KEY AUTOINCREMENT ,id INTEGER, name TEXT);");
-		temp.add("CREATE TABLE IF NOT EXISTS country (_id INTEGER PRIMARY KEY AUTOINCREMENT,id INTEGER, name TEXT);");
+		temp
+				.add("CREATE TABLE IF NOT EXISTS country (_id INTEGER PRIMARY KEY AUTOINCREMENT,id INTEGER, name TEXT NOT NULL, continentid TEXT NOT NULL);");
 		temp.add("CREATE TABLE IF NOT EXISTS region (_id INTEGER PRIMARY KEY AUTOINCREMENT,id INTEGER, name TEXT);");
 		//
 		temp.add("CREATE INDEX IF NOT EXISTS spotindex ON spot (spotid);");
@@ -88,10 +97,11 @@ public class Database extends SQLiteOpenHelper
 		temp.add("create TABLE IF NOT EXISTS internal (id TEXT PRIMARY KEY, value text)");
 		//
 		temp
-				.add("CREATE TABLE IF NOT EXISTS spot (_id INTEGER PRIMARY KEY AUTOINCREMENT, spotid TEXT NOT NULL, continentid INTEGER, countryid INTEGER, regionid INTEGER, name TEXT NOT NULL, keyword TEXT not null, superforecast BOOLEAN, forecast BOOLEAN, statistic BOOLEAN, wavereport BOOLEAN, waveforecast BOOLEAN);");
+				.add("CREATE TABLE IF NOT EXISTS spot (_id INTEGER PRIMARY KEY AUTOINCREMENT, spotid TEXT NOT NULL, continentid TEXT NOT NULL, countryid TEXT NOT NULL, regionid TEXT NOT NULL, name TEXT NOT NULL, keyword TEXT NOT NULL, superforecast BOOLEAN, forecast BOOLEAN, statistic BOOLEAN, wavereport BOOLEAN, waveforecast BOOLEAN);");
 		temp
 				.add("CREATE TABLE IF NOT EXISTS continent (_id INTEGER PRIMARY KEY AUTOINCREMENT ,id INTEGER, name TEXT);");
-		temp.add("CREATE TABLE IF NOT EXISTS country (_id INTEGER PRIMARY KEY AUTOINCREMENT,id INTEGER, name TEXT);");
+		temp
+				.add("CREATE TABLE IF NOT EXISTS country (_id INTEGER PRIMARY KEY AUTOINCREMENT,id INTEGER, name TEXT NOT NULL, continentid TEXT NOT NULL);");
 		temp.add("CREATE TABLE IF NOT EXISTS region (_id INTEGER PRIMARY KEY AUTOINCREMENT,id INTEGER, name TEXT);");
 		//
 		temp.add("CREATE INDEX spotindex ON spot (spotid);");

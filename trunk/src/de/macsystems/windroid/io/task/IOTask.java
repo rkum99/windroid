@@ -23,7 +23,7 @@ import de.macsystems.windroid.progress.IProgress;
  * Parameter V is the return value.<br>
  * Parameter I mean the parameter which allows to work with that data.
  * 
- * @author mac
+ * @author Jens Hohl
  * @version $Id$
  * @TODO use IProgress
  */
@@ -37,6 +37,14 @@ public abstract class IOTask<V, I> implements Task<V, I>
 
 	private final IProgress progress;
 
+	/**
+	 * 
+	 * @param _uri
+	 *            points to an io resource
+	 * @param _progress
+	 * @throws NullPointerException
+	 *             if any parameter is null
+	 */
 	public IOTask(final URI _uri, final IProgress _progress) throws NullPointerException
 	{
 		if (_uri == null)

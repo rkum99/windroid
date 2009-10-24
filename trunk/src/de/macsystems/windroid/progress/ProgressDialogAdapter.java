@@ -6,7 +6,7 @@ import android.app.ProgressDialog;
  * Adapter Class to decouple classes which want to update a progress more
  * flexible.
  * 
- * @author mac
+ * @author Jens Hohl
  * @version $Id$
  */
 public class ProgressDialogAdapter implements IProgress

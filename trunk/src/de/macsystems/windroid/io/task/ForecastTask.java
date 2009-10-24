@@ -13,7 +13,7 @@ import de.macsystems.windroid.progress.IProgress;
 /**
  * Parses the JSON Forecast for a station
  * 
- * @author mac
+ * @author Jens Hohl
  * @version $Id$
  */
 public class ForecastTask extends IOTask<Forecast, InputStream>

@@ -2,7 +2,7 @@ package de.macsystems.windroid;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -10,18 +10,19 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
-import de.macsystems.windroid.identifyable.Continent;
+import de.macsystems.windroid.db.DAOFactory;
+import de.macsystems.windroid.db.IContinentDAO;
 import de.macsystems.windroid.identifyable.Country;
-import de.macsystems.windroid.identifyable.IdentityUtil;
 import de.macsystems.windroid.identifyable.Region;
 import de.macsystems.windroid.identifyable.Station;
 
 /**
  * Activity which allows User to select a Spot using Spinners.
  * 
- * @author mac
+ * @author Jens Hohl
  * @version $Id$
  */
 public class SpotSelection extends Activity
@@ -52,8 +53,7 @@ public class SpotSelection extends Activity
 		// }
 		// else
 		// {
-		handler.post(populateParsingResults(Continent.values(), Continent.AFRICA.getCoutrys(), Continent.AFRICA
-				.getCoutrys()[0].getRegions()));
+		handler.post(populateParsingResults());
 		// }
 
 		final Button selectButton = (Button) findViewById(R.id.stationSelect);
@@ -81,118 +81,175 @@ public class SpotSelection extends Activity
 		});
 	}
 
-//	private void parseXML()
-//	{
-//		final String networkName = IOUtils.getNetworkName(this);
-//
-//		// final ProgressDialog progress = ProgressDialog.show(this,
-//
-//		final ProgressDialog dialog = new ProgressDialog(this);
-//		dialog.setTitle("Bitte Warten");
-//		dialog
-//				.setMessage("Lese Daten über "
-//						+ networkName
-//						+ ".\nDanach wir die Datenbank aktualisiert.\nJe nach Verbindung kann dies etwas Zeit in anspruch nehmen. ");
-//		dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-//		dialog.show();
-//		dialog.setMax(1);
-//
-//		final IProgress progress = new ProgressDialogAdapter(dialog);
-//
-//		final Thread parseThread = new Thread("Parse XML")
-//		{
-//			@Override
-//			public final void run()
-//			{
-//				boolean isFailure = false;
-//				Throwable exception = null;
-//				if (Log.isLoggable(LOG_TAG, Log.DEBUG))
-//				{
-//					Log.d(LOG_TAG, "Parsing Thread started.");
-//				}
-//				try
-//				{
-//					if (WindUtils.isStationListUpdateAvailable(SpotSelection.this))
-//					{
-//						WindUtils.updateStationList(SpotSelection.this);
-//					}
-//
-//					final XMLParseTask task = new XMLParseTask(new URI(IOUtils.stationsXMLFilePath));
-//					task.execute(SpotSelection.this);
-//
-//					dialog.setMax(task.getNrOfStations());
-//
-//					final Database database = new Database(SpotSelection.this);
-//					final SpotDAO updater = new SpotDAO(database, progress);
-//					updater.update();
-//
-//					handler.post(populateParsingResults(Continent.values(), Continent.AFRICA.getCoutrys(),
-//							Continent.AFRICA.getCoutrys()[0].getRegions()));
-//
-//				}
-//				catch (final Exception e)
-//				{
-//					isFailure = true;
-//					exception = e;
-//					Log.e(LOG_TAG, "Failed to parse xml.", e);
-//
-//				}
-//				finally
-//				{
-//					if (Log.isLoggable(LOG_TAG, Log.DEBUG))
-//					{
-//						Log.d(LOG_TAG, "Parsing Thread ended.");
-//					}
-//					dialog.dismiss();
-//
-//					// if (isFailure)
-//					// {
-//					//
-//					// new
-//					// AlertDialog.Builder(SpotSelection.this).setMessage(Util.getStackTrace(exception)).setTitle(
-//					// "Fatal Error.").setCancelable(false).show();
-//					//
-//					// }
-//
-//				}
-//			}
-//		};
-//		parseThread.start();
-//	}
+	// private void parseXML()
+	// {
+	// final String networkName = IOUtils.getNetworkName(this);
+	//
+	// // final ProgressDialog progress = ProgressDialog.show(this,
+	//
+	// final ProgressDialog dialog = new ProgressDialog(this);
+	// dialog.setTitle("Bitte Warten");
+	// dialog
+	// .setMessage("Lese Daten über "
+	// + networkName
+	// +
+	// ".\nDanach wir die Datenbank aktualisiert.\nJe nach Verbindung kann dies etwas Zeit in anspruch nehmen. ");
+	// dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+	// dialog.show();
+	// dialog.setMax(1);
+	//
+	// final IProgress progress = new ProgressDialogAdapter(dialog);
+	//
+	// final Thread parseThread = new Thread("Parse XML")
+	// {
+	// @Override
+	// public final void run()
+	// {
+	// boolean isFailure = false;
+	// Throwable exception = null;
+	// if (Log.isLoggable(LOG_TAG, Log.DEBUG))
+	// {
+	// Log.d(LOG_TAG, "Parsing Thread started.");
+	// }
+	// try
+	// {
+	// if (WindUtils.isStationListUpdateAvailable(SpotSelection.this))
+	// {
+	// WindUtils.updateStationList(SpotSelection.this);
+	// }
+	//
+	// final XMLParseTask task = new XMLParseTask(new
+	// URI(IOUtils.stationsXMLFilePath));
+	// task.execute(SpotSelection.this);
+	//
+	// dialog.setMax(task.getNrOfStations());
+	//
+	// final Database database = new Database(SpotSelection.this);
+	// final SpotImpl updater = new SpotImpl(database, progress);
+	// updater.update();
+	//
+	// handler.post(populateParsingResults(Continent.values(),
+	// Continent.AFRICA.getCoutrys(),
+	// Continent.AFRICA.getCoutrys()[0].getRegions()));
+	//
+	// }
+	// catch (final Exception e)
+	// {
+	// isFailure = true;
+	// exception = e;
+	// Log.e(LOG_TAG, "Failed to parse xml.", e);
+	//
+	// }
+	// finally
+	// {
+	// if (Log.isLoggable(LOG_TAG, Log.DEBUG))
+	// {
+	// Log.d(LOG_TAG, "Parsing Thread ended.");
+	// }
+	// dialog.dismiss();
+	//
+	// // if (isFailure)
+	// // {
+	// //
+	// // new
+	// //
+	// AlertDialog.Builder(SpotSelection.this).setMessage(Util.getStackTrace(exception)).setTitle(
+	// // "Fatal Error.").setCancelable(false).show();
+	// //
+	// // }
+	//
+	// }
+	// }
+	// };
+	// parseThread.start();
+	// }
 
-	private Runnable populateParsingResults(final Continent[] continents, final Country[] countrys,
-			final Region[] regions)
+	private Runnable populateParsingResults()
 	{
 		final Runnable runnable = new Runnable()
 		{
 			@Override
 			public void run()
 			{
+				final IContinentDAO dao = DAOFactory.getContinentDAO(SpotSelection.this);
+				final Cursor c = dao.fetchAll();
+				startManagingCursor(c);
+				final String[] from = new String[]
+				{ "id", "name" };
+				final int[] to = new int[]
+				{ android.R.id.text1, android.R.id.text2 };
+				final SimpleCursorAdapter shows = new SimpleCursorAdapter(SpotSelection.this,
+						android.R.layout.simple_spinner_item, c, from, to);
+
 				final Spinner continentSpinner = (Spinner) findViewById(R.id.continentSpinner);
-				final ArrayAdapter<Continent> continentAdapter = new ArrayAdapter<Continent>(SpotSelection.this,
-						android.R.layout.simple_spinner_item, continents);
-				continentAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-				continentSpinner.setAdapter(continentAdapter);
+				shows.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+				continentSpinner.setAdapter(shows);
 				continentSpinner.setOnItemSelectedListener(createContinentListener());
 
-				final SharedPreferences pref = Util.getSharedPreferences(SpotSelection.this);
-				final String continentID = Util.getSelectedContinentID(pref);
-				final int index = IdentityUtil.indexOf(continentID, continents);
-				continentSpinner.setSelection(index);
+				// Country
+				
 
-				final Spinner coutrySpinner = (Spinner) findViewById(R.id.countrySpinner);
-				final ArrayAdapter<Country> coutryAdapter = new ArrayAdapter<Country>(SpotSelection.this,
-						android.R.layout.simple_spinner_item, countrys);
-				coutryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-				coutrySpinner.setAdapter(coutryAdapter);
-				coutrySpinner.setOnItemSelectedListener(createCountryListener());
+				// final ICountryDAO dao =
+				// DAOFactory.getCountryDAO(SpotSelection.this);
+				// final Cursor c = dao.fetchAll();
+				// startManagingCursor(c);
+				// final String[] from = new String[]
+				// { "id", "name" };
+				// final int[] to = new int[]
+				// { android.R.id.text1, android.R.id.text2 };
+				// final SimpleCursorAdapter shows = new
+				// SimpleCursorAdapter(SpotSelection.this,
+				// android.R.layout.simple_spinner_item, c, from, to);
+				//
+				// final Spinner continentSpinner = (Spinner)
+				// findViewById(R.id.continentSpinner);
+				// shows.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+				// continentSpinner.setAdapter(shows);
+				// continentSpinner.setOnItemSelectedListener(createContinentListener());
+				
+				
+				
+				
+				// final SharedPreferences pref =
+				// Util.getSharedPreferences(SpotSelection.this);
+				// final String continentID = Util.getSelectedContinentID(pref);
+				// final int index = IdentityUtil.indexOf(continentID,
+				// continents);
+				// continentSpinner.setSelection(index);
 
-				final Spinner regionSpinner = (Spinner) findViewById(R.id.regionSpinner);
-				final ArrayAdapter<Region> regionAdapter = new ArrayAdapter<Region>(SpotSelection.this,
-						android.R.layout.simple_spinner_item, regions);
-				regionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-				regionSpinner.setAdapter(regionAdapter);
-				regionSpinner.setOnItemSelectedListener(createRegionListener());
+				// final Spinner continentSpinner = (Spinner)
+				// findViewById(R.id.continentSpinner);
+				// final ArrayAdapter<Continent> continentAdapter = new
+				// ArrayAdapter<Continent>(SpotSelection.this,
+				// android.R.layout.simple_spinner_item, continents);
+				// continentAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+				// continentSpinner.setAdapter(continentAdapter);
+				// continentSpinner.setOnItemSelectedListener(createContinentListener());
+				//
+				// final SharedPreferences pref =
+				// Util.getSharedPreferences(SpotSelection.this);
+				// final String continentID = Util.getSelectedContinentID(pref);
+				// final int index = IdentityUtil.indexOf(continentID,
+				// continents);
+				// continentSpinner.setSelection(index);
+
+				// final Spinner coutrySpinner = (Spinner)
+				// findViewById(R.id.countrySpinner);
+				// final ArrayAdapter<Country> coutryAdapter = new
+				// ArrayAdapter<Country>(SpotSelection.this,
+				// android.R.layout.simple_spinner_item, countrys);
+				// coutryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+				// coutrySpinner.setAdapter(coutryAdapter);
+				// coutrySpinner.setOnItemSelectedListener(createCountryListener());
+				//
+				// final Spinner regionSpinner = (Spinner)
+				// findViewById(R.id.regionSpinner);
+				// final ArrayAdapter<Region> regionAdapter = new
+				// ArrayAdapter<Region>(SpotSelection.this,
+				// android.R.layout.simple_spinner_item, regions);
+				// regionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+				// regionSpinner.setAdapter(regionAdapter);
+				// regionSpinner.setOnItemSelectedListener(createRegionListener());
 			}
 		};
 		return runnable;
@@ -218,10 +275,18 @@ public class SpotSelection extends Activity
 					final long id)
 			{
 				final Spinner spinner = (Spinner) findViewById(R.id.countrySpinner);
-				final Continent selectedContinent = (Continent) parent.getSelectedItem();
-				final ArrayAdapter<Country> coutryAdapter = new ArrayAdapter<Country>(SpotSelection.this,
-						android.R.layout.simple_spinner_item, selectedContinent.getCoutrys());
-				updateSpinner(spinner, coutryAdapter);
+				Log.d(LOG_TAG, "Selected getSelectedItem  : " + parent.getSelectedItem());
+				Log.d(LOG_TAG, "Selected getSelectedItemId: " + parent.getSelectedItemId());
+				Log.d(LOG_TAG, "position                  : " + position);
+				Log.d(LOG_TAG, "Id                        : " + id);
+
+				// final Continent selectedContinent = (Continent)
+				// parent.getSelectedItem();
+				// final ArrayAdapter<Country> coutryAdapter = new
+				// ArrayAdapter<Country>(SpotSelection.this,
+				// android.R.layout.simple_spinner_item,
+				// selectedContinent.getCoutrys());
+				// updateSpinner(spinner, coutryAdapter);
 			}
 
 			@Override

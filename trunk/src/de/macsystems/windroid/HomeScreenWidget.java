@@ -9,7 +9,7 @@ import android.widget.RemoteViews;
 
 /**
  * 
- * @author mac
+ * @author Jens Hohl
  * @version $Id$
  */
 public class HomeScreenWidget extends AppWidgetProvider

@@ -38,11 +38,11 @@ public class Region implements IdentifyAble
 
 	private final Set<Station> stations = new TreeSet<Station>(new Station.StationComparator());
 
-	public Region(final String _regionID, final String _name)
+	public Region(final String _regionID, final String _name) throws NullPointerException
 	{
 		if (_regionID == null || _name == null)
 		{
-			throw new NullPointerException();
+			throw new NullPointerException("parameters");
 		}
 
 		id = _regionID;

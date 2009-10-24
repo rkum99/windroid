@@ -8,7 +8,7 @@ import android.util.Log;
 
 /**
  * 
- * @author mac
+ * @author Jens Hohl
  * @version $Id$
  */
 public class HomeScreenConfigure extends Activity

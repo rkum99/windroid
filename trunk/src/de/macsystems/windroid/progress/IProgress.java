@@ -3,7 +3,7 @@ package de.macsystems.windroid.progress;
 /**
  * Interface to report progress
  * 
- * @author mac
+ * @author Jens Hohl
  * @version $Id$
  */
 public interface IProgress

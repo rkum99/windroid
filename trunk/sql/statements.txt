@@ -5,6 +5,7 @@ select * from continent;
 select * from region;
 select * from country;
 elect * from spot;
+select * from selected;
 
 select * from spot where spotid like 'nl%';
 

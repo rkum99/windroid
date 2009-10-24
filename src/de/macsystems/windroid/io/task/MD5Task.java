@@ -14,7 +14,7 @@ import de.macsystems.windroid.progress.IProgress;
 /**
  * IO Task which returns MD5 Checksum on Server
  * 
- * @author mac
+ * @author Jens Hohl
  * @version $Id$
  */
 public class MD5Task extends IOTask<String, InputStream>

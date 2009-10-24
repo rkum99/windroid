@@ -4,7 +4,7 @@ import android.database.Cursor;
 import de.macsystems.windroid.SpotConfigurationVO;
 
 /**
- * @author mac
+ * @author Jens Hohl
  * @version $Id$
  */
 public interface ISelectedDAO

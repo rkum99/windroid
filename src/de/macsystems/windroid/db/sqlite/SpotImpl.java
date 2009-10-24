@@ -1,4 +1,4 @@
-package de.macsystems.windroid.db;
+package de.macsystems.windroid.db.sqlite;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -8,6 +8,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
+import de.macsystems.windroid.db.ISpotDAO;
 import de.macsystems.windroid.identifyable.Continent;
 import de.macsystems.windroid.identifyable.Country;
 import de.macsystems.windroid.identifyable.Region;
@@ -17,63 +18,41 @@ import de.macsystems.windroid.progress.IProgress;
 
 /**
  * 
- * @author mac
+ * @author Jens Hohl
  * @version $Id$
  */
-public class SpotDAO implements ISpotDAO
+public class SpotImpl extends BaseImpl implements ISpotDAO
 {
-	final Database database;
-	final IProgress progress;
 
-	// final SQLiteStatement insertStatement;
-	// final SQLiteStatement insertTest;
-
-	final static String LOG_TAG = SpotDAO.class.getSimpleName();
-
-	// ("CREATE TABLE IF NOT EXISTS spot (id INTEGER PRIMARY KEY AUTOINCREMENT,
-	// spotid TEXT NOT NULL, continentid INTEGER, countryid INTEGER,
-	// regionid INTEGER, name TEXT NOT NULL, keyword TEXT not null,
-	// superforecast BOOLEAN, forecast BOOLEAN, statistic BOOLEAN, wavereport
-	// BOOLEAN, waveforecast BOOLEAN)");
+	final static String LOG_TAG = SpotImpl.class.getSimpleName();
 
 	private final static String INSERT_SPOT = "INSERT INTO spot "
-			+ "(spotid,continentid,regionid,name,keyword,superforecast,forecast,statistic,wavereport,waveforecast) "
-			+ "values (?,?,?,?,?,?,?,?,?,?);";
+			+ "(spotid,continentid,countryid,regionid,name,keyword,superforecast,forecast,statistic,wavereport,waveforecast) "
+			+ "values (?,?,?,?,?,?,?,?,?,?,?);";
 
 	private final static String INSERT_CONTINENT = "INSERT INTO continent (id,name) values (?,?);";
 	private final static String INSERT_REGION = "INSERT INTO region (id,name) values (?,?);";
-	private final static String INSERT_COUNTRY = "INSERT INTO country (id,name) values (?,?);";
-
-	// private final static String INSERT_SPOT = "INSERT_SPOT INTO spot "
-	// +
-	// "(spotid,continentid,regionid,name,keyword,superforecast,forecast,statistic,wavereport,waveforecast) "
-	// + "values (?,?,?,?,?,?,?,?,?,?);";
-
-	// private final static String INSERT_TEST =
-	// "INSERT_SPOT INTO test (id,name)  values (?,?);";
+	private final static String INSERT_COUNTRY = "INSERT INTO country (id,name,continentid) values (?,?,?);";
 
 	/**
 	 * 
 	 * @param _database
 	 * @throws NullPointerException
 	 */
-	public SpotDAO(final Database _database, final IProgress _progress) throws NullPointerException
+	public SpotImpl(final Database _database) throws NullPointerException
 	{
-		if (_database == null)
-		{
-			throw new NullPointerException();
-		}
-		if (_progress == null)
-		{
-			throw new NullPointerException();
-		}
+		super(_database);
+	}
 
-		database = _database;
-		progress = _progress;
-		// insertStatement =
-		// database.getWritableDatabase().compileStatement(INSERT_SPOT);
-		// insertTest =
-		// database.getWritableDatabase().compileStatement(INSERT_TEST);
+	/**
+	 * 
+	 * @param _database
+	 * @param _progress
+	 * @throws NullPointerException
+	 */
+	public SpotImpl(final Database _database, final IProgress _progress) throws NullPointerException
+	{
+		super(_database, _progress);
 	}
 
 	public static final int convertBooleanToInt(final boolean _boolean)
@@ -83,7 +62,7 @@ public class SpotDAO implements ISpotDAO
 
 	protected void clearAllSpots()
 	{
-		final SQLiteDatabase db = database.getWritableDatabase();
+		final SQLiteDatabase db = getDatabase().getWritableDatabase();
 		db.beginTransaction();
 
 		try
@@ -104,6 +83,7 @@ public class SpotDAO implements ISpotDAO
 		{
 			db.endTransaction();
 			IOUtils.close(db);
+			Log.d(LOG_TAG, "clearAllSpots finished.");
 		}
 
 	}
@@ -115,8 +95,10 @@ public class SpotDAO implements ISpotDAO
 	 */
 	public void insertSpots()
 	{
+
 		clearAllSpots();
-		final SQLiteDatabase db = database.getWritableDatabase();
+		Log.d(LOG_TAG, "executeInsert");
+		final SQLiteDatabase db = getDatabase().getWritableDatabase();
 		final SQLiteStatement insertSpotStatement = db.compileStatement(INSERT_SPOT);
 		final SQLiteStatement insertContinentStatement = db.compileStatement(INSERT_CONTINENT);
 		final SQLiteStatement insertCountryStatement = db.compileStatement(INSERT_COUNTRY);
@@ -124,9 +106,8 @@ public class SpotDAO implements ISpotDAO
 
 		if (!Continent.isParsed())
 		{
-			throw new IllegalStateException("Please parse Continents");
+			throw new IllegalStateException("Please parse Continents first.");
 		}
-		Log.d(LOG_TAG, "executeInsert");
 
 		final long start = System.currentTimeMillis();
 		db.beginTransaction();
@@ -142,7 +123,7 @@ public class SpotDAO implements ISpotDAO
 				while (countrys.hasNext())
 				{
 					final Country country = countrys.next();
-					updateCountryTable(insertCountryStatement, country);
+					updateCountryTable(insertCountryStatement, country, continent);
 					insertCountryStatement.executeInsert();
 
 					final Iterator<Region> regions = country.iterator();
@@ -160,7 +141,7 @@ public class SpotDAO implements ISpotDAO
 							index++;
 							if (index % 100 == 0)
 							{
-								progress.incrementBy(100);
+								getProgress().incrementBy(100);
 							}
 						}
 					}
@@ -178,15 +159,17 @@ public class SpotDAO implements ISpotDAO
 
 			IOUtils.close(db);
 			final long time = System.currentTimeMillis() - start;
-			Log.d(LOG_TAG, "Insert took " + time + " ms");
+			Log.d(LOG_TAG, "Insert finished. Time " + time + " ms");
 		}
 
 	}
 
-	private final static void updateCountryTable(final SQLiteStatement insertStatement, final Country country)
+	private final static void updateCountryTable(final SQLiteStatement insertStatement, final Country country,
+			final Continent continent)
 	{
 		insertStatement.bindString(1, country.getId());
 		insertStatement.bindString(2, country.getName());
+		insertStatement.bindString(3, continent.getId());
 	}
 
 	private final static void updateRegionTable(final SQLiteStatement insertStatement, final Region region)
@@ -223,16 +206,25 @@ public class SpotDAO implements ISpotDAO
 	private final static void updateSpotTable(final SQLiteStatement insertStatement, final Continent continent,
 			final Country country, final Region region, final Station station)
 	{
-		insertStatement.bindString(1, station.getId());
-		insertStatement.bindString(2, continent.getId());
-		insertStatement.bindString(3, country.getId());
-		insertStatement.bindString(4, region.getId());
-		insertStatement.bindString(5, station.getName());
-		insertStatement.bindString(6, station.getKeyword());
+
+		final String spotID = station.getId();
+		final String continentID = continent.getId();
+		final String countryID = country.getId();
+		final String regionID = region.getId();
+		final String name = station.getName();
+		final String keyword = station.getKeyword();
+
+		insertStatement.bindString(1, spotID);
+		insertStatement.bindString(2, continentID);
+		insertStatement.bindString(3, countryID);
+		insertStatement.bindString(4, regionID);
+		insertStatement.bindString(5, name);
+		insertStatement.bindString(6, keyword);
 		insertStatement.bindLong(7, convertBooleanToInt(station.hasSuperforecast()));
-		insertStatement.bindLong(8, 0);
-		insertStatement.bindLong(9, 0);
-		insertStatement.bindLong(10, 0);
+		insertStatement.bindLong(8, convertBooleanToInt(station.hasForecast()));
+		insertStatement.bindLong(9, convertBooleanToInt(station.hasStatistic()));
+		insertStatement.bindLong(10, convertBooleanToInt(station.hasWaveReport()));
+		insertStatement.bindLong(11, convertBooleanToInt(station.hasWaveforecast()));
 	}
 
 	/*
@@ -243,7 +235,7 @@ public class SpotDAO implements ISpotDAO
 	@Override
 	public boolean hasSpots()
 	{
-		final SQLiteDatabase db = database.getReadableDatabase();
+		final SQLiteDatabase db = getDatabase().getReadableDatabase();
 		Cursor c = null;
 		try
 		{

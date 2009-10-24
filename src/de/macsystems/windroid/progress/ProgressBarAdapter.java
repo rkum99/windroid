@@ -5,7 +5,7 @@ import android.widget.ProgressBar;
 /**
  * Adapter for ProgressBar
  * 
- * @author mac
+ * @author Jens Hohl
  * @version $Id$
  */
 public class ProgressBarAdapter implements IProgress

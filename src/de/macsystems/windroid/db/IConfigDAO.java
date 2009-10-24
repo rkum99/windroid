@@ -2,14 +2,14 @@ package de.macsystems.windroid.db;
 
 /**
  * 
- * @author mac
+ * @author Jens Hohl
  * @version $Id$
  */
 public interface IConfigDAO
 {
 
-	public abstract String getDatabaseStatus();
+	public abstract String getStatus();
 
-	public abstract boolean setDatabaseStatus(final String status);
+	public abstract boolean setStatus(final String _status);
 
 }

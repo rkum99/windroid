@@ -31,12 +31,11 @@ import android.widget.CompoundButton;
 import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import de.macsystems.windroid.alarm.AlarmDetail;
-import de.macsystems.windroid.db.Database;
+import de.macsystems.windroid.db.DAOFactory;
 import de.macsystems.windroid.db.ISpotDAO;
-import de.macsystems.windroid.db.SpotDAO;
+import de.macsystems.windroid.db.sqlite.Database;
 import de.macsystems.windroid.forecast.SpotOverview;
 import de.macsystems.windroid.io.IOUtils;
-import de.macsystems.windroid.progress.NullProgressAdapter;
 import de.macsystems.windroid.proxy.SpotServiceConnection;
 
 /**
@@ -365,11 +364,10 @@ public class Main extends Activity
 	 * Launches {@link DownloadActivity} Activity or the {@link SpotSelection}
 	 * Activity which depends on database
 	 * 
-	 * @param _spotsfound
 	 */
 	private void launchSetupOrSpotSelectionActivity()
 	{
-		final ISpotDAO dao = new SpotDAO(new Database(Main.this), NullProgressAdapter.INSTANCE);
+		final ISpotDAO dao = DAOFactory.getSpotDAO(Main.this);
 		final boolean spotsfound = dao.hasSpots();
 
 		final SpotConfigurationVO spotConfigurationVO = new SpotConfigurationVO();
@@ -387,8 +385,8 @@ public class Main extends Activity
 		else
 		{
 			/**
-			 * If user wants to configure a Spot we create an Transport Object
-			 * to collect all properties
+			 * Start Download of Database first, then user can configure a spot
+			 * using Transport Objectto collect all properties.
 			 */
 			final Intent intent = new Intent(Main.this, DownloadActivity.class);
 			intent.putExtra(IntentConstants.SPOT_TO_CONFIGURE, spotConfigurationVO);

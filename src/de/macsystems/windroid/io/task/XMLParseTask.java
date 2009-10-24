@@ -15,8 +15,11 @@ import de.macsystems.windroid.parser.StationHandler;
 import de.macsystems.windroid.progress.IProgress;
 
 /**
- * XML 
- * @author mac
+ * XML Parse Task
+ * 
+ * 
+ * 
+ * @author Jens Hohl
  * @version $Id$
  */
 public class XMLParseTask extends IOTask<Integer, InputStream>

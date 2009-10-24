@@ -15,7 +15,7 @@ import de.macsystems.windroid.progress.NullProgressAdapter;
 /**
  * Callable which will update the current forecast of a spot.
  * 
- * @author mac
+ * @author Jens Hohl
  * @version $Id$
  * 
  */

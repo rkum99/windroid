@@ -2,7 +2,7 @@ package de.macsystems.windroid.db;
 
 /**
  * 
- * @author mac
+ * @author Jens Hohl
  * @version $Id$
  */
 public interface ISpotDAO

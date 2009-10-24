@@ -8,7 +8,7 @@ import de.macsystems.windroid.io.RetryLaterException;
 /**
  * Interface for io tasks.
  * 
- * @author mac
+ * @author Jens Hohl
  * @version $Id$
  */
 public interface Task<V, I>

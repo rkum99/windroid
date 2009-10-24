@@ -1,23 +1,34 @@
-package de.macsystems.windroid.db;
+package de.macsystems.windroid.db.sqlite;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import de.macsystems.windroid.SpotConfigurationVO;
+import de.macsystems.windroid.db.ISelectedDAO;
+import de.macsystems.windroid.progress.IProgress;
 
 /**
- * @author mac
+ * @author Jens Hohl
  * @version $Id$
  */
-public class SelectedDAO implements ISelectedDAO
+public class SelectedImpl extends BaseImpl implements ISelectedDAO
 {
-	private final Database database;
+	/**
+	 * 
+	 * @param _database
+	 */
+	public SelectedImpl(final Database _database)
+	{
+		super(_database);
+	}
 
 	/**
 	 * 
+	 * @param _database
+	 * @param _progress
 	 */
-	public SelectedDAO(final Database _database)
+	public SelectedImpl(final Database _database, final IProgress _progress)
 	{
-		database = _database;
+		super(_database, _progress);
 	}
 
 	/*
@@ -28,8 +39,8 @@ public class SelectedDAO implements ISelectedDAO
 	@Override
 	public Cursor fetchAll()
 	{
-		final SQLiteDatabase db = database.getReadableDatabase();
-		return db.rawQuery("select * from selected", null);
+		final SQLiteDatabase db = getDatabase().getReadableDatabase();
+		return db.rawQuery("SELECT * FROM selected", null);
 	}
 
 	/*
@@ -51,7 +62,7 @@ public class SelectedDAO implements ISelectedDAO
 	 * .SpotConfigurationVO)
 	 */
 	@Override
-	public void insertSpot(SpotConfigurationVO _vo)
+	public void insertSpot(final SpotConfigurationVO _vo)
 	{
 		throw new UnsupportedOperationException();
 	}

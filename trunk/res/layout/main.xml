@@ -79,6 +79,13 @@
 					android:layout_height="wrap_content"
 					android:enabled="false" />
 
+				<TextView
+					android:id="@+id/welcome_database_size"
+					android:gravity="center_horizontal"
+					android:text="@string/welcome_database_size"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content" />
+
 			</LinearLayout>
 		</LinearLayout>
 	</ScrollView>

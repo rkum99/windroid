@@ -6,43 +6,43 @@
 <PreferenceScreen
 	xmlns:android="http://schemas.android.com/apk/res/android">
 	<PreferenceCategory
-		android:title="Bevorzugte Einstellungen">
+		android:title="@string/preferences_preferred_setting_title">
 		<ListPreference
 			android:entries="@array/unit_names"
 			android:entryValues="@array/unit_ids"
 			android:key="preferred_unit"
-			android:title="Einheiten"
-			android:summary="Wählen Sie ihre bevorzugte Windeinheit" />
+			android:title="@string/preferences_preferred_units_title"
+			android:summary="@string/preferences_preferred_units_summary" />
 		<ListPreference
 			android:entries="@array/continent_names"
 			android:entryValues="@array/continent_ids"
-			android:key="preferred_continent"
+			android:key="@string/preferences_preferred_continent_title"
 			android:title="Kontinent"
-			android:summary="Wählen Sie ihren bevorzugten Kontinent" />
+			android:summary="@string/preferences_preferred_continent_summary" />
 	</PreferenceCategory>
 	<PreferenceCategory
-		android:title="Sonstiges">
+		android:title="@string/preferences_miscellaneous_title">
 		<CheckBoxPreference
 			android:key="launch_on_boot"
-			android:summary="Starte selbständig nach dem Booten"
-			android:title="Autostart"
+			android:summary="@string/preferences_miscellaneous_launch_on_boot_summary"
+			android:title="@string/preferences_miscellaneous_launch_on_boot_title"
 			android:defaultValue="true" />
 		<CheckBoxPreference
 			android:key="update_while_roaming"
-			android:summary="Überprüfe Alarme bei Roaming"
-			android:title="Roaming"
+			android:summary="@string/preferences_miscellaneous_update_while_roaming_summary"
+			android:title="@string/preferences_miscellaneous_update_while_roaming_title"
 			android:defaultValue="false" />
 
 		<CheckBoxPreference
 			android:key="vibrate_on_alarm"
-			android:summary="Wärend Alarms Vibrieren"
-			android:title="Vibration"
+			android:summary="@string/preferences_miscellaneous_vibrate_on_alarm_summary"
+			android:title="@string/preferences_miscellaneous_vibrate_on_alarm_title"
 			android:defaultValue="false" />
 
 		<CheckBoxPreference
 			android:key="music_on_alarm"
-			android:summary="Wärend Alarms Audio abspielen"
-			android:title="Audio Alarm"
+			android:summary="@string/preferences_miscellaneous_music_on_alarm_summary"
+			android:title="@string/preferences_miscellaneous_music_on_alarm_title"
 			android:defaultValue="false" />
 
 		<RingtonePreference
@@ -54,8 +54,8 @@
 
 		<CheckBoxPreference
 			android:key="warn_when_update_failed"
-			android:summary="Alarm wenn Update fehlschlägt"
-			android:title="Update Alarm"
+			android:summary="@string/preferences_miscellaneous_warn_when_update_failed_summary"
+			android:title="@string/preferences_miscellaneous_warn_when_update_failed_title"
 			android:defaultValue="false" />
 	</PreferenceCategory>
 </PreferenceScreen>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string
+		name="preferences_preferred_setting_title">Bevorzugte Einstellungen</string>
+
+	<string
+		name="preferences_preferred_units_title">Einheiten</string>
+	<string
+		name="preferences_preferred_units_summary">Wählen Sie ihre bevorzugte Windeinheit</string>
+
+	<string
+		name="preferences_preferred_continent_title">Einheiten</string>
+	<string
+		name="preferences_preferred_continent_summary">Wählen Sie ihre bevorzugte Windeinheit</string>
+
+	<string
+		name="preferences_miscellaneous_title">Sonstiges</string>
+	<string
+		name="preferences_miscellaneous_update_while_roaming_title">Roaming</string>
+	<string
+		name="preferences_miscellaneous_update_while_roaming_summary">
+		Überprüfe Alarme bei Roaming</string>
+	<string
+		name="preferences_miscellaneous_vibrate_on_alarm_summary">Wärend Alarms Vibrieren</string>
+	<string
+		name="preferences_miscellaneous_vibrate_on_alarm_title">Vibration</string>
+	<string
+		name="preferences_miscellaneous_music_on_alarm_title">Audio Alarm</string>
+	<string
+		name="preferences_miscellaneous_alarmtone_title">Alarm</string>
+	<string
+		name="preferences_miscellaneous_music_on_alarm_summary">Wärend Alarms Audio abspielen</string>
+	<string
+		name="preferences_miscellaneous_alarmtone_summary">Alarm Ton auswählen</string>
+	<string
+		name="preferences_miscellaneous_warn_when_update_failed_summary">Alarm wenn Update fehlschlägt</string>
+	<string
+		name="preferences_miscellaneous_warn_when_update_failed_title">Update Alarm</string>
+<string name="preferences_miscellaneous_launch_on_boot_title">Autostart</string>
+<string name="preferences_miscellaneous_launch_on_boot_summary">Starte selbständig nach dem Booten</string>
+</resources>

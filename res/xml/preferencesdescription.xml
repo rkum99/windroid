@@ -47,10 +47,10 @@
 
 		<RingtonePreference
 			android:key="alarmtone"
-			android:title="Alarm"
+			android:title="@string/preferences_miscellaneous_alarmtone_title"
 			android:showDefault="true"
 			android:showSilent="false"
-			android:summary="Alarm Ton auswählen" />
+			android:summary="@string/preferences_miscellaneous_alarmtone_summary" />
 
 		<CheckBoxPreference
 			android:key="warn_when_update_failed"

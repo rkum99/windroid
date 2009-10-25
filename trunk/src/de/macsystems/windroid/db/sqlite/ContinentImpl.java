@@ -14,6 +14,10 @@ import de.macsystems.windroid.progress.IProgress;
  */
 public class ContinentImpl extends BaseImpl implements IContinentDAO
 {
+	/**
+	 * 
+	 * @param database
+	 */
 	public ContinentImpl(final Database database)
 	{
 		super(database);
@@ -37,7 +41,7 @@ public class ContinentImpl extends BaseImpl implements IContinentDAO
 	@Override
 	public Cursor fetchAll()
 	{
-		final SQLiteDatabase db = getDatabase().getReadableDatabase();
+		final SQLiteDatabase db = getReadableDatabase();
 		return db.rawQuery("SELECT * FROM CONTINENT", null);
 	}
 
@@ -52,4 +56,36 @@ public class ContinentImpl extends BaseImpl implements IContinentDAO
 		throw new UnsupportedOperationException();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.macsystems.windroid.db.IContinentDAO#getIndexByID(java.lang.String)
+	 */
+	@Override
+	public int getIndexByID(String _id)
+	{
+
+		int result = -1;
+		final SQLiteDatabase db = getReadableDatabase();
+		Cursor cursor = null;
+		try
+		{
+			cursor = db.query("CONTINENT", null, "id=?", new String[]
+			{ _id }, null, null, null);
+			if (!cursor.moveToFirst())
+			{
+				return -1;
+			}
+			final int index = cursor.getColumnIndexOrThrow("_id");
+			result = cursor.getInt(index);
+			return result;
+
+		}
+		finally
+		{
+			cursor.close();
+		}
+
+	}
 }

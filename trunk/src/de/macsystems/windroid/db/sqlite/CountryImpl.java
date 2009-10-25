@@ -34,22 +34,26 @@ public class CountryImpl extends BaseImpl implements ICountryDAO
 	@Override
 	public Cursor fetchAll()
 	{
-		final SQLiteDatabase db = getDatabase().getReadableDatabase();
+		final SQLiteDatabase db = getReadableDatabase();
 		return db.rawQuery("SELECT * from country", null);
 	}
 
 	@Override
-	public Cursor fetchByContinentID(String id)
+	public Cursor fetchByContinentID(String _id)
 	{
-		final SQLiteDatabase db = getDatabase().getReadableDatabase();
-		return db.rawQuery("SELECT * from country ", null);
+		if (_id == null)
+		{
+			throw new IllegalArgumentException("id");
+		}
+		final SQLiteDatabase db = getReadableDatabase();
+		return db.query("country", null, "continentid=?", new String[]
+		{ _id }, null, null, null);
 	}
 
 	@Override
 	public int getSize()
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		return getCount("country");
 	}
 
 }

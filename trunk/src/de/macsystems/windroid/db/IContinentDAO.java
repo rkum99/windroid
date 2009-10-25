@@ -25,4 +25,12 @@ public interface IContinentDAO
 	 * @return
 	 */
 	public Continent get(final int id);
+
+	/**
+	 * Returns index of continent by its continent id
+	 * 
+	 * @param _id
+	 * @return
+	 */
+	public int getIndexByID(final String _id);
 }

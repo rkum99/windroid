@@ -9,7 +9,7 @@ import de.macsystems.windroid.progress.IProgress;
  * DAO for table 'country'
  * 
  * @author mac
- * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
+ * @version $Id$
  */
 public class CountryImpl extends BaseImpl implements ICountryDAO
 {
@@ -20,7 +20,7 @@ public class CountryImpl extends BaseImpl implements ICountryDAO
 	 */
 	public CountryImpl(Database database, IProgress progress)
 	{
-		super(database, progress);
+		super(database, "region", progress);
 	}
 
 	/**
@@ -28,7 +28,7 @@ public class CountryImpl extends BaseImpl implements ICountryDAO
 	 */
 	public CountryImpl(Database database)
 	{
-		super(database);
+		super(database, "region");
 	}
 
 	@Override

@@ -21,7 +21,7 @@ public class ConfigImpl extends BaseImpl implements IConfigDAO
 	 */
 	public ConfigImpl(final Database _database)
 	{
-		super(_database);
+		super(_database, "config");
 	}
 
 	/**
@@ -31,7 +31,7 @@ public class ConfigImpl extends BaseImpl implements IConfigDAO
 	 */
 	public ConfigImpl(final Database _database, final IProgress _progress)
 	{
-		super(_database, _progress);
+		super(_database, "config", _progress);
 	}
 
 	/*

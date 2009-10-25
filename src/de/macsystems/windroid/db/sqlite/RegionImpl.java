@@ -10,7 +10,7 @@ import de.macsystems.windroid.progress.IProgress;
  * DAO for table 'region'
  * 
  * @author mac
- * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
+ * @version $Id$
  */
 public class RegionImpl extends BaseImpl implements IRegionDAO
 {
@@ -21,7 +21,7 @@ public class RegionImpl extends BaseImpl implements IRegionDAO
 	 */
 	public RegionImpl(final Database database, final IProgress progress)
 	{
-		super(database, progress);
+		super(database, "region", progress);
 	}
 
 	/**
@@ -29,7 +29,7 @@ public class RegionImpl extends BaseImpl implements IRegionDAO
 	 */
 	public RegionImpl(final Database database)
 	{
-		super(database);
+		super(database, "region");
 	}
 
 	/*

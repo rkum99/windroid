@@ -18,7 +18,7 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 	 */
 	public SelectedImpl(final Database _database)
 	{
-		super(_database);
+		super(_database, "selected");
 	}
 
 	/**
@@ -28,7 +28,7 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 	 */
 	public SelectedImpl(final Database _database, final IProgress _progress)
 	{
-		super(_database, _progress);
+		super(_database, "selected", _progress);
 	}
 
 	/*
@@ -46,10 +46,10 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see de.macsystems.windroid.db.ISelectedDAO#fetchSize()
+	 * @see de.macsystems.windroid.db.IDAO#getSize()
 	 */
 	@Override
-	public int fetchSize()
+	public int getSize()
 	{
 		throw new UnsupportedOperationException();
 	}

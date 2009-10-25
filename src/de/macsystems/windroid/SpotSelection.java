@@ -20,7 +20,6 @@ import de.macsystems.windroid.db.ICountryDAO;
 import de.macsystems.windroid.db.IRegionDAO;
 import de.macsystems.windroid.identifyable.Continent;
 import de.macsystems.windroid.identifyable.Country;
-import de.macsystems.windroid.identifyable.IdentityUtil;
 import de.macsystems.windroid.identifyable.Region;
 import de.macsystems.windroid.identifyable.Station;
 

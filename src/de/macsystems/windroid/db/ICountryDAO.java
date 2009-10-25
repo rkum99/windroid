@@ -6,20 +6,8 @@ import android.database.Cursor;
  * @author mac
  * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
  */
-public interface ICountryDAO
+public interface ICountryDAO extends IDAO
 {
-	/**
-	 * 
-	 * @return
-	 */
-	public Cursor fetchAll();
-
-	/**
-	 * 
-	 * @return
-	 */
-	public int getSize();
-
 	/**
 	 * 
 	 * @param id

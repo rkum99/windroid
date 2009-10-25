@@ -5,11 +5,11 @@ package de.macsystems.windroid.db;
  * @author Jens Hohl
  * @version $Id$
  */
-public interface IConfigDAO
+public interface IConfigDAO extends IDAO
 {
 
-	public abstract String getStatus();
+	public String getStatus();
 
-	public abstract boolean setStatus(final String _status);
+	public boolean setStatus(final String _status);
 
 }

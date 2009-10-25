@@ -12,7 +12,7 @@ import de.macsystems.windroid.progress.NullProgressAdapter;
 
 /**
  * @author Jens Hohl
- * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
+ * @version $Id$
  */
 public final class DAOFactory
 {

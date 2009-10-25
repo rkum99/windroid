@@ -1,9 +1,7 @@
 package de.macsystems.windroid.db.sqlite;
 
-import java.util.Arrays;
 import java.util.Iterator;
 
-import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
@@ -31,8 +29,8 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 			+ "values (?,?,?,?,?,?,?,?,?,?,?);";
 
 	private final static String INSERT_CONTINENT = "INSERT INTO continent (id,name) values (?,?);";
-	private final static String INSERT_REGION = "INSERT INTO region (id,name) values (?,?);";
 	private final static String INSERT_COUNTRY = "INSERT INTO country (id,name,continentid) values (?,?,?);";
+	private final static String INSERT_REGION = "INSERT INTO region (id,name,countryid) values (?,?,?);";
 
 	/**
 	 * 
@@ -62,7 +60,7 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 
 	protected void clearAllSpots()
 	{
-		final SQLiteDatabase db = getDatabase().getWritableDatabase();
+		final SQLiteDatabase db = getWritableDatabase();
 		db.beginTransaction();
 
 		try
@@ -98,7 +96,7 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 
 		clearAllSpots();
 		Log.d(LOG_TAG, "executeInsert");
-		final SQLiteDatabase db = getDatabase().getWritableDatabase();
+		final SQLiteDatabase db = getWritableDatabase();
 		final SQLiteStatement insertSpotStatement = db.compileStatement(INSERT_SPOT);
 		final SQLiteStatement insertContinentStatement = db.compileStatement(INSERT_CONTINENT);
 		final SQLiteStatement insertCountryStatement = db.compileStatement(INSERT_COUNTRY);
@@ -130,7 +128,7 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 					while (regions.hasNext())
 					{
 						final Region region = regions.next();
-						updateRegionTable(insertRegionStatement, region);
+						updateRegionTable(insertRegionStatement, region, country);
 						insertRegionStatement.executeInsert();
 
 						final Iterator<Station> stations = region.iterator();
@@ -172,10 +170,12 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 		insertStatement.bindString(3, continent.getId());
 	}
 
-	private final static void updateRegionTable(final SQLiteStatement insertStatement, final Region region)
+	private final static void updateRegionTable(final SQLiteStatement insertStatement, final Region region,
+			final Country county)
 	{
 		insertStatement.bindString(1, region.getId());
 		insertStatement.bindString(2, region.getName());
+		insertStatement.bindString(3, county.getId());
 	}
 
 	/**
@@ -235,36 +235,7 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 	@Override
 	public boolean hasSpots()
 	{
-		final SQLiteDatabase db = getDatabase().getReadableDatabase();
-		Cursor c = null;
-		try
-		{
-			c = db.rawQuery("SELECT count(*) from spot", null);
-			if (!c.moveToFirst())
-			{
-				Log.d(LOG_TAG, "no spots in db.");
-				return false;
-			}
-			Log.d(LOG_TAG, "Colums " + Arrays.toString(c.getColumnNames()));
-			Log.d(LOG_TAG, "count " + c.getCount());
-			Log.d(LOG_TAG, "Colum index " + c.getColumnIndexOrThrow("count(*)"));
-			Log.d(LOG_TAG, "return value " + c.getInt(0));
-
-			final int index = c.getColumnIndexOrThrow("count(*)");
-			final int value = c.getInt(index);
-			return 0 < value;
-
-		}
-		catch (final SQLException e)
-		{
-			Log.e(LOG_TAG, "hasSpots", e);
-		}
-		finally
-		{
-			IOUtils.close(db);
-			IOUtils.close(c);
-		}
-
-		return false;
+		final int count = getCount("spot");
+		return 0 < count;
 	}
 }

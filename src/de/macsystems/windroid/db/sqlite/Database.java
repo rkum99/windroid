@@ -22,7 +22,7 @@ public class Database extends SQLiteOpenHelper
 
 	final static String DATABASE_NAME = "windroid.db";
 
-	final static int VERSION = 42;
+	final static int VERSION = 43;
 
 	final List<String> newDatabase;
 
@@ -57,7 +57,8 @@ public class Database extends SQLiteOpenHelper
 				.add("CREATE TABLE IF NOT EXISTS continent (_id INTEGER PRIMARY KEY AUTOINCREMENT ,id INTEGER, name TEXT);");
 		temp
 				.add("CREATE TABLE IF NOT EXISTS country (_id INTEGER PRIMARY KEY AUTOINCREMENT,id INTEGER, name TEXT NOT NULL, continentid TEXT NOT NULL);");
-		temp.add("CREATE TABLE IF NOT EXISTS region (_id INTEGER PRIMARY KEY AUTOINCREMENT,id INTEGER, name TEXT);");
+		temp
+				.add("CREATE TABLE IF NOT EXISTS region (_id INTEGER PRIMARY KEY AUTOINCREMENT,id INTEGER, name TEXT NOT NULL, countryid TEXT NOT NULL);");
 		//
 		temp.add("CREATE INDEX IF NOT EXISTS spotindex ON spot (spotid);");
 		temp.add("CREATE INDEX IF NOT EXISTS countryindex ON country (id);");
@@ -102,7 +103,8 @@ public class Database extends SQLiteOpenHelper
 				.add("CREATE TABLE IF NOT EXISTS continent (_id INTEGER PRIMARY KEY AUTOINCREMENT ,id INTEGER, name TEXT);");
 		temp
 				.add("CREATE TABLE IF NOT EXISTS country (_id INTEGER PRIMARY KEY AUTOINCREMENT,id INTEGER, name TEXT NOT NULL, continentid TEXT NOT NULL);");
-		temp.add("CREATE TABLE IF NOT EXISTS region (_id INTEGER PRIMARY KEY AUTOINCREMENT,id INTEGER, name TEXT);");
+		temp
+				.add("CREATE TABLE IF NOT EXISTS region (_id INTEGER PRIMARY KEY AUTOINCREMENT,id INTEGER, name TEXT NOT NULL, countryid TEXT NOT NULL);");
 		//
 		temp.add("CREATE INDEX spotindex ON spot (spotid);");
 		temp.add("CREATE INDEX countryindex ON country (id);");
@@ -151,7 +153,7 @@ public class Database extends SQLiteOpenHelper
 	@Override
 	public void onUpgrade(final SQLiteDatabase database, final int oldVersion, final int newVersion)
 	{
-		Log.d(LOG_TAG, "onUpgrade Database  from version" + oldVersion + " to " + newVersion);
+		Log.d(LOG_TAG, "onUpgrade Database  from version " + oldVersion + " to " + newVersion);
 
 		for (final Iterator<String> iter = upgradeDatabase.iterator(); iter.hasNext();)
 		{

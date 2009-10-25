@@ -2,6 +2,7 @@ package de.macsystems.windroid;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,7 +16,11 @@ import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 import de.macsystems.windroid.db.DAOFactory;
 import de.macsystems.windroid.db.IContinentDAO;
+import de.macsystems.windroid.db.ICountryDAO;
+import de.macsystems.windroid.db.IRegionDAO;
+import de.macsystems.windroid.identifyable.Continent;
 import de.macsystems.windroid.identifyable.Country;
+import de.macsystems.windroid.identifyable.IdentityUtil;
 import de.macsystems.windroid.identifyable.Region;
 import de.macsystems.windroid.identifyable.Station;
 
@@ -81,88 +86,6 @@ public class SpotSelection extends Activity
 		});
 	}
 
-	// private void parseXML()
-	// {
-	// final String networkName = IOUtils.getNetworkName(this);
-	//
-	// // final ProgressDialog progress = ProgressDialog.show(this,
-	//
-	// final ProgressDialog dialog = new ProgressDialog(this);
-	// dialog.setTitle("Bitte Warten");
-	// dialog
-	// .setMessage("Lese Daten über "
-	// + networkName
-	// +
-	// ".\nDanach wir die Datenbank aktualisiert.\nJe nach Verbindung kann dies etwas Zeit in anspruch nehmen. ");
-	// dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-	// dialog.show();
-	// dialog.setMax(1);
-	//
-	// final IProgress progress = new ProgressDialogAdapter(dialog);
-	//
-	// final Thread parseThread = new Thread("Parse XML")
-	// {
-	// @Override
-	// public final void run()
-	// {
-	// boolean isFailure = false;
-	// Throwable exception = null;
-	// if (Log.isLoggable(LOG_TAG, Log.DEBUG))
-	// {
-	// Log.d(LOG_TAG, "Parsing Thread started.");
-	// }
-	// try
-	// {
-	// if (WindUtils.isStationListUpdateAvailable(SpotSelection.this))
-	// {
-	// WindUtils.updateStationList(SpotSelection.this);
-	// }
-	//
-	// final XMLParseTask task = new XMLParseTask(new
-	// URI(IOUtils.stationsXMLFilePath));
-	// task.execute(SpotSelection.this);
-	//
-	// dialog.setMax(task.getNrOfStations());
-	//
-	// final Database database = new Database(SpotSelection.this);
-	// final SpotImpl updater = new SpotImpl(database, progress);
-	// updater.update();
-	//
-	// handler.post(populateParsingResults(Continent.values(),
-	// Continent.AFRICA.getCoutrys(),
-	// Continent.AFRICA.getCoutrys()[0].getRegions()));
-	//
-	// }
-	// catch (final Exception e)
-	// {
-	// isFailure = true;
-	// exception = e;
-	// Log.e(LOG_TAG, "Failed to parse xml.", e);
-	//
-	// }
-	// finally
-	// {
-	// if (Log.isLoggable(LOG_TAG, Log.DEBUG))
-	// {
-	// Log.d(LOG_TAG, "Parsing Thread ended.");
-	// }
-	// dialog.dismiss();
-	//
-	// // if (isFailure)
-	// // {
-	// //
-	// // new
-	// //
-	// AlertDialog.Builder(SpotSelection.this).setMessage(Util.getStackTrace(exception)).setTitle(
-	// // "Fatal Error.").setCancelable(false).show();
-	// //
-	// // }
-	//
-	// }
-	// }
-	// };
-	// parseThread.start();
-	// }
 
 	private Runnable populateParsingResults()
 	{
@@ -171,23 +94,63 @@ public class SpotSelection extends Activity
 			@Override
 			public void run()
 			{
-				final IContinentDAO dao = DAOFactory.getContinentDAO(SpotSelection.this);
-				final Cursor c = dao.fetchAll();
-				startManagingCursor(c);
-				final String[] from = new String[]
-				{ "id", "name" };
-				final int[] to = new int[]
-				{ android.R.id.text1, android.R.id.text2 };
-				final SimpleCursorAdapter shows = new SimpleCursorAdapter(SpotSelection.this,
-						android.R.layout.simple_spinner_item, c, from, to);
+				{
+					final SharedPreferences pref = Util.getSharedPreferences(SpotSelection.this);
+					final String continentID = Util.getSelectedContinentID(pref);
 
-				final Spinner continentSpinner = (Spinner) findViewById(R.id.continentSpinner);
-				shows.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-				continentSpinner.setAdapter(shows);
-				continentSpinner.setOnItemSelectedListener(createContinentListener());
+					final IContinentDAO continentDAO = DAOFactory.getContinentDAO(SpotSelection.this);
+					final Cursor c = continentDAO.fetchAll();
+					startManagingCursor(c);
+					final String[] from = new String[]
+					{ "id", "name" };
+					final int[] to = new int[]
+					{ android.R.id.text1, android.R.id.text2 };
+					final SimpleCursorAdapter shows = new SimpleCursorAdapter(SpotSelection.this,
+							android.R.layout.simple_spinner_item, c, from, to);
+
+					final Spinner continentSpinner = (Spinner) findViewById(R.id.continentSpinner);
+					shows.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+					continentSpinner.setAdapter(shows);
+					// selection is not working yet.
+					continentSpinner.setSelection(0);
+					continentSpinner.setOnItemSelectedListener(createContinentListener());
+				}
 
 				// Country
-				
+				{
+					final ICountryDAO dao = DAOFactory.getCountryDAO(SpotSelection.this);
+					final Cursor c = dao.fetchByContinentID(Continent.EUROPE.getId());
+					startManagingCursor(c);
+					final String[] from = new String[]
+					{ "id", "name" };
+					final int[] to = new int[]
+					{ android.R.id.text1, android.R.id.text2 };
+					final SimpleCursorAdapter shows = new SimpleCursorAdapter(SpotSelection.this,
+							android.R.layout.simple_spinner_item, c, from, to);
+
+					final Spinner countrySpinner = (Spinner) findViewById(R.id.countrySpinner);
+					shows.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+					countrySpinner.setAdapter(shows);
+					countrySpinner.setOnItemSelectedListener(createContinentListener());
+				}
+				// Region
+				{
+					final IRegionDAO dao = DAOFactory.getRegionDAO(SpotSelection.this);
+					final Cursor c = dao.fetchAll();
+					startManagingCursor(c);
+					final String[] from = new String[]
+					{ "id", "name" };
+					final int[] to = new int[]
+					{ android.R.id.text1, android.R.id.text2 };
+					final SimpleCursorAdapter shows = new SimpleCursorAdapter(SpotSelection.this,
+							android.R.layout.simple_spinner_item, c, from, to);
+
+					final Spinner regionSpinner = (Spinner) findViewById(R.id.regionSpinner);
+					shows.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+					regionSpinner.setAdapter(shows);
+					regionSpinner.setOnItemSelectedListener(createContinentListener());
+
+				}
 
 				// final ICountryDAO dao =
 				// DAOFactory.getCountryDAO(SpotSelection.this);
@@ -206,10 +169,7 @@ public class SpotSelection extends Activity
 				// shows.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 				// continentSpinner.setAdapter(shows);
 				// continentSpinner.setOnItemSelectedListener(createContinentListener());
-				
-				
-				
-				
+
 				// final SharedPreferences pref =
 				// Util.getSharedPreferences(SpotSelection.this);
 				// final String continentID = Util.getSelectedContinentID(pref);

@@ -22,4 +22,11 @@ public interface IRegionDAO
 	 * @return
 	 */
 	public Region getById(final int _id);
+
+	/**
+	 * get table size
+	 * 
+	 * @return
+	 */
+	public int getSize();
 }

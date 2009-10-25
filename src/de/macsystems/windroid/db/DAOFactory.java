@@ -2,7 +2,9 @@ package de.macsystems.windroid.db;
 
 import android.content.Context;
 import de.macsystems.windroid.db.sqlite.ContinentImpl;
+import de.macsystems.windroid.db.sqlite.CountryImpl;
 import de.macsystems.windroid.db.sqlite.Database;
+import de.macsystems.windroid.db.sqlite.RegionImpl;
 import de.macsystems.windroid.db.sqlite.SelectedImpl;
 import de.macsystems.windroid.db.sqlite.SpotImpl;
 import de.macsystems.windroid.progress.IProgress;
@@ -50,7 +52,17 @@ public final class DAOFactory
 
 	public static ICountryDAO getCountryDAO(final Context _context)
 	{
-		return null;
+		return new CountryImpl(new Database(_context));
+	}
+
+	public final static IRegionDAO getRegionDAO(final Context _context, final IProgress _progress)
+	{
+		return new RegionImpl(new Database(_context), _progress);
+	}
+
+	public final static IRegionDAO getRegionDAO(final Context _context)
+	{
+		return new RegionImpl(new Database(_context));
 	}
 
 }

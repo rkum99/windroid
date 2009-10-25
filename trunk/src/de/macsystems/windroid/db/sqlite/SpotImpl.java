@@ -2,6 +2,7 @@ package de.macsystems.windroid.db.sqlite;
 
 import java.util.Iterator;
 
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
@@ -39,7 +40,7 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 	 */
 	public SpotImpl(final Database _database) throws NullPointerException
 	{
-		super(_database);
+		super(_database, "spot");
 	}
 
 	/**
@@ -50,7 +51,7 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 	 */
 	public SpotImpl(final Database _database, final IProgress _progress) throws NullPointerException
 	{
-		super(_database, _progress);
+		super(_database, "spot", _progress);
 	}
 
 	public static final int convertBooleanToInt(final boolean _boolean)
@@ -237,5 +238,24 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 	{
 		final int count = getCount("spot");
 		return 0 < count;
+	}
+
+	/**
+	 * 
+	 */
+	@Override
+	public Cursor fetchAll()
+	{
+		final SQLiteDatabase db = getReadableDatabase();
+		return db.rawQuery("SELECT * FROM spot", null);
+	}
+
+	@Override
+	public Cursor fetchBy(String continentid, String countryid, String regionid)
+	{
+		final SQLiteDatabase db = getReadableDatabase();
+		// db.query("spot", columns, selection, selectionArgs, groupBy, having,
+		// orderBy);
+		return null;
 	}
 }

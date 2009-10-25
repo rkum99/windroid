@@ -6,15 +6,16 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import de.macsystems.windroid.db.IDAO;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.progress.IProgress;
 import de.macsystems.windroid.progress.NullProgressAdapter;
 
 /**
  * @author Jens Hohl
- * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
+ * @version $Id$
  */
-public class BaseImpl
+public class BaseImpl implements IDAO
 {
 	private static final String LOG_TAG = BaseImpl.class.getSimpleName();
 
@@ -22,35 +23,46 @@ public class BaseImpl
 
 	private final IProgress progress;
 
+	private final String tableName;
+
 	/**
 	 * 
 	 * @param _database
+	 * @param _tableName
 	 * @param _progress
 	 */
-	protected BaseImpl(final Database _database, final IProgress _progress)
+	protected BaseImpl(final Database _database, final String _tableName, final IProgress _progress)
 	{
 		if (_database == null)
 		{
 			throw new NullPointerException("Database");
 		}
+		if (_tableName == null)
+		{
+			throw new NullPointerException("tablename");
+		}
+
 		if (_progress == null)
 		{
 			throw new NullPointerException("progress");
 		}
 
 		database = _database;
+		tableName = _tableName;
 		progress = _progress;
+
 	}
 
 	/**
 	 * A Base Implementation with a {@link NullProgressAdapter}
 	 * 
 	 * @param _database
+	 * @param _tableName
 	 * @see NullProgressAdapter
 	 */
-	protected BaseImpl(final Database _database)
+	protected BaseImpl(final Database _database, final String _tableName)
 	{
-		this(_database, NullProgressAdapter.INSTANCE);
+		this(_database, _tableName, NullProgressAdapter.INSTANCE);
 	}
 
 	/**
@@ -135,5 +147,27 @@ public class BaseImpl
 			IOUtils.close(c);
 		}
 		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.macsystems.windroid.db.IDAO#fetchAll()
+	 */
+	@Override
+	public Cursor fetchAll()
+	{
+		return getReadableDatabase().query(tableName, null, null, null, null, null, null);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.macsystems.windroid.db.IDAO#getSize()
+	 */
+	@Override
+	public int getSize()
+	{
+		return getCount(tableName);
 	}
 }

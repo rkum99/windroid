@@ -10,7 +10,7 @@ import de.macsystems.windroid.progress.IProgress;
  * DAO for Table Continent
  * 
  * @author Jens Hohl
- * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
+ * @version $Id$
  */
 public class ContinentImpl extends BaseImpl implements IContinentDAO
 {
@@ -20,7 +20,7 @@ public class ContinentImpl extends BaseImpl implements IContinentDAO
 	 */
 	public ContinentImpl(final Database database)
 	{
-		super(database);
+		super(database, "continent");
 	}
 
 	/**
@@ -30,7 +30,7 @@ public class ContinentImpl extends BaseImpl implements IContinentDAO
 	 */
 	public ContinentImpl(final Database database, final IProgress _progress)
 	{
-		super(database, _progress);
+		super(database, "continent", _progress);
 	}
 
 	/*
@@ -42,7 +42,7 @@ public class ContinentImpl extends BaseImpl implements IContinentDAO
 	public Cursor fetchAll()
 	{
 		final SQLiteDatabase db = getReadableDatabase();
-		return db.rawQuery("SELECT * FROM CONTINENT", null);
+		return db.rawQuery("SELECT * FROM continent", null);
 	}
 
 	/*

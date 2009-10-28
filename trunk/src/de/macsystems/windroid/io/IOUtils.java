@@ -16,6 +16,7 @@ import java.util.Properties;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.net.NetworkInfo.State;
@@ -428,6 +429,18 @@ public class IOUtils
 	}
 
 	/**
+	 * 
+	 * @param _statement
+	 */
+	public final static void close(final SQLiteStatement _statement)
+	{
+		if (_statement != null)
+		{
+			_statement.close();
+		}
+	}
+
+	/**
 	 * Untested yet.
 	 * 
 	 * @param _context
@@ -451,7 +464,7 @@ public class IOUtils
 		try
 		{
 			String line;
-			final StringBuilder builder = new StringBuilder(1024);
+			final StringBuilder builder = new StringBuilder(DEFAULT_BUFFER_SIZE);
 			while ((line = reader.readLine()) != null)
 			{
 				builder.append(line);

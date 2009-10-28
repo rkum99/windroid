@@ -12,6 +12,8 @@ import de.macsystems.windroid.progress.IProgress;
 import de.macsystems.windroid.progress.NullProgressAdapter;
 
 /**
+ * Base Implementation for DAOs
+ * 
  * @author Jens Hohl
  * @version $Id$
  */
@@ -22,7 +24,9 @@ public class BaseImpl implements IDAO
 	private final Database database;
 
 	private final IProgress progress;
-
+	/**
+	 * Table name which this DAO is for
+	 */
 	private final String tableName;
 
 	/**

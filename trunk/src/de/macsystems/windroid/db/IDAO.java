@@ -3,6 +3,8 @@ package de.macsystems.windroid.db;
 import android.database.Cursor;
 
 /**
+ * Defines Methods which can be executed with every DAO.
+ * 
  * @author mac
  * @version $Id$
  */

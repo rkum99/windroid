@@ -18,9 +18,8 @@ import de.macsystems.windroid.db.DAOFactory;
 import de.macsystems.windroid.db.IContinentDAO;
 import de.macsystems.windroid.db.ICountryDAO;
 import de.macsystems.windroid.db.IRegionDAO;
+import de.macsystems.windroid.db.ISpotDAO;
 import de.macsystems.windroid.identifyable.Continent;
-import de.macsystems.windroid.identifyable.Country;
-import de.macsystems.windroid.identifyable.Region;
 import de.macsystems.windroid.identifyable.Station;
 
 /**
@@ -47,18 +46,7 @@ public class SpotSelection extends Activity
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.spotselection);
-		/**
-		 * Test if Parsing already done.
-		 */
-		// if (!Continent.isParsed())
-		// {
-		// parseXML();
-		//
-		// }
-		// else
-		// {
 		handler.post(populateParsingResults());
-		// }
 
 		final Button selectButton = (Button) findViewById(R.id.stationSelect);
 		selectButton.setOnClickListener(new View.OnClickListener()
@@ -84,7 +72,6 @@ public class SpotSelection extends Activity
 			}
 		});
 	}
-
 
 	private Runnable populateParsingResults()
 	{
@@ -130,7 +117,7 @@ public class SpotSelection extends Activity
 					final Spinner countrySpinner = (Spinner) findViewById(R.id.countrySpinner);
 					shows.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 					countrySpinner.setAdapter(shows);
-					countrySpinner.setOnItemSelectedListener(createContinentListener());
+					countrySpinner.setOnItemSelectedListener(createCountryListener());
 				}
 				// Region
 				{
@@ -147,7 +134,26 @@ public class SpotSelection extends Activity
 					final Spinner regionSpinner = (Spinner) findViewById(R.id.regionSpinner);
 					shows.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 					regionSpinner.setAdapter(shows);
-					regionSpinner.setOnItemSelectedListener(createContinentListener());
+					regionSpinner.setOnItemSelectedListener(createRegionListener());
+
+				}
+
+				// Spot
+				{
+					final ISpotDAO dao = DAOFactory.getSpotDAO(SpotSelection.this);
+					final Cursor c = dao.fetchAll();
+					startManagingCursor(c);
+					final String[] from = new String[]
+					{ "name" };
+					final int[] to = new int[]
+					{ android.R.id.text1 };
+					final SimpleCursorAdapter shows = new SimpleCursorAdapter(SpotSelection.this,
+							android.R.layout.simple_spinner_item, c, from, to);
+
+					final Spinner spotSpinner = (Spinner) findViewById(R.id.stationSpinner);
+					shows.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+					spotSpinner.setAdapter(shows);
+					// spotSpinner.setOnItemSelectedListener(createContinentListener());
 
 				}
 
@@ -233,19 +239,10 @@ public class SpotSelection extends Activity
 			public final void onItemSelected(final AdapterView<?> parent, final View view, final int position,
 					final long id)
 			{
-				final Spinner spinner = (Spinner) findViewById(R.id.countrySpinner);
 				Log.d(LOG_TAG, "Selected getSelectedItem  : " + parent.getSelectedItem());
 				Log.d(LOG_TAG, "Selected getSelectedItemId: " + parent.getSelectedItemId());
 				Log.d(LOG_TAG, "position                  : " + position);
 				Log.d(LOG_TAG, "Id                        : " + id);
-
-				// final Continent selectedContinent = (Continent)
-				// parent.getSelectedItem();
-				// final ArrayAdapter<Country> coutryAdapter = new
-				// ArrayAdapter<Country>(SpotSelection.this,
-				// android.R.layout.simple_spinner_item,
-				// selectedContinent.getCoutrys());
-				// updateSpinner(spinner, coutryAdapter);
 			}
 
 			@Override
@@ -265,22 +262,22 @@ public class SpotSelection extends Activity
 			public final void onItemSelected(final AdapterView<?> parent, final View view, final int position,
 					final long id)
 			{
-				final Spinner spinner = (Spinner) findViewById(R.id.regionSpinner);
 				if (Log.isLoggable(LOG_TAG, Log.DEBUG))
 				{
-					Log.d("", "Selected Coutry:" + parent.getSelectedItem().getClass());
+					Log.d(LOG_TAG, "Selected Coutry:" + parent.getSelectedItem().getClass());
 				}
-				final Country selectedCountry = (Country) parent.getSelectedItem();
-				final ArrayAdapter<Region> coutryAdapter = new ArrayAdapter<Region>(SpotSelection.this,
-						android.R.layout.simple_spinner_item, selectedCountry.getRegions());
-				updateSpinner(spinner, coutryAdapter);
+				final long selectedCountryID = parent.getSelectedItemId();
+				Log.d(LOG_TAG, "Selected getSelectedItem  : " + parent.getSelectedItem());
+				Log.d(LOG_TAG, "Selected getSelectedItemId: " + parent.getSelectedItemId());
+				Log.d(LOG_TAG, "position                  : " + position);
+				Log.d(LOG_TAG, "Id                        : " + id);
+
 			}
 
 			@Override
 			public final void onNothingSelected(final AdapterView<?> arg0)
 			{
 			}
-
 		};
 		return selectionHandler;
 	}
@@ -293,12 +290,13 @@ public class SpotSelection extends Activity
 			public final void onItemSelected(final AdapterView<?> parent, final View view, final int position,
 					final long id)
 			{
-				final Spinner spinner = (Spinner) findViewById(R.id.stationSpinner);
 				Log.d("", "Selected Region:" + parent.getSelectedItem().getClass());
-				final Region selectedRegion = (Region) parent.getSelectedItem();
-				final ArrayAdapter<Station> regionAdapter = new ArrayAdapter<Station>(SpotSelection.this,
-						android.R.layout.simple_spinner_item, selectedRegion.getStations());
-				updateSpinner(spinner, regionAdapter);
+				final long selectedRegionID = parent.getSelectedItemId();
+				Log.d(LOG_TAG, "Selected getSelectedItem  : " + parent.getSelectedItem());
+				Log.d(LOG_TAG, "Selected getSelectedItemId: " + parent.getSelectedItemId());
+				Log.d(LOG_TAG, "position                  : " + position);
+				Log.d(LOG_TAG, "Id                        : " + id);
+
 			}
 
 			@Override

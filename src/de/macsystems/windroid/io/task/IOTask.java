@@ -33,6 +33,8 @@ public abstract class IOTask<V, I> implements Task<V, I>
 
 	private final static HttpClient client = new DefaultHttpClient();
 
+	public static final String MOZILLA_5_0 = "Mozilla/5.0";
+
 	private final URI uri;
 
 	private final IProgress progress;
@@ -80,7 +82,7 @@ public abstract class IOTask<V, I> implements Task<V, I>
 		Log.d(LOG_TAG, "Connecting to :" + uri.toString());
 
 		final HttpGet httpGet = new HttpGet(uri);
-		httpGet.addHeader("User-Agent", IOUtils.MOZILLA_5_0);
+		httpGet.addHeader("User-Agent", MOZILLA_5_0);
 
 		final HttpResponse response = getHTTPClient().execute(httpGet);
 		if (HttpStatus.SC_OK != response.getStatusLine().getStatusCode())

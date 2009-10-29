@@ -39,8 +39,6 @@ public class IOUtils
 
 	public static final int DEFAULT_BUFFER_SIZE = 1024;
 
-	public static final String MOZILLA_5_0 = "Mozilla/5.0";
-
 	/**
 	 * Complete Path to configuration file.
 	 */
@@ -153,62 +151,6 @@ public class IOUtils
 			ioe.initCause(e);
 			throw ioe;
 		}
-
-		// final HttpClient httpclient = new DefaultHttpClient();
-		//
-		// try
-		// {
-		// final HttpGet httpGet = new HttpGet(_stationXMLURL.toExternalForm());
-		// httpGet.addHeader("User-Agent", "MOZILLA_5_0");
-		//
-		// final HttpResponse response = httpclient.execute(httpGet);
-		// Log.d(LOG_TAG, "Server Response Code:" +
-		// response.getStatusLine().getStatusCode());
-		// if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK)
-		// {
-		// throw new RetryLaterException("Server response was : " +
-		// response.getStatusLine().getStatusCode() + " "
-		// + response.getStatusLine().getReasonPhrase());
-		// }
-		//
-		// FileOutputStream fout = null;
-		// final BufferedInputStream inStream = new
-		// BufferedInputStream(response.getEntity().getContent(), 8192);
-		// try
-		// {
-		//
-		// fout = _context.openFileOutput(stationsXMLFilePath,
-		// Context.MODE_PRIVATE);
-		// final byte[] buffer = new byte[BIG_BUFFER_SIZE];
-		// int bytesRead = -1;
-		// while ((bytesRead = inStream.read(buffer)) > -1)
-		// {
-		// fout.write(buffer, 0, bytesRead);
-		// }
-		// if (Log.isLoggable(LOG_TAG, Log.DEBUG))
-		// {
-		// Log.d(LOG_TAG, stationsXMLFilePath + " updated");
-		// }
-		// }
-		// catch (final IOException e)
-		// {
-		// final IOException ioe = new IOException("Failed to update " +
-		// stationsXMLFilePath);
-		// ioe.initCause(e);
-		// throw ioe;
-		// }
-		// finally
-		// {
-		// close(fout);
-		// close(inStream);
-		// }
-		//
-		// }
-		// finally
-		// {
-		// httpclient.getConnectionManager().shutdown();
-		// }
-
 	}
 
 	/**

@@ -11,6 +11,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 /**
+ * Creates or updates the underlying SQLite Database.
+ * 
  * @author Jens Hohl
  * @version $Id$
  * 
@@ -20,13 +22,13 @@ public class Database extends SQLiteOpenHelper
 
 	private final static String LOG_TAG = Database.class.getSimpleName();
 
-	final static String DATABASE_NAME = "windroid.db";
+	private final static String DATABASE_NAME = "windroid.db";
 
-	final static int VERSION = 43;
-
-	final List<String> newDatabase;
-
-	final List<String> upgradeDatabase;
+	private final static int VERSION = 43;
+	/**
+	 * Default size for script lists
+	 */
+	private final static int INITIAL_CAPACITY = 64;
 
 	/**
 	 * 
@@ -35,13 +37,11 @@ public class Database extends SQLiteOpenHelper
 	public Database(final Context _context)
 	{
 		super(_context, DATABASE_NAME, null, VERSION);
-		newDatabase = createNewDatabaseScript();
-		upgradeDatabase = createUpgradeScript();
 	}
 
 	private List<String> createUpgradeScript()
 	{
-		final List<String> temp = new ArrayList<String>(64);
+		final List<String> temp = new ArrayList<String>(INITIAL_CAPACITY);
 
 		temp.add("DROP TABLE IF EXISTS spot;");
 		temp.add("DROP TABLE IF EXISTS continent;");
@@ -88,7 +88,7 @@ public class Database extends SQLiteOpenHelper
 	 */
 	private List<String> createNewDatabaseScript()
 	{
-		final List<String> temp = new ArrayList<String>(64);
+		final List<String> temp = new ArrayList<String>(INITIAL_CAPACITY);
 		temp.add("DROP TABLE IF EXISTS spot;");
 		temp.add("DROP TABLE IF EXISTS continent;");
 		temp.add("DROP TABLE IF EXISTS country;");
@@ -135,6 +135,8 @@ public class Database extends SQLiteOpenHelper
 	{
 		Log.d(LOG_TAG, "onCreate Database");
 
+		final List<String> newDatabase = createNewDatabaseScript();
+
 		for (int i = 0; i < newDatabase.size(); i++)
 		{
 			Log.d(LOG_TAG, newDatabase.get(i));
@@ -154,7 +156,7 @@ public class Database extends SQLiteOpenHelper
 	public void onUpgrade(final SQLiteDatabase database, final int oldVersion, final int newVersion)
 	{
 		Log.d(LOG_TAG, "onUpgrade Database  from version " + oldVersion + " to " + newVersion);
-
+		final List<String> upgradeDatabase = createUpgradeScript();
 		for (final Iterator<String> iter = upgradeDatabase.iterator(); iter.hasNext();)
 		{
 			final String sql = iter.next();
@@ -162,11 +164,6 @@ public class Database extends SQLiteOpenHelper
 			database.execSQL(sql);
 		}
 		Log.d(LOG_TAG, "onUpgrade Database finished");
-	}
-
-	public int getVersion()
-	{
-		return VERSION;
 	}
 
 }

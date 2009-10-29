@@ -49,9 +49,10 @@ public class StationXMLUpdateTask extends IOTask<Void, InputStream>
 	public Void process(final Context _context, final InputStream _instream) throws IOException, Exception
 	{
 		FileOutputStream fout = null;
-		final BufferedInputStream inStream = new BufferedInputStream(_instream, IOUtils.BIG_BUFFER_SIZE);
+		BufferedInputStream inStream = null;
 		try
 		{
+			inStream = new BufferedInputStream(_instream, IOUtils.BIG_BUFFER_SIZE);
 			fout = _context.openFileOutput(stationsXMLFilePath, Context.MODE_PRIVATE);
 			final byte[] buffer = new byte[IOUtils.BIG_BUFFER_SIZE];
 			int bytesRead = -1;
@@ -73,6 +74,7 @@ public class StationXMLUpdateTask extends IOTask<Void, InputStream>
 		finally
 		{
 			IOUtils.close(fout);
+			IOUtils.close(inStream);
 		}
 
 		return null;

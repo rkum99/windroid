@@ -151,11 +151,10 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 		finally
 		{
 			db.endTransaction();
-			insertSpotStatement.close();
-			insertCountryStatement.close();
-			insertRegionStatement.close();
-			insertContinentStatement.close();
-
+			IOUtils.close(insertSpotStatement);
+			IOUtils.close(insertCountryStatement);
+			IOUtils.close(insertRegionStatement);
+			IOUtils.close(insertContinentStatement);
 			IOUtils.close(db);
 			final long time = System.currentTimeMillis() - start;
 			Log.d(LOG_TAG, "Insert finished. Time " + time + " ms");
@@ -236,7 +235,7 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 	@Override
 	public boolean hasSpots()
 	{
-		final int count = getCount("spot");
+		final int count = getSize();
 		return 0 < count;
 	}
 

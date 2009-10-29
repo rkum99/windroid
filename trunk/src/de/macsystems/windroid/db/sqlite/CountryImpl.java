@@ -50,10 +50,4 @@ public class CountryImpl extends BaseImpl implements ICountryDAO
 		{ _id }, null, null, null);
 	}
 
-	@Override
-	public int getSize()
-	{
-		return getCount("country");
-	}
-
 }

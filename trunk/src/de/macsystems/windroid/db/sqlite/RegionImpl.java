@@ -56,15 +56,4 @@ public class RegionImpl extends BaseImpl implements IRegionDAO
 		throw new UnsupportedOperationException();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.macsystems.windroid.db.IRegionDAO#getSize()
-	 */
-	@Override
-	public int getSize()
-	{
-		return getCount("region");
-	}
-
 }

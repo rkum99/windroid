@@ -7,7 +7,7 @@ package de.macsystems.windroid.db;
  */
 public interface IConfigDAO extends IDAO
 {
-
+	
 	public String getStatus();
 
 	public boolean setStatus(final String _status);

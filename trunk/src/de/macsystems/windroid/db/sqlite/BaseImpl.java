@@ -20,9 +20,13 @@ import de.macsystems.windroid.progress.NullProgressAdapter;
 public class BaseImpl implements IDAO
 {
 	private static final String LOG_TAG = BaseImpl.class.getSimpleName();
-
+	/**
+	 * 
+	 */
 	private final Database database;
-
+	/**
+	 * 
+	 */
 	private final IProgress progress;
 	/**
 	 * Table name which this DAO is for
@@ -39,13 +43,12 @@ public class BaseImpl implements IDAO
 	{
 		if (_database == null)
 		{
-			throw new NullPointerException("Database");
+			throw new NullPointerException("database");
 		}
 		if (_tableName == null)
 		{
 			throw new NullPointerException("tablename");
 		}
-
 		if (_progress == null)
 		{
 			throw new NullPointerException("progress");
@@ -112,7 +115,6 @@ public class BaseImpl implements IDAO
 	 * Returns the count(*) of given table name like a 'select count(*) from
 	 * table'
 	 * 
-	 * @param _tabelName
 	 * @return
 	 * @throws IllegalArgumentException
 	 */
@@ -127,7 +129,7 @@ public class BaseImpl implements IDAO
 		Cursor c = null;
 		try
 		{
-			c = db.rawQuery("SELECT count(*) from " + _tabelName, null);
+			c = db.rawQuery("SELECT count(*) from " + tableName, null);
 			if (!c.moveToFirst())
 			{
 				Log.d(LOG_TAG, "no entrys.");

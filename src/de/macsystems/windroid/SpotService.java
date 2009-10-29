@@ -142,11 +142,11 @@ public class SpotService extends Service
 				}
 				catch (final InterruptedException e)
 				{
-					e.printStackTrace();
+					Log.e(LOG_TAG, "Thread interupted", e);
 				}
 				catch (final ExecutionException e)
 				{
-					e.printStackTrace();
+					Log.e(LOG_TAG, "", e);
 				}
 			}
 			removeUpdateOnStatusBar((NotificationManager) SpotService.this

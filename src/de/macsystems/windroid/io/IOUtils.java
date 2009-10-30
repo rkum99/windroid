@@ -10,10 +10,13 @@ import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
@@ -335,13 +338,15 @@ public class IOUtils
 	}
 
 	/**
-	 * Returns an <code>Uri</code> to an Sound
+	 * Returns an <code>Uri</code> to an Resource in form:
+	 * android.resource://de.macsystems.windroid//id
 	 * 
 	 * @param _context
+	 * @param _resourceId
 	 * @return
 	 * @see Uri
 	 */
-	public static Uri getResourceURI(final Context _context)
+	public static Uri getResourceURI(final Context _context, final int _resourceId)
 	{
 		if (_context == null)
 		{
@@ -353,7 +358,7 @@ public class IOUtils
 		builder.append(_context.getPackageName());
 		builder.append("/");
 		builder.append("/");
-		builder.append(R.raw.wind_chime);
+		builder.append(_resourceId);
 
 		return Uri.parse(builder.toString());
 	}
@@ -418,6 +423,35 @@ public class IOUtils
 		{
 			IOUtils.close(reader);
 		}
+
+	}
+
+	public static List<String> openResource(final Context _context, final int _resourceId)
+			throws Resources.NotFoundException, IOException
+	{
+		BufferedReader bufReader = null;
+		InputStream inStream = null;
+		InputStreamReader inReader = null;
+		List<String> list = new ArrayList<String>();
+		try
+		{
+			inStream = _context.getResources().openRawResource(R.raw.updatedatabase);
+			inReader = new InputStreamReader(inStream);
+			bufReader = new BufferedReader(inReader);
+
+			String line;
+			while ((line = bufReader.readLine()) != null)
+			{
+				list.add(line);
+			}
+		}
+		finally
+		{
+			IOUtils.close(inStream);
+			IOUtils.close(inReader);
+			IOUtils.close(bufReader);
+		}
+		return list;
 
 	}
 

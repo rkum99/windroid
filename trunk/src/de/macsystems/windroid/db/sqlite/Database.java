@@ -23,10 +23,6 @@ public class Database extends SQLiteOpenHelper
 	private final static String DATABASE_NAME = "windroid.db";
 
 	private final static int VERSION = 49;
-	/**
-	 * Default size for script lists
-	 */
-	private final static int INITIAL_CAPACITY = 64;
 
 	private final Context context;
 

@@ -4,13 +4,12 @@ import java.util.Collections;
 import java.util.List;
 
 import android.content.Context;
-import android.util.Log;
 import de.macsystems.windroid.R;
 import de.macsystems.windroid.io.IOUtils;
 
 /**
  * @author mac
- * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
+ * @version $Id$
  */
 public class ScriptLoader
 {

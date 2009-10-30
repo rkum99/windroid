@@ -281,7 +281,7 @@ public class Main extends Activity
 		notification.ledOffMS = 40;
 		notification.flags |= Notification.FLAG_SHOW_LIGHTS;
 
-		notification.sound = IOUtils.getResourceURI(context);
+		notification.sound = IOUtils.getResourceURI(context,R.raw.wind_chime);
 
 		final Intent intent = new Intent(context, AlarmNotificationDetail.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

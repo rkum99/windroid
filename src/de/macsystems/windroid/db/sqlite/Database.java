@@ -1,7 +1,5 @@
 package de.macsystems.windroid.db.sqlite;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -40,46 +38,6 @@ public class Database extends SQLiteOpenHelper
 	{
 		super(_context, DATABASE_NAME, null, VERSION);
 		context = _context;
-	}
-
-	/**
-	 * @param temp
-	 */
-	private List<String> createNewDatabaseScript()
-	{
-		final List<String> temp = new ArrayList<String>(INITIAL_CAPACITY);
-		temp.add("DROP TABLE IF EXISTS spot;");
-		temp.add("DROP TABLE IF EXISTS continent;");
-		temp.add("DROP TABLE IF EXISTS country;");
-		temp.add("DROP TABLE IF EXISTS region;");
-		temp.add("DROP TABLE IF EXISTS selected;");
-		// Create ConfigDAO Table
-		temp.add("create TABLE IF NOT EXISTS internal (id TEXT PRIMARY KEY, value text)");
-		//
-		temp
-				.add("CREATE TABLE IF NOT EXISTS spot (_id INTEGER PRIMARY KEY AUTOINCREMENT, spotid TEXT NOT NULL, continentid TEXT NOT NULL, countryid TEXT NOT NULL, regionid TEXT NOT NULL, name TEXT NOT NULL, keyword TEXT NOT NULL, superforecast BOOLEAN, forecast BOOLEAN, statistic BOOLEAN, wavereport BOOLEAN, waveforecast BOOLEAN);");
-		temp
-				.add("CREATE TABLE IF NOT EXISTS continent (_id INTEGER PRIMARY KEY AUTOINCREMENT ,id INTEGER, name TEXT);");
-		temp
-				.add("CREATE TABLE IF NOT EXISTS country (_id INTEGER PRIMARY KEY AUTOINCREMENT,id INTEGER, name TEXT NOT NULL, continentid TEXT NOT NULL);");
-		temp
-				.add("CREATE TABLE IF NOT EXISTS region (_id INTEGER PRIMARY KEY AUTOINCREMENT,id INTEGER, name TEXT NOT NULL, countryid TEXT NOT NULL);");
-		//
-		temp.add("CREATE INDEX spotindex ON spot (spotid);");
-		temp.add("CREATE INDEX countryindex ON country (id);");
-		temp.add("CREATE INDEX regionindex ON region (id);");
-		temp.add("CREATE INDEX continentindex ON continent (id);");
-
-		// //
-		temp.add("CREATE INDEX conid ON continent (id);");
-		temp.add("CREATE INDEX regid ON region (id);");
-		temp.add("CREATE INDEX coid ON country (id);");
-		// selected table
-		temp
-				.add("CREATE TABLE IF NOT EXISTS selected (_id INTEGER PRIMARY KEY AUTOINCREMENT,spotid text NOT NULL,activ BOOLEAN);");
-		temp.add("CREATE INDEX IF NOT EXISTS selectedsid ON selected (spotid);");
-
-		return Collections.unmodifiableList(temp);
 	}
 
 	/*

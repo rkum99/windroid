@@ -9,6 +9,8 @@ import de.macsystems.windroid.db.DAOFactory;
 import de.macsystems.windroid.db.ISelectedDAO;
 
 /**
+ * Shows list of spots configured.
+ * 
  * @author Jens Hohl
  * @version $Id$
  * 

@@ -29,5 +29,5 @@
 		name="button_toogle_service_selected">Service Stoppen</string>
 	<string
 		name="button_toogle_service_unselected">Service Starten</string>
-<string name="welcome_database_size">Es sind $1 Spots in der Datenbank</string>
+<string name="welcome_database_size">Die Datenbank enthält $1 Einträge.</string>
 </resources>

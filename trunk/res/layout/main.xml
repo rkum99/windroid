@@ -80,7 +80,7 @@
 					android:enabled="false" />
 
 				<TextView
-					android:id="@+id/welcome_database_size"
+					android:id="@+id/main_footer_database_size"
 					android:gravity="center_horizontal"
 					android:text="@string/welcome_database_size"
 					android:layout_width="fill_parent"

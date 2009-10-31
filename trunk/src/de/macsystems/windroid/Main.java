@@ -1,5 +1,6 @@
 package de.macsystems.windroid;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -28,12 +29,12 @@ import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import de.macsystems.windroid.alarm.AlarmDetail;
 import de.macsystems.windroid.db.DAOFactory;
 import de.macsystems.windroid.db.ISpotDAO;
-import de.macsystems.windroid.db.sqlite.Database;
 import de.macsystems.windroid.forecast.SpotOverview;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.proxy.SpotServiceConnection;
@@ -68,6 +69,15 @@ public class Main extends Activity
 		broadcastReceiver = new EnableViewConnectionBroadcastReciever(viewsToDisableOnConnectionLost, this);
 		registerReceiver(broadcastReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 		//
+		// Show actual database size.
+		//
+		final TextView footer = (TextView) findViewById(R.id.main_footer_database_size);
+		final ISpotDAO dao = DAOFactory.getSpotDAO(this);
+		final DecimalFormat df = new DecimalFormat(",##0");
+		final String nrSpot = df.format(dao.getSize());
+		final String newText = footer.getText().toString().replace("$1", nrSpot);
+		footer.setText(newText);
+		//
 		super.onResume();
 	}
 
@@ -92,7 +102,6 @@ public class Main extends Activity
 	protected void onCreate(final Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		new Database(this);
 
 		startSpotService();
 		setContentView(R.layout.main);
@@ -281,7 +290,7 @@ public class Main extends Activity
 		notification.ledOffMS = 40;
 		notification.flags |= Notification.FLAG_SHOW_LIGHTS;
 
-		notification.sound = IOUtils.getResourceURI(context,R.raw.wind_chime);
+		notification.sound = IOUtils.getResourceURI(context, R.raw.wind_chime);
 
 		final Intent intent = new Intent(context, AlarmNotificationDetail.class);
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

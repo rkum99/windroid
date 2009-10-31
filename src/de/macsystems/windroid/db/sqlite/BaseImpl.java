@@ -130,7 +130,7 @@ public class BaseImpl implements IDAO
 			c = db.rawQuery("SELECT count(*) from " + tableName, null);
 			if (!c.moveToFirst())
 			{
-				Log.d(LOG_TAG, "no entrys.");
+				Log.d(LOG_TAG, "no entrys in "+_tabelName);
 				return result;
 			}
 			final int index = c.getColumnIndexOrThrow("count(*)");
@@ -138,7 +138,7 @@ public class BaseImpl implements IDAO
 		}
 		catch (final SQLException e)
 		{
-			Log.e(LOG_TAG, "getCount", e);
+			Log.e(LOG_TAG, "failed on "+tableName, e);
 		}
 		finally
 		{
@@ -195,4 +195,10 @@ public class BaseImpl implements IDAO
 	{
 		return getCount(tableName);
 	}
+
+	public static final int convertBooleanToInt(final boolean _boolean)
+	{
+		return _boolean == true ? 1 : 0;
+	}
+
 }

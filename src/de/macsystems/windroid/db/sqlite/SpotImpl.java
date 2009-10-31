@@ -3,7 +3,6 @@ package de.macsystems.windroid.db.sqlite;
 import java.util.Iterator;
 
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
@@ -54,39 +53,6 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 		super(_database, "spot", _progress);
 	}
 
-	public static final int convertBooleanToInt(final boolean _boolean)
-	{
-		return _boolean == true ? 1 : 0;
-	}
-
-	protected void clearAllSpots()
-	{
-		final SQLiteDatabase db = getWritableDatabase();
-		db.beginTransaction();
-
-		try
-		{
-			Log.d(LOG_TAG, "clearAllSpots");
-			db.execSQL("DELETE FROM continent;");
-			db.execSQL("DELETE FROM region");
-			db.execSQL("DELETE FROM country");
-			db.execSQL("DELETE FROM spot");
-
-			db.setTransactionSuccessful();
-		}
-		catch (final SQLException e)
-		{
-			Log.e(LOG_TAG, "Failed to  delete spots", e);
-		}
-		finally
-		{
-			db.endTransaction();
-			IOUtils.close(db);
-			Log.d(LOG_TAG, "clearAllSpots finished.");
-		}
-
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -94,8 +60,6 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 	 */
 	public void insertSpots()
 	{
-
-		clearAllSpots();
 		Log.d(LOG_TAG, "executeInsert");
 		final SQLiteDatabase db = getWritableDatabase();
 		final SQLiteStatement insertSpotStatement = db.compileStatement(INSERT_SPOT);
@@ -162,6 +126,12 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 
 	}
 
+	/**
+	 * 
+	 * @param insertStatement
+	 * @param country
+	 * @param continent
+	 */
 	private final static void updateCountryTable(final SQLiteStatement insertStatement, final Country country,
 			final Continent continent)
 	{
@@ -170,6 +140,12 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 		insertStatement.bindString(3, continent.getId());
 	}
 
+	/**
+	 * 
+	 * @param insertStatement
+	 * @param region
+	 * @param county
+	 */
 	private final static void updateRegionTable(final SQLiteStatement insertStatement, final Region region,
 			final Country county)
 	{
@@ -191,40 +167,35 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 	}
 
 	/**
-	 * @param insertStatement
-	 * @param continent
-	 * @param region
-	 * @param station
 	 * 
-	 *            .add("CREATE TABLE IF NOT EXISTS spot (_id INTEGER PRIMARY KEY
-	 *            AUTOINCREMENT, spotid TEXT NOT NULL, continentid INTEGER,
-	 *            countryid INTEGER, regionid INTEGER, name TEXT NOT NULL,
-	 *            keyword TEXT not null, superforecast BOOLEAN, forecast
-	 *            BOOLEAN, statistic BOOLEAN, wavereport BOOLEAN, waveforecast
-	 *            BOOLEAN);" );
+	 * @param _insertStatement
+	 * @param _continent
+	 * @param _country
+	 * @param _region
+	 * @param _station
 	 */
-	private final static void updateSpotTable(final SQLiteStatement insertStatement, final Continent continent,
-			final Country country, final Region region, final Station station)
+	private final static void updateSpotTable(final SQLiteStatement _insertStatement, final Continent _continent,
+			final Country _country, final Region _region, final Station _station)
 	{
 
-		final String spotID = station.getId();
-		final String continentID = continent.getId();
-		final String countryID = country.getId();
-		final String regionID = region.getId();
-		final String name = station.getName();
-		final String keyword = station.getKeyword();
+		final String spotID = _station.getId();
+		final String continentID = _continent.getId();
+		final String countryID = _country.getId();
+		final String regionID = _region.getId();
+		final String name = _station.getName();
+		final String keyword = _station.getKeyword();
 
-		insertStatement.bindString(1, spotID);
-		insertStatement.bindString(2, continentID);
-		insertStatement.bindString(3, countryID);
-		insertStatement.bindString(4, regionID);
-		insertStatement.bindString(5, name);
-		insertStatement.bindString(6, keyword);
-		insertStatement.bindLong(7, convertBooleanToInt(station.hasSuperforecast()));
-		insertStatement.bindLong(8, convertBooleanToInt(station.hasForecast()));
-		insertStatement.bindLong(9, convertBooleanToInt(station.hasStatistic()));
-		insertStatement.bindLong(10, convertBooleanToInt(station.hasWaveReport()));
-		insertStatement.bindLong(11, convertBooleanToInt(station.hasWaveforecast()));
+		_insertStatement.bindString(1, spotID);
+		_insertStatement.bindString(2, continentID);
+		_insertStatement.bindString(3, countryID);
+		_insertStatement.bindString(4, regionID);
+		_insertStatement.bindString(5, name);
+		_insertStatement.bindString(6, keyword);
+		_insertStatement.bindLong(7, convertBooleanToInt(_station.hasSuperforecast()));
+		_insertStatement.bindLong(8, convertBooleanToInt(_station.hasForecast()));
+		_insertStatement.bindLong(9, convertBooleanToInt(_station.hasStatistic()));
+		_insertStatement.bindLong(10, convertBooleanToInt(_station.hasWaveReport()));
+		_insertStatement.bindLong(11, convertBooleanToInt(_station.hasWaveforecast()));
 	}
 
 	/*
@@ -239,6 +210,12 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 		return 0 < count;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.macsystems.windroid.db.ISpotDAO#fetchBy(java.lang.String,
+	 * java.lang.String, java.lang.String)
+	 */
 	@Override
 	public Cursor fetchBy(String continentid, String countryid, String regionid)
 	{

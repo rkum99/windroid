@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string
+		name="prep_statement_insert_into_continent">INSERT INTO continent (id,name) values (?,?);</string>
+<string name="prep_statement_insert_into_country">INSERT INTO country (id,name,continentid) values (?,?,?);</string>
+<string name="prep_statement_insert_into_region">INSERT INTO region (id,name,countryid) values (?,?,?);</string>
+</resources>

@@ -1,7 +1,5 @@
 package de.macsystems.windroid.db.sqlite;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Region;
 import de.macsystems.windroid.db.IRegionDAO;
 import de.macsystems.windroid.progress.IProgress;
@@ -30,19 +28,6 @@ public class RegionImpl extends BaseImpl implements IRegionDAO
 	public RegionImpl(final Database database)
 	{
 		super(database, "region");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see de.macsystems.windroid.db.IRegionDAO#fetchAll()
-	 */
-	@Override
-	public Cursor fetchAll()
-	{
-		final SQLiteDatabase db = getReadableDatabase();
-		return db.rawQuery("select * from region;", null);
-
 	}
 
 	/*

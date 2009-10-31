@@ -23,7 +23,7 @@ import de.macsystems.windroid.progress.IProgress;
 public class SpotImpl extends BaseImpl implements ISpotDAO
 {
 
-	final static String LOG_TAG = SpotImpl.class.getSimpleName();
+	private final static String LOG_TAG = SpotImpl.class.getSimpleName();
 
 	private final static String INSERT_SPOT = "INSERT INTO spot "
 			+ "(spotid,continentid,countryid,regionid,name,keyword,superforecast,forecast,statistic,wavereport,waveforecast) "
@@ -237,16 +237,6 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 	{
 		final int count = getSize();
 		return 0 < count;
-	}
-
-	/**
-	 * 
-	 */
-	@Override
-	public Cursor fetchAll()
-	{
-		final SQLiteDatabase db = getReadableDatabase();
-		return db.rawQuery("SELECT * FROM spot", null);
 	}
 
 	@Override

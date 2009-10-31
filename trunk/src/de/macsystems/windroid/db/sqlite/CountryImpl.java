@@ -19,7 +19,7 @@ public class CountryImpl extends BaseImpl implements ICountryDAO
 	 */
 	public CountryImpl(Database database, IProgress progress)
 	{
-		super(database, "region", progress);
+		super(database, "country", progress);
 	}
 
 	/**
@@ -27,7 +27,7 @@ public class CountryImpl extends BaseImpl implements ICountryDAO
 	 */
 	public CountryImpl(Database database)
 	{
-		super(database, "region");
+		super(database, "country");
 	}
 
 	@Override

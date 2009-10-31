@@ -23,7 +23,6 @@ import de.macsystems.windroid.identifyable.WindUnit;
  */
 public final class Util
 {
-	private static int FAKE_STATION_ID = 0;
 
 	public static final String SPOT_STATION_HAS_STATISTIC = "spot_station_has_statistic";
 	public static final String SPOT_STATION_HAS_SUPERFORECAST = "spot_station_has_superforecast";

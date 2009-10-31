@@ -202,65 +202,6 @@ public final class Util
 	}
 
 	/**
-	 * FAKE Method: Simulates the Configuration
-	 * 
-	 * @param _context
-	 * @return
-	 * @throws IllegalArgumentException
-	 * @Deprecated
-	 */
-	public final static List<SpotConfigurationVO> FAKE_getSpotConfiguration(final Context _context)
-			throws IllegalArgumentException
-	{
-		if (!isSpotConfigured(_context))
-		{
-			throw new IllegalArgumentException("No Spot Configured.");
-		}
-
-		final SharedPreferences prefs = getSharedPreferences(_context);
-		//
-		final SpotConfigurationVO spotConfiguration = new SpotConfigurationVO();
-		//
-		final String stationID = "za" + ++FAKE_STATION_ID;
-
-		final String stationName = prefs.getString(SPOT_STATION_NAME, null);
-		final String spotKeyword = prefs.getString(SPOT_STATION_KEYWORD, null);
-		final String preferredUnit = prefs.getString(SPOT_PREFERRED_WIND_UNIT, null);
-
-		final boolean hasSuperForecast = prefs.getBoolean(SPOT_STATION_HAS_SUPERFORECAST, false);
-		final boolean hasStatistic = prefs.getBoolean(SPOT_STATION_HAS_STATISTIC, false);
-
-		final String winddirectionFrom = prefs.getString(SPOT_WINDDIRECTION_FROM_ID, null);
-		final String winddirectionTo = prefs.getString(SPOT_WINDDIRECTION_TO_ID, null);
-
-		final boolean hasReport = prefs.getBoolean(SPOT_STATION_HAS_REPORT, false);
-		final boolean hasForecast = prefs.getBoolean(SPOT_STATION_HAS_FORECAST, false);
-		final boolean hasWavereport = prefs.getBoolean(SPOT_STATION_HAS_WAVEREPORT, false);
-		final boolean hasWaveforecast = prefs.getBoolean(SPOT_STATION_HAS_WAVERFORECAST, false);
-		//
-		final Station station = new Station(stationName, stationID, spotKeyword, hasForecast, hasSuperForecast,
-				hasStatistic, hasReport, hasWavereport, hasWaveforecast);
-		spotConfiguration.setStation(station);
-		//
-		final int indexPreferredWindUnit = IdentityUtil.indexOf(preferredUnit, WindUnit.values());
-		final WindUnit preferredWindUnit = WindUnit.values()[indexPreferredWindUnit];
-		spotConfiguration.setPreferredWindUnit(preferredWindUnit);
-		//
-		final int indexFromWindID = IdentityUtil.indexOf(winddirectionFrom, WindDirection.values());
-		final int indexToWindID = IdentityUtil.indexOf(winddirectionTo, WindDirection.values());
-
-		final WindDirection fromWindDirection = WindDirection.values()[indexFromWindID];
-		final WindDirection toWindDirection = WindDirection.values()[indexToWindID];
-
-		spotConfiguration.setFromDirection(fromWindDirection);
-		spotConfiguration.setToDirection(toWindDirection);
-		//
-		final List<SpotConfigurationVO> configurations = new ArrayList<SpotConfigurationVO>();
-		configurations.add(spotConfiguration);
-		return configurations;
-	}
-
-	/**
 	 * 
 	 * @param _context
 	 * @return

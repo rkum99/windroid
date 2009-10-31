@@ -36,18 +36,6 @@ public class ContinentImpl extends BaseImpl implements IContinentDAO
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see de.macsystems.windroid.db.IContinentDAO#fetchAll()
-	 */
-	@Override
-	public Cursor fetchAll()
-	{
-		final SQLiteDatabase db = getReadableDatabase();
-		return db.rawQuery("SELECT * FROM continent", null);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see de.macsystems.windroid.db.IContinentDAO#get(int)
 	 */
 	@Override

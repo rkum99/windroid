@@ -1,7 +1,5 @@
 package de.macsystems.windroid.db.sqlite;
 
-import java.util.Arrays;
-
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -135,11 +133,6 @@ public class BaseImpl implements IDAO
 				Log.d(LOG_TAG, "no entrys.");
 				return result;
 			}
-			Log.d(LOG_TAG, "Colums " + Arrays.toString(c.getColumnNames()));
-			Log.d(LOG_TAG, "count " + c.getCount());
-			Log.d(LOG_TAG, "Colum index " + c.getColumnIndexOrThrow("count(*)"));
-			Log.d(LOG_TAG, "return value " + c.getInt(0));
-
 			final int index = c.getColumnIndexOrThrow("count(*)");
 			result = c.getInt(index);
 		}
@@ -153,6 +146,32 @@ public class BaseImpl implements IDAO
 			IOUtils.close(c);
 		}
 		return result;
+	}
+
+	/**
+	 * Returns a Cursor which contains result of a SQL like<br>
+	 * 'SELECT * from tablename WHERE column='value'. The Tablename is the
+	 * default table name.
+	 * 
+	 * @param _columnName
+	 * @param _value
+	 * @return
+	 */
+	protected Cursor fetchBy(final String _columnName, final String _value)
+	{
+		if (_columnName == null || _columnName.length() == 0)
+		{
+			throw new IllegalArgumentException("_columnName invalid :" + _columnName);
+		}
+		if (_value == null || _value.length() == 0)
+		{
+			throw new IllegalArgumentException("_value invalid :" + _columnName);
+		}
+
+		final SQLiteDatabase db = getReadableDatabase();
+		return db.query(tableName, null, _columnName + "=?", new String[]
+		{ _value }, null, null, null);
+
 	}
 
 	/*

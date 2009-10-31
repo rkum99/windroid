@@ -1,7 +1,6 @@
 package de.macsystems.windroid.db.sqlite;
 
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import de.macsystems.windroid.db.ICountryDAO;
 import de.macsystems.windroid.progress.IProgress;
 
@@ -32,22 +31,9 @@ public class CountryImpl extends BaseImpl implements ICountryDAO
 	}
 
 	@Override
-	public Cursor fetchAll()
-	{
-		final SQLiteDatabase db = getReadableDatabase();
-		return db.rawQuery("SELECT * from country", null);
-	}
-
-	@Override
 	public Cursor fetchByContinentID(String _id)
 	{
-		if (_id == null)
-		{
-			throw new IllegalArgumentException("id");
-		}
-		final SQLiteDatabase db = getReadableDatabase();
-		return db.query("country", null, "continentid=?", new String[]
-		{ _id }, null, null, null);
+		return fetchBy("continentid", _id);
 	}
 
 }

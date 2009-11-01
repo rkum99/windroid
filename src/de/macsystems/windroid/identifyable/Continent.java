@@ -101,11 +101,6 @@ public enum Continent implements IdentifyAble
 		return countrys.iterator();
 	}
 
-	public Country[] getCoutrys()
-	{
-		return countrys.toArray(new Country[countrys.size()]);
-	}
-
 	@Override
 	public String toString()
 	{

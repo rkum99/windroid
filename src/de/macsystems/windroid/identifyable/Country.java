@@ -49,17 +49,12 @@ public class Country implements IdentifyAble
 			throw new NullPointerException();
 		}
 		regions.add(_region);
-		
+
 	}
 
 	public String getName()
 	{
 		return name;
-	}
-
-	public Region[] getRegions()
-	{
-		return regions.toArray(new Region[regions.size()]);
 	}
 
 	public Iterator<Region> iterator()

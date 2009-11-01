@@ -54,11 +54,6 @@ public class Region implements IdentifyAble
 		return stations.iterator();
 	}
 
-	public Station[] getStations()
-	{
-		return stations.toArray(new Station[stations.size()]);
-	}
-
 	public void addStation(final Station _bean) throws NullPointerException
 	{
 		if (_bean == null)

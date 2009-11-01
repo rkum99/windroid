@@ -79,17 +79,6 @@ public class Region implements IdentifyAble
 		return name;
 	}
 
-	public Station getStationById(final String _stationID)
-	{
-		for (final Station bean : stations)
-		{
-			if (bean.getId().equals(_stationID))
-			{
-				return bean;
-			}
-		}
-		throw new IllegalArgumentException("Station with ID " + _stationID + " not found");
-	}
 
 	@Override
 	public String toString()

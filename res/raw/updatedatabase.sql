@@ -27,3 +27,11 @@ CREATE INDEX IF NOT EXISTS coid ON country (id);
 
 CREATE TABLE IF NOT EXISTS selected (_id INTEGER PRIMARY KEY AUTOINCREMENT,spotid text NOT NULL,activ BOOLEAN);
 CREATE INDEX IF NOT EXISTS selectedsid ON selected (spotid);
+
+--  Preferences Table
+CREATE TABLE IF NOT EXISTS preferences (_id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT NOT NULL, value TEXT);
+-- Insert Values into table so that update will work on preferences
+INSERT INTO preferences ('key','value') VALUES ('warn_when_update_failed','test');
+INSERT INTO preferences ('key','value') VALUES ('launch_on_boot','test1');
+INSERT INTO preferences ('key','value') VALUES ('update_while_roaming','test2');
+INSERT INTO preferences ('key','value') VALUES ('music_on_alarm','test3');

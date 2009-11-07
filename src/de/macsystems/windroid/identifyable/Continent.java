@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @version $Id$
  * 
  */
-public enum Continent implements IdentifyAble
+public enum Continent implements IdentifyAble, Node<Country>
 {
 	AFRICA("Africa"), EUROPE("Europe"), //
 	ASIA("Asia"),
@@ -78,20 +78,6 @@ public enum Continent implements IdentifyAble
 	}
 
 	/**
-	 * 
-	 * @param _country
-	 */
-	public void addCountry(final Country _country) throws NullPointerException
-	{
-		if (_country == null)
-		{
-			throw new NullPointerException();
-		}
-
-		countrys.add(_country);
-	}
-
-	/**
 	 * Returns an Iterator over all Country's of this Continent.
 	 * 
 	 * @return
@@ -105,6 +91,29 @@ public enum Continent implements IdentifyAble
 	public String toString()
 	{
 		return id;
+	}
+
+	@Override
+	public void add(Country _country)
+	{
+		if (_country == null)
+		{
+			throw new NullPointerException();
+		}
+
+		countrys.add(_country);
+	}
+
+	@Override
+	public int getSize()
+	{
+		return values().length;
+	}
+
+	@Override
+	public boolean isLeaf()
+	{
+		return values().length > 0;
 	}
 
 }

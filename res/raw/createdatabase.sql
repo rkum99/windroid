@@ -25,3 +25,12 @@ CREATE INDEX coid ON country (id);
 
 CREATE TABLE IF NOT EXISTS selected (_id INTEGER PRIMARY KEY AUTOINCREMENT,spotid text NOT NULL,activ BOOLEAN); 
 CREATE INDEX IF NOT EXISTS selectedsid ON selected (spotid); 
+-- Preferences
+CREATE TABLE IF NOT EXISTS preferences (_id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT NOT NULL, value TEXT);
+-- Insert Values into table so that update will work on preferences
+INSERT INTO preferences ('key','value') VALUES ('akey','test');
+INSERT INTO preferences ('key','value') VALUES ('akey1','test1');
+INSERT INTO preferences ('key','value') VALUES ('akey2','test2');
+INSERT INTO preferences ('key','value') VALUES ('akey3','test3');
+
+

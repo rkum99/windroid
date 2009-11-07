@@ -11,7 +11,7 @@ import java.util.TreeSet;
  * @version $Id$
  * 
  */
-public class Country implements IdentifyAble
+public class Country implements IdentifyAble, Node<Region>
 {
 
 	private final String id;
@@ -40,16 +40,6 @@ public class Country implements IdentifyAble
 	{
 		id = _id;
 		name = _name;
-	}
-
-	public void addRegion(final Region _region) throws NullPointerException
-	{
-		if (_region == null)
-		{
-			throw new NullPointerException();
-		}
-		regions.add(_region);
-
 	}
 
 	public String getName()
@@ -128,5 +118,27 @@ public class Country implements IdentifyAble
 	public String getId()
 	{
 		return id;
+	}
+
+	@Override
+	public void add(Region _region)
+	{
+		if (_region == null)
+		{
+			throw new NullPointerException();
+		}
+		regions.add(_region);
+	}
+
+	@Override
+	public int getSize()
+	{
+		return regions.size();
+	}
+
+	@Override
+	public boolean isLeaf()
+	{
+		return regions.isEmpty();
 	}
 }

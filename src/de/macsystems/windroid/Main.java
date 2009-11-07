@@ -2,7 +2,6 @@ package de.macsystems.windroid;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import android.app.Activity;
@@ -16,7 +15,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -109,7 +107,6 @@ public class Main extends Activity
 		final Button selectSpotButton = (Button) findViewById(R.id.button_show_station_selection);
 		selectSpotButton.setOnClickListener(new View.OnClickListener()
 		{
-
 			@Override
 			public void onClick(final View v)
 			{
@@ -120,7 +117,6 @@ public class Main extends Activity
 		final Button selectPreferencesButton = (Button) findViewById(R.id.button_show_station_preferences);
 		selectPreferencesButton.setOnClickListener(new View.OnClickListener()
 		{
-
 			@Override
 			public void onClick(final View v)
 			{
@@ -132,7 +128,6 @@ public class Main extends Activity
 		final Button showSpotOverviewButton = (Button) findViewById(R.id.button_show_spot_overview);
 		showSpotOverviewButton.setOnClickListener(new View.OnClickListener()
 		{
-
 			@Override
 			public final void onClick(final View v)
 			{
@@ -143,7 +138,6 @@ public class Main extends Activity
 		final Button selectHelpPreferencesButton = (Button) findViewById(R.id.button_show_station_help);
 		selectHelpPreferencesButton.setOnClickListener(new View.OnClickListener()
 		{
-
 			@Override
 			public void onClick(final View v)
 			{
@@ -176,19 +170,10 @@ public class Main extends Activity
 			builder.append("Wind To: ").append(spot.getToDirection()).append("\n");
 			builder.append("Take care of Windirection: ").append(spot.isUseWindirection()).append("\n");
 			Toast.makeText(this, builder.toString(), Toast.LENGTH_LONG).show();
-
 		}
 
 		setupNotificationTest();
 
-		final SharedPreferences pref = Util.getSharedPreferences(this);
-		Log.i(LOG_TAG, "Preferences contains " + pref.getAll().size() + " Entries.");
-		final Iterator<?> keyIter = pref.getAll().keySet().iterator();
-		while (keyIter.hasNext())
-		{
-			final Object o = keyIter.next();
-			Log.i(LOG_TAG, "Preference Key:" + o + "=" + pref.getAll().get(o));
-		}
 	}
 
 	private OnCheckedChangeListener createServiceToogleListener(final SpotServiceConnection _connection)

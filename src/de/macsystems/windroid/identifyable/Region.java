@@ -12,7 +12,7 @@ import java.util.TreeSet;
  * @version $Id$
  * 
  */
-public class Region implements IdentifyAble
+public class Region implements IdentifyAble, Node<Station>
 {
 
 	public static class RegionComparator implements Comparator<Region>, Serializable
@@ -27,10 +27,8 @@ public class Region implements IdentifyAble
 		@Override
 		public int compare(final Region object1, final Region object2)
 		{
-
 			return object1.getName().compareTo(object2.getName());
 		}
-
 	}
 
 	private final String id;
@@ -54,15 +52,6 @@ public class Region implements IdentifyAble
 		return stations.iterator();
 	}
 
-	public void addStation(final Station _bean) throws NullPointerException
-	{
-		if (_bean == null)
-		{
-			throw new NullPointerException();
-		}
-		stations.add(_bean);
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -79,11 +68,32 @@ public class Region implements IdentifyAble
 		return name;
 	}
 
-
 	@Override
 	public String toString()
 	{
 		return name;
+	}
+
+	@Override
+	public void add(Station _bean)
+	{
+		if (_bean == null)
+		{
+			throw new NullPointerException();
+		}
+		stations.add(_bean);
+	}
+
+	@Override
+	public int getSize()
+	{
+		return stations.size();
+	}
+
+	@Override
+	public boolean isLeaf()
+	{
+		return stations.isEmpty();
 	}
 
 }

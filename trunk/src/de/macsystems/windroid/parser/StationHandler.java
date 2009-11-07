@@ -122,7 +122,7 @@ public class StationHandler extends DefaultHandler
 
 		final Station station = new Station(stationName, stationid, keyword, hasForecast, hasSuperforecast,
 				hasStatistic, hasReport, hasWaveReport, hasWaveforecast);
-		currentRegion.addStation(station);
+		currentRegion.add(station);
 		nrOfStations++;
 	}
 
@@ -132,11 +132,7 @@ public class StationHandler extends DefaultHandler
 		final int indexName = attributes.getIndex(NAMESPACE, "name");
 
 		currentRegion = new Region(attributes.getValue(indexID), attributes.getValue(indexName));
-		currentCountry.addRegion(currentRegion);
-
-		// Log.d(LOG_TAG, "Region id=" + currentRegion.getId() + " name=" +
-		// currentRegion.getName());
-
+		currentCountry.add(currentRegion);
 	}
 
 	private void handleCountry(final Attributes attributes)
@@ -145,7 +141,7 @@ public class StationHandler extends DefaultHandler
 		final int indexName = attributes.getIndex(NAMESPACE, "name");
 
 		currentCountry = new Country(attributes.getValue(indexID), attributes.getValue(indexName));
-		currentContinent.addCountry(currentCountry);
+		currentContinent.add(currentCountry);
 	}
 
 	private void handleContinent(final Attributes attributes)

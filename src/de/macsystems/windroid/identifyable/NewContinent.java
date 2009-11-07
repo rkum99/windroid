@@ -6,7 +6,7 @@ import java.util.TreeSet;
 
 /**
  * @author mac
- * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
+ * @version $Id$
  */
 public class NewContinent implements IdentifyAble, Node<Country>
 {

@@ -4,7 +4,7 @@ import android.graphics.Region;
 
 /**
  * @author Jens Hohl
- * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
+ * @version $Id$
  */
 public interface IRegionDAO extends IDAO
 {

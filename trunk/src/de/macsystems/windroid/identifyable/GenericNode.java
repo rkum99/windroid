@@ -9,7 +9,7 @@ import java.util.TreeSet;
  * A generic node has children a size and allows to iterate over children.
  * 
  * @author mac
- * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
+ * @version $Id$
  * @param <T>
  */
 public class GenericNode<T> implements Node<T>

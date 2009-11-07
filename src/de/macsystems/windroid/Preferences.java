@@ -3,14 +3,12 @@ package de.macsystems.windroid;
 import java.util.Iterator;
 import java.util.Map;
 
-import de.macsystems.windroid.db.DAOFactory;
-import de.macsystems.windroid.db.IPreferencesDAO;
-import de.macsystems.windroid.io.IOUtils;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.util.Log;
+import de.macsystems.windroid.db.DAOFactory;
+import de.macsystems.windroid.db.IPreferencesDAO;
 
 /**
  * Main Preferences Screen of Windroid

@@ -8,6 +8,9 @@ import de.macsystems.windroid.R;
 import de.macsystems.windroid.io.IOUtils;
 
 /**
+ * Loads SQL Scripts and returns it as an List of Strings which can be executed.<br>
+ * Empty or lines beginning with '--' will be ignored.
+ * 
  * @author mac
  * @version $Id$
  */

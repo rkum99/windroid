@@ -66,17 +66,25 @@ public class Preferences extends PreferenceActivity
 	{
 		Log.d(LOG_TAG, "onCreate");
 
+		logSharedPreferences();
+
+		super.onCreate(savedInstanceState);
+		addPreferencesFromResource(R.xml.preferencesdescription);
+	}
+
+	/**
+	 * 
+	 */
+	private void logSharedPreferences()
+	{
 		final SharedPreferences pref = Util.getSharedPreferences(this);
-		Log.i(LOG_TAG, "Preferences contains " + pref.getAll().size() + " Entries.");
+		Log.d(LOG_TAG, "SharedPreferences contain " + pref.getAll().size() + " Entries.");
 		final Iterator<?> keyIter = pref.getAll().keySet().iterator();
 		while (keyIter.hasNext())
 		{
 			final Object o = keyIter.next();
-			Log.i(LOG_TAG, "Preference Key:" + o + "=" + pref.getAll().get(o));
+			Log.d(LOG_TAG, "Preference Key:" + o + "=" + pref.getAll().get(o));
 		}
-
-		super.onCreate(savedInstanceState);
-		addPreferencesFromResource(R.xml.preferencesdescription);
 	}
 
 }

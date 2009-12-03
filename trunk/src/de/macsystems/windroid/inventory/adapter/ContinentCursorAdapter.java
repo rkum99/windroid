@@ -8,7 +8,8 @@ import android.widget.TextView;
 
 /**
  * @author Jens Hohl
- * @version $Id$
+ * @version $Id: ContinentCursorAdapter.java 102 2009-11-07 01:39:30Z jens.hohl
+ *          $
  */
 public class ContinentCursorAdapter implements SimpleCursorAdapter.ViewBinder
 {
@@ -34,17 +35,13 @@ public class ContinentCursorAdapter implements SimpleCursorAdapter.ViewBinder
 			final String name = cursor.getString(CONTINENT_ID_COLUMN);
 			final TextView tv = (TextView) view;
 			tv.setText(name);
-			return true;
-
 		}
 		else if (columnIndex == CONTINENT_NAME_COLUMN)
 		{
 			final String name = cursor.getString(CONTINENT_NAME_COLUMN);
 			final TextView tv = (TextView) view;
 			tv.setText("" + name);
-			return true;
 		}
 		return true;
 	}
-
 }

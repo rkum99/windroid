@@ -35,6 +35,7 @@ public class BaseImpl implements IDAO
 	 * 
 	 * @param _database
 	 * @param _tableName
+	 *            default name of the table this class uses.
 	 * @param _progress
 	 * @throws NullPointerException
 	 *             if any parameter is null.
@@ -198,6 +199,12 @@ public class BaseImpl implements IDAO
 		return getCount(tableName);
 	}
 
+	/**
+	 * Converts an Boolean to an Integer representation
+	 * 
+	 * @param _boolean
+	 * @return
+	 */
 	public static final int convertBooleanToInt(final boolean _boolean)
 	{
 		return _boolean == true ? 1 : 0;

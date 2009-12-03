@@ -36,6 +36,8 @@ public class BaseImpl implements IDAO
 	 * @param _database
 	 * @param _tableName
 	 * @param _progress
+	 * @throws NullPointerException
+	 *             if any parameter is null.
 	 */
 	protected BaseImpl(final Database _database, final String _tableName, final IProgress _progress)
 	{
@@ -130,7 +132,7 @@ public class BaseImpl implements IDAO
 			c = db.rawQuery("SELECT count(*) from " + tableName, null);
 			if (!c.moveToFirst())
 			{
-				Log.d(LOG_TAG, "no entrys in "+_tabelName);
+				Log.d(LOG_TAG, "no entrys in " + _tabelName);
 				return result;
 			}
 			final int index = c.getColumnIndexOrThrow("count(*)");
@@ -138,7 +140,7 @@ public class BaseImpl implements IDAO
 		}
 		catch (final SQLException e)
 		{
-			Log.e(LOG_TAG, "failed on "+tableName, e);
+			Log.e(LOG_TAG, "failed on " + tableName, e);
 		}
 		finally
 		{

@@ -38,6 +38,8 @@ import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.proxy.SpotServiceConnection;
 
 /**
+ * This is the Entry Point when the Application will be launched.
+ * 
  * @author Jens Hohl
  * @version $Id$
  * 
@@ -374,18 +376,17 @@ public class Main extends Activity
 			 */
 			final Intent intent = new Intent(Main.this, SpotSelection.class);
 			intent.putExtra(IntentConstants.SPOT_TO_CONFIGURE, spotConfigurationVO);
-			Main.this.startActivity(intent);
+			startActivity(intent);
 		}
 		else
 		{
 			/**
-			 * Start Download of Database first, then user can configure a spot
-			 * using Transport Objectto collect all properties.
+			 * Start download of data first, then user can configure a spot
+			 * using Transport Object to collect all properties.
 			 */
 			final Intent intent = new Intent(Main.this, DownloadActivity.class);
 			intent.putExtra(IntentConstants.SPOT_TO_CONFIGURE, spotConfigurationVO);
-			Main.this.startActivity(intent);
-
+			startActivity(intent);
 		}
 	}
 }

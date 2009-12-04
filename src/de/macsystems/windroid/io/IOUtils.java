@@ -29,12 +29,17 @@ import de.macsystems.windroid.io.task.StationXMLUpdateTask;
 import de.macsystems.windroid.progress.IProgress;
 
 /**
+ * Utility Class for IO related tasks.
+ * 
  * @author Jens Hohl
  * @version $Id$
- * 
  */
 public class IOUtils
 {
+
+	private IOUtils()
+	{
+	}
 
 	private static final String LOG_TAG = IOUtils.class.getSimpleName();
 
@@ -400,6 +405,9 @@ public class IOUtils
 	}
 
 	/**
+	 * Reads from given <code>InputStream</code> into a
+	 * <code>StringBuffer</code>.
+	 * 
 	 * @param _instream
 	 * @return
 	 * @throws IOException
@@ -426,13 +434,22 @@ public class IOUtils
 
 	}
 
-	public static List<String> openResource(final Context _context, final int _resourceId)
+	/**
+	 * Reads a text file line by line.
+	 * 
+	 * @param _context
+	 * @param _resourceId
+	 * @return
+	 * @throws Resources.NotFoundException
+	 * @throws IOException
+	 */
+	public static List<String> readTextfile(final Context _context, final int _resourceId)
 			throws Resources.NotFoundException, IOException
 	{
 		BufferedReader bufReader = null;
 		InputStream inStream = null;
 		InputStreamReader inReader = null;
-		List<String> list = new ArrayList<String>();
+		final List<String> list = new ArrayList<String>();
 		try
 		{
 			inStream = _context.getResources().openRawResource(R.raw.updatedatabase);

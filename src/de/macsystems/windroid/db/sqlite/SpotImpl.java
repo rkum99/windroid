@@ -89,12 +89,12 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 					updateCountryTable(insertCountryStatement, country, continent);
 					insertCountryStatement.executeInsert();
 
-					for (Region region : country)
+					for (final Region region : country)
 					{
 						updateRegionTable(insertRegionStatement, region, country);
 						insertRegionStatement.executeInsert();
 
-						for (Station station : region)
+						for (final Station station : region)
 						{
 							updateSpotTable(insertSpotStatement, continent, country, region, station);
 							insertSpotStatement.executeInsert();

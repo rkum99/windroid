@@ -39,7 +39,7 @@ public class ScriptLoader
 		/**
 		 * remove non SQL from script
 		 */
-		final List<String> script = IOUtils.openResource(_context, _resourceId);
+		final List<String> script = IOUtils.readTextfile(_context, _resourceId);
 		for (int i = script.size() - 1; i >= 0; i--)
 		{
 			final String sql = script.get(i);

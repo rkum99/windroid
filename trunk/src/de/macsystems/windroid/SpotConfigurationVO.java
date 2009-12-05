@@ -2,6 +2,7 @@ package de.macsystems.windroid;
 
 import java.io.Serializable;
 
+import android.database.Cursor;
 import de.macsystems.windroid.identifyable.Station;
 import de.macsystems.windroid.identifyable.WindDirection;
 import de.macsystems.windroid.identifyable.WindUnit;
@@ -16,6 +17,8 @@ import de.macsystems.windroid.identifyable.WindUnit;
  */
 public final class SpotConfigurationVO implements Serializable
 {
+
+
 	private static final long serialVersionUID = 1L;
 
 	private Station station;

@@ -27,6 +27,7 @@ public class StationXMLUpdateTask extends IOTask<Void, InputStream>
 	 * @param _uri
 	 * @param _progress
 	 * @param _stationsXMLFilePath
+	 * @throws NullPointerException
 	 */
 	public StationXMLUpdateTask(final URI _uri, final String _stationsXMLFilePath, final IProgress _progress)
 	{

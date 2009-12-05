@@ -210,4 +210,15 @@ public class BaseImpl implements IDAO
 		return _boolean == true ? 1 : 0;
 	}
 
+	/**
+	 * Converts an Integer to an Boolean representation 
+	 * 
+	 * @param _value
+	 * @return
+	 */
+	public static final boolean convertIntToBoolean(final long _value)
+	{
+		return _value == 0 ? false : true;
+	}
+
 }

@@ -47,7 +47,7 @@ public class World implements IdentifyAble, Node<NewContinent>
 	{
 		if (_aContinent == null)
 		{
-			throw new NullPointerException();
+			throw new NullPointerException("continent");
 		}
 		continents.add(_aContinent);
 	}

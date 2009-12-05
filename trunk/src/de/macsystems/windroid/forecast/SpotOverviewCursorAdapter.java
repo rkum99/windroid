@@ -1,14 +1,14 @@
 package de.macsystems.windroid.forecast;
 
 import android.database.Cursor;
-import android.util.Log;
 import android.view.View;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 /**
  * @author Jens Hohl
- * @version $Id$
+ * @version $Id: SpotOverviewCursorAdapter.java 73 2009-10-25 16:01:54Z
+ *          jens.hohl $
  */
 public class SpotOverviewCursorAdapter implements SimpleCursorAdapter.ViewBinder
 {
@@ -20,8 +20,6 @@ public class SpotOverviewCursorAdapter implements SimpleCursorAdapter.ViewBinder
 	@Override
 	public boolean setViewValue(final View view, final Cursor cursor, final int columnIndex)
 	{
-		Log.d("", "columnIndex = " + columnIndex);
-		Log.d("", "view = " + view);
 		if (columnIndex == SPOTID_COLUMN)
 		{
 			final String name = cursor.getString(SPOTID_COLUMN);

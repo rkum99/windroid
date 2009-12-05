@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
+import de.macsystems.windroid.SpotConfigurationVO;
 import de.macsystems.windroid.db.ISpotDAO;
 import de.macsystems.windroid.identifyable.Continent;
 import de.macsystems.windroid.identifyable.Country;
@@ -220,5 +221,74 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 		// db.query("spot", columns, selection, selectionArgs, groupBy, having,
 		// orderBy);
 		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.macsystems.windroid.db.ISpotDAO#fetchBy(java.lang.String)
+	 */
+	@Override
+	public SpotConfigurationVO fetchBy(String stationid)
+	{
+		final SpotConfigurationVO vo = new SpotConfigurationVO();
+		final SQLiteDatabase db = getReadableDatabase();
+		//
+		// select
+		// _id,spotid,continentid,countryid,regionid,name,keyword,superforecast,forecast,statistic,wavereport,waveforecast
+		// from Spot where spotid='eg36';
+		final String[] colums = new String[]
+		{ "spotid", "continentid", "countryid", "regionid", "name", "keyword", "superforecast", "forecast",
+				"statistic", "wavereport", "waveforecast" };
+
+		Cursor cursor = null;
+		try
+		{
+			cursor = db.query("spot", colums, "spotid=?", new String[]
+			{ stationid }, null, null, null);
+			if (!cursor.moveToFirst())
+			{
+				throw new IllegalStateException("Empty Result");
+			}
+			/**
+			 * Create an SpotConfigurationVO
+			 */
+			final int spotidIndex = cursor.getColumnIndexOrThrow(colums[0]);
+			final int continentIdIndex = cursor.getColumnIndexOrThrow(colums[1]);
+			final int countryidIndex = cursor.getColumnIndexOrThrow(colums[2]);
+			final int regionIdIndex = cursor.getColumnIndexOrThrow(colums[3]);
+			final int nameIndex = cursor.getColumnIndexOrThrow(colums[4]);
+			final int keywordIndex = cursor.getColumnIndexOrThrow(colums[5]);
+			final int superforecastIndex = cursor.getColumnIndexOrThrow(colums[6]);
+			final int forecastIndex = cursor.getColumnIndexOrThrow(colums[7]);
+			final int statisticIndex = cursor.getColumnIndexOrThrow(colums[8]);
+			final int wavereportIndex = cursor.getColumnIndexOrThrow(colums[9]);
+			final int waveforecastIndex = cursor.getColumnIndexOrThrow(colums[10]);
+
+			final String spotid = cursor.getString(spotidIndex);
+			final String continentId = cursor.getString(continentIdIndex);
+			final String countryId = cursor.getString(countryidIndex);
+			final String regionId = cursor.getString(regionIdIndex);
+			final String name = cursor.getString(nameIndex);
+			final String keyword = cursor.getString(keywordIndex);
+			final boolean hasSuperforecast = convertIntToBoolean(cursor.getLong(superforecastIndex));
+			final boolean hasForecast = convertIntToBoolean(cursor.getLong(forecastIndex));
+			final boolean hasStatistic = convertIntToBoolean(cursor.getLong(statisticIndex));
+			final boolean hasWavereport = convertIntToBoolean(cursor.getLong(wavereportIndex));
+			final boolean hasWaveforecast = convertIntToBoolean(cursor.getLong(waveforecastIndex));
+
+			// TODO: Forgot hasReport there, set it to false at the moment
+			final Station station = new Station(name, spotid, keyword, false, hasForecast, hasSuperforecast,
+					hasStatistic, hasWavereport, hasWaveforecast);
+			vo.setStation(station);
+
+			// vo
+		}
+		finally
+		{
+			IOUtils.close(cursor);
+			IOUtils.close(db);
+		}
+		return vo;
 	}
 }

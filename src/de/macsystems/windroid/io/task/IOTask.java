@@ -85,6 +85,7 @@ public abstract class IOTask<V, I> implements Task<V, I>
 		httpGet.addHeader("User-Agent", MOZILLA_5_0);
 
 		final HttpResponse response = getHTTPClient().execute(httpGet);
+
 		if (HttpStatus.SC_OK != response.getStatusLine().getStatusCode())
 		{
 			final StatusLine status = response.getStatusLine();
@@ -102,6 +103,7 @@ public abstract class IOTask<V, I> implements Task<V, I>
 		try
 		{
 			instream = response.getEntity().getContent();
+			Log.d(LOG_TAG,"HTTP Content Lenght:"+response.getEntity().getContentLength());
 			return process(_context, instream);
 		}
 		catch (final Exception e)

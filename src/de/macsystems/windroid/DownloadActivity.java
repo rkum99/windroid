@@ -101,10 +101,6 @@ public class DownloadActivity extends Activity
 				catch (final Exception e)
 				{
 					Log.e(LOG_TAG, "Failed to parse xml.", e);
-					// final Database database = new
-					// Database(DownloadActivity.this);
-					// final ConfigImpl config = new ConfigImpl(database);
-					// config.setDatabaseStatus("falied");
 					showInstallationFailed(e);
 				}
 				finally
@@ -135,7 +131,6 @@ public class DownloadActivity extends Activity
 						header).setMessage(message + stackTrace).show();
 			}
 		});
-
 	}
 
 	/**
@@ -160,6 +155,11 @@ public class DownloadActivity extends Activity
 
 	private DialogInterface.OnClickListener getListener(final Class<? extends Activity> _nextActivity)
 	{
+		if (_nextActivity == null)
+		{
+			throw new NullPointerException("next activity");
+		}
+
 		final DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener()
 		{
 			@Override
@@ -199,5 +199,4 @@ public class DownloadActivity extends Activity
 	{
 		super.onStop();
 	}
-
 }

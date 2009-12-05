@@ -20,7 +20,6 @@ import de.macsystems.windroid.db.ICountryDAO;
 import de.macsystems.windroid.db.IRegionDAO;
 import de.macsystems.windroid.db.ISpotDAO;
 import de.macsystems.windroid.identifyable.Continent;
-import de.macsystems.windroid.identifyable.Station;
 
 /**
  * Activity which allows User to select a Spot using Spinners.
@@ -65,8 +64,13 @@ public class SpotSelection extends Activity
 				 * Create an Transport Object for current station which will be
 				 * configured.
 				 */
-				final SpotConfigurationVO info = new SpotConfigurationVO();
-				info.setStation((Station) spotSpinner.getSelectedItem());
+				final Cursor cursor = (Cursor) spotSpinner.getSelectedItem();
+				final int index = cursor.getColumnIndexOrThrow("spotid");
+				final String spotId = cursor.getString(index);
+
+				final ISpotDAO dao = DAOFactory.getSpotDAO(SpotSelection.this);
+				final SpotConfigurationVO info = dao.fetchBy(spotId);
+
 				intent.putExtra(IntentConstants.SPOT_TO_CONFIGURE, info);
 				SpotSelection.this.startActivity(intent);
 			}

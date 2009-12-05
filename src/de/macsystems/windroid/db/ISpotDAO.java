@@ -1,5 +1,6 @@
 package de.macsystems.windroid.db;
 
+import de.macsystems.windroid.SpotConfigurationVO;
 import android.database.Cursor;
 
 /**
@@ -24,4 +25,12 @@ public interface ISpotDAO extends IDAO
 	public boolean hasSpots();
 
 	public Cursor fetchBy(final String continentid, final String countryid, final String regionid);
+
+	/**
+	 * Returns a {@link SpotConfigurationVO} by its id.
+	 * 
+	 * @param stationid
+	 * @return
+	 */
+	public SpotConfigurationVO fetchBy(final String stationid);
 }

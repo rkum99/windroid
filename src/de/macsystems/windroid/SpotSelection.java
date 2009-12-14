@@ -37,6 +37,19 @@ public class SpotSelection extends Activity
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see android.app.Activity#onActivityResult(int, int,
+	 * android.content.Intent)
+	 */
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		setResult(resultCode, data);
+		finish();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override
@@ -72,7 +85,8 @@ public class SpotSelection extends Activity
 				final SpotConfigurationVO info = dao.fetchBy(spotId);
 
 				intent.putExtra(IntentConstants.SPOT_TO_CONFIGURE, info);
-				SpotSelection.this.startActivity(intent);
+				// SpotSelection.this.startActivity(intent);
+				SpotSelection.this.startActivityForResult(intent, Main.RESULT_REQUEST_CONFIGURATION);
 			}
 		});
 	}

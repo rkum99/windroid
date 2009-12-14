@@ -46,11 +46,68 @@ import de.macsystems.windroid.proxy.SpotServiceConnection;
  */
 public class Main extends Activity
 {
+
 	private final static int ABOUT_MENU_ID = 777;
+	/**
+	 * Configuration SubActivities will be launched by this request code
+	 */
+	public final static int RESULT_REQUEST_CONFIGURATION = 0xCAFEBABE;
 
 	private final static String LOG_TAG = Main.class.getSimpleName();
 
 	private EnableViewConnectionBroadcastReciever broadcastReceiver;
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onActivityResult(int, int,
+	 * android.content.Intent)
+	 */
+	@Override
+	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data)
+	{
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if (requestCode == Activity.RESULT_CANCELED)
+		{
+			Log.d(LOG_TAG, "SubActivity was canceled.");
+			return;
+		}
+		else
+		{
+			if (RESULT_REQUEST_CONFIGURATION == requestCode)
+			{
+				Log.d(LOG_TAG, "Request Code recieved :" + requestCode);
+				/**
+				 * TODO: Remove Code later
+				 */
+				if (WindUtils.isSpotConfigured(getIntent()))
+				{
+					final SpotConfigurationVO spot = WindUtils.getConfigurationFromIntent(data);
+
+					// TODO Move into DAO package.
+					Util.persistSpotConfigurationVO(spot, this);
+
+					final StringBuilder builder = new StringBuilder(256).append("\n");
+					builder.append("Folgender Spot wurde Angelegt:\n").append("\n\n");
+					builder.append("Name: ").append(spot.getStation().getName()).append("\n");
+					builder.append("ID: ").append(spot.getStation().getId()).append("\n");
+					builder.append("Keyword: ").append(spot.getStation().getKeyword()).append("\n");
+					builder.append("hasStatistic: ").append(spot.getStation().hasStatistic()).append("\n");
+					builder.append("hasSuperForcast: ").append(spot.getStation().hasSuperforecast()).append("\n");
+					builder.append("PreferedWindUnit: ").append(spot.getPreferredWindUnit()).append("\n");
+					builder.append("Wind From: ").append(spot.getFromDirection()).append("\n");
+					builder.append("Wind To: ").append(spot.getToDirection()).append("\n");
+					builder.append("Take care of Windirection: ").append(spot.isUseWindirection()).append("\n");
+					Toast.makeText(this, builder.toString(), Toast.LENGTH_LONG).show();
+				}
+			}
+			else
+			{
+				Log.e(LOG_TAG, "Illegal Request Code recieved :" + requestCode);
+			}
+		}
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -99,9 +156,9 @@ public class Main extends Activity
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override
-	protected void onCreate(final Bundle savedInstanceState)
+	protected void onCreate(final Bundle _savedInstanceState)
 	{
-		super.onCreate(savedInstanceState);
+		super.onCreate(_savedInstanceState);
 
 		startSpotService();
 		setContentView(R.layout.main);
@@ -110,17 +167,16 @@ public class Main extends Activity
 		selectSpotButton.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
-			public void onClick(final View v)
+			public final void onClick(final View v)
 			{
-				launchSetupOrSpotSelectionActivity();
+				Main.this.launchSetupOrSpotSelectionActivity();
 			}
-
 		});
 		final Button selectPreferencesButton = (Button) findViewById(R.id.button_show_station_preferences);
 		selectPreferencesButton.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
-			public void onClick(final View v)
+			public final void onClick(final View v)
 			{
 				final Intent intent = new Intent(Main.this, Preferences.class);
 				Main.this.startActivity(intent);
@@ -133,7 +189,7 @@ public class Main extends Activity
 			@Override
 			public final void onClick(final View v)
 			{
-				showSpotOverview();
+				Main.this.showSpotOverview();
 			}
 		});
 
@@ -141,7 +197,7 @@ public class Main extends Activity
 		selectHelpPreferencesButton.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
-			public void onClick(final View v)
+			public final void onClick(final View v)
 			{
 				showHelpPage();
 			}
@@ -151,43 +207,25 @@ public class Main extends Activity
 		final SpotServiceConnection serviceConnection = new SpotServiceConnection(toogleServiceButton, this);
 		toogleServiceButton.setOnCheckedChangeListener(createServiceToogleListener(serviceConnection));
 
-		/**
-		 * TODO: Remove Code later
-		 */
-		if (WindUtils.isSpotConfigured(getIntent()))
-		{
-			final SpotConfigurationVO spot = WindUtils.getConfigurationFromIntent(getIntent());
-
-			Util.persistSpotConfigurationVO(spot, this);
-
-			final StringBuilder builder = new StringBuilder(256).append("\n");
-			builder.append("Folgender Spot wurde Angelegt:\n").append("\n\n");
-			builder.append("Name: ").append(spot.getStation().getName()).append("\n");
-			builder.append("ID: ").append(spot.getStation().getId()).append("\n");
-			builder.append("Keyword: ").append(spot.getStation().getKeyword()).append("\n");
-			builder.append("hasStatistic: ").append(spot.getStation().hasStatistic()).append("\n");
-			builder.append("hasSuperForcast: ").append(spot.getStation().hasSuperforecast()).append("\n");
-			builder.append("PreferedWindUnit: ").append(spot.getPreferredWindUnit()).append("\n");
-			builder.append("Wind From: ").append(spot.getFromDirection()).append("\n");
-			builder.append("Wind To: ").append(spot.getToDirection()).append("\n");
-			builder.append("Take care of Windirection: ").append(spot.isUseWindirection()).append("\n");
-			Toast.makeText(this, builder.toString(), Toast.LENGTH_LONG).show();
-		}
-
 		setupNotificationTest();
 
 	}
 
 	private OnCheckedChangeListener createServiceToogleListener(final SpotServiceConnection _connection)
 	{
+		if (_connection == null)
+		{
+			throw new NullPointerException();
+		}
+
 		final OnCheckedChangeListener listener = new OnCheckedChangeListener()
 		{
 			@Override
-			public final void onCheckedChanged(final CompoundButton buttonView, final boolean isChecked)
+			public final void onCheckedChanged(final CompoundButton _buttonView, final boolean _isChecked)
 			{
 				try
 				{
-					if (isChecked)
+					if (_isChecked)
 					{
 						_connection.start();
 					}
@@ -219,7 +257,6 @@ public class Main extends Activity
 		for (int i = 0; i < services.size(); i++)
 		{
 			Log.d(LOG_TAG, "Service Nr. " + i + " :" + services.get(i).service);
-
 			Log.d(LOG_TAG, "Service Nr. " + i + " package name : " + services.get(i).service.getPackageName());
 			Log.d(LOG_TAG, "Service Nr. " + i + " class name   : " + services.get(i).service.getClassName());
 
@@ -228,6 +265,7 @@ public class Main extends Activity
 				if ("de.macsystems.windroid.SpotService".equals(services.get(i).service.getClassName()))
 				{
 					isServiceFound = true;
+					break;
 				}
 			}
 		}
@@ -258,7 +296,7 @@ public class Main extends Activity
 		{
 
 			@Override
-			public void onClick(final View v)
+			public final void onClick(final View v)
 			{
 				final NotificationManager mManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 				showNotification(Main.this, mManager, 999, "Windalarm", "Alarm für Station XYZ wurde ausgelöst.");
@@ -368,15 +406,15 @@ public class Main extends Activity
 
 		final SpotConfigurationVO spotConfigurationVO = new SpotConfigurationVO();
 
+		final Intent intent;
 		if (spotsfound)
 		{
 			/**
 			 * If user wants to configure a Spot we create an Transport Object
 			 * to collect all properties
 			 */
-			final Intent intent = new Intent(Main.this, SpotSelection.class);
+			intent = new Intent(Main.this, SpotSelection.class);
 			intent.putExtra(IntentConstants.SPOT_TO_CONFIGURE, spotConfigurationVO);
-			startActivity(intent);
 		}
 		else
 		{
@@ -384,9 +422,11 @@ public class Main extends Activity
 			 * Start download of data first, then user can configure a spot
 			 * using Transport Object to collect all properties.
 			 */
-			final Intent intent = new Intent(Main.this, DownloadActivity.class);
+			intent = new Intent(Main.this, DownloadActivity.class);
 			intent.putExtra(IntentConstants.SPOT_TO_CONFIGURE, spotConfigurationVO);
-			startActivity(intent);
 		}
+		// We expect a result in method onActivityResult(....)
+		startActivityForResult(intent, RESULT_REQUEST_CONFIGURATION);
+
 	}
 }

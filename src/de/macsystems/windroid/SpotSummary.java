@@ -63,7 +63,9 @@ public class SpotSummary extends Activity
 			public void onClick(final View v)
 			{
 				final Intent intent = WindUtils.createIntent(SpotSummary.this, Main.class, stationInfo);
-				startActivity(intent);
+				// startActivity(intent);
+				SpotSummary.this.setResult(ActivityResult.SUCCESS, intent);
+				SpotSummary.this.finish();
 			}
 		};
 		return listener;

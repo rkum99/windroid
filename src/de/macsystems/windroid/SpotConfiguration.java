@@ -44,6 +44,19 @@ public class SpotConfiguration extends Activity
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see android.app.Activity#onActivityResult(int, int,
+	 * android.content.Intent)
+	 */
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	{
+		setResult(resultCode, data);
+		finish();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override
@@ -152,7 +165,8 @@ public class SpotConfiguration extends Activity
 
 				final Intent intent = new Intent(SpotConfiguration.this, SpotSummary.class);
 				intent.putExtra(IntentConstants.SPOT_TO_CONFIGURE, stationInfo);
-				startActivity(intent);
+
+				startActivityForResult(intent, Main.RESULT_REQUEST_CONFIGURATION);
 			}
 		};
 		return listener;

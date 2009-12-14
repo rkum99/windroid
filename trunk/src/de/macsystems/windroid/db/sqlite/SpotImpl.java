@@ -62,6 +62,7 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 	public void insertSpots()
 	{
 		Log.d(LOG_TAG, "executeInsert");
+		final int PROGRESS = 100;
 		final SQLiteDatabase db = getWritableDatabase();
 		final SQLiteStatement insertSpotStatement = db.compileStatement(INSERT_SPOT);
 		final SQLiteStatement insertContinentStatement = db.compileStatement(INSERT_CONTINENT);
@@ -100,9 +101,9 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 							updateSpotTable(insertSpotStatement, continent, country, region, station);
 							insertSpotStatement.executeInsert();
 							index++;
-							if (index % 100 == 0)
+							if (index % PROGRESS == 0)
 							{
-								getProgress().incrementBy(100);
+								getProgress().incrementBy(PROGRESS);
 							}
 						}
 					}
@@ -175,7 +176,6 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 	private final static void updateSpotTable(final SQLiteStatement _insertStatement, final Continent _continent,
 			final Country _country, final Region _region, final Station _station)
 	{
-
 		final String spotID = _station.getId();
 		final String continentID = _continent.getId();
 		final String countryID = _country.getId();

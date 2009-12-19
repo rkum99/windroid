@@ -27,7 +27,7 @@ import de.macsystems.windroid.progress.ProgressBarAdapter;
  * @author Jens Hohl
  * @version $Id$
  */
-public class DownloadActivity extends Activity
+public class DownloadActivity extends ChainSubActivity
 {
 	private final static String LOG_TAG = DownloadActivity.class.getSimpleName();
 
@@ -159,13 +159,14 @@ public class DownloadActivity extends Activity
 		{
 			throw new NullPointerException("next activity");
 		}
-
+		//
 		final DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener()
 		{
 			@Override
 			public final void onClick(final DialogInterface dialog, final int which)
 			{
 				final Intent nextActivitiyIntent = new Intent(DownloadActivity.this, _nextActivity);
+				// TODO launch as SubActivity there
 				startActivity(nextActivitiyIntent);
 			}
 		};
@@ -173,7 +174,7 @@ public class DownloadActivity extends Activity
 	}
 
 	/**
-	 * @return
+	 * @return OnClickListener
 	 */
 	private OnClickListener getCancelListener()
 	{
@@ -183,7 +184,9 @@ public class DownloadActivity extends Activity
 			public final void onClick(final View v)
 			{
 				final Intent nextActivitiyIntent = new Intent(DownloadActivity.this, Main.class);
-				startActivity(nextActivitiyIntent);
+				// startActivity(nextActivitiyIntent);
+				setResult(ActivityResult.CANCELED);
+				finish();
 			}
 		};
 		return listener;

@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -18,6 +19,8 @@ import android.widget.Button;
  */
 public class SpotSummary extends Activity
 {
+
+	private final static String LOG_TAG = SpotSummary.class.getSimpleName();
 
 	private SpotConfigurationVO stationInfo = null;
 
@@ -42,7 +45,6 @@ public class SpotSummary extends Activity
 
 		final Button cancelButton = (Button) findViewById(R.id.spotsummary_cancel);
 		cancelButton.setOnClickListener(getCancelClickListener());
-
 	}
 
 	/**
@@ -60,12 +62,14 @@ public class SpotSummary extends Activity
 			 * @see android.view.View.OnClickListener#onClick(android.view.View)
 			 */
 			@Override
-			public void onClick(final View v)
+			public final void onClick(final View v)
 			{
-				final Intent intent = WindUtils.createIntent(SpotSummary.this, Main.class, stationInfo);
-				// startActivity(intent);
-				SpotSummary.this.setResult(ActivityResult.SUCCESS, intent);
-				SpotSummary.this.finish();
+				returnToStartActivity(RESULT_OK);
+				// final Intent intent = new Intent();
+				// setResult(RESULT_OK, intent);
+				// Log.d(LOG_TAG, "Returning back to calling activity.");
+				// finish();
+
 			}
 		};
 		return listener;
@@ -86,20 +90,18 @@ public class SpotSummary extends Activity
 			 * @see android.view.View.OnClickListener#onClick(android.view.View)
 			 */
 			@Override
-			public void onClick(final View v)
+			public final void onClick(final View v)
 			{
 				final DialogInterface.OnClickListener okListener = new DialogInterface.OnClickListener()
 				{
-
 					/*
 					 * Back to main screen als we pass a null as
 					 * SpotConfiguration needs discarded
 					 */
 					@Override
-					public void onClick(final DialogInterface dialog, final int which)
+					public final void onClick(final DialogInterface dialog, final int which)
 					{
-						final Intent intent = WindUtils.createIntent(SpotSummary.this, Main.class, null);
-						startActivity(intent);
+						returnToStartActivity(RESULT_CANCELED);
 					}
 				};
 
@@ -111,6 +113,22 @@ public class SpotSummary extends Activity
 			}
 		};
 		return listener;
+	}
+
+	/**
+	 * Returns to parent activity.
+	 */
+	private void returnToStartActivity(final int _resultCode)
+	{
+		if (_resultCode != RESULT_OK && _resultCode != RESULT_CANCELED)
+		{
+			throw new IllegalArgumentException("ResultCode not valid. Must be RESULT or RESULT_CANCELED but was "
+					+ _resultCode);
+		}
+		final Intent intent = WindUtils.createIntent(SpotSummary.this, Main.class, stationInfo);
+		setResult(_resultCode, intent);
+		Log.d(LOG_TAG, "Returning back to calling activity.");
+		finish();
 	}
 
 }

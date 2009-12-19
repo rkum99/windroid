@@ -1,11 +1,11 @@
 package de.macsystems.windroid;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -25,8 +25,9 @@ import de.macsystems.windroid.identifyable.WindUnit;
  * @version $Id$
  * 
  */
-public class SpotConfiguration extends Activity
+public class SpotConfiguration extends ChainSubActivity
 {
+	private String LOG_TAG = SpotConfiguration.class.getSimpleName();
 
 	private WindUnit currentSelectUnit = WindUnit.BEAUFORT;
 
@@ -44,25 +45,14 @@ public class SpotConfiguration extends Activity
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see android.app.Activity#onActivityResult(int, int,
-	 * android.content.Intent)
-	 */
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data)
-	{
-		setResult(resultCode, data);
-		finish();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override
 	protected void onCreate(final Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		Log.d(LOG_TAG, "isChild = " + isChild());
+
 		setContentView(R.layout.spotconfiguration);
 		final Intent intent = getIntent();
 		if (WindUtils.isSpotConfigured(getIntent()))
@@ -166,7 +156,7 @@ public class SpotConfiguration extends Activity
 				final Intent intent = new Intent(SpotConfiguration.this, SpotSummary.class);
 				intent.putExtra(IntentConstants.SPOT_TO_CONFIGURE, stationInfo);
 
-				startActivityForResult(intent, Main.RESULT_REQUEST_CONFIGURATION);
+				startActivityForResult(intent, Main.CONFIGURATION_REQUEST_CODE);
 			}
 		};
 		return listener;

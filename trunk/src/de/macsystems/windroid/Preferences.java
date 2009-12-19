@@ -2,6 +2,7 @@ package de.macsystems.windroid;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -34,12 +35,14 @@ public class Preferences extends PreferenceActivity
 		// Commit Changes to Database
 		final IPreferencesDAO dao = DAOFactory.getPreferencesDAO(this);
 		final Map<String, ?> prefs = Util.getSharedPreferences(this).getAll();
-		final Iterator<String> iter = prefs.keySet().iterator();
-		while (iter.hasNext())
+		final Iterator<?> iterNew = prefs.entrySet().iterator();
+		//
+		while (iterNew.hasNext())
 		{
-			final String key = iter.next();
-			final Object value = prefs.get(key).toString();
-			Log.d(LOG_TAG, "updating database from preferences with key " + key + " value = " + value.toString());
+			final Entry<String, ?> entry = (Entry<String, ?>) iterNew.next();
+			final String key = entry.getKey();
+			final Object value = entry.getValue();
+			Log.d(LOG_TAG, "updating database from preferences with key " + key + " value = " + value);
 			dao.update(key, value.toString());
 		}
 	}

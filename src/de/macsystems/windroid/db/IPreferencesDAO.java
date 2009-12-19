@@ -1,5 +1,7 @@
 package de.macsystems.windroid.db;
 
+import java.util.Map;
+
 /**
  * Dao Interface for general application preferences.
  * 
@@ -24,4 +26,12 @@ public interface IPreferencesDAO extends IDAO
 	 * @return
 	 */
 	public String fetchBy(final String _key);
+
+	/**
+	 * 
+	 * persists all entry's into database.
+	 * 
+	 * @param
+	 */
+	public void update(final Map<?, ?> sharedPreferences);
 }

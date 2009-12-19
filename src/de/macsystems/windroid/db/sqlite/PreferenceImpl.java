@@ -1,5 +1,9 @@
 package de.macsystems.windroid.db.sqlite;
 
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -112,6 +116,58 @@ public class PreferenceImpl extends BaseImpl implements IPreferencesDAO
 		{
 			Log.e(LOG_TAG, "Failed to update \"" + _key + "\" with \"" + _value + "\". SQL was :" + builder.toString(),
 					e);
+		}
+		finally
+		{
+			IOUtils.close(db);
+		}
+
+	}
+
+	@Override
+	public void update(Map<?, ?> sharedPreferences)
+	{
+
+		if (sharedPreferences == null)
+		{
+			Log.w(LOG_TAG, "SharedPreferences were null, ignoring it.");
+		}
+
+		SQLiteDatabase db = null;
+		try
+		{
+			db = getWritableDatabase();
+			final Iterator<?> iterNew = sharedPreferences.entrySet().iterator();
+			//
+			final StringBuilder builder = new StringBuilder(128);
+			while (iterNew.hasNext())
+			{
+				final Entry<String, ?> entry = (Entry<String, ?>) iterNew.next();
+				final String key = entry.getKey();
+				final Object value = entry.getValue();
+
+				builder.append("UPDATE preferences SET value='");
+				builder.append(value);
+				builder.append("' WHERE key='");
+				builder.append(key);
+				builder.append("'");
+
+				try
+				{
+					db.execSQL(builder.toString());
+				}
+				catch (final Exception e)
+				{
+					Log.e(LOG_TAG, "Failed to update \"" + key + "\" with \"" + value + "\". SQL was :"
+							+ builder.toString(), e);
+				}
+				finally
+				{
+					builder.setLength(0);
+				}
+
+			}
+
 		}
 		finally
 		{

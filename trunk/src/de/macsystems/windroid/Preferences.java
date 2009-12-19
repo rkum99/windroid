@@ -2,7 +2,6 @@ package de.macsystems.windroid;
 
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -32,19 +31,10 @@ public class Preferences extends PreferenceActivity
 	{
 		super.onPause();
 		Log.d(LOG_TAG, "onPause");
-		// Commit Changes to Database
+		// Commit changes to Database
 		final IPreferencesDAO dao = DAOFactory.getPreferencesDAO(this);
 		final Map<String, ?> prefs = Util.getSharedPreferences(this).getAll();
-		final Iterator<?> iterNew = prefs.entrySet().iterator();
-		//
-		while (iterNew.hasNext())
-		{
-			final Entry<String, ?> entry = (Entry<String, ?>) iterNew.next();
-			final String key = entry.getKey();
-			final Object value = entry.getValue();
-			Log.d(LOG_TAG, "updating database from preferences with key " + key + " value = " + value);
-			dao.update(key, value.toString());
-		}
+		dao.update(prefs);
 	}
 
 	/*
@@ -67,11 +57,8 @@ public class Preferences extends PreferenceActivity
 	@Override
 	protected void onCreate(final Bundle savedInstanceState)
 	{
-		Log.d(LOG_TAG, "onCreate");
-
-		logSharedPreferences();
-
 		super.onCreate(savedInstanceState);
+		logSharedPreferences();
 		addPreferencesFromResource(R.xml.preferencesdescription);
 	}
 
@@ -81,7 +68,7 @@ public class Preferences extends PreferenceActivity
 	private void logSharedPreferences()
 	{
 		final SharedPreferences pref = Util.getSharedPreferences(this);
-		Log.d(LOG_TAG, "SharedPreferences contain " + pref.getAll().size() + " Entries.");
+		Log.d(LOG_TAG, "SharedPreferences contain " + pref.getAll().size() + " Entry(s).");
 		final Iterator<?> keyIter = pref.getAll().keySet().iterator();
 		while (keyIter.hasNext())
 		{

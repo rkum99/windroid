@@ -2,7 +2,6 @@ package de.macsystems.windroid;
 
 import java.io.Serializable;
 
-import android.database.Cursor;
 import de.macsystems.windroid.identifyable.Station;
 import de.macsystems.windroid.identifyable.WindDirection;
 import de.macsystems.windroid.identifyable.WindUnit;

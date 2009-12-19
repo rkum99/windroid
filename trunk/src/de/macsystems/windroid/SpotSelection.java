@@ -1,6 +1,5 @@
 package de.macsystems.windroid;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -27,25 +26,12 @@ import de.macsystems.windroid.identifyable.Continent;
  * @author Jens Hohl
  * @version $Id$
  */
-public class SpotSelection extends Activity
+public class SpotSelection extends ChainSubActivity
 {
 
-	private final static String LOG_TAG = SpotSelection.class.getPackage().getName();
+	private final static String LOG_TAG = SpotSelection.class.getSimpleName();
 
 	private final Handler handler = new Handler();
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onActivityResult(int, int,
-	 * android.content.Intent)
-	 */
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data)
-	{
-		setResult(resultCode, data);
-		finish();
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -56,6 +42,7 @@ public class SpotSelection extends Activity
 	public void onCreate(final Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		Log.d(LOG_TAG, "isChild = " + isChild());
 
 		setContentView(R.layout.spotselection);
 		handler.post(populateParsingResults());
@@ -86,7 +73,7 @@ public class SpotSelection extends Activity
 
 				intent.putExtra(IntentConstants.SPOT_TO_CONFIGURE, info);
 				// SpotSelection.this.startActivity(intent);
-				SpotSelection.this.startActivityForResult(intent, Main.RESULT_REQUEST_CONFIGURATION);
+				SpotSelection.this.startActivityForResult(intent, Main.CONFIGURATION_REQUEST_CODE);
 			}
 		});
 	}

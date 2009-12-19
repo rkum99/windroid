@@ -51,7 +51,7 @@ public class Main extends Activity
 	/**
 	 * Configuration SubActivities will be launched by this request code
 	 */
-	public final static int RESULT_REQUEST_CONFIGURATION = 0xCAFEBABE;
+	public final static int CONFIGURATION_REQUEST_CODE = 0x100;
 
 	private final static String LOG_TAG = Main.class.getSimpleName();
 
@@ -67,46 +67,44 @@ public class Main extends Activity
 	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data)
 	{
 		super.onActivityResult(requestCode, resultCode, data);
-
 		if (requestCode == Activity.RESULT_CANCELED)
 		{
 			Log.d(LOG_TAG, "SubActivity was canceled.");
 			return;
 		}
+		else if (CONFIGURATION_REQUEST_CODE == requestCode)
+		{
+			Log.d(LOG_TAG, "CONFIGURATION_REQUEST_CODE Code recieved :" + requestCode);
+			/**
+			 * TODO: Remove Code later
+			 */
+			if (WindUtils.isSpotConfigured(getIntent()))
+			{
+				final SpotConfigurationVO spot = WindUtils.getConfigurationFromIntent(data);
+
+				// TODO Move into DAO package.
+				Util.persistSpotConfigurationVO(spot, this);
+
+				final StringBuilder builder = new StringBuilder(256).append("\n");
+				builder.append("Folgender Spot wurde Angelegt:\n").append("\n\n");
+				builder.append("Name: ").append(spot.getStation().getName()).append("\n");
+				builder.append("ID: ").append(spot.getStation().getId()).append("\n");
+				builder.append("Keyword: ").append(spot.getStation().getKeyword()).append("\n");
+				builder.append("hasStatistic: ").append(spot.getStation().hasStatistic()).append("\n");
+				builder.append("hasSuperForcast: ").append(spot.getStation().hasSuperforecast()).append("\n");
+				builder.append("PreferedWindUnit: ").append(spot.getPreferredWindUnit()).append("\n");
+				builder.append("Wind From: ").append(spot.getFromDirection()).append("\n");
+				builder.append("Wind To: ").append(spot.getToDirection()).append("\n");
+				builder.append("Take care of Windirection: ").append(spot.isUseWindirection()).append("\n");
+				Toast.makeText(Main.this, builder.toString(), Toast.LENGTH_LONG).show();
+			}
+
+		}
 		else
 		{
-			if (RESULT_REQUEST_CONFIGURATION == requestCode)
-			{
-				Log.d(LOG_TAG, "Request Code recieved :" + requestCode);
-				/**
-				 * TODO: Remove Code later
-				 */
-				if (WindUtils.isSpotConfigured(getIntent()))
-				{
-					final SpotConfigurationVO spot = WindUtils.getConfigurationFromIntent(data);
-
-					// TODO Move into DAO package.
-					Util.persistSpotConfigurationVO(spot, this);
-
-					final StringBuilder builder = new StringBuilder(256).append("\n");
-					builder.append("Folgender Spot wurde Angelegt:\n").append("\n\n");
-					builder.append("Name: ").append(spot.getStation().getName()).append("\n");
-					builder.append("ID: ").append(spot.getStation().getId()).append("\n");
-					builder.append("Keyword: ").append(spot.getStation().getKeyword()).append("\n");
-					builder.append("hasStatistic: ").append(spot.getStation().hasStatistic()).append("\n");
-					builder.append("hasSuperForcast: ").append(spot.getStation().hasSuperforecast()).append("\n");
-					builder.append("PreferedWindUnit: ").append(spot.getPreferredWindUnit()).append("\n");
-					builder.append("Wind From: ").append(spot.getFromDirection()).append("\n");
-					builder.append("Wind To: ").append(spot.getToDirection()).append("\n");
-					builder.append("Take care of Windirection: ").append(spot.isUseWindirection()).append("\n");
-					Toast.makeText(this, builder.toString(), Toast.LENGTH_LONG).show();
-				}
-			}
-			else
-			{
-				Log.e(LOG_TAG, "Illegal Request Code recieved :" + requestCode);
-			}
+			Log.e(LOG_TAG, "Illegal Request Code recieved :" + requestCode);
 		}
+
 	}
 
 	/*
@@ -426,7 +424,7 @@ public class Main extends Activity
 			intent.putExtra(IntentConstants.SPOT_TO_CONFIGURE, spotConfigurationVO);
 		}
 		// We expect a result in method onActivityResult(....)
-		startActivityForResult(intent, RESULT_REQUEST_CONFIGURATION);
+		startActivityForResult(intent, CONFIGURATION_REQUEST_CODE);
 
 	}
 }

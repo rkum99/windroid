@@ -1,7 +1,7 @@
 package de.macsystems.windroid.db;
 
-import de.macsystems.windroid.SpotConfigurationVO;
 import android.database.Cursor;
+import de.macsystems.windroid.SpotConfigurationVO;
 
 /**
  * 

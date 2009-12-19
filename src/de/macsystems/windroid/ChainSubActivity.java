@@ -15,7 +15,7 @@ import android.util.Log;
 public abstract class ChainSubActivity extends Activity
 {
 
-	final static String LOG_TAG = ChainSubActivity.class.getName();
+	final static String LOG_TAG = ChainSubActivity.class.getSimpleName();
 
 	/*
 	 * (non-Javadoc)
@@ -26,7 +26,7 @@ public abstract class ChainSubActivity extends Activity
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
-//		super.onActivityResult(requestCode, resultCode, data);
+		super.onActivityResult(requestCode, resultCode, data);
 		Log.d(LOG_TAG, "recieved requestCode :" + requestCode + " recieved resultCode :" + resultCode);
 		setResult(resultCode, data);
 		finish();

@@ -39,30 +39,29 @@
 		</activity>
 		<activity
 			android:name="de.macsystems.windroid.DownloadActivity"
-			android:label="@string/app_name" />
+			android:label="@string/download_title" />
 
 		<activity
 			android:name="de.macsystems.windroid.SpotSelection"
-			android:label="@string/app_name" />
+			android:label="@string/spot_selection_title" />
 		<activity
 			android:name="de.macsystems.windroid.Preferences"
-			android:label="@string/app_name" />
+			android:label="@string/preferences_title" />
 		<activity
 			android:name="de.macsystems.windroid.SpotConfiguration"
-			android:label="@string/app_name" />
+			android:label="@string/spot_configuration_title" />
 		<activity
 			android:name="de.macsystems.windroid.SpotSummary"
-			android:label="@string/app_name" />
+			android:label="@string/spot_summary_title" />
 		<activity
 			android:name="de.macsystems.windroid.AlarmNotificationDetail"
-			android:label="@string/app_name" />
+			android:label="@string/alarm_notification_detail_title" />
 		<activity
 			android:name="de.macsystems.windroid.HomeScreenConfigure"
 			android:label="@string/app_name" />
-
 		<activity
 			android:name="de.macsystems.windroid.forecast.SpotOverview"
-			android:label="@string/app_name" />
+			android:label="@string/spot_overview_title" />
 		<receiver
 			android:name="de.macsystems.windroid.BootCompletedBroadcastReceiver"
 			android:label="@string/app_name"

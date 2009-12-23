@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<!--  
+    		@version $Id
+	 -->
+
+<resources>
+	<string
+		name="ongoing_update_text">Dieser Status zeigt an das Windroid im Begriff ist ein
+		Update auf ihre konfigurierten Spots durchzuführen. Diese Meldung
+		verschwindet selbständig wieder sobald das update durchgeführt wurde.
+	</string>
+</resources>

@@ -1,41 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string
-		name="preferences_preferred_setting_title">Bevorzugte Einstellungen</string>
+		name="preferences_title">Preferences</string>
+	<string
+		name="preferences_preferred_setting_title">Preferred User settings</string>
 
 	<string
-		name="preferences_preferred_units_title">Einheiten</string>
+		name="preferences_preferred_units_title">Measure</string>
 	<string
-		name="preferences_preferred_units_summary">Wählen Sie ihre bevorzugte Windeinheit</string>
+		name="preferences_preferred_units_summary">Wind measure</string>
 
 	<string
-		name="preferences_preferred_continent_title">Einheiten</string>
+		name="preferences_preferred_continent_title">Measures</string>
 	<string
-		name="preferences_preferred_continent_summary">Wählen Sie ihre bevorzugte Windeinheit</string>
+		name="preferences_preferred_continent_summary">Preferred Wind measure</string>
 
 	<string
-		name="preferences_miscellaneous_title">Sonstiges</string>
+		name="preferences_miscellaneous_title">Miscellaneous</string>
 	<string
 		name="preferences_miscellaneous_update_while_roaming_title">Roaming</string>
 	<string
 		name="preferences_miscellaneous_update_while_roaming_summary">
-		Überprüfe Alarme bei Roaming</string>
+		Monitor spots if roaming active</string>
 	<string
-		name="preferences_miscellaneous_vibrate_on_alarm_summary">Wärend Alarms Vibrieren</string>
+		name="preferences_miscellaneous_vibrate_on_alarm_summary">Vibrate on alarm</string>
 	<string
 		name="preferences_miscellaneous_vibrate_on_alarm_title">Vibration</string>
 	<string
-		name="preferences_miscellaneous_music_on_alarm_title">Audio Alarm</string>
+		name="preferences_miscellaneous_music_on_alarm_title">Audio alert</string>
 	<string
 		name="preferences_miscellaneous_alarmtone_title">Alarm</string>
 	<string
-		name="preferences_miscellaneous_music_on_alarm_summary">Wärend Alarms Audio abspielen</string>
+		name="preferences_miscellaneous_music_on_alarm_summary">Play audio on alarm</string>
 	<string
-		name="preferences_miscellaneous_alarmtone_summary">Alarm Ton auswählen</string>
+		name="preferences_miscellaneous_alarmtone_summary">Choose alarm sound</string>
 	<string
-		name="preferences_miscellaneous_warn_when_update_failed_summary">Alarm wenn Update fehlschlägt</string>
+		name="preferences_miscellaneous_warn_when_update_failed_summary">Alert on failed monitoring</string>
 	<string
-		name="preferences_miscellaneous_warn_when_update_failed_title">Update Alarm</string>
-<string name="preferences_miscellaneous_launch_on_boot_title">Autostart</string>
-<string name="preferences_miscellaneous_launch_on_boot_summary">Starte selbständig nach dem Booten</string>
+		name="preferences_miscellaneous_warn_when_update_failed_title">Monitoring alert</string>
+	<string
+		name="preferences_miscellaneous_launch_on_boot_title">Auto start </string>
+	<string
+		name="preferences_miscellaneous_launch_on_boot_summary">automatic start application after reboot</string>
 </resources>

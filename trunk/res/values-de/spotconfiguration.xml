@@ -8,17 +8,21 @@
 	<string
 		name="spot_configuration_title">Details</string>
 	<string
-		name="spot_config_title">Please configure details for $1.</string>
+		name="spot_config_title">Geben Sie an zwischen welchen Werten Sie für
+		$1 Alamiert
+		werden
+		möchten.</string>
 	<string
-		name="unit_enable_winddirection_select">Wind direction</string>
+		name="unit_enable_winddirection_select">Windrichtung festlegen</string>
 	<string
 		name="spot_configuration_accept_button">Ok</string>
 
 
 
 	<string
-		name="unit_range_start_text">From</string>
+		name="unit_range_start_text">Von</string>
 	<string
-		name="unit_range_end_text">To</string>
+		name="unit_range_end_text">Bis</string>
 
 </resources>
+

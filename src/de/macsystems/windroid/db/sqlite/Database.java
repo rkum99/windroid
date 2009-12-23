@@ -53,7 +53,7 @@ public class Database extends SQLiteOpenHelper
 			final List<String> script = ScriptLoader.getCreateScript(context);
 			executeScript(database, script);
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			Log.e(LOG_TAG, "Fatal Error occured while loading database script.", e);
 		}
@@ -79,7 +79,7 @@ public class Database extends SQLiteOpenHelper
 			final List<String> script = ScriptLoader.getUpdateScript(context);
 			executeScript(database, script);
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			Log.e(LOG_TAG, "Fatal Error occured while loading database script.", e);
 		}
@@ -105,7 +105,7 @@ public class Database extends SQLiteOpenHelper
 				database.execSQL(sql);
 			}
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			Log.e(LOG_TAG, "Error occured while executing database script.", e);
 		}

@@ -122,7 +122,6 @@ public class IOUtils
 		{
 			outStream = getConfigFileOutputStream(_context);
 			_properties.store(outStream, comments.toString());
-
 		}
 		finally
 		{
@@ -429,7 +428,7 @@ public class IOUtils
 		}
 		finally
 		{
-			IOUtils.close(reader);
+			close(reader);
 		}
 
 	}
@@ -464,9 +463,9 @@ public class IOUtils
 		}
 		finally
 		{
-			IOUtils.close(inStream);
-			IOUtils.close(inReader);
-			IOUtils.close(bufReader);
+			close(inStream);
+			close(inReader);
+			close(bufReader);
 		}
 		return list;
 

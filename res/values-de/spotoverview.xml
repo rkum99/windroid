@@ -5,8 +5,8 @@
 
 <resources>
 	<string
-		name="no_entrys">No Entrys.</string>
+		name="no_entrys">Keine Einträge vorhanden.</string>
 	<string
-		name="spot_overview_title">Overview</string>
+		name="spot_overview_title">Übersicht</string>
 
 </resources>

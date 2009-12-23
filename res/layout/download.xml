@@ -17,7 +17,7 @@
 		android:layout_height="20dip"
 		android:layout_width="fill_parent" />
 	<TextView
-		android:text="Lade Spotbeschreibung"
+		android:text="@string/download_loading_spot_description"
 		android:id="@+id/TextView01"
 		android:gravity="center_vertical|center_horizontal"
 		android:layout_width="fill_parent"
@@ -34,7 +34,7 @@
 		android:layout_height="20dip"
 		android:layout_width="fill_parent" />
 	<TextView
-		android:text="Erzeuge Datenbank"
+		android:text="@string/download_create_database_progress"
 		android:gravity="center_vertical|center_horizontal"
 		android:id="@+id/TextView01"
 		android:layout_width="fill_parent"

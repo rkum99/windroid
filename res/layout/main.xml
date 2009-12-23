@@ -14,13 +14,6 @@
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content">
 			<TextView
-				android:id="@+id/welcome_message"
-				android:gravity="center_horizontal"
-				android:text="@string/welcome_message"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content" />
-
-			<TextView
 				android:id="@+id/description"
 				android:gravity="fill"
 				android:text="@string/description"

@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-	<!--  
-    		@version $Id$
-	 -->
+	<!--
+		@version $Id$
+	-->
 
 <resources>
 	<string
-		name="title_spot_selection">Bitte wählen Sie einen Spot aus:</string>
+		name="spot_selection_title">Choose a Spot</string>
 	<string
-		name="confirm_spot_selection">Auswählen</string>
+		name="title_spot_selection">Choose a Spot:</string>
 	<string
-		name="continent_spot_selection">Kontinent</string>
+		name="confirm_spot_selection">Select</string>
 	<string
-		name="country_spot_selection">Land</string>
+		name="continent_spot_selection">Continent</string>
+	<string
+		name="country_spot_selection">Country</string>
 	<string
 		name="region_spot_selection">Region</string>
 	<string
-		name="station_spot_selection">Station</string>
+		name="station_spot_selection">Spot</string>
 </resources>

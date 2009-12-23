@@ -17,12 +17,6 @@
 			android:layout_height="wrap_content">
 
 
-			<TextView
-				android:id="@+id/spotsummary_description"
-				android:text="Zusammenfassung"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content" />
-
 			<View
 				android:id="@+id/dummy"
 				android:layout_width="fill_parent"

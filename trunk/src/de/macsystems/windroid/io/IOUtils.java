@@ -11,7 +11,6 @@ import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
@@ -115,7 +114,8 @@ public class IOUtils
 			throw new NullPointerException("Properties are null.");
 		}
 		final StringBuffer comments = new StringBuffer(256);
-		comments.append("Updated: " + new Date());
+		comments.append("Updated: ");
+		comments.append(System.currentTimeMillis());
 		OutputStream outStream = null;
 
 		try

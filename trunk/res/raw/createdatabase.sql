@@ -28,9 +28,20 @@ CREATE INDEX IF NOT EXISTS selectedsid ON selected (spotid);
 -- Preferences
 CREATE TABLE IF NOT EXISTS preferences (_id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT NOT NULL, value TEXT);
 -- Insert Values into table so that update will work on preferences
-INSERT INTO preferences ('key','value') VALUES ('akey','test');
-INSERT INTO preferences ('key','value') VALUES ('akey1','test1');
-INSERT INTO preferences ('key','value') VALUES ('akey2','test2');
-INSERT INTO preferences ('key','value') VALUES ('akey3','test3');
-
+INSERT INTO preferences ('key','value') VALUES ('spot_winddirection_to','n/a');
+INSERT INTO preferences ('key','value') VALUES ('spot_station_keyword','alger-port');
+INSERT INTO preferences ('key','value') VALUES ('vibrate_on_alarm','false');
+INSERT INTO preferences ('key','value') VALUES ('spot_station_id','dz2');
+INSERT INTO preferences ('key','value') VALUES ('spot_station_has_statistic','true');
+INSERT INTO preferences ('key','value') VALUES ('launch_on_boot','true');
+INSERT INTO preferences ('key','value') VALUES ('spot_windspeed_max','63');
+INSERT INTO preferences ('key','value') VALUES ('warn_when_update_failed','false');
+INSERT INTO preferences ('key','value') VALUES ('spot_station_has_superforecast','true');
+INSERT INTO preferences ('key','value') VALUES ('music_on_alarm','false');
+INSERT INTO preferences ('key','value') VALUES ('spot_winddirection_from','n/a');
+INSERT INTO preferences ('key','value') VALUES ('spot_station_name','Alger-Port');
+INSERT INTO preferences ('key','value') VALUES ('Measures','North America');
+INSERT INTO preferences ('key','value') VALUES ('spot_windspeed_min','0');
+INSERT INTO preferences ('key','value') VALUES ('update_while_roaming','false');
+INSERT INTO preferences ('key','value') VALUES ('spot_preferred_unit','kts');
 

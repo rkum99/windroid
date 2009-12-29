@@ -265,6 +265,7 @@ public class IOUtils
 	}
 
 	/**
+	 * closes inputstream, parameter can be null.
 	 * 
 	 * @param _inputStream
 	 */
@@ -284,6 +285,7 @@ public class IOUtils
 	}
 
 	/**
+	 * disconnects connection, parameter can be null.
 	 * 
 	 * @param _connection
 	 */
@@ -303,6 +305,7 @@ public class IOUtils
 	}
 
 	/**
+	 * closes reader, parameter can be null.
 	 * 
 	 * @param _reader
 	 */
@@ -323,6 +326,7 @@ public class IOUtils
 	}
 
 	/**
+	 * closes stream, parameter can be null.
 	 * 
 	 * @param _outputStream
 	 */
@@ -368,6 +372,7 @@ public class IOUtils
 	}
 
 	/**
+	 * closes database, parameter can be null.
 	 * 
 	 * @param _db
 	 */
@@ -380,6 +385,7 @@ public class IOUtils
 	}
 
 	/**
+	 * closes statement, parameter can be null.
 	 * 
 	 * @param _statement
 	 */

@@ -289,7 +289,7 @@ public class IOUtils
 	 * 
 	 * @param _connection
 	 */
-	public final static void close(final HttpURLConnection _connection)
+	public final static void disconnect(final HttpURLConnection _connection)
 	{
 		if (_connection != null)
 		{

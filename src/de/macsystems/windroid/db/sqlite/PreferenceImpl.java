@@ -143,13 +143,11 @@ public class PreferenceImpl extends BaseImpl implements IPreferencesDAO
 			while (iterNew.hasNext())
 			{
 				final Entry<String, ?> entry = (Entry<String, ?>) iterNew.next();
-				final String key = entry.getKey();
-				final Object value = entry.getValue();
 
 				builder.append("UPDATE preferences SET value='");
-				builder.append(value);
+				builder.append(entry.getValue());
 				builder.append("' WHERE key='");
-				builder.append(key);
+				builder.append(entry.getKey());
 				builder.append("'");
 
 				try
@@ -158,8 +156,7 @@ public class PreferenceImpl extends BaseImpl implements IPreferencesDAO
 				}
 				catch (final Exception e)
 				{
-					Log.e(LOG_TAG, "Failed to update \"" + key + "\" with \"" + value + "\". SQL was :"
-							+ builder.toString(), e);
+					Log.e(LOG_TAG, "Failed to update. SQL was :" + builder.toString(), e);
 				}
 				finally
 				{

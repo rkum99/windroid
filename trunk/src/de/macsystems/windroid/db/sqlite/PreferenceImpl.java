@@ -125,7 +125,7 @@ public class PreferenceImpl extends BaseImpl implements IPreferencesDAO
 	}
 
 	@Override
-	public void update(Map<?, ?> sharedPreferences)
+	public void update(final Map<?, ?> sharedPreferences)
 	{
 
 		if (sharedPreferences == null)

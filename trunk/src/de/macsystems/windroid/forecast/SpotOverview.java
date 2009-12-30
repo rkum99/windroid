@@ -32,13 +32,13 @@ public class SpotOverview extends ListActivity
 		final Cursor c = dao.fetchAll();
 		startManagingCursor(c);
 		final String[] from = new String[]
-		{ ISelectedDAO.COLUMN_NAME, ISelectedDAO.COLUMN_NAME };
+		{ ISelectedDAO.COLUMN_NAME, ISelectedDAO.COLUMN_ID, ISelectedDAO.COLUMN_STARTING, ISelectedDAO.COLUMN_TILL };
 		final int[] to = new int[]
-		{ R.id.custom_spotoverview_name, R.id.custom_spotoverview_detail };
+		{ R.id.custom_spotoverview_name, R.id.custom_spotoverview_detail, R.id.custom_spotoverview_wind_from,
+				R.id.custom_spotoverview_wind_to };
 		final SimpleCursorAdapter shows = new SimpleCursorAdapter(this, R.layout.custom_listview_spotoverview, c, from,
 				to);
 		shows.setViewBinder(new SpotOverviewCursorAdapter());
 		setListAdapter(shows);
-
 	}
 }

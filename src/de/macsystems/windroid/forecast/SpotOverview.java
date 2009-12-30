@@ -38,7 +38,7 @@ public class SpotOverview extends ListActivity
 				R.id.custom_spotoverview_wind_to };
 		final SimpleCursorAdapter shows = new SimpleCursorAdapter(this, R.layout.custom_listview_spotoverview, c, from,
 				to);
-		shows.setViewBinder(new SpotOverviewCursorAdapter());
+		shows.setViewBinder(new SpotOverviewViewBinder());
 		setListAdapter(shows);
 	}
 }

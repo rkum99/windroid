@@ -16,7 +16,7 @@
 		<ListPreference
 			android:entries="@array/continent_names"
 			android:entryValues="@array/continent_ids"
-			android:key="@string/preferences_preferred_continent_title"
+			android:key="preferred_continent"
 			android:title="Kontinent"
 			android:summary="@string/preferences_preferred_continent_summary" />
 	</PreferenceCategory>

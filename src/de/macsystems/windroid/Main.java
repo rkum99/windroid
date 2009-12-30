@@ -32,6 +32,7 @@ import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import de.macsystems.windroid.alarm.AlarmDetail;
 import de.macsystems.windroid.db.DAOFactory;
+import de.macsystems.windroid.db.ISelectedDAO;
 import de.macsystems.windroid.db.ISpotDAO;
 import de.macsystems.windroid.forecast.SpotOverview;
 import de.macsystems.windroid.io.IOUtils;
@@ -78,12 +79,12 @@ public class Main extends Activity
 			/**
 			 * TODO: Remove Code later
 			 */
-			if (WindUtils.isSpotConfigured(getIntent()))
+			if (WindUtils.isSpotConfigured(data))
 			{
 				final SpotConfigurationVO spot = WindUtils.getConfigurationFromIntent(data);
 
-				// TODO Move into DAO package.
-				Util.persistSpotConfigurationVO(spot, this);
+				final ISelectedDAO dao = DAOFactory.getSelectedDAO(this);
+				dao.insertSpot(spot);
 
 				final StringBuilder builder = new StringBuilder(256).append("\n");
 				builder.append("Folgender Spot wurde Angelegt:\n").append("\n\n");

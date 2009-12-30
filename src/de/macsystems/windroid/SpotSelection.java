@@ -42,8 +42,6 @@ public class SpotSelection extends ChainSubActivity
 	public void onCreate(final Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		Log.d(LOG_TAG, "isChild = " + isChild());
-
 		setContentView(R.layout.spotselection);
 		handler.post(populateParsingResults());
 
@@ -90,6 +88,11 @@ public class SpotSelection extends ChainSubActivity
 					final String continentID = Util.getSelectedContinentID(pref);
 
 					final IContinentDAO continentDAO = DAOFactory.getContinentDAO(SpotSelection.this);
+					final int selectionIndex = continentDAO.getIndexByID(continentID);
+
+					Log.d(LOG_TAG, "continentID is     :" + continentID);
+					Log.d(LOG_TAG, "Selection Index is :" + selectionIndex);
+
 					final Cursor c = continentDAO.fetchAll();
 					startManagingCursor(c);
 					final String[] from = new String[]
@@ -102,8 +105,8 @@ public class SpotSelection extends ChainSubActivity
 					final Spinner continentSpinner = (Spinner) findViewById(R.id.continentSpinner);
 					shows.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 					continentSpinner.setAdapter(shows);
-					// selection is not working yet.
-					continentSpinner.setSelection(0);
+					// TODO selection is not working yet.
+					continentSpinner.setSelection(selectionIndex);
 					continentSpinner.setOnItemSelectedListener(createContinentListener());
 				}
 

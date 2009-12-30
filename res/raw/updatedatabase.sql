@@ -43,7 +43,7 @@ INSERT INTO preferences ('key','value') VALUES ('spot_station_has_superforecast'
 INSERT INTO preferences ('key','value') VALUES ('music_on_alarm','false');
 INSERT INTO preferences ('key','value') VALUES ('spot_winddirection_from','n/a');
 INSERT INTO preferences ('key','value') VALUES ('spot_station_name','Alger-Port');
-INSERT INTO preferences ('key','value') VALUES ('Measures','North America');
+INSERT INTO preferences ('key','value') VALUES ('preferred_continent','North America');
 INSERT INTO preferences ('key','value') VALUES ('spot_windspeed_min','0');
 INSERT INTO preferences ('key','value') VALUES ('update_while_roaming','false');
 INSERT INTO preferences ('key','value') VALUES ('spot_preferred_unit','kts');

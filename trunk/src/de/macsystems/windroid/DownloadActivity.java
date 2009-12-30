@@ -127,7 +127,7 @@ public class DownloadActivity extends ChainSubActivity
 				final String message = DownloadActivity.this.getString(R.string.download_failure_text);
 				final String header = DownloadActivity.this.getString(R.string.download_failure_header);
 
-				new AlertDialog.Builder(DownloadActivity.this).setPositiveButton(ok, getListener(Main.class)).setTitle(
+				new AlertDialog.Builder(DownloadActivity.this).setPositiveButton(ok, getOkListener(Main.class)).setTitle(
 						header).setMessage(message + stackTrace).show();
 			}
 		});
@@ -147,13 +147,13 @@ public class DownloadActivity extends ChainSubActivity
 				final String message = DownloadActivity.this.getString(R.string.download_success_text);
 				final String header = DownloadActivity.this.getString(R.string.download_success_header);
 
-				new AlertDialog.Builder(DownloadActivity.this).setPositiveButton(ok, getListener(SpotSelection.class))
+				new AlertDialog.Builder(DownloadActivity.this).setPositiveButton(ok, getOkListener(SpotSelection.class))
 						.setTitle(header).setMessage(message).show();
 			}
 		});
 	}
 
-	private DialogInterface.OnClickListener getListener(final Class<? extends Activity> _nextActivity)
+	private DialogInterface.OnClickListener getOkListener(final Class<? extends Activity> _nextActivity)
 	{
 		if (_nextActivity == null)
 		{
@@ -166,8 +166,7 @@ public class DownloadActivity extends ChainSubActivity
 			public final void onClick(final DialogInterface dialog, final int which)
 			{
 				final Intent nextActivitiyIntent = new Intent(DownloadActivity.this, _nextActivity);
-				// TODO launch as SubActivity there
-				startActivity(nextActivitiyIntent);
+				startActivityForResult(nextActivitiyIntent, Main.CONFIGURATION_REQUEST_CODE);
 			}
 		};
 		return listener;
@@ -183,8 +182,6 @@ public class DownloadActivity extends ChainSubActivity
 			@Override
 			public final void onClick(final View v)
 			{
-				final Intent nextActivitiyIntent = new Intent(DownloadActivity.this, Main.class);
-				// startActivity(nextActivitiyIntent);
 				setResult(ActivityResult.CANCELED);
 				finish();
 			}

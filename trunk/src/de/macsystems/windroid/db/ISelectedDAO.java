@@ -8,6 +8,12 @@ import de.macsystems.windroid.SpotConfigurationVO;
  */
 public interface ISelectedDAO extends IDAO
 {
+	public final static String COLUMN_ACTIV = "activ";
+
+	public final static String COLUMN_SPOTID = "spotid";
+
+	public final static String COLUMN_ID = "_id";
+
 	/**
 	 * Adds a Spot
 	 * 

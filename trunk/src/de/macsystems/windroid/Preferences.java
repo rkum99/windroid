@@ -76,5 +76,4 @@ public class Preferences extends PreferenceActivity
 			Log.d(LOG_TAG, "Preference Key:" + o + "=" + pref.getAll().get(o));
 		}
 	}
-
 }

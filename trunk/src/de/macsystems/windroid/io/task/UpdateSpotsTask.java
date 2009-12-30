@@ -46,7 +46,6 @@ public class UpdateSpotsTask implements Callable<Forecast>
 		}
 		spot = _spot;
 		context = _context;
-
 	}
 
 	@Override
@@ -60,7 +59,5 @@ public class UpdateSpotsTask implements Callable<Forecast>
 		final URI uri = WindUtils.getJSONForcastURL(spot.getStation().getId()).toURI();
 		final ForecastTask task = new ForecastTask(uri, NullProgressAdapter.INSTANCE);
 		return task.execute(context);
-
 	}
-
 }

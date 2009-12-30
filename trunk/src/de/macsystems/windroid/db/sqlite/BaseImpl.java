@@ -29,7 +29,7 @@ public class BaseImpl implements IDAO
 	/**
 	 * Table name which this DAO is for
 	 */
-	private final String tableName;
+	protected final String tableName;
 
 	/**
 	 * 

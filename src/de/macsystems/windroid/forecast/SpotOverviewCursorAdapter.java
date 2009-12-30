@@ -13,8 +13,14 @@ import android.widget.TextView;
 public class SpotOverviewCursorAdapter implements SimpleCursorAdapter.ViewBinder
 {
 
-	private static final int SPOTID_COLUMN = 1;
+	private static final int SPOTID_COLUMN = 3;
 	private static final int ACTIVE_COLUMN = 2;
+
+	// CREATE TABLE IF NOT EXISTS selected (_id INTEGER PRIMARY KEY
+	// AUTOINCREMENT, spotid text NOT NULL, activ BOOLEAN, usedirection BOOLEAN,
+	// starting TEXT, till TEXT, windmeasure TEXT NOT NULL, minwind INTEGER,
+	// maxwind INTEGER);
+
 	boolean retval = false;
 
 	@Override
@@ -30,9 +36,9 @@ public class SpotOverviewCursorAdapter implements SimpleCursorAdapter.ViewBinder
 		}
 		else if (columnIndex == ACTIVE_COLUMN)
 		{
-			final int isActive = cursor.getInt(ACTIVE_COLUMN);
+			;
 			final TextView tv = (TextView) view;
-			tv.setText("" + isActive);
+			tv.setText(cursor.getString(ACTIVE_COLUMN));
 			return true;
 		}
 		return true;

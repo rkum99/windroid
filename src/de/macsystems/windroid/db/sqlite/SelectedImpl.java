@@ -47,14 +47,27 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 		{
 			throw new NullPointerException("SpotConfigurationVO");
 		}
+
+		// TODO : At the moment all spots are activ !!!
+
 		// CREATE TABLE IF NOT EXISTS selected (_id INTEGER PRIMARY KEY
-		// AUTOINCREMENT,spotid text NOT NULL,activ BOOLEAN);
+		// AUTOINCREMENT, spotid text NOT NULL, activ BOOLEAN, usedirection
+		// BOOLEAN, starting TEXT, till TEXT, windmeasure TEXT NOT NULL, minwind
+		// INTEGER, maxwind INTEGER);
 		final SQLiteDatabase db = getWritableDatabase();
 		try
 		{
 			final ContentValues values = new ContentValues();
 			values.put("spotid", _vo.getStation().getId());
+			values.put("name", _vo.getStation().getName());
 			values.put("activ", true);
+			values.put("usedirection", _vo.isUseWindirection());
+			values.put("starting", _vo.getFromDirection().getId());
+			values.put("till", _vo.getToDirection().getId());
+			values.put("windmeasure", _vo.getPreferredWindUnit().name());
+			values.put("minwind", _vo.getWindspeedMin());
+			values.put("maxwind", _vo.getWindspeedMax());
+
 			final long newID = db.insert(tableName, null, values);
 			Log.d("Bla", "New ID = " + newID);
 		}

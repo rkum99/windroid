@@ -48,12 +48,10 @@
 			android:theme="@style/Theme.NoBackground" />
 		<activity
 			android:name="de.macsystems.windroid.Preferences"
-			android:label="@string/preferences_title"
-			android:theme="@style/Theme.NoBackground" />
+			android:label="@string/preferences_title" />
 		<activity
 			android:name="de.macsystems.windroid.SpotConfiguration"
-			android:label="@string/spot_configuration_title"
-			android:theme="@style/Theme.NoBackground" />
+			android:label="@string/spot_configuration_title" />
 		<activity
 			android:name="de.macsystems.windroid.SpotSummary"
 			android:label="@string/spot_summary_title"
@@ -68,8 +66,7 @@
 			android:theme="@style/Theme.NoBackground" />
 		<activity
 			android:name="de.macsystems.windroid.forecast.SpotOverview"
-			android:label="@string/spot_overview_title"
-			android:theme="@style/Theme.NoBackground" />
+			android:label="@string/spot_overview_title" />
 		<receiver
 			android:name="de.macsystems.windroid.BootCompletedBroadcastReceiver"
 			android:label="@string/app_name"

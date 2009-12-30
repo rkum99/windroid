@@ -31,7 +31,7 @@ public enum WindDirection implements IdentifyAble
 	 * define no wind direction
 	 */
 
-	NO_DIRECTION(0, "n/a", "No Direction", -1);
+	NO_DIRECTION(0, "n/a", "No Direction", R.drawable.wd_dummy);
 
 	private final float degrees;
 	private final String longName;

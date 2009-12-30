@@ -1,9 +1,13 @@
 package de.macsystems.windroid.forecast;
 
 import android.database.Cursor;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import de.macsystems.windroid.identifyable.IdentityUtil;
+import de.macsystems.windroid.identifyable.WindDirection;
 
 /**
  * @author Jens Hohl
@@ -13,8 +17,15 @@ import android.widget.TextView;
 public class SpotOverviewCursorAdapter implements SimpleCursorAdapter.ViewBinder
 {
 
-	private static final int SPOTID_COLUMN = 3;
-	private static final int ACTIVE_COLUMN = 2;
+	private static final int SPOT_NAME = 0;
+	private static final int SPOT_ID = 2;
+
+	private static final int WIND_TO = 5;
+	private static final int WIND_FROM = 6;
+
+	// { ISelectedDAO.COLUMN_NAME,
+	// ISelectedDAO.COLUMN_ID,ISelectedDAO.COLUMN_STARTING,ISelectedDAO.COLUMN_TILL
+	// };
 
 	// CREATE TABLE IF NOT EXISTS selected (_id INTEGER PRIMARY KEY
 	// AUTOINCREMENT, spotid text NOT NULL, activ BOOLEAN, usedirection BOOLEAN,
@@ -26,21 +37,35 @@ public class SpotOverviewCursorAdapter implements SimpleCursorAdapter.ViewBinder
 	@Override
 	public boolean setViewValue(final View view, final Cursor cursor, final int columnIndex)
 	{
-		if (columnIndex == SPOTID_COLUMN)
+		Log.d("Test", "Column Index :" + columnIndex);
+		if (columnIndex == SPOT_NAME)
 		{
-			final String name = cursor.getString(SPOTID_COLUMN);
+			final String name = cursor.getString(columnIndex);
 			final TextView tv = (TextView) view;
 			tv.setText(name);
-			return true;
-
 		}
-		else if (columnIndex == ACTIVE_COLUMN)
+		else if (columnIndex == SPOT_ID)
 		{
-			;
 			final TextView tv = (TextView) view;
-			tv.setText(cursor.getString(ACTIVE_COLUMN));
-			return true;
+			tv.setText(cursor.getString(columnIndex));
 		}
+		else if (columnIndex == WIND_FROM)
+		{
+			final ImageView tv = (ImageView) view;
+			final String id = cursor.getString(columnIndex);
+			final int index = IdentityUtil.indexOf(id, WindDirection.values());
+			final int resID = WindDirection.values()[index].getImage();
+			tv.setImageResource(resID);
+		}
+		else if (columnIndex == WIND_TO)
+		{
+			final ImageView tv = (ImageView) view;
+			final String id = cursor.getString(columnIndex);
+			final int index = IdentityUtil.indexOf(id, WindDirection.values());
+			final int resID = WindDirection.values()[index].getImage();
+			tv.setImageResource(resID);
+		}
+
 		return true;
 	}
 }

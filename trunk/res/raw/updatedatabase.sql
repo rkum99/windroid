@@ -7,6 +7,7 @@ DROP TABLE IF EXISTS spot;
 DROP TABLE IF EXISTS continent;
 DROP TABLE IF EXISTS country;
 DROP TABLE IF EXISTS region;
+DROP TABLE IF EXISTS selected;
 
 CREATE TABLE IF NOT EXISTS internal (id TEXT PRIMARY KEY, value text);
 CREATE TABLE IF NOT EXISTS spot (_id INTEGER PRIMARY KEY AUTOINCREMENT, spotid TEXT NOT NULL, continentid TEXT NOT NULL, countryid TEXT NOT NULL, regionid TEXT NOT NULL, name TEXT NOT NULL, keyword TEXT NOT NULL, superforecast BOOLEAN, forecast BOOLEAN, statistic BOOLEAN, wavereport BOOLEAN, waveforecast BOOLEAN);
@@ -25,7 +26,7 @@ CREATE INDEX IF NOT EXISTS coid ON country (id);
 
 --  selected table
 
-CREATE TABLE IF NOT EXISTS selected (_id INTEGER PRIMARY KEY AUTOINCREMENT,spotid text NOT NULL,activ BOOLEAN);
+CREATE TABLE IF NOT EXISTS selected (_id INTEGER PRIMARY KEY AUTOINCREMENT, spotid text NOT NULL, name TEXT NOT NULL, activ BOOLEAN, usedirection BOOLEAN, starting TEXT, till TEXT, windmeasure TEXT NOT NULL, minwind INTEGER, maxwind INTEGER); 
 CREATE INDEX IF NOT EXISTS selectedsid ON selected (spotid);
 
 --  Preferences Table
@@ -47,9 +48,3 @@ INSERT INTO preferences ('key','value') VALUES ('preferred_continent','North Ame
 INSERT INTO preferences ('key','value') VALUES ('spot_windspeed_min','0');
 INSERT INTO preferences ('key','value') VALUES ('update_while_roaming','false');
 INSERT INTO preferences ('key','value') VALUES ('spot_preferred_unit','kts');
-
-
-
-
-
-

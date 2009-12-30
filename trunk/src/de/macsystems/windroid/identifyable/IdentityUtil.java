@@ -41,5 +41,4 @@ public class IdentityUtil
 		throw new IllegalArgumentException("IdentifyAble not found by id \"" + id + "\". Values :"
 				+ Arrays.toString(values));
 	}
-
 }

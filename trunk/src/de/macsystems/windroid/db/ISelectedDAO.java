@@ -32,7 +32,24 @@ public interface ISelectedDAO extends IDAO
 	 * Adds a Spot
 	 * 
 	 * @param _vo
+	 * @returns id of spot or -1 if something went wrong.
 	 */
-	public void insertSpot(SpotConfigurationVO _vo);
+	public long insertSpot(SpotConfigurationVO _vo);
+
+	/**
+	 * Enables or Disables a Spot
+	 * 
+	 * @param _id
+	 * @param isActiv
+	 */
+	public void setActiv(final long _id, final boolean isActiv);
+
+	/**
+	 * Returns <code>true<code> if spot is activ.
+	 * 
+	 * @param _id
+	 * @return
+	 */
+	public boolean isActiv(final long _id);
 
 }

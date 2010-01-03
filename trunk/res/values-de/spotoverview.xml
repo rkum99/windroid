@@ -8,5 +8,9 @@
 		name="no_entrys">Keine Einträge vorhanden.</string>
 	<string
 		name="spot_overview_title">Übersicht</string>
+	<string
+		name="spot_overview_spot_monitoring_enable">Überwachen</string>
+	<string
+		name="spot_overview_spot_monitoring_disable">Nicht mehr Überwachen</string>
 
 </resources>

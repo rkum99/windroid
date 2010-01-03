@@ -5,9 +5,11 @@
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
 
+
 	<TextView
 		android:id="@+id/custom_spotoverview_name"
-		android:layout_width="fill_parent"
+		android:text="El Medano Teneriffe"
+		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:textSize="20sp" />
 
@@ -17,21 +19,51 @@
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent">
 
-		<TextView
-			android:id="@+id/custom_spotoverview_detail"
-			android:text="@string/no_entrys"
+		<ImageView
+			android:id="@+id/custom_spotoverview_active"
+			android:background="@drawable/activ_on"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content" />
+
+		<View
+			android:layout_width="5dp"
+			android:layout_height="5dp" />
+
+
+		<TextView
+			android:id="@+id/custom_spotoverview_wind_details"
+			android:text="knt 18 - 23"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+
+		<View
+			android:layout_width="5dp"
+			android:layout_height="5dp" />
+
+
+
+		<TextView
+			android:id="@+id/custom_spotoverview_detail"
+			android:text="Active"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" />
+		<View
+			android:layout_width="5dp"
+			android:layout_height="5dp" />
 
 		<ImageView
 			android:id="@+id/custom_spotoverview_wind_from"
+			android:background="@drawable/icon"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content" />
+		<View
+			android:layout_width="5dp"
+			android:layout_height="5dp" />
 
 		<ImageView
 			android:id="@+id/custom_spotoverview_wind_to"
+			android:background="@drawable/icon"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content" />
-
 	</LinearLayout>
 </LinearLayout>

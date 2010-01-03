@@ -8,5 +8,9 @@
 		name="no_entrys">No Entrys.</string>
 	<string
 		name="spot_overview_title">Overview</string>
+	<string
+		name="spot_overview_spot_monitoring_enable">Enable</string>
+	<string
+		name="spot_overview_spot_monitoring_disable">Disable</string>
 
 </resources>

@@ -12,5 +12,7 @@
 		name="spot_overview_spot_monitoring_enable">Enable</string>
 	<string
 		name="spot_overview_spot_monitoring_disable">Disable</string>
+	<string
+		name="spot_overview_spot_edit">Edit</string>
 
 </resources>

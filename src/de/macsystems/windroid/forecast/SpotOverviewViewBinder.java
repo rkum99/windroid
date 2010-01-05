@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import de.macsystems.windroid.R;
 import de.macsystems.windroid.identifyable.IdentityUtil;
 import de.macsystems.windroid.identifyable.WindDirection;
 
@@ -23,22 +24,37 @@ public class SpotOverviewViewBinder implements SimpleCursorAdapter.ViewBinder
 	private static final int WIND_TO = 5;
 	private static final int WIND_FROM = 6;
 
-	// { ISelectedDAO.COLUMN_NAME,
-	// ISelectedDAO.COLUMN_ID,ISelectedDAO.COLUMN_STARTING,ISelectedDAO.COLUMN_TILL
-	// };
+	private static final int SPOT_ACTIV = 3;
 
-	// CREATE TABLE IF NOT EXISTS selected (_id INTEGER PRIMARY KEY
-	// AUTOINCREMENT, spotid text NOT NULL, activ BOOLEAN, usedirection BOOLEAN,
-	// starting TEXT, till TEXT, windmeasure TEXT NOT NULL, minwind INTEGER,
-	// maxwind INTEGER);
+	/**
+	 * Converts integer representing a boolean (0,1) to enabled or disabled icon
+	 * resource id.
+	 * 
+	 * @param value
+	 * @return
+	 */
+	private final static int convertIntToResourceID(final int value)
+	{
+		return value == 0 ? R.drawable.activ_off : R.drawable.activ_on;
+	}
 
-	boolean retval = false;
-
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.widget.SimpleCursorAdapter.ViewBinder#setViewValue(android.view
+	 * .View, android.database.Cursor, int)
+	 */
 	@Override
 	public boolean setViewValue(final View view, final Cursor cursor, final int columnIndex)
 	{
-		Log.d("Test", "Column Index :" + columnIndex);
-		if (columnIndex == SPOT_NAME)
+		if (columnIndex == SPOT_ACTIV)
+		{
+			final ImageView iv = (ImageView) view;
+			final int resID = convertIntToResourceID(cursor.getInt(columnIndex));
+			iv.setBackgroundResource(resID);
+		}
+		else if (columnIndex == SPOT_NAME)
 		{
 			final String name = cursor.getString(columnIndex);
 			final TextView tv = (TextView) view;

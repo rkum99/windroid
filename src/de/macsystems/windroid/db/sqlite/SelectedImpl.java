@@ -59,7 +59,7 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 			values.put(COLUMN_ACTIV, true);
 			values.put(COLUMN_USEDIRECTION, _vo.isUseWindirection());
 			values.put(COLUMN_STARTING, _vo.getFromDirection().getId());
-			values.put(COLUMN_ID, _vo.getToDirection().getId());
+			values.put(COLUMN_TILL, _vo.getToDirection().getId());
 			values.put(COLUMN_WINDMEASURE, _vo.getPreferredWindUnit().name());
 			values.put(COLUMN_MINWIND, _vo.getWindspeedMin());
 			values.put(COLUMN_MAXWIND, _vo.getWindspeedMax());

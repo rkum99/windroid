@@ -106,8 +106,9 @@ public class SpotOverview extends ListActivity
 	}
 
 	/**
-	 * Code has some problems but at the moment its the only solution i found as
-	 * i have to recreate a cursor the binder/cursoradapter.
+	 * Code has some problems, but at the moment its the only solution i found
+	 * as i have to recreate a cursor the binder/cursoradapter to see updates in
+	 * database in view.
 	 */
 	private void setupMapping()
 	{

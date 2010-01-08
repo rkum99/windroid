@@ -17,7 +17,6 @@ import de.macsystems.windroid.identifyable.WindUnit;
 public final class SpotConfigurationVO implements Serializable
 {
 
-
 	private static final long serialVersionUID = 1L;
 
 	private Station station;
@@ -31,6 +30,8 @@ public final class SpotConfigurationVO implements Serializable
 	private int windspeedMin;
 
 	private int windspeedMax;
+
+	private boolean isActiv = true;
 
 	/**
 	 * Preferred Windunit of User.
@@ -154,6 +155,23 @@ public final class SpotConfigurationVO implements Serializable
 	public void setWindspeedMax(final int windspeedMax)
 	{
 		this.windspeedMax = windspeedMax;
+	}
+
+	/**
+	 * @return the isActiv
+	 */
+	public boolean isActiv()
+	{
+		return isActiv;
+	}
+
+	/**
+	 * @param isActiv
+	 *            the isActiv to set
+	 */
+	public void setActiv(boolean isActiv)
+	{
+		this.isActiv = isActiv;
 	}
 
 }

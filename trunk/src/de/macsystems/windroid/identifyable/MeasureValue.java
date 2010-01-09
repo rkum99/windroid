@@ -105,17 +105,18 @@ public abstract class MeasureValue
 	{
 		return measure;
 	}
-	
+
 	/**
 	 * @param _unit
 	 * @return
+	 * @throws IllegalArgumentException
+	 *             if unit cannot be found.
 	 */
-	protected static Measure getUnit(final String _unit)
+	protected static Measure getUnit(final String _unit) throws IllegalArgumentException
 	{
 		final int index = IdentityUtil.indexOf(_unit, Measure.values());
 		final Measure unit = Measure.values()[index];
 		return unit;
 	}
-
 
 }

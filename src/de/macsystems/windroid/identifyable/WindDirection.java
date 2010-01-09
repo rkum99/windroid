@@ -89,4 +89,46 @@ public enum WindDirection implements IdentifyAble
 	{
 		return shortName;
 	}
+
+	/**
+	 * Returns <code>WindDirection</code> by its shortname (eg. NNW).
+	 * 
+	 * @param _shortName
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public final static WindDirection getByShortName(final String _shortName) throws IllegalArgumentException
+	{
+		if (_shortName == null)
+		{
+			throw new IllegalArgumentException("_shortName is null.");
+		}
+		for (final WindDirection unit : WindDirection.values())
+		{
+			_shortName.equals(unit.shortName);
+			return unit;
+		}
+		throw new IllegalArgumentException("unkown shortname \"" + _shortName + "\".");
+	}
+
+	/**
+	 * Returns <code>WindDirection</code> by its degree (22.5f).
+	 * 
+	 * @param _degree
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public final static WindDirection getByDegree(final float _degree) throws IllegalArgumentException
+	{
+		for (final WindDirection unit : WindDirection.values())
+		{
+			final float THRESHOLD = 0.01f;
+			if (Math.abs(_degree - unit.degrees) < THRESHOLD)
+			{
+				return unit;
+			}
+		}
+		throw new IllegalArgumentException("unkown _degree \"" + _degree + "\".");
+	}
+
 }

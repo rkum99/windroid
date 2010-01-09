@@ -52,4 +52,13 @@ public interface ISelectedDAO extends IDAO
 	 */
 	public boolean isActiv(final long _id);
 
+	/**
+	 * Returns an Configuration Object
+	 * 
+	 * @param _id
+	 *            primary key
+	 * @return
+	 */
+	public SpotConfigurationVO getSpotConfiguration(final long _id);
+
 }

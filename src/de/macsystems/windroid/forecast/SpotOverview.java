@@ -11,6 +11,7 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnCreateContextMenuListener;
 import android.widget.SimpleCursorAdapter;
 import de.macsystems.windroid.R;
+import de.macsystems.windroid.SpotConfigurationVO;
 import de.macsystems.windroid.db.DAOFactory;
 import de.macsystems.windroid.db.ISelectedDAO;
 
@@ -85,7 +86,7 @@ public class SpotOverview extends ListActivity
 			setActive(true);
 			break;
 		case EDIT_ITEM_ID:
-			editSpot();
+			editSpot(getSelectedItemId());
 			break;
 		default:
 			throw new IllegalArgumentException("Unkown Item ID " + __item.getItemId());
@@ -123,8 +124,10 @@ public class SpotOverview extends ListActivity
 		setListAdapter(shows);
 	}
 
-	private void editSpot()
+	private void editSpot(final long _id)
 	{
+		final ISelectedDAO dao = DAOFactory.getSelectedDAO(this);
+		final SpotConfigurationVO vo = dao.getSpotConfiguration(_id);
 	}
 
 }

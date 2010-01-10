@@ -8,7 +8,7 @@ import java.util.Comparator;
  * @version $Id$
  * 
  */
-public class Station implements IdentifyAble, Serializable
+public final class Station implements IdentifyAble, Serializable
 {
 	private static final long serialVersionUID = 1L;
 

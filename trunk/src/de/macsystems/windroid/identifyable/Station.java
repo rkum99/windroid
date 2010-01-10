@@ -59,6 +59,11 @@ public class Station implements IdentifyAble, Serializable
 			final boolean _hasSuperforecast, final boolean _hasStatistic, final boolean _hasReport,
 			final boolean _hasWaveReport, final boolean _hasWaveforecast)
 	{
+		if (_name == null || _id == null || _keyWord == null)
+		{
+			throw new NullPointerException("check arguments");
+		}
+
 		name = _name;
 		id = _id;
 		keyWord = _keyWord;

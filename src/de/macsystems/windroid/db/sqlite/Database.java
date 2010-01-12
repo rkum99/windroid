@@ -1,6 +1,5 @@
 package de.macsystems.windroid.db.sqlite;
 
-import java.util.Iterator;
 import java.util.List;
 
 import android.content.Context;
@@ -15,7 +14,7 @@ import android.util.Log;
  * @version $Id$
  * 
  */
-public class Database extends SQLiteOpenHelper
+public final class Database extends SQLiteOpenHelper
 {
 
 	private final static String LOG_TAG = Database.class.getSimpleName();
@@ -92,15 +91,15 @@ public class Database extends SQLiteOpenHelper
 
 	/**
 	 * @param database
-	 * @param upgradeDatabase
+	 * @param _script
 	 */
-	private void executeScript(final SQLiteDatabase database, final List<String> upgradeDatabase)
+	private static void executeScript(final SQLiteDatabase database, final List<String> _script)
 	{
 		try
 		{
-			for (final Iterator<String> iter = upgradeDatabase.iterator(); iter.hasNext();)
+			for (int i = 0; i < _script.size(); i++)
 			{
-				final String sql = iter.next();
+				final String sql = _script.get(i);
 				Log.d(LOG_TAG, "Executing :" + sql);
 				database.execSQL(sql);
 			}

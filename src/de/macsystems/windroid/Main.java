@@ -210,6 +210,13 @@ public class Main extends Activity
 
 	}
 
+	/**
+	 * Installs a Listener for events on Service On/Off toggle button which
+	 * called AIDL interface.
+	 * 
+	 * @param _connection
+	 * @return
+	 */
 	private OnCheckedChangeListener createServiceToogleListener(final SpotServiceConnection _connection)
 	{
 		if (_connection == null)
@@ -347,12 +354,13 @@ public class Main extends Activity
 		super.onOptionsItemSelected(item);
 
 		Log.d(LOG_TAG, "selected icon id " + item.getItemId());
+		boolean result = false;
 		if (item.getItemId() == ABOUT_MENU_ID)
 		{
 			showAboutDialog();
-			return true;
+			result = true;
 		}
-		return false;
+		return result;
 	}
 
 	private void showAboutDialog()

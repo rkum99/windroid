@@ -61,4 +61,11 @@ public interface ISelectedDAO extends IDAO
 	 */
 	public SpotConfigurationVO getSpotConfiguration(final long _id);
 
+	/**
+	 * Updates an Spot by using given {@link SpotConfigurationVO}
+	 * 
+	 * @param _vo
+	 */
+	public void update(final SpotConfigurationVO _vo);
+
 }

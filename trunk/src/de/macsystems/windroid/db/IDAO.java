@@ -18,7 +18,7 @@ public interface IDAO
 	public int getSize();
 
 	/**
-	 * Returns all content of table
+	 * Returns all content of table like a SELECT * FROM table
 	 * 
 	 * @return
 	 */

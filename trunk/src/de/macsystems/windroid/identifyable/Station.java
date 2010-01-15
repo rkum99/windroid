@@ -25,10 +25,9 @@ public final class Station implements IdentifyAble, Serializable
 		 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 		 */
 		@Override
-		public int compare(final Station object1, final Station object2)
+		public int compare(final Station _station1, final Station _station2)
 		{
-
-			return object1.getName().compareTo(object2.getName());
+			return _station1.getName().compareTo(_station2.getName());
 		}
 	}
 

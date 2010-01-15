@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import de.macsystems.windroid.SpotConfigurationVO;
 import de.macsystems.windroid.db.ISelectedDAO;
+import de.macsystems.windroid.identifyable.Station;
 import de.macsystems.windroid.identifyable.WindDirection;
 import de.macsystems.windroid.identifyable.WindUnit;
 import de.macsystems.windroid.io.IOUtils;
@@ -89,7 +90,7 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 			values.put(COLUMN_ACTIV, isActiv);
 
 			db.update(tableName, values, "_id=?", new String[]
-			{ "" + _id });
+			{ Long.toString(_id) });
 		}
 		finally
 		{
@@ -111,7 +112,7 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 		try
 		{
 			c = db.query(tableName, null, "_id=?", new String[]
-			{ "" + _id }, null, null, null);
+			{ Long.toString(_id) }, null, null, null);
 
 			if (!c.moveToFirst())
 			{
@@ -139,14 +140,35 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 	{
 		final SQLiteDatabase db = getReadableDatabase();
 		Cursor c = null;
+
+		SpotConfigurationVO spotVO = null;
+
 		try
 		{
+			// final Map<String, String> map = new HashMap<String, String>();
+			//			
+			// map.put("spot.name","B.name");
+			// map.put("spot.spotid","B.spotid");
+			// map.put("selected.name","A.active");
+			// map.put("selected.usedirection","A.usedirection");
+			//
+			// final SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
+			// builder.setTables("spot,selected");
+			// builder.setProjectionMap(map);
+			// builder.query(db, map, selection, new
+			// String[]{"A.spotid=B.spotid"}, null, null, null);
+
 			final String[] columns = new String[]
 			{ COLUMN_ACTIV, COLUMN_SPOTID, COLUMN_NAME, COLUMN_ID, COLUMN_USEDIRECTION, COLUMN_STARTING, COLUMN_TILL,
 					COLUMN_WINDMEASURE, COLUMN_MINWIND, COLUMN_MAXWIND };
 
-			c = db.query(tableName, columns, "id=?", new String[]
-			{ "" + _id }, null, null, null);
+			c = db.query(tableName, columns, "_id=?", new String[]
+			{ Long.toString(_id) }, null, null, null);
+
+			if (!c.moveToFirst())
+			{
+				throw new IllegalStateException("Cursor ist empty. Id was " + _id);
+			}
 
 			final int activIndex = c.getColumnIndexOrThrow(COLUMN_ACTIV);
 			final int spotIDIndex = c.getColumnIndexOrThrow(COLUMN_SPOTID);
@@ -170,20 +192,36 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 			final int minWind = c.getInt(minWindIndex);
 			final int maxWind = c.getInt(maxWindIndex);
 
-			final SpotConfigurationVO spotVO = new SpotConfigurationVO();
+			spotVO = new SpotConfigurationVO();
 			spotVO.setActiv(activ);
 			spotVO.setUseWindirection(useDirection);
 			spotVO.setPreferredWindUnit(WindUnit.getById(windmeasure));
 			spotVO.setToDirection(WindDirection.getByDegree(till));
 			spotVO.setFromDirection(WindDirection.getByDegree(starting));
 
-			// final Station station = new Station(_name,);
+			// TODO: We create a Dummy there at the moment. Later we use a JOIN
+			// to get these infos aswell
+			final Station station = new Station("Wijk an Zee", "nl47", "wijk", true, true, false, true, false, false);
+			spotVO.setStation(station);
+
+			// final SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
+			// builder.setTables("");
 
 		}
 		finally
 		{
 			IOUtils.close(db);
 		}
-		return null;
+		return spotVO;
+	}
+
+	@Override
+	public void update(final SpotConfigurationVO _vo)
+	{
+		if (_vo == null)
+		{
+			throw new NullPointerException("SpotConfigurationVO");
+		}
+
 	}
 }

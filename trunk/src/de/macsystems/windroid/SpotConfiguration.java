@@ -136,7 +136,7 @@ public class SpotConfiguration extends ChainSubActivity
 			 * @see android.view.View.OnClickListener#onClick(android.view.View)
 			 */
 			@Override
-			public void onClick(final View v)
+			public final void onClick(final View v)
 			{
 				final Checkable selectWinddirection = (Checkable) findViewById(R.id.unit_enable_winddirection_select);
 				final Spinner directionsFromSpinner = (Spinner) findViewById(R.id.units_windirection_from_spinner);
@@ -172,7 +172,7 @@ public class SpotConfiguration extends ChainSubActivity
 			 * @see android.view.View.OnClickListener#onClick(android.view.View)
 			 */
 			@Override
-			public void onClick(final View v)
+			public final void onClick(final View v)
 			{
 				final Checkable checkable = (Checkable) v;
 
@@ -197,7 +197,7 @@ public class SpotConfiguration extends ChainSubActivity
 			 * (android.widget.SeekBar, int, boolean)
 			 */
 			@Override
-			public void onProgressChanged(final SeekBar seekBar, int progress, final boolean fromUser)
+			public final void onProgressChanged(final SeekBar seekBar, int progress, final boolean fromUser)
 			{
 
 				if (progress >= SpotConfiguration.this.currentMaximum)
@@ -221,7 +221,7 @@ public class SpotConfiguration extends ChainSubActivity
 			 * (android.widget.SeekBar)
 			 */
 			@Override
-			public void onStartTrackingTouch(final SeekBar seekBar)
+			public final void onStartTrackingTouch(final SeekBar seekBar)
 			{
 			}
 
@@ -233,7 +233,7 @@ public class SpotConfiguration extends ChainSubActivity
 			 * (android.widget.SeekBar)
 			 */
 			@Override
-			public void onStopTrackingTouch(final SeekBar seekBar)
+			public final void onStopTrackingTouch(final SeekBar seekBar)
 			{
 			}
 
@@ -253,7 +253,7 @@ public class SpotConfiguration extends ChainSubActivity
 			 * (android.widget.SeekBar, int, boolean)
 			 */
 			@Override
-			public void onProgressChanged(final SeekBar seekBar, int progress, final boolean fromUser)
+			public final void onProgressChanged(final SeekBar seekBar, int progress, final boolean fromUser)
 			{
 				if (SpotConfiguration.this.currentMinimum >= progress)
 				{
@@ -275,12 +275,12 @@ public class SpotConfiguration extends ChainSubActivity
 			 * (android.widget.SeekBar)
 			 */
 			@Override
-			public void onStartTrackingTouch(final SeekBar seekBar)
+			public final void onStartTrackingTouch(final SeekBar seekBar)
 			{
 			}
 
 			@Override
-			public void onStopTrackingTouch(final SeekBar seekBar)
+			public final void onStopTrackingTouch(final SeekBar seekBar)
 			{
 			}
 

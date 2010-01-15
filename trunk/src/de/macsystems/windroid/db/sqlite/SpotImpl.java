@@ -229,7 +229,7 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 	 * @see de.macsystems.windroid.db.ISpotDAO#fetchBy(java.lang.String)
 	 */
 	@Override
-	public SpotConfigurationVO fetchBy(String stationid)
+	public SpotConfigurationVO fetchBy(final String _stationid)
 	{
 		final SpotConfigurationVO vo = new SpotConfigurationVO();
 		final SQLiteDatabase db = getReadableDatabase();
@@ -245,10 +245,10 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 		try
 		{
 			cursor = db.query("spot", colums, "spotid=?", new String[]
-			{ stationid }, null, null, null);
+			{ _stationid }, null, null, null);
 			if (!cursor.moveToFirst())
 			{
-				throw new IllegalStateException("Empty Result");
+				throw new IllegalStateException("Empty Result, stationid:" + _stationid);
 			}
 			/**
 			 * Create an SpotConfigurationVO

@@ -10,7 +10,19 @@ import de.macsystems.windroid.SpotConfigurationVO;
  */
 public interface ISpotDAO extends IDAO
 {
-	public final static int SPOT_INDEX = 0;
+	// TODO : Add report COLUMN
+	public final static String COLUMN_KEYWORD = "keyword";
+	public final static String COLUMN_SPOTID = "spotid";
+	public final static String COLUMN_CONTINENTID = "continentid";
+	public final static String COLUMN_COUNTRYID = "countryid";
+	public final static String COLUMN_REGIONID = "regionid";
+	public final static String COLUMN_SUPERFORECAST = "superforecast";
+	public final static String COLUMN_FORECAST = "forecast";
+	public final static String COLUMN_REPORT = "report";
+	public final static String COLUMN_WAVEREPORT = "wavereport";
+	public final static String COLUMN_WAVEFORECAST = "waveforecast";
+	public final static String COLUMN_NAME = "name";
+	public final static String COLUMN_STATISTIC = "statistic";
 
 	/**
 	 * 

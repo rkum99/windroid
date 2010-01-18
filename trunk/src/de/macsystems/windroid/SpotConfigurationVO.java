@@ -27,9 +27,9 @@ public final class SpotConfigurationVO implements Serializable
 
 	private WindDirection toDirection = WindDirection.NO_DIRECTION;
 
-	private int windspeedMin;
+	private float windspeedMin;
 
-	private int windspeedMax;
+	private float windspeedMax;
 
 	private boolean isActiv = true;
 
@@ -126,7 +126,7 @@ public final class SpotConfigurationVO implements Serializable
 	/**
 	 * @return the windspeedMin
 	 */
-	public int getWindspeedMin()
+	public float getWindspeedMin()
 	{
 		return windspeedMin;
 	}
@@ -135,7 +135,7 @@ public final class SpotConfigurationVO implements Serializable
 	 * @param windspeedMin
 	 *            the windspeedMin to set
 	 */
-	public void setWindspeedMin(final int windspeedMin)
+	public void setWindspeedMin(final float windspeedMin)
 	{
 		this.windspeedMin = windspeedMin;
 	}
@@ -143,7 +143,7 @@ public final class SpotConfigurationVO implements Serializable
 	/**
 	 * @return the windspeedMax
 	 */
-	public int getWindspeedMax()
+	public float getWindspeedMax()
 	{
 		return windspeedMax;
 	}

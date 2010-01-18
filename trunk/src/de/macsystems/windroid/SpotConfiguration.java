@@ -58,6 +58,7 @@ public class SpotConfiguration extends ChainSubActivity
 		if (WindUtils.isSpotConfigured(getIntent()))
 		{
 			stationInfo = WindUtils.getConfigurationFromIntent(getIntent());
+			currentSelectUnit = stationInfo.getPreferredWindUnit();
 		}
 		else
 		{
@@ -88,9 +89,7 @@ public class SpotConfiguration extends ChainSubActivity
 		unitsSpinner.setAdapter(continentAdapter);
 		unitsSpinner.setOnItemSelectedListener(getUnitsListener());
 
-		final SharedPreferences pref = Util.getSharedPreferences(this);
-		final String id = Util.getSelectedUnitID(pref);
-		final int index = IdentityUtil.indexOf(id, WindUnit.values());
+		final int index = IdentityUtil.indexOf(currentSelectUnit.getId(), WindUnit.values());
 		unitsSpinner.setSelection(index);
 
 		final Spinner directionsFromSpinner = (Spinner) findViewById(R.id.units_windirection_from_spinner);

@@ -205,20 +205,77 @@ public class BaseImpl implements IDAO
 	 * @param _boolean
 	 * @return
 	 */
-	public static final int convertBooleanToInt(final boolean _boolean)
+	public static final int asInt(final boolean _boolean)
 	{
 		return _boolean == true ? 1 : 0;
 	}
 
 	/**
-	 * Converts an Integer to an Boolean representation 
+	 * Converts an Integer to an Boolean representation
 	 * 
 	 * @param _value
 	 * @return
 	 */
-	public static final boolean convertIntToBoolean(final long _value)
+	public static final boolean asBoolean(final long _value)
 	{
 		return _value == 0 ? false : true;
+	}
+
+	public final String getString(final Cursor _c, final String _columnName) throws IllegalArgumentException
+	{
+		final int index = _c.getColumnIndexOrThrow(_columnName);
+		return _c.getString(index);
+	}
+
+	public static final float getFloat(final Cursor _c, final String _columnName) throws IllegalArgumentException
+	{
+		final int index = _c.getColumnIndexOrThrow(_columnName);
+		return _c.getFloat(index);
+	}
+
+	public final long getLong(final Cursor _c, final String _columnName) throws IllegalArgumentException
+	{
+		final int index = _c.getColumnIndexOrThrow(_columnName);
+		return _c.getLong(index);
+	}
+
+	public static final long getInt(final Cursor _c, final String _columnName) throws IllegalArgumentException
+	{
+		final int index = _c.getColumnIndexOrThrow(_columnName);
+		return _c.getInt(index);
+	}
+
+	public final double getDouble(final Cursor _c, final String _columnName) throws IllegalArgumentException
+	{
+		final int index = _c.getColumnIndexOrThrow(_columnName);
+		return _c.getDouble(index);
+	}
+
+	public static final boolean getBoolean(final Cursor _c, final String _columnName) throws IllegalArgumentException
+	{
+		final int index = _c.getColumnIndexOrThrow(_columnName);
+		return asBoolean(_c.getInt(index));
+	}
+
+	public static final short getShort(final Cursor _c, final String _columnName) throws IllegalArgumentException
+	{
+		final int index = _c.getColumnIndexOrThrow(_columnName);
+		return _c.getShort(index);
+	}
+
+	/**
+	 * Moves Cursor to first position or if cursor is empty it throws an
+	 * {@link IllegalStateException}
+	 * 
+	 * @param _c
+	 */
+	public static final void moveToFirstOrThrow(final Cursor _c) throws IllegalStateException
+	{
+		if (!_c.moveToFirst())
+		{
+			throw new IllegalStateException("Cursor ist empty.");
+		}
+
 	}
 
 }

@@ -26,8 +26,8 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 	private final static String LOG_TAG = SpotImpl.class.getSimpleName();
 
 	private final static String INSERT_SPOT = "INSERT INTO spot "
-			+ "(spotid,continentid,countryid,regionid,name,keyword,superforecast,forecast,statistic,wavereport,waveforecast) "
-			+ "values (?,?,?,?,?,?,?,?,?,?,?);";
+			+ "(spotid,continentid,countryid,regionid,name,keyword,superforecast,report,forecast,statistic,wavereport,waveforecast) "
+			+ "values (?,?,?,?,?,?,?,?,?,?,?,?);";
 
 	private final static String INSERT_CONTINENT = "INSERT INTO continent (id,name) values (?,?);";
 	private final static String INSERT_COUNTRY = "INSERT INTO country (id,name,continentid) values (?,?,?);";
@@ -189,11 +189,12 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 		_insertStatement.bindString(4, regionID);
 		_insertStatement.bindString(5, name);
 		_insertStatement.bindString(6, keyword);
-		_insertStatement.bindLong(7, convertBooleanToInt(_station.hasSuperforecast()));
-		_insertStatement.bindLong(8, convertBooleanToInt(_station.hasForecast()));
-		_insertStatement.bindLong(9, convertBooleanToInt(_station.hasStatistic()));
-		_insertStatement.bindLong(10, convertBooleanToInt(_station.hasWaveReport()));
-		_insertStatement.bindLong(11, convertBooleanToInt(_station.hasWaveforecast()));
+		_insertStatement.bindLong(7, asInt(_station.hasSuperforecast()));
+		_insertStatement.bindLong(8, asInt(_station.hasReport()));
+		_insertStatement.bindLong(9, asInt(_station.hasForecast()));
+		_insertStatement.bindLong(10, asInt(_station.hasStatistic()));
+		_insertStatement.bindLong(11, asInt(_station.hasWaveReport()));
+		_insertStatement.bindLong(12, asInt(_station.hasWaveforecast()));
 	}
 
 	/*
@@ -238,7 +239,7 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 		// _id,spotid,continentid,countryid,regionid,name,keyword,superforecast,forecast,statistic,wavereport,waveforecast
 		// from Spot where spotid='eg36';
 		final String[] colums = new String[]
-		{ "spotid", "continentid", "countryid", "regionid", "name", "keyword", "superforecast", "forecast",
+		{ "spotid", "continentid", "countryid", "regionid", "name", "keyword", "superforecast", "report", "forecast",
 				"statistic", "wavereport", "waveforecast" };
 
 		Cursor cursor = null;
@@ -253,32 +254,22 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 			/**
 			 * Create an SpotConfigurationVO
 			 */
-			final int spotidIndex = cursor.getColumnIndexOrThrow(colums[0]);
-			final int continentIdIndex = cursor.getColumnIndexOrThrow(colums[1]);
-			final int countryidIndex = cursor.getColumnIndexOrThrow(colums[2]);
-			final int regionIdIndex = cursor.getColumnIndexOrThrow(colums[3]);
-			final int nameIndex = cursor.getColumnIndexOrThrow(colums[4]);
-			final int keywordIndex = cursor.getColumnIndexOrThrow(colums[5]);
-			final int superforecastIndex = cursor.getColumnIndexOrThrow(colums[6]);
-			final int forecastIndex = cursor.getColumnIndexOrThrow(colums[7]);
-			final int statisticIndex = cursor.getColumnIndexOrThrow(colums[8]);
-			final int wavereportIndex = cursor.getColumnIndexOrThrow(colums[9]);
-			final int waveforecastIndex = cursor.getColumnIndexOrThrow(colums[10]);
 
-			final String spotid = cursor.getString(spotidIndex);
-			final String continentId = cursor.getString(continentIdIndex);
-			final String countryId = cursor.getString(countryidIndex);
-			final String regionId = cursor.getString(regionIdIndex);
-			final String name = cursor.getString(nameIndex);
-			final String keyword = cursor.getString(keywordIndex);
-			final boolean hasSuperforecast = convertIntToBoolean(cursor.getLong(superforecastIndex));
-			final boolean hasForecast = convertIntToBoolean(cursor.getLong(forecastIndex));
-			final boolean hasStatistic = convertIntToBoolean(cursor.getLong(statisticIndex));
-			final boolean hasWavereport = convertIntToBoolean(cursor.getLong(wavereportIndex));
-			final boolean hasWaveforecast = convertIntToBoolean(cursor.getLong(waveforecastIndex));
+			final String spotid = getString(cursor, COLUMN_SPOTID);
+			// final String continentId = getString(cursor, COLUMN_CONTINENTID);
+			// final String countryId = getString(cursor, COLUMN_COUNTRYID);
+			// final String regionId = getString(cursor, COLUMN_REGIONID);
+			final String name = getString(cursor, COLUMN_NAME);
+			final String keyword = getString(cursor, COLUMN_KEYWORD);
+			final boolean hasSuperforecast = getBoolean(cursor, COLUMN_SUPERFORECAST);
+			final boolean hasReport = getBoolean(cursor, COLUMN_REPORT);
+			final boolean hasForecast = getBoolean(cursor, COLUMN_FORECAST);
+			final boolean hasStatistic = getBoolean(cursor, COLUMN_STATISTIC);
+			final boolean hasWavereport = getBoolean(cursor, COLUMN_WAVEREPORT);
+			final boolean hasWaveforecast = getBoolean(cursor, COLUMN_WAVEFORECAST);
 
 			// TODO: Forgot hasReport there, set it to false at the moment
-			final Station station = new Station(name, spotid, keyword, false, hasForecast, hasSuperforecast,
+			final Station station = new Station(name, spotid, keyword, hasReport, hasForecast, hasSuperforecast,
 					hasStatistic, hasWavereport, hasWaveforecast);
 			vo.setStation(station);
 

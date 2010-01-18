@@ -3,8 +3,10 @@ package de.macsystems.windroid.db.sqlite;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import de.macsystems.windroid.SpotConfigurationVO;
 import de.macsystems.windroid.db.ISelectedDAO;
+import de.macsystems.windroid.db.ISpotDAO;
 import de.macsystems.windroid.identifyable.Station;
 import de.macsystems.windroid.identifyable.WindDirection;
 import de.macsystems.windroid.identifyable.WindUnit;
@@ -114,13 +116,8 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 			c = db.query(tableName, null, "_id=?", new String[]
 			{ Long.toString(_id) }, null, null, null);
 
-			if (!c.moveToFirst())
-			{
-				throw new IllegalArgumentException("_id not found :" + _id);
-			}
-
-			final int index = c.getColumnIndexOrThrow(COLUMN_ACTIV);
-			result = convertIntToBoolean(c.getInt(index));
+			moveToFirstOrThrow(c);
+			result = getBoolean(c, COLUMN_ACTIV);
 		}
 		finally
 		{
@@ -145,52 +142,40 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 
 		try
 		{
-			// final Map<String, String> map = new HashMap<String, String>();
-			//			
-			// map.put("spot.name","B.name");
-			// map.put("spot.spotid","B.spotid");
-			// map.put("selected.name","A.active");
-			// map.put("selected.usedirection","A.usedirection");
-			//
-			// final SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-			// builder.setTables("spot,selected");
-			// builder.setProjectionMap(map);
-			// builder.query(db, map, selection, new
-			// String[]{"A.spotid=B.spotid"}, null, null, null);
+			final String tempID = getSpotIdByID(_id);
 
-			final String[] columns = new String[]
-			{ COLUMN_ACTIV, COLUMN_SPOTID, COLUMN_NAME, COLUMN_ID, COLUMN_USEDIRECTION, COLUMN_STARTING, COLUMN_TILL,
-					COLUMN_WINDMEASURE, COLUMN_MINWIND, COLUMN_MAXWIND };
+			Log.d("SelectedImpl", "Searched SpotID is :" + tempID);
 
-			c = db.query(tableName, columns, "_id=?", new String[]
-			{ Long.toString(_id) }, null, null, null);
+			c = db.rawQuery("SELECT B.name, B.spotid ,B.keyword, B.report ,B.superforecast, "
+					+ "B.forecast, B.statistic, B.wavereport, B.waveforecast, "
+					+ "A.activ, A.usedirection, A.starting, A.till, A.windmeasure, "
+					+ "A.minwind, A.maxwind FROM selected AS A, spot AS B WHERE B.spotid=? AND A.spotid=?",
+					new String[]
+					{ tempID, tempID });
 
 			if (!c.moveToFirst())
 			{
-				throw new IllegalStateException("Cursor ist empty. Id was " + _id);
+				throw new IllegalStateException("Cursor ist empty. Id was " + _id + ", spotid was " + tempID);
 			}
 
-			final int activIndex = c.getColumnIndexOrThrow(COLUMN_ACTIV);
-			final int spotIDIndex = c.getColumnIndexOrThrow(COLUMN_SPOTID);
-			final int nameIndex = c.getColumnIndexOrThrow(COLUMN_NAME);
-			final int spotidIndex = c.getColumnIndexOrThrow(COLUMN_ID);
-			final int useDirectionIndex = c.getColumnIndexOrThrow(COLUMN_USEDIRECTION);
-			final int startingIndex = c.getColumnIndexOrThrow(COLUMN_STARTING);
-			final int tillIndex = c.getColumnIndexOrThrow(COLUMN_TILL);
-			final int windmeasureIndex = c.getColumnIndexOrThrow(COLUMN_WINDMEASURE);
-			final int minWindIndex = c.getColumnIndexOrThrow(COLUMN_MINWIND);
-			final int maxWindIndex = c.getColumnIndexOrThrow(COLUMN_MAXWIND);
+			final boolean activ = getBoolean(c, COLUMN_ACTIV);
+			final String keyword = getString(c, ISpotDAO.COLUMN_KEYWORD);
+			final String spotID = getString(c, COLUMN_SPOTID);
+			final String name = getString(c, COLUMN_NAME);
+			final boolean useDirection = getBoolean(c, COLUMN_USEDIRECTION);
 
-			final boolean activ = convertIntToBoolean(c.getInt(activIndex));
-			final String spotID = c.getString(spotIDIndex);
-			final String name = c.getString(nameIndex);
-			final long id = c.getLong(spotidIndex);
-			final boolean useDirection = convertIntToBoolean(c.getLong(useDirectionIndex));
-			final float starting = c.getFloat(startingIndex);
-			final float till = c.getFloat(tillIndex);
-			final String windmeasure = c.getString(windmeasureIndex);
-			final int minWind = c.getInt(minWindIndex);
-			final int maxWind = c.getInt(maxWindIndex);
+			final boolean superforecast = getBoolean(c, ISpotDAO.COLUMN_SUPERFORECAST);
+			final boolean forecast = getBoolean(c, ISpotDAO.COLUMN_FORECAST);
+			final boolean report = getBoolean(c, ISpotDAO.COLUMN_REPORT);
+			final boolean statistic = getBoolean(c, ISpotDAO.COLUMN_STATISTIC);
+			final boolean wavereport = getBoolean(c, ISpotDAO.COLUMN_WAVEREPORT);
+			final boolean waveforecast = getBoolean(c, ISpotDAO.COLUMN_WAVEFORECAST);
+
+			final float starting = getFloat(c, COLUMN_STARTING);
+			final float till = getFloat(c, COLUMN_TILL);
+			final String windmeasure = getString(c, COLUMN_WINDMEASURE);
+			final float minWind = getFloat(c, COLUMN_MINWIND);
+			final float maxWind = getFloat(c, COLUMN_MAXWIND);
 
 			spotVO = new SpotConfigurationVO();
 			spotVO.setActiv(activ);
@@ -198,21 +183,48 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 			spotVO.setPreferredWindUnit(WindUnit.getById(windmeasure));
 			spotVO.setToDirection(WindDirection.getByDegree(till));
 			spotVO.setFromDirection(WindDirection.getByDegree(starting));
+			spotVO.setWindspeedMin(minWind);
+			spotVO.setWindspeedMin(maxWind);
 
-			// TODO: We create a Dummy there at the moment. Later we use a JOIN
-			// to get these infos aswell
-			final Station station = new Station("Wijk an Zee", "nl47", "wijk", true, true, false, true, false, false);
+			// TODO: Implement hasReport
+			final Station station = new Station(name, spotID, keyword, forecast, superforecast, statistic, report,
+					wavereport, waveforecast);
 			spotVO.setStation(station);
-
-			// final SQLiteQueryBuilder builder = new SQLiteQueryBuilder();
-			// builder.setTables("");
-
 		}
 		finally
 		{
 			IOUtils.close(db);
 		}
 		return spotVO;
+	}
+
+	/**
+	 * Returns spotid by its _id.
+	 * 
+	 * @param _id
+	 * @return
+	 */
+	protected final String getSpotIdByID(final long _id)
+	{
+		Cursor c = null;
+		SQLiteDatabase db = null;
+		String spotid = null;
+		try
+		{
+			db = getReadableDatabase();
+			c = db.rawQuery("SELECT spotid FROM " + tableName + " WHERE _id=?", new String[]
+			{ Long.toString(_id) });
+
+			moveToFirstOrThrow(c);
+
+			spotid = getString(c, COLUMN_SPOTID);
+		}
+		finally
+		{
+			IOUtils.close(c);
+		}
+		return spotid;
+
 	}
 
 	@Override

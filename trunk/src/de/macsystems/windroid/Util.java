@@ -9,7 +9,6 @@ import java.util.List;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import de.macsystems.windroid.identifyable.Continent;
 import de.macsystems.windroid.identifyable.IdentityUtil;
 import de.macsystems.windroid.identifyable.Station;
@@ -146,37 +145,6 @@ public final class Util
 	public final static boolean isUpdateWhileRoaming(final SharedPreferences _pref)
 	{
 		return _pref.getBoolean(PrefConstants.UPDATE_WHILE_ROAMING, DEFAULT_UPDATE_WHILE_ROAMING);
-	}
-
-	/**
-	 * Saves an <code>SpotConfigurationVO</code> using given Context
-	 * SharedPreferences
-	 * 
-	 * @param _configuration
-	 * @param _context
-	 */
-	public final static void persistSpotConfigurationVO(final SpotConfigurationVO _configuration, final Context _context)
-	{
-		if (_configuration == null)
-		{
-			throw new NullPointerException("SpotConfigurationVO is null.");
-		}
-
-		final SharedPreferences prefs = getSharedPreferences(_context);
-		final Editor editor = prefs.edit();
-
-		editor.putString(SPOT_STATION_ID, _configuration.getStation().getId());
-		editor.putString(SPOT_STATION_NAME, _configuration.getStation().getName());
-		editor.putString(SPOT_STATION_KEYWORD, _configuration.getStation().getKeyword());
-		editor.putString(SPOT_WINDDIRECTION_FROM_ID, _configuration.getFromDirection().getShortName());
-		editor.putString(SPOT_WINDDIRECTION_TO_ID, _configuration.getToDirection().getShortName());
-		editor.putString(SPOT_PREFERRED_WIND_UNIT, _configuration.getPreferredWindUnit().getId());
-		editor.putBoolean(SPOT_STATION_HAS_STATISTIC, _configuration.getStation().hasStatistic());
-		editor.putBoolean(SPOT_STATION_HAS_SUPERFORECAST, _configuration.getStation().hasSuperforecast());
-		editor.putInt(SPOT_WINDSPEED_MIN, _configuration.getWindspeedMin());
-		editor.putInt(SPOT_WINDSPEED_MAX, _configuration.getWindspeedMax());
-
-		editor.commit();
 	}
 
 	/**

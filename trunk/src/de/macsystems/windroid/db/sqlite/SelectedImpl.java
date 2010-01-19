@@ -59,7 +59,6 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 		{
 			final ContentValues values = new ContentValues();
 			values.put(COLUMN_SPOTID, _vo.getStation().getId());
-			values.put(COLUMN_NAME, _vo.getStation().getName());
 			values.put(COLUMN_ACTIV, _vo.isActiv());
 			values.put(COLUMN_USEDIRECTION, _vo.isUseWindirection());
 			values.put(COLUMN_STARTING, _vo.getFromDirection().getId());
@@ -186,7 +185,6 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 			spotVO.setWindspeedMin(minWind);
 			spotVO.setWindspeedMin(maxWind);
 
-			// TODO: Implement hasReport
 			final Station station = new Station(name, spotID, keyword, forecast, superforecast, statistic, report,
 					wavereport, waveforecast);
 			spotVO.setStation(station);
@@ -224,7 +222,6 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 			IOUtils.close(c);
 		}
 		return spotid;
-
 	}
 
 	@Override
@@ -236,4 +233,13 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 		}
 
 	}
+
+	@Override
+	public Cursor getSpots()
+	{
+		final SQLiteDatabase db = getReadableDatabase();
+		return db.rawQuery("SELECT B._id, A.name, B.windmeasure, B.starting, B.till,B.activ FROM selected as B, "
+				+ "spot as A where A.spotid=B.spotid", null);
+	}
+
 }

@@ -9,6 +9,8 @@ import java.util.List;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.util.Log;
 import de.macsystems.windroid.identifyable.Continent;
 import de.macsystems.windroid.identifyable.IdentityUtil;
 import de.macsystems.windroid.identifyable.Station;
@@ -242,4 +244,23 @@ public final class Util
 		return result.toString();
 	}
 
+	/**
+	 * Debug Method which prints column names at index. If Cursor is null method
+	 * will do nothing.
+	 * 
+	 * @param _cursor
+	 */
+	public final static void printCursorColumnNames(final Cursor _cursor)
+	{
+		if (_cursor == null)
+		{
+			return;
+		}
+
+		final String[] names = _cursor.getColumnNames();
+		for (int i = 0; i < names.length; i++)
+		{
+			Log.d("Debug", "Column at index :" + i + "=" + names[i]);
+		}
+	}
 }

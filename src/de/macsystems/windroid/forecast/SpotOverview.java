@@ -16,6 +16,7 @@ import de.macsystems.windroid.IntentConstants;
 import de.macsystems.windroid.R;
 import de.macsystems.windroid.SpotConfiguration;
 import de.macsystems.windroid.SpotConfigurationVO;
+import de.macsystems.windroid.Util;
 import de.macsystems.windroid.WindUtils;
 import de.macsystems.windroid.db.DAOFactory;
 import de.macsystems.windroid.db.ISelectedDAO;
@@ -49,7 +50,7 @@ public class SpotOverview extends ListActivity
 	{
 		super.onResume();
 		final ISelectedDAO dao = DAOFactory.getSelectedDAO(this);
-		final Cursor c = dao.fetchAll();
+		final Cursor c = dao.getSpots();
 		setupMapping(c);
 		//
 		getListView().setOnCreateContextMenuListener(new OnCreateContextMenuListener()
@@ -83,7 +84,6 @@ public class SpotOverview extends ListActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.spotoverview);
-
 	}
 
 	/*
@@ -116,7 +116,7 @@ public class SpotOverview extends ListActivity
 	{
 		final ISelectedDAO dao = DAOFactory.getSelectedDAO(this);
 		dao.setActiv(getSelectedItemId(), _state);
-		final Cursor c = dao.fetchAll();
+		final Cursor c = dao.getSpots();
 		setupMapping(c);
 		// Log.d(LOG_TAG, "Updating View");
 	}
@@ -135,12 +135,17 @@ public class SpotOverview extends ListActivity
 			throw new NullPointerException("Cursor");
 		}
 		startManagingCursor(_cursor);
+		
+		Util.printCursorColumnNames(_cursor);
+		
 		final String[] from = new String[]
-		{ ISelectedDAO.COLUMN_ACTIV, ISelectedDAO.COLUMN_NAME, ISelectedDAO.COLUMN_ID, ISelectedDAO.COLUMN_STARTING,
-				ISelectedDAO.COLUMN_TILL };
+		{ "name","windmeasure", "starting", "till", "activ" };
 		final int[] to = new int[]
-		{ R.id.custom_spotoverview_activ, R.id.custom_spotoverview_name, R.id.custom_spotoverview_detail,
-				R.id.custom_spotoverview_wind_from, R.id.custom_spotoverview_wind_to };
+
+		// "SELECT A.name, B.spotid, B.starting, B.till,B.activ FROM selected as B,spot as A where A.spotid=B.spotid"
+
+		{ R.id.custom_spotoverview_name,R.id.custom_spotoverview_windmeasure, R.id.custom_spotoverview_wind_from, R.id.custom_spotoverview_wind_to,
+				R.id.custom_spotoverview_activ };
 		shows = new SimpleCursorAdapter(this, R.layout.custom_listview_spotoverview, _cursor, from, to);
 		shows.setViewBinder(new SpotOverviewViewBinder());
 		setListAdapter(shows);
@@ -213,7 +218,5 @@ public class SpotOverview extends ListActivity
 		final ISelectedDAO dao = DAOFactory.getSelectedDAO(this);
 		final SpotConfigurationVO vo = WindUtils.getConfigurationFromIntent(_intent);
 		dao.update(vo);
-
 	}
-
 }

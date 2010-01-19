@@ -1,5 +1,6 @@
 package de.macsystems.windroid.db;
 
+import android.database.Cursor;
 import de.macsystems.windroid.SpotConfigurationVO;
 
 /**
@@ -67,5 +68,12 @@ public interface ISelectedDAO extends IDAO
 	 * @param _vo
 	 */
 	public void update(final SpotConfigurationVO _vo);
+
+	/**
+	 * Returns a cursor with all spots configured.
+	 * 
+	 * @return
+	 */
+	public Cursor getSpots();
 
 }

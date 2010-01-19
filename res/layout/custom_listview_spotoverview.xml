@@ -39,10 +39,8 @@
 			android:layout_width="5dp"
 			android:layout_height="5dp" />
 
-
-
 		<TextView
-			android:id="@+id/custom_spotoverview_detail"
+			android:id="@+id/custom_spotoverview_windmeasure"
 			android:text="Active"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content" />
@@ -52,7 +50,6 @@
 
 		<ImageView
 			android:id="@+id/custom_spotoverview_wind_from"
-			android:background="@drawable/icon"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content" />
 		<View
@@ -61,7 +58,6 @@
 
 		<ImageView
 			android:id="@+id/custom_spotoverview_wind_to"
-			android:background="@drawable/icon"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content" />
 	</LinearLayout>

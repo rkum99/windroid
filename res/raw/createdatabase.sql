@@ -23,7 +23,7 @@ CREATE INDEX conid ON continent (id);
 CREATE INDEX regid ON region (id); 
 CREATE INDEX coid ON country (id); 
 
-CREATE TABLE IF NOT EXISTS selected (_id INTEGER PRIMARY KEY AUTOINCREMENT, spotid text NOT NULL, name TEXT NOT NULL, activ BOOLEAN, usedirection BOOLEAN, starting TEXT, till TEXT, windmeasure TEXT NOT NULL, minwind INTEGER, maxwind INTEGER); 
+CREATE TABLE IF NOT EXISTS selected (_id INTEGER PRIMARY KEY AUTOINCREMENT, spotid text NOT NULL, activ BOOLEAN, usedirection BOOLEAN, starting TEXT, till TEXT, windmeasure TEXT NOT NULL, minwind INTEGER, maxwind INTEGER); 
 CREATE INDEX IF NOT EXISTS selectedsid ON selected (spotid); 
 -- Preferences
 DROP TABLE IF EXISTS preferences;

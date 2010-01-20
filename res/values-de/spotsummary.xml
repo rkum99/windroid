@@ -4,6 +4,11 @@
 	-->
 
 <resources>
+
+	<string
+		name="spot_summary_add">Spot Zufügen</string>
+	<string
+		name="spot_summary_cancel">Spot Verwerfen</string>
 	<string
 		name="spot_summary_title">Zusammenfassung</string>
 	<string

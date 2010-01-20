@@ -67,12 +67,12 @@
 
 			<Button
 				android:id="@+id/spotsummary_accept"
-				android:text="Spot zufügen"
+				android:text="@string/spot_summary_add"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content" />
 			<Button
 				android:id="@+id/spotsummary_cancel"
-				android:text="Spot verwerfen"
+				android:text="@string/spot_summary_cancel"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content" />
 		</LinearLayout>

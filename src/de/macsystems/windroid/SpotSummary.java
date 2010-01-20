@@ -114,11 +114,7 @@ public class SpotSummary extends Activity
 	 */
 	private void returnToStartActivity(final int _resultCode)
 	{
-		if (_resultCode != RESULT_OK && _resultCode != RESULT_CANCELED)
-		{
-			throw new IllegalArgumentException("ResultCode not valid. Must be RESULT or RESULT_CANCELED but was "
-					+ _resultCode);
-		}
+		Util.checkResultCode(_resultCode);
 		final Intent intent = WindUtils.createIntent(SpotSummary.this, Main.class, stationInfo);
 		setResult(_resultCode, intent);
 		finish();

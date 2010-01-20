@@ -8,6 +8,8 @@
 		name="spot_summary_add">Add Spot</string>
 	<string
 		name="spot_summary_cancel">Discard</string>
+	<string
+		name="spot_summary_summary">Summary:</string>
 
 	<string
 		name="spot_summary_title">Overview</string>

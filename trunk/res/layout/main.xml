@@ -53,7 +53,6 @@
 					android:layout_width="fill_parent"
 					android:layout_height="wrap_content" />
 
-
 				<View
 					android:layout_width="fill_parent"
 					android:layout_height="10dip" />

@@ -6,6 +6,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.SharedPreferences;
@@ -263,4 +264,23 @@ public final class Util
 			Log.d("Debug", "Column at index :" + i + "=" + names[i]);
 		}
 	}
+
+	/**
+	 * Checks if result code is valid, else a {@link IllegalArgumentException}
+	 * will be thrown.
+	 * 
+	 * @param _resultCode
+	 * @throws IllegalArgumentException
+	 * @see Activity#RESULT_OK
+	 * @see Activity#RESULT_CANCELED
+	 */
+	public static void checkResultCode(final int _resultCode) throws IllegalArgumentException
+	{
+		if (_resultCode != Activity.RESULT_OK && _resultCode != Activity.RESULT_CANCELED)
+		{
+			throw new IllegalArgumentException("ResultCode not valid. Must be RESULT or RESULT_CANCELED but was "
+					+ _resultCode);
+		}
+	}
+
 }

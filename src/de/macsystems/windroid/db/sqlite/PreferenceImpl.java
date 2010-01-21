@@ -130,7 +130,7 @@ public class PreferenceImpl extends BaseImpl implements IPreferencesDAO
 
 		if (sharedPreferences == null)
 		{
-			Log.w(LOG_TAG, "SharedPreferences were null, ignoring it.");
+			throw new NullPointerException("Map");
 		}
 
 		SQLiteDatabase db = null;

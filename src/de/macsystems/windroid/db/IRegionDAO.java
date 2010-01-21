@@ -1,5 +1,6 @@
 package de.macsystems.windroid.db;
 
+import android.database.Cursor;
 import android.graphics.Region;
 
 /**
@@ -14,5 +15,12 @@ public interface IRegionDAO extends IDAO
 	 * @return
 	 */
 	public Region getById(final int _id);
+
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public Cursor fetchByCountryID(final String id);
 
 }

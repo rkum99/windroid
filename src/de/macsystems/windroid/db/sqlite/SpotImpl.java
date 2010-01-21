@@ -218,10 +218,16 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 	@Override
 	public Cursor fetchBy(String continentid, String countryid, String regionid)
 	{
+
+		Log
+				.d("SpotDAO", "Looking for -> Continent: " + continentid + " Country: " + countryid + " Region: "
+						+ regionid);
+
 		final SQLiteDatabase db = getReadableDatabase();
-		// db.query("spot", columns, selection, selectionArgs, groupBy, having,
-		// orderBy);
-		return null;
+
+		return db.rawQuery("SELECT * from spot where continentid=? AND countryid=? AND regionid=?", new String[]
+		{ continentid, countryid, regionid });
+
 	}
 
 	/*
@@ -247,10 +253,7 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 		{
 			cursor = db.query("spot", colums, "spotid=?", new String[]
 			{ _stationid }, null, null, null);
-			if (!cursor.moveToFirst())
-			{
-				throw new IllegalStateException("Empty Result, stationid:" + _stationid);
-			}
+			moveToFirstOrThrow(cursor);
 			/**
 			 * Create an SpotConfigurationVO
 			 */
@@ -268,12 +271,10 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 			final boolean hasWavereport = getBoolean(cursor, COLUMN_WAVEREPORT);
 			final boolean hasWaveforecast = getBoolean(cursor, COLUMN_WAVEFORECAST);
 
-			// TODO: Forgot hasReport there, set it to false at the moment
+			// Create a Station
 			final Station station = new Station(name, spotid, keyword, hasReport, hasForecast, hasSuperforecast,
 					hasStatistic, hasWavereport, hasWaveforecast);
 			vo.setStation(station);
-
-			// vo
 		}
 		finally
 		{

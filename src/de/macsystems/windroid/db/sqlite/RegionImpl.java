@@ -1,5 +1,6 @@
 package de.macsystems.windroid.db.sqlite;
 
+import android.database.Cursor;
 import android.graphics.Region;
 import de.macsystems.windroid.db.IRegionDAO;
 import de.macsystems.windroid.progress.IProgress;
@@ -39,6 +40,12 @@ public class RegionImpl extends BaseImpl implements IRegionDAO
 	public Region getById(final int id)
 	{
 		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public Cursor fetchByCountryID(final String _id)
+	{
+		return fetchBy("countryid", _id);
 	}
 
 }

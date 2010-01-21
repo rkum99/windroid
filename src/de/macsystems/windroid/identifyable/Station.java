@@ -60,7 +60,7 @@ public final class Station implements IdentifyAble, Serializable
 	{
 		if (_name == null || _id == null || _keyWord == null)
 		{
-			throw new NullPointerException("check arguments");
+			throw new NullPointerException("check arguments name=" + _name + " id=" + _id + " keyword=" + _keyWord);
 		}
 
 		name = _name;

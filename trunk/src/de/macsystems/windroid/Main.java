@@ -116,6 +116,7 @@ public class Main extends Activity
 	@Override
 	protected void onResume()
 	{
+		super.onResume();
 		final View buttonSelectStation = findViewById(R.id.button_show_station_selection);
 		final View buttonHelp = findViewById(R.id.button_show_station_help);
 		final List<View> viewsToDisableOnConnectionLost = new ArrayList<View>();
@@ -131,10 +132,10 @@ public class Main extends Activity
 		final ISpotDAO dao = DAOFactory.getSpotDAO(this);
 		final DecimalFormat df = new DecimalFormat(",##0");
 		final String nrSpot = df.format(dao.getSize());
-		final String newText = footer.getText().toString().replace("$1", nrSpot);
-		footer.setText(newText);
-		//
-		super.onResume();
+
+		final String orgString = getString(R.string.welcome_database_size);
+		final String dbSizeString = orgString.replace("$1", nrSpot);
+		footer.setText(dbSizeString);
 	}
 
 	/*

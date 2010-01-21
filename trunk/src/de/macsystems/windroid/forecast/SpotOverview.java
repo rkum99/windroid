@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnCreateContextMenuListener;
 import android.widget.SimpleCursorAdapter;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import de.macsystems.windroid.IntentConstants;
 import de.macsystems.windroid.R;
 import de.macsystems.windroid.SpotConfiguration;
@@ -39,6 +40,10 @@ public class SpotOverview extends ListActivity
 	private static final int EDIT_ITEM_ID = 2;
 
 	SimpleCursorAdapter shows = null;
+	/**
+	 * We cache the ID as when focus lost on context menu to use it.
+	 */
+	private long selectedID = -1;
 
 	/*
 	 * (non-Javadoc)
@@ -58,8 +63,17 @@ public class SpotOverview extends ListActivity
 			@Override
 			public final void onCreateContextMenu(final ContextMenu menu, final View v, final ContextMenuInfo menuInfo)
 			{
-				final long selectedItemID = getSelectedItemId();
-				final boolean isActiv = dao.isActiv(selectedItemID);
+
+				Log.d(LOG_TAG, "ContextMenu ID :" + ((AdapterContextMenuInfo) menuInfo).id);
+				Log.d(LOG_TAG, "ContextMenu position :" + ((AdapterContextMenuInfo) menuInfo).position);
+
+				// final long selectedItemID = getSelectedItemId();
+
+				selectedID = ((AdapterContextMenuInfo) menuInfo).id;
+
+				Log.d(LOG_TAG, "Selected item for Context :" + ((AdapterContextMenuInfo) menuInfo).id);
+
+				final boolean isActiv = dao.isActiv(selectedID);
 				menu.add(0, EDIT_ITEM_ID, 0, R.string.spot_overview_spot_edit);
 				if (isActiv)
 				{
@@ -92,9 +106,10 @@ public class SpotOverview extends ListActivity
 	 * @see android.app.Activity#onContextItemSelected(android.view.MenuItem)
 	 */
 	@Override
-	public boolean onContextItemSelected(final MenuItem __item)
+	public boolean onContextItemSelected(final MenuItem _item)
 	{
-		switch (__item.getItemId())
+
+		switch (_item.getItemId())
 		{
 		case DISABLE_ITEM_ID:
 			setActive(false);
@@ -103,10 +118,10 @@ public class SpotOverview extends ListActivity
 			setActive(true);
 			break;
 		case EDIT_ITEM_ID:
-			editSpot(getSelectedItemId());
+			editSpot(selectedID);
 			break;
 		default:
-			throw new IllegalArgumentException("Unkown Item ID " + __item.getItemId());
+			throw new IllegalArgumentException("Unknown Item ID " + _item.getItemId());
 		}
 
 		return true;
@@ -128,24 +143,24 @@ public class SpotOverview extends ListActivity
 	 * 
 	 * @param _cursor
 	 */
-	private void setupMapping(Cursor _cursor)
+	private void setupMapping(final Cursor _cursor)
 	{
 		if (_cursor == null)
 		{
 			throw new NullPointerException("Cursor");
 		}
 		startManagingCursor(_cursor);
-		
+
 		Util.printCursorColumnNames(_cursor);
-		
+
 		final String[] from = new String[]
-		{ "name","windmeasure", "starting", "till", "activ" };
+		{ "name", "windmeasure", "starting", "till", "activ" };
 		final int[] to = new int[]
 
 		// "SELECT A.name, B.spotid, B.starting, B.till,B.activ FROM selected as B,spot as A where A.spotid=B.spotid"
 
-		{ R.id.custom_spotoverview_name,R.id.custom_spotoverview_windmeasure, R.id.custom_spotoverview_wind_from, R.id.custom_spotoverview_wind_to,
-				R.id.custom_spotoverview_activ };
+		{ R.id.custom_spotoverview_name, R.id.custom_spotoverview_windmeasure, R.id.custom_spotoverview_wind_from,
+				R.id.custom_spotoverview_wind_to, R.id.custom_spotoverview_activ };
 		shows = new SimpleCursorAdapter(this, R.layout.custom_listview_spotoverview, _cursor, from, to);
 		shows.setViewBinder(new SpotOverviewViewBinder());
 		setListAdapter(shows);

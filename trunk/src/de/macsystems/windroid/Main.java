@@ -68,42 +68,44 @@ public class Main extends Activity
 	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data)
 	{
 		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == Activity.RESULT_CANCELED)
+
+		if (requestCode == CONFIGURATION_REQUEST_CODE)
 		{
-			Log.d(LOG_TAG, "SubActivity was canceled.");
-			return;
-		}
-		else if (CONFIGURATION_REQUEST_CODE == requestCode)
-		{
-			Log.d(LOG_TAG, "CONFIGURATION_REQUEST_CODE Code recieved :" + requestCode);
-			/**
-			 * TODO: Remove Code later
-			 */
-			if (WindUtils.isSpotConfigured(data))
+			Log.d(LOG_TAG, "Recieved requestcode CONFIGURATION_REQUEST_CODE");
+			if (resultCode == Activity.RESULT_OK)
 			{
-				final SpotConfigurationVO spot = WindUtils.getConfigurationFromIntent(data);
+				Log.d(LOG_TAG, "Recieved resultcode RESULT_OK");
+				// updateSpot(data);
+				if (WindUtils.isSpotConfigured(data))
+				{
+					final SpotConfigurationVO spot = WindUtils.getConfigurationFromIntent(data);
 
-				final ISelectedDAO dao = DAOFactory.getSelectedDAO(this);
-				dao.insertSpot(spot);
+					final ISelectedDAO dao = DAOFactory.getSelectedDAO(this);
+					dao.insertSpot(spot);
 
-				final StringBuilder builder = new StringBuilder(256).append("\n");
-				builder.append("Folgender Spot wurde Angelegt:\n").append("\n\n");
-				builder.append("Name: ").append(spot.getStation().getName()).append("\n");
-				builder.append("ID: ").append(spot.getStation().getId()).append("\n");
-				builder.append("Keyword: ").append(spot.getStation().getKeyword()).append("\n");
-				builder.append("hasStatistic: ").append(spot.getStation().hasStatistic()).append("\n");
-				builder.append("hasSuperForcast: ").append(spot.getStation().hasSuperforecast()).append("\n");
-				builder.append("PreferedWindUnit: ").append(spot.getPreferredWindUnit()).append("\n");
-				builder.append("Wind From: ").append(spot.getFromDirection()).append("\n");
-				builder.append("Wind To: ").append(spot.getToDirection()).append("\n");
-				builder.append("Take care of Windirection: ").append(spot.isUseWindirection()).append("\n");
-				Toast.makeText(Main.this, builder.toString(), Toast.LENGTH_LONG).show();
+					final StringBuilder builder = new StringBuilder(256).append("\n");
+					builder.append("Folgender Spot wurde Angelegt:\n").append("\n\n");
+					builder.append("Name: ").append(spot.getStation().getName()).append("\n");
+					builder.append("ID: ").append(spot.getStation().getId()).append("\n");
+					builder.append("Keyword: ").append(spot.getStation().getKeyword()).append("\n");
+					builder.append("hasStatistic: ").append(spot.getStation().hasStatistic()).append("\n");
+					builder.append("hasSuperForcast: ").append(spot.getStation().hasSuperforecast()).append("\n");
+					builder.append("PreferedWindUnit: ").append(spot.getPreferredWindUnit()).append("\n");
+					builder.append("Wind From: ").append(spot.getFromDirection()).append("\n");
+					builder.append("Wind To: ").append(spot.getToDirection()).append("\n");
+					builder.append("Take care of Windirection: ").append(spot.isUseWindirection()).append("\n");
+					Toast.makeText(Main.this, builder.toString(), Toast.LENGTH_LONG).show();
+				}
+
 			}
-
+			else if (resultCode == Activity.RESULT_CANCELED)
+			{
+				Log.d(LOG_TAG, "Recieved resultCode RESULT_CANCELED");
+			}
 		}
 		else
 		{
-			Log.e(LOG_TAG, "Illegal Request Code recieved :" + requestCode);
+			throw new IllegalArgumentException("Wrong request recieved. Expected CONFIGURATION_REQUEST_CODE");
 		}
 
 	}

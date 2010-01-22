@@ -48,10 +48,12 @@ public enum WindUnit implements IdentifyAble
 		}
 		for (final WindUnit unit : WindUnit.values())
 		{
-			_id.equals(unit.id);
-			return unit;
+			if (_id.equals(unit.id))
+			{
+				return unit;
+			}
 		}
-		throw new IllegalArgumentException("unkown id \"" + _id + "\".");
+		throw new IllegalArgumentException("unknown id \"" + _id + "\".");
 	}
 
 	/**

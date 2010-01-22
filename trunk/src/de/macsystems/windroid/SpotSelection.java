@@ -103,7 +103,6 @@ public class SpotSelection extends ChainSubActivity
 					final Spinner continentSpinner = (Spinner) findViewById(R.id.continentSpinner);
 					shows.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 					continentSpinner.setAdapter(shows);
-					// TODO selection is not working yet.
 					continentSpinner.setSelection(selectionIndex);
 					continentSpinner.setOnItemSelectedListener(createContinentListener());
 				}

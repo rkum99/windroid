@@ -54,30 +54,26 @@ public class SpotConfiguration extends ChainSubActivity
 
 		setContentView(R.layout.spotconfiguration);
 		final Intent intent = getIntent();
+		/**
+		 * Insert Station Name
+		 */
+
 		if (WindUtils.isSpotConfigured(getIntent()))
 		{
 			stationInfo = WindUtils.getConfigurationFromIntent(getIntent());
 			currentSelectUnit = stationInfo.getPreferredWindUnit();
+
+			final TextView stationView = (TextView) findViewById(R.id.title_spot_configuration);
+
+			final String text = stationView.getText().toString().replace("$1", stationInfo.getStation().getName());
+			stationView.setText(text);
+
 		}
 		else
 		{
 			throw new IllegalArgumentException("Spot Configuration missing.");
 		}
 		vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-
-		/**
-		 * Insert Station Name
-		 */
-		if (intent.getExtras() != null)
-		{
-			final Bundle bundle = intent.getExtras();
-			final SpotConfigurationVO stationInfo = (SpotConfigurationVO) bundle.get(IntentConstants.SPOT_TO_CONFIGURE);
-			final TextView stationView = (TextView) findViewById(R.id.title_spot_configuration);
-
-			final String text = stationView.getText().toString().replace("$1", stationInfo.getStation().getName());
-			stationView.setText(text);
-		}
-
 		/**
 		 * Fill Unit Spinner and pre select default value from preferences
 		 */
@@ -104,6 +100,7 @@ public class SpotConfiguration extends ChainSubActivity
 		directionsToSpinner.setAdapter(directionsTo);
 
 		final CheckBox selectWinddirection = (CheckBox) findViewById(R.id.unit_enable_winddirection_select);
+		selectWinddirection.setChecked(stationInfo.isUseWindirection());
 		selectWinddirection.setOnClickListener(getEnableWindirectionClickListener());
 
 		final SeekBar minimumSeekbar = (SeekBar) findViewById(R.id.unit_minimum_seekbar);

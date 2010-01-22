@@ -63,7 +63,7 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 			values.put(COLUMN_USEDIRECTION, _vo.isUseWindirection());
 			values.put(COLUMN_STARTING, _vo.getFromDirection().getId());
 			values.put(COLUMN_TILL, _vo.getToDirection().getId());
-			values.put(COLUMN_WINDMEASURE, _vo.getPreferredWindUnit().name());
+			values.put(COLUMN_WINDMEASURE, _vo.getPreferredWindUnit().getId());
 			values.put(COLUMN_MINWIND, _vo.getWindspeedMin());
 			values.put(COLUMN_MAXWIND, _vo.getWindspeedMax());
 			//
@@ -238,8 +238,14 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 	public Cursor getSpots()
 	{
 		final SQLiteDatabase db = getReadableDatabase();
-		return db.rawQuery("SELECT B._id, A.name, B.windmeasure, B.starting, B.till,B.activ FROM selected as B, "
-				+ "spot as A where A.spotid=B.spotid", null);
+
+		// CREATE TABLE IF NOT EXISTS selected (_id INTEGER PRIMARY KEY
+		// AUTOINCREMENT, spotid text NOT NULL, activ BOOLEAN, usedirection
+		// BOOLEAN, starting TEXT, till TEXT, windmeasure TEXT NOT NULL, minwind
+		// INTEGER, maxwind INTEGER);
+		return db.rawQuery(
+				"SELECT B._id, A.name, B.minwind, B.maxwind, B.windmeasure, B.starting, B.till,B.activ FROM selected as B, "
+						+ "spot as A where A.spotid=B.spotid", null);
 	}
 
 }

@@ -130,7 +130,7 @@ public class SpotOverview extends ListActivity
 	private void setActive(final boolean _state)
 	{
 		final ISelectedDAO dao = DAOFactory.getSelectedDAO(this);
-		dao.setActiv(getSelectedItemId(), _state);
+		dao.setActiv((selectedID), _state);
 		final Cursor c = dao.getSpots();
 		setupMapping(c);
 		// Log.d(LOG_TAG, "Updating View");
@@ -154,12 +154,13 @@ public class SpotOverview extends ListActivity
 		Util.printCursorColumnNames(_cursor);
 
 		final String[] from = new String[]
-		{ "name", "windmeasure", "starting", "till", "activ" };
+		{ "name","minwind","maxwind", "windmeasure", "starting", "till", "activ" };
 		final int[] to = new int[]
 
 		// "SELECT A.name, B.spotid, B.starting, B.till,B.activ FROM selected as B,spot as A where A.spotid=B.spotid"
-
-		{ R.id.custom_spotoverview_name, R.id.custom_spotoverview_windmeasure, R.id.custom_spotoverview_wind_from,
+		// custom_spotoverview_wind_details
+		{ R.id.custom_spotoverview_name, R.id.custom_spotoverview_wind_start, R.id.custom_spotoverview_wind_end,
+				R.id.custom_spotoverview_wind_details, R.id.custom_spotoverview_wind_from,
 				R.id.custom_spotoverview_wind_to, R.id.custom_spotoverview_activ };
 		shows = new SimpleCursorAdapter(this, R.layout.custom_listview_spotoverview, _cursor, from, to);
 		shows.setViewBinder(new SpotOverviewViewBinder());

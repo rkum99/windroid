@@ -145,12 +145,11 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 
 			Log.d("SelectedImpl", "Searched SpotID is :" + tempID);
 
-			c = db.rawQuery("SELECT B.name, B.spotid ,B.keyword, B.report ,B.superforecast, "
-					+ "B.forecast, B.statistic, B.wavereport, B.waveforecast, "
-					+ "A.activ, A.usedirection, A.starting, A.till, A.windmeasure, "
-					+ "A.minwind, A.maxwind FROM selected AS A, spot AS B WHERE B.spotid=? AND A.spotid=?",
-					new String[]
-					{ tempID, tempID });
+			c = db.rawQuery("SELECT B.name, B.spotid ,B.keyword, B.report ,B.superforecast,  "
+					+ "B.forecast, B.statistic, B.wavereport, B.waveforecast, A.activ, "
+					+ "A.usedirection, A.starting, A.till, A.windmeasure, A.minwind, A.maxwind "
+					+ "FROM selected AS A, spot AS B WHERE A._id=? AND B.spotid=?", new String[]
+			{ Long.toString(_id), tempID });
 
 			if (!c.moveToFirst())
 			{
@@ -170,8 +169,8 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 			final boolean wavereport = getBoolean(c, ISpotDAO.COLUMN_WAVEREPORT);
 			final boolean waveforecast = getBoolean(c, ISpotDAO.COLUMN_WAVEFORECAST);
 
-			final float starting = getFloat(c, COLUMN_STARTING);
-			final float till = getFloat(c, COLUMN_TILL);
+			final String starting = getString(c, COLUMN_STARTING);
+			final String till = getString(c, COLUMN_TILL);
 			final String windmeasure = getString(c, COLUMN_WINDMEASURE);
 			final float minWind = getFloat(c, COLUMN_MINWIND);
 			final float maxWind = getFloat(c, COLUMN_MAXWIND);
@@ -180,8 +179,8 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 			spotVO.setActiv(activ);
 			spotVO.setUseWindirection(useDirection);
 			spotVO.setPreferredWindUnit(WindUnit.getById(windmeasure));
-			spotVO.setToDirection(WindDirection.getByDegree(till));
-			spotVO.setFromDirection(WindDirection.getByDegree(starting));
+			spotVO.setToDirection(WindDirection.getByShortName(till));
+			spotVO.setFromDirection(WindDirection.getByShortName(starting));
 			spotVO.setWindspeedMin(minWind);
 			spotVO.setWindspeedMin(maxWind);
 

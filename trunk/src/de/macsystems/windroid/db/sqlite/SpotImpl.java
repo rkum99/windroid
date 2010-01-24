@@ -23,6 +23,8 @@ import de.macsystems.windroid.progress.IProgress;
 public class SpotImpl extends BaseImpl implements ISpotDAO
 {
 
+	private static final String SPOT = "spot";
+
 	private final static String LOG_TAG = SpotImpl.class.getSimpleName();
 
 	private final static String INSERT_SPOT = "INSERT INTO spot "
@@ -40,7 +42,7 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 	 */
 	public SpotImpl(final Database _database) throws NullPointerException
 	{
-		super(_database, "spot");
+		super(_database, SPOT);
 	}
 
 	/**
@@ -51,7 +53,7 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 	 */
 	public SpotImpl(final Database _database, final IProgress _progress) throws NullPointerException
 	{
-		super(_database, "spot", _progress);
+		super(_database, SPOT, _progress);
 	}
 
 	/*
@@ -240,10 +242,6 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 	{
 		final SpotConfigurationVO vo = new SpotConfigurationVO();
 		final SQLiteDatabase db = getReadableDatabase();
-		//
-		// select
-		// _id,spotid,continentid,countryid,regionid,name,keyword,superforecast,forecast,statistic,wavereport,waveforecast
-		// from Spot where spotid='eg36';
 		final String[] colums = new String[]
 		{ "spotid", "continentid", "countryid", "regionid", "name", "keyword", "superforecast", "report", "forecast",
 				"statistic", "wavereport", "waveforecast" };
@@ -251,7 +249,7 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 		Cursor cursor = null;
 		try
 		{
-			cursor = db.query("spot", colums, "spotid=?", new String[]
+			cursor = db.query(SPOT, colums, "spotid=?", new String[]
 			{ _stationid }, null, null, null);
 			moveToFirstOrThrow(cursor);
 			/**

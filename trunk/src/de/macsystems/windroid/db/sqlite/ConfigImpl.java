@@ -13,6 +13,8 @@ import de.macsystems.windroid.progress.IProgress;
 public class ConfigImpl extends BaseImpl implements IConfigDAO
 {
 
+	private static final String CONFIG = "config";
+
 	public final String DB_STATUS = "db_status";
 
 	/**
@@ -21,7 +23,7 @@ public class ConfigImpl extends BaseImpl implements IConfigDAO
 	 */
 	public ConfigImpl(final Database _database)
 	{
-		super(_database, "config");
+		super(_database, CONFIG);
 	}
 
 	/**
@@ -31,7 +33,7 @@ public class ConfigImpl extends BaseImpl implements IConfigDAO
 	 */
 	public ConfigImpl(final Database _database, final IProgress _progress)
 	{
-		super(_database, "config", _progress);
+		super(_database, CONFIG, _progress);
 	}
 
 	/*

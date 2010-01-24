@@ -14,13 +14,15 @@ import de.macsystems.windroid.progress.IProgress;
  */
 public class ContinentImpl extends BaseImpl implements IContinentDAO
 {
+	private static final String CONTINENT = "continent";
+
 	/**
 	 * 
 	 * @param database
 	 */
 	public ContinentImpl(final Database database)
 	{
-		super(database, "continent");
+		super(database, CONTINENT);
 	}
 
 	/**
@@ -30,7 +32,7 @@ public class ContinentImpl extends BaseImpl implements IContinentDAO
 	 */
 	public ContinentImpl(final Database database, final IProgress _progress)
 	{
-		super(database, "continent", _progress);
+		super(database, CONTINENT, _progress);
 	}
 
 	/*

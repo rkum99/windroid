@@ -14,13 +14,15 @@ import de.macsystems.windroid.progress.IProgress;
 public class RegionImpl extends BaseImpl implements IRegionDAO
 {
 
+	private static final String REGION = "region";
+
 	/**
 	 * @param database
 	 * @param progress
 	 */
 	public RegionImpl(final Database database, final IProgress progress)
 	{
-		super(database, "region", progress);
+		super(database, REGION, progress);
 	}
 
 	/**
@@ -28,7 +30,7 @@ public class RegionImpl extends BaseImpl implements IRegionDAO
 	 */
 	public RegionImpl(final Database database)
 	{
-		super(database, "region");
+		super(database, REGION);
 	}
 
 	/*

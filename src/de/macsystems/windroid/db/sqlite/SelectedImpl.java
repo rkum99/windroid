@@ -7,6 +7,8 @@ import android.util.Log;
 import de.macsystems.windroid.SpotConfigurationVO;
 import de.macsystems.windroid.db.ISelectedDAO;
 import de.macsystems.windroid.db.ISpotDAO;
+import de.macsystems.windroid.identifyable.Repeat;
+import de.macsystems.windroid.identifyable.Schedule;
 import de.macsystems.windroid.identifyable.Station;
 import de.macsystems.windroid.identifyable.WindDirection;
 import de.macsystems.windroid.identifyable.WindUnit;
@@ -19,13 +21,15 @@ import de.macsystems.windroid.progress.IProgress;
  */
 public class SelectedImpl extends BaseImpl implements ISelectedDAO
 {
+	private static final String SELECTED = "selected";
+
 	/**
 	 * 
 	 * @param _database
 	 */
 	public SelectedImpl(final Database _database)
 	{
-		super(_database, "selected");
+		super(_database, SELECTED);
 	}
 
 	/**
@@ -35,7 +39,7 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 	 */
 	public SelectedImpl(final Database _database, final IProgress _progress)
 	{
-		super(_database, "selected", _progress);
+		super(_database, SELECTED, _progress);
 	}
 
 	/*
@@ -182,11 +186,14 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 			spotVO.setToDirection(WindDirection.getByShortName(till));
 			spotVO.setFromDirection(WindDirection.getByShortName(starting));
 			spotVO.setWindspeedMin(minWind);
-			spotVO.setWindspeedMin(maxWind);
+			spotVO.setWindspeedMax(maxWind);
+
+			final Schedule schedule = new Schedule(Repeat.DAILY, 1000 * 15, true);
 
 			final Station station = new Station(name, spotID, keyword, forecast, superforecast, statistic, report,
 					wavereport, waveforecast);
 			spotVO.setStation(station);
+			spotVO.setSchedule(schedule);
 		}
 		finally
 		{

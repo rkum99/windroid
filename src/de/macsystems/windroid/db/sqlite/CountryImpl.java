@@ -13,13 +13,15 @@ import de.macsystems.windroid.progress.IProgress;
 public class CountryImpl extends BaseImpl implements ICountryDAO
 {
 
+	private static final String COUNTRY = "country";
+
 	/**
 	 * @param database
 	 * @param progress
 	 */
 	public CountryImpl(Database database, IProgress progress)
 	{
-		super(database, "country", progress);
+		super(database, COUNTRY, progress);
 	}
 
 	/**
@@ -27,7 +29,7 @@ public class CountryImpl extends BaseImpl implements ICountryDAO
 	 */
 	public CountryImpl(Database database)
 	{
-		super(database, "country");
+		super(database, COUNTRY);
 	}
 
 	@Override

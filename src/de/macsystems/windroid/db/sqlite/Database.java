@@ -21,7 +21,7 @@ public final class Database extends SQLiteOpenHelper
 
 	private final static String DATABASE_NAME = "windroid.db";
 
-	private final static int VERSION = 62;
+	private final static int VERSION = 63;
 
 	private final Context context;
 

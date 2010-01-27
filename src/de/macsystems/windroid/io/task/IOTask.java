@@ -103,7 +103,7 @@ public abstract class IOTask<V, I> implements Task<V, I>
 		try
 		{
 			instream = response.getEntity().getContent();
-			Log.d(LOG_TAG,"HTTP Content Lenght:"+response.getEntity().getContentLength());
+			Log.d(LOG_TAG, "HTTP Content Lenght:" + response.getEntity().getContentLength());
 			return process(_context, instream);
 		}
 		catch (final Exception e)

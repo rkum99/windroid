@@ -9,6 +9,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import android.content.Context;
+import de.macsystems.windroid.identifyable.World;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.io.RetryLaterException;
 import de.macsystems.windroid.parser.StationHandler;
@@ -24,6 +25,8 @@ import de.macsystems.windroid.progress.IProgress;
  */
 public class XMLParseTask extends IOTask<Integer, InputStream>
 {
+
+	StationHandler handler = null;
 
 	/**
 	 * 
@@ -74,14 +77,29 @@ public class XMLParseTask extends IOTask<Integer, InputStream>
 		{
 			final SAXParserFactory factory = SAXParserFactory.newInstance();
 			final SAXParser parser = factory.newSAXParser();
-			final StationHandler stationHandler = new StationHandler();
-			parser.parse(buffInStream, stationHandler);
+			handler = new StationHandler();
+			parser.parse(buffInStream, handler);
 
-			return stationHandler.getNrOfStations();
+			return handler.getNrOfStations();
 		}
 		finally
 		{
 			IOUtils.close(buffInStream);
 		}
+	}
+
+	/**
+	 * Returns the parsed World or <code>null</code>.
+	 * 
+	 * @return
+	 */
+	public World getWorld()
+	{
+		if (handler == null)
+		{
+			return null;
+		}
+		return handler.getWorld();
+
 	}
 }

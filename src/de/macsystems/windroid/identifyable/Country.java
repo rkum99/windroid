@@ -121,7 +121,7 @@ public class Country implements IdentifyAble, Node<Region>
 	}
 
 	@Override
-	public void add(Region _region)
+	public void add(final Region _region)
 	{
 		if (_region == null)
 		{

@@ -53,29 +53,23 @@ public class ContinentImpl extends BaseImpl implements IContinentDAO
 	 * de.macsystems.windroid.db.IContinentDAO#getIndexByID(java.lang.String)
 	 */
 	@Override
-	public int getIndexByID(String _id)
+	public int getIndexByID(final String _id)
 	{
-
 		int result = -1;
 		final SQLiteDatabase db = getReadableDatabase();
 		Cursor cursor = null;
 		try
 		{
-			cursor = db.query("CONTINENT", null, "id=?", new String[]
+			cursor = db.query(CONTINENT, null, "id=?", new String[]
 			{ _id }, null, null, null);
-			if (!cursor.moveToFirst())
-			{
-				return -1;
-			}
+			moveToFirstOrThrow(cursor);
 			final int index = cursor.getColumnIndexOrThrow("_id");
 			result = cursor.getInt(index);
 			return result;
-
 		}
 		finally
 		{
 			cursor.close();
 		}
-
 	}
 }

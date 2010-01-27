@@ -7,9 +7,9 @@ package de.macsystems.windroid.identifyable;
  */
 public final class WindSpeed
 {
-	private WindUnit unit;
+	private final WindUnit unit;
 
-	private float value;
+	private final float value;
 
 	/**
 	 * 
@@ -56,7 +56,7 @@ public final class WindSpeed
 	 * @param _windUnit
 	 * @return
 	 */
-	public static WindSpeed create(float _value, final String _windUnit)
+	public static WindSpeed create(final float _value, final String _windUnit)
 	{
 		final WindUnit unit = WindUnit.getById(_windUnit);
 		return new WindSpeed(_value, unit);

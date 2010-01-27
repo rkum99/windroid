@@ -75,7 +75,7 @@ public class Region implements IdentifyAble, Node<Station>
 	}
 
 	@Override
-	public void add(Station _bean)
+	public void add(final Station _bean)
 	{
 		if (_bean == null)
 		{

@@ -55,7 +55,7 @@ public abstract class MeasureValue
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object obj)
+	public boolean equals(final Object obj)
 	{
 		if (this == obj)
 		{
@@ -69,7 +69,7 @@ public abstract class MeasureValue
 		{
 			return false;
 		}
-		MeasureValue other = (MeasureValue) obj;
+		final MeasureValue other = (MeasureValue) obj;
 		if (measure == null)
 		{
 			if (other.measure != null)

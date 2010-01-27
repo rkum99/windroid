@@ -10,17 +10,23 @@ import java.util.TreeSet;
  * @author mac
  * @version $Id$
  */
-public class World implements IdentifyAble, Node<NewContinent>
+public class World implements IdentifyAble, Node<Continent>
 {
 
-	private final Set<NewContinent> continents = new TreeSet<NewContinent>();
+	private final Set<Continent> continents;
+
+	public World()
+	{
+		continents = new TreeSet<Continent>(new Continent.NewContinentComparator());
+	}
 
 	/**
 	 * Returns an Iterator over all Country's of this Continent.
 	 * 
 	 * @return
 	 */
-	public Iterator<NewContinent> iterator()
+	@Override
+	public Iterator<Continent> iterator()
 	{
 		return continents.iterator();
 	}
@@ -43,7 +49,7 @@ public class World implements IdentifyAble, Node<NewContinent>
 	}
 
 	@Override
-	public void add(final NewContinent _aContinent)
+	public void add(final Continent _aContinent)
 	{
 		if (_aContinent == null)
 		{

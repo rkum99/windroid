@@ -1,46 +1,56 @@
 package de.macsystems.windroid.identifyable;
 
+import java.io.Serializable;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * @author Jens Hohl
- * @version $Id$
+ * A Continent has country's and a display name id is DB id not primary key..
  * 
+ * @author mac
+ * @version $Id$
  */
-public enum Continent implements IdentifyAble, Node<Country>
+public class Continent implements IdentifyAble, Node<Country>
 {
-	AFRICA("Africa"), EUROPE("Europe"), //
-	ASIA("Asia"),
-	AUSTRALIA_OCEANIA("Australia & Oceania"),
-	NORTH_AMERICA("North America"),
-	SOUTH_AMERICA("South America");
-
-	private final Set<Country> countrys = new TreeSet<Country>(new Country.CountryComparator());
 
 	private final String id;
 
-	private static AtomicBoolean isParsed = new AtomicBoolean(false);
+	private final String name;
+
+	private final Set<Country> countrys;
+
+	public static class NewContinentComparator implements Comparator<Continent>, Serializable
+	{
+		private static final long serialVersionUID = 1L;
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+		 */
+		@Override
+		public int compare(final Continent object1, final Continent object2)
+		{
+			return object1.getId().compareTo(object2.getId());
+		}
+	}
 
 	/**
 	 * 
-	 * @param _id
+	 * @param _key
+	 * @param _name
 	 */
-	private Continent(final String _id)
+	public Continent(final String _key, final String _name)
 	{
-		id = _id;
-	}
-
-	public static void setParsed()
-	{
-		isParsed.set(true);
-	}
-
-	public static boolean isParsed()
-	{
-		return isParsed.get();
+		if (_name == null)
+		{
+			throw new NullPointerException("_name");
+		}
+		countrys = new TreeSet<Country>(new Country.CountryComparator());
+		id = _key;
+		name = _name;
 	}
 
 	/*
@@ -48,33 +58,19 @@ public enum Continent implements IdentifyAble, Node<Country>
 	 * 
 	 * @see de.macsystems.windroid.identifyable.IdentifyAble#getId()
 	 */
+	@Override
 	public String getId()
 	{
 		return id;
 	}
 
-	public int getNrOfCountrys()
-	{
-		return countrys.size();
-	}
-
 	/**
 	 * 
-	 * @param _continentID
 	 * @return
-	 * @throws IllegalArgumentException
-	 *             if continent not found
 	 */
-	public static Continent getById(final String _continentID) throws IllegalArgumentException
+	public String getName()
 	{
-		for (final Continent continent : values())
-		{
-			if (continent.id.equals(_continentID))
-			{
-				return continent;
-			}
-		}
-		throw new IllegalArgumentException("Unkown Continent \"" + _continentID + "\".");
+		return name;
 	}
 
 	/**
@@ -82,23 +78,18 @@ public enum Continent implements IdentifyAble, Node<Country>
 	 * 
 	 * @return
 	 */
+	@Override
 	public Iterator<Country> iterator()
 	{
 		return countrys.iterator();
 	}
 
 	@Override
-	public String toString()
-	{
-		return id;
-	}
-
-	@Override
-	public void add(Country _country)
+	public void add(final Country _country)
 	{
 		if (_country == null)
 		{
-			throw new NullPointerException();
+			throw new NullPointerException("country");
 		}
 
 		countrys.add(_country);
@@ -107,13 +98,13 @@ public enum Continent implements IdentifyAble, Node<Country>
 	@Override
 	public int getSize()
 	{
-		return values().length;
+		return countrys.size();
 	}
 
 	@Override
 	public boolean isLeaf()
 	{
-		return values().length > 0;
+		return countrys.isEmpty();
 	}
 
 }

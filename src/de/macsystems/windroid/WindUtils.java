@@ -156,7 +156,8 @@ public class WindUtils
 	 * @throws IOException
 	 */
 	public final static void updateStationList(final Context _context, final IProgress _downloadProgress)
-			throws RetryLaterException, IOException
+			throws RetryLaterException,
+			IOException
 
 	{
 		Log.d(LOG_TAG, "Updating cache.");

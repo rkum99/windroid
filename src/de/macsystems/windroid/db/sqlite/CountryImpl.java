@@ -19,7 +19,7 @@ public class CountryImpl extends BaseImpl implements ICountryDAO
 	 * @param database
 	 * @param progress
 	 */
-	public CountryImpl(Database database, IProgress progress)
+	public CountryImpl(final Database database, final IProgress progress)
 	{
 		super(database, COUNTRY, progress);
 	}
@@ -27,13 +27,13 @@ public class CountryImpl extends BaseImpl implements ICountryDAO
 	/**
 	 * @param database
 	 */
-	public CountryImpl(Database database)
+	public CountryImpl(final Database database)
 	{
 		super(database, COUNTRY);
 	}
 
 	@Override
-	public Cursor fetchByContinentID(String _id)
+	public Cursor fetchByContinentID(final String _id)
 	{
 		return fetchBy("continentid", _id);
 	}

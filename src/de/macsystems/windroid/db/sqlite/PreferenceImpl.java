@@ -154,8 +154,7 @@ public class PreferenceImpl extends BaseImpl implements IPreferencesDAO
 				{
 					db.execSQL(builder.toString());
 					// TODO: uncomment logging for production version
-					Log.d(LOG_TAG, "INSERT INTO preferences ('key','value') VALUES ('" + entry.getKey() + "','"
-							+ entry.getValue() + "');");
+					Log.d(LOG_TAG, "Execute SQL : " + builder.toString());
 				}
 				catch (final Exception e)
 				{

@@ -23,23 +23,20 @@ public final class AlarmDetector
 	 * @param _forecast
 	 * @return
 	 */
-	public static boolean isAlarm(final Forecast _forecast,final SpotConfigurationVO _spotConfigurationVO)
+	public static boolean isAlarm(final Forecast _forecast, final SpotConfigurationVO _spotConfigurationVO)
 	{
-		
+
 		final Iterator<ForecastDetail> iter = _forecast.iterator();
-		while(iter.hasNext())
+		while (iter.hasNext())
 		{
 			final ForecastDetail detail = iter.next();
 			final WindSpeed windspeed = detail.getWindSpeed();
-			
-			
-			if(_spotConfigurationVO.isUseWindirection())
+
+			if (_spotConfigurationVO.isUseWindirection())
 			{
-				
+
 			}
 		}
-		
-		
 
 		return false;
 	}

@@ -2,6 +2,7 @@ package de.macsystems.windroid;
 
 import java.io.Serializable;
 
+import de.macsystems.windroid.identifyable.Schedule;
 import de.macsystems.windroid.identifyable.Station;
 import de.macsystems.windroid.identifyable.WindDirection;
 import de.macsystems.windroid.identifyable.WindUnit;
@@ -20,6 +21,8 @@ public final class SpotConfigurationVO implements Serializable
 	private static final long serialVersionUID = 1L;
 
 	private Station station;
+
+	private Schedule schedule;
 
 	private boolean useWindirection;
 
@@ -152,7 +155,7 @@ public final class SpotConfigurationVO implements Serializable
 	 * @param windspeedMax
 	 *            the windspeedMax to set
 	 */
-	public void setWindspeedMax(final int windspeedMax)
+	public void setWindspeedMax(final float windspeedMax)
 	{
 		this.windspeedMax = windspeedMax;
 	}
@@ -169,9 +172,26 @@ public final class SpotConfigurationVO implements Serializable
 	 * @param isActiv
 	 *            the isActiv to set
 	 */
-	public void setActiv(boolean isActiv)
+	public void setActiv(final boolean isActiv)
 	{
 		this.isActiv = isActiv;
+	}
+
+	/**
+	 * @return the schedule
+	 */
+	public Schedule getSchedule()
+	{
+		return schedule;
+	}
+
+	/**
+	 * @param schedule
+	 *            the schedule to set
+	 */
+	public void setSchedule(final Schedule schedule)
+	{
+		this.schedule = schedule;
 	}
 
 }

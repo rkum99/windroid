@@ -6,10 +6,11 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import android.util.Log;
 import de.macsystems.windroid.WindUtils;
-import de.macsystems.windroid.identifyable.Continent;
 import de.macsystems.windroid.identifyable.Country;
+import de.macsystems.windroid.identifyable.Continent;
 import de.macsystems.windroid.identifyable.Region;
 import de.macsystems.windroid.identifyable.Station;
+import de.macsystems.windroid.identifyable.World;
 
 /**
  * @author Jens Hohl
@@ -39,12 +40,15 @@ public class StationHandler extends DefaultHandler
 
 	private volatile int nrOfStations = 0;
 
+	private final World world;
+
 	/**
 	 * 
 	 */
 	public StationHandler()
 	{
 		super();
+		world = new World();
 	}
 
 	/**
@@ -57,12 +61,21 @@ public class StationHandler extends DefaultHandler
 		return nrOfStations;
 	}
 
+	/**
+	 * returns the world.
+	 * 
+	 * @return
+	 */
+	public World getWorld()
+	{
+		return world;
+	}
+
 	@Override
 	public void endDocument() throws SAXException
 	{
 		final long parsingTime = System.currentTimeMillis() - startTime;
 		Log.d(LOG_TAG, "Parsing End. Parsing time :" + parsingTime + " ms.");
-		Continent.setParsed();
 		super.endDocument();
 	}
 
@@ -147,8 +160,11 @@ public class StationHandler extends DefaultHandler
 	private void handleContinent(final Attributes attributes)
 	{
 		final int indexID = attributes.getIndex(NAMESPACE, "id");
-		// final int indexName = attributes.getIndex("", "name");
-		currentContinent = Continent.getById(attributes.getValue(indexID));
+		final int indexName = attributes.getIndex(NAMESPACE, "name");
+		final String name = attributes.getValue(indexName);
+		final String id = attributes.getValue(indexID);
+		final Continent newContinent = new Continent(id, name);
+		world.add(newContinent);
+		currentContinent = newContinent;
 	}
-
 }

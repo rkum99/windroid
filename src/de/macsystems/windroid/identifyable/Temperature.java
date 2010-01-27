@@ -23,7 +23,7 @@ public class Temperature extends MeasureValue
 	 * @param _unit
 	 * @return
 	 */
-	public static Temperature create(float _value, final String _unit)
+	public static Temperature create(final float _value, final String _unit)
 	{
 		return new Temperature(_value, getUnit(_unit));
 	}

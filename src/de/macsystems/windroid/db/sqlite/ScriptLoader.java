@@ -53,6 +53,7 @@ public class ScriptLoader
 	}
 
 	/**
+	 * returns database upgrade sql script
 	 * 
 	 * @param _context
 	 * @return
@@ -64,6 +65,7 @@ public class ScriptLoader
 	}
 
 	/**
+	 * returns database create sql script
 	 * 
 	 * @param _context
 	 * @return

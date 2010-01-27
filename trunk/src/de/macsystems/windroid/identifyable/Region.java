@@ -79,7 +79,7 @@ public class Region implements IdentifyAble, Node<Station>
 	{
 		if (_bean == null)
 		{
-			throw new NullPointerException();
+			throw new NullPointerException("station");
 		}
 		stations.add(_bean);
 	}

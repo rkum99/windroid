@@ -8,10 +8,11 @@ import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 import de.macsystems.windroid.SpotConfigurationVO;
 import de.macsystems.windroid.db.ISpotDAO;
-import de.macsystems.windroid.identifyable.Continent;
 import de.macsystems.windroid.identifyable.Country;
+import de.macsystems.windroid.identifyable.Continent;
 import de.macsystems.windroid.identifyable.Region;
 import de.macsystems.windroid.identifyable.Station;
+import de.macsystems.windroid.identifyable.World;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.progress.IProgress;
 
@@ -61,9 +62,15 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 	 * 
 	 * @see de.macsystems.windroid.db.ISpotDAO#insertSpots()
 	 */
-	public void insertSpots()
+	public void insertSpots(final World _world)
 	{
 		Log.d(LOG_TAG, "executeInsert");
+
+		if (_world == null)
+		{
+			throw new NullPointerException("world");
+		}
+
 		final int PROGRESS = 100;
 		final SQLiteDatabase db = getWritableDatabase();
 		final SQLiteStatement insertSpotStatement = db.compileStatement(INSERT_SPOT);
@@ -71,17 +78,13 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 		final SQLiteStatement insertCountryStatement = db.compileStatement(INSERT_COUNTRY);
 		final SQLiteStatement insertRegionStatement = db.compileStatement(INSERT_REGION);
 
-		if (!Continent.isParsed())
-		{
-			throw new IllegalStateException("Please parse Continents first.");
-		}
-
 		final long start = System.currentTimeMillis();
 		db.beginTransaction();
 		int index = 0;
 		try
 		{
-			for (final Continent continent : Continent.values())
+			for (final Continent continent : _world)
+			// for (final Continent continent : Continent.values())
 			{
 				updateContinentTable(insertContinentStatement, continent);
 				insertContinentStatement.executeInsert();
@@ -164,7 +167,7 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 	private final static void updateContinentTable(final SQLiteStatement insertStatement, final Continent continent)
 	{
 		insertStatement.bindString(1, continent.getId());
-		insertStatement.bindString(2, continent.name());
+		insertStatement.bindString(2, continent.getName());
 	}
 
 	/**
@@ -218,7 +221,7 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 	 * java.lang.String, java.lang.String)
 	 */
 	@Override
-	public Cursor fetchBy(String continentid, String countryid, String regionid)
+	public Cursor fetchBy(final String continentid, final String countryid, final String regionid)
 	{
 
 		Log

@@ -25,7 +25,7 @@ public class HomeScreenWidget extends AppWidgetProvider
 	 * int[])
 	 */
 	@Override
-	public void onDeleted(Context context, int[] appWidgetIds)
+	public void onDeleted(final Context context, final int[] appWidgetIds)
 	{
 		Log.d(LOG_TAG, "public void onDeleted(Context context, int[] appWidgetIds)");
 		super.onDeleted(context, appWidgetIds);
@@ -38,7 +38,7 @@ public class HomeScreenWidget extends AppWidgetProvider
 	 * android.appwidget.AppWidgetProvider#onDisabled(android.content.Context)
 	 */
 	@Override
-	public void onDisabled(Context context)
+	public void onDisabled(final Context context)
 	{
 
 		Log.d(LOG_TAG, "public void onDisabled(Context context)");
@@ -52,7 +52,7 @@ public class HomeScreenWidget extends AppWidgetProvider
 	 * android.appwidget.AppWidgetProvider#onEnabled(android.content.Context)
 	 */
 	@Override
-	public void onEnabled(Context context)
+	public void onEnabled(final Context context)
 	{
 		Log.d(LOG_TAG, "public void onEnabled(Context context)");
 		super.onEnabled(context);
@@ -66,7 +66,7 @@ public class HomeScreenWidget extends AppWidgetProvider
 	 * android.content.Intent)
 	 */
 	@Override
-	public void onReceive(Context context, Intent intent)
+	public void onReceive(final Context context, final Intent intent)
 	{
 		Log.d(LOG_TAG, "public void onReceive(Context context, Intent intent)");
 		super.onReceive(context, intent);
@@ -88,7 +88,7 @@ public class HomeScreenWidget extends AppWidgetProvider
 		for (int index = 0; index < appWidgetIds.length; index++)
 		{
 			final RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.homescreen);
-			
+
 			appWidgetManager.updateAppWidget(appWidgetIds[index], views);
 
 		}

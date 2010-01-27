@@ -6,6 +6,8 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 /**
+ * 
+ * 
  * @author Jens Hohl
  * @version $Id: ContinentCursorAdapter.java 102 2009-11-07 01:39:30Z jens.hohl
  *          $

@@ -73,6 +73,7 @@ public class SpotOverview extends ListActivity
 
 				Log.d(LOG_TAG, "Selected item for Context :" + ((AdapterContextMenuInfo) menuInfo).id);
 
+				// dao.getSp7otConfiguration(selectedID).getStation().ha
 				final boolean isActiv = dao.isActiv(selectedID);
 				menu.add(0, EDIT_ITEM_ID, 0, R.string.spot_overview_spot_edit);
 				if (isActiv)
@@ -154,7 +155,7 @@ public class SpotOverview extends ListActivity
 		Util.printCursorColumnNames(_cursor);
 
 		final String[] from = new String[]
-		{ "name","minwind","maxwind", "windmeasure", "starting", "till", "activ" };
+		{ "name", "minwind", "maxwind", "windmeasure", "starting", "till", "activ" };
 		final int[] to = new int[]
 
 		// "SELECT A.name, B.spotid, B.starting, B.till,B.activ FROM selected as B,spot as A where A.spotid=B.spotid"
@@ -190,7 +191,7 @@ public class SpotOverview extends ListActivity
 	 * android.content.Intent)
 	 */
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data)
+	protected void onActivityResult(final int requestCode, final int resultCode, final Intent data)
 	{
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == EDIT_SPOT_REQUEST_CODE)

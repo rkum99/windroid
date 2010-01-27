@@ -2,6 +2,7 @@ package de.macsystems.windroid.db;
 
 import android.database.Cursor;
 import de.macsystems.windroid.SpotConfigurationVO;
+import de.macsystems.windroid.identifyable.World;
 
 /**
  * 
@@ -25,9 +26,10 @@ public interface ISpotDAO extends IDAO
 	public final static String COLUMN_STATISTIC = "statistic";
 
 	/**
+	 * @param world
 	 * 
 	 */
-	public void insertSpots();
+	public void insertSpots(World world);
 
 	/**
 	 * Returns true if spots available

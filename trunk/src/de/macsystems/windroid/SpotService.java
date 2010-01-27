@@ -50,7 +50,7 @@ public class SpotService extends Service
 	/**
 	 * Holds state of Service
 	 */
-	private AtomicBoolean isServiceRunning = new AtomicBoolean(false);
+	private final AtomicBoolean isServiceRunning = new AtomicBoolean(false);
 
 	/**
 	 * 
@@ -65,14 +65,14 @@ public class SpotService extends Service
 			final int alarmID, final String notificationTitle, final String notificationDetails)
 	{
 		final CharSequence tickerText = "Hello"; // ticker-text
-		long when = System.currentTimeMillis(); // notification time
+		final long when = System.currentTimeMillis(); // notification time
 		final CharSequence contentTitle = "My notification"; // expanded message
 		// title
 		final CharSequence contentText = "Hello World!"; // expanded message
 		// text
 
 		final Intent notificationIntent = new Intent(context, OngoingUpdate.class);
-		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+		final PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 
 		final Notification notification = new Notification(R.drawable.icon_update, tickerText, when);
 		notification.flags |= Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;

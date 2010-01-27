@@ -1,5 +1,8 @@
 package de.macsystems.windroid.identifyable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.macsystems.windroid.R;
 
 /**
@@ -105,14 +108,17 @@ public enum WindDirection implements IdentifyAble
 		}
 		for (final WindDirection unit : WindDirection.values())
 		{
-			_shortName.equals(unit.shortName);
-			return unit;
+			if (_shortName.equals(unit.shortName))
+			{
+				return unit;
+			}
 		}
 		throw new IllegalArgumentException("unkown shortname \"" + _shortName + "\".");
 	}
 
 	/**
-	 * Returns <code>WindDirection</code> by its degree (22.5f).
+	 * Returns <code>WindDirection</code> by its degree (eg. 22.5f results in
+	 * North North East).
 	 * 
 	 * @param _degree
 	 * @return
@@ -129,6 +135,23 @@ public enum WindDirection implements IdentifyAble
 			}
 		}
 		throw new IllegalArgumentException("unkown _degree \"" + _degree + "\".");
+	}
+
+	/**
+	 * Returns an array of selectable values not including 'no selection'.
+	 * 
+	 * @return
+	 */
+	public static WindDirection[] getValues()
+	{
+		final List<WindDirection> temp = new ArrayList<WindDirection>();
+		final WindDirection[] values = values();
+		for (int i = 0; i < values.length; i++)
+		{
+			temp.add(values[i]);
+		}
+		temp.remove(NO_DIRECTION);
+		return temp.toArray(new WindDirection[temp.size()]);
 	}
 
 }

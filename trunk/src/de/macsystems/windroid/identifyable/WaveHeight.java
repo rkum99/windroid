@@ -20,7 +20,7 @@ public final class WaveHeight extends MeasureValue
 	 * @param _value
 	 * @return
 	 */
-	public static WaveHeight create(final String _unit, float _value)
+	public static WaveHeight create(final String _unit, final float _value)
 	{
 		return new WaveHeight(_value, getUnit(_unit));
 	}

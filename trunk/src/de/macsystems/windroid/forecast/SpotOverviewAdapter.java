@@ -100,7 +100,8 @@ public class SpotOverviewAdapter extends BaseAdapter
 	/**
 	 * 
 	 * @author Jens Hohl
-	 * @version $Id$
+	 * @version $Id: SpotOverviewAdapter.java 15 2009-07-30 03:22:32Z jens.hohl
+	 *          $
 	 * 
 	 */
 	private class ViewHolder

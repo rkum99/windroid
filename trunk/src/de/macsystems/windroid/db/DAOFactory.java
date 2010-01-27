@@ -26,7 +26,7 @@ public final class DAOFactory
 		return new SpotImpl(new Database(_context), NullProgressAdapter.INSTANCE);
 	}
 
-	public final static ISpotDAO getSpotDAO(final Context _context, IProgress _progress)
+	public final static ISpotDAO getSpotDAO(final Context _context, final IProgress _progress)
 	{
 		return new SpotImpl(new Database(_context), _progress);
 	}

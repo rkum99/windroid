@@ -22,7 +22,7 @@ public final class WaveDirection extends MeasureValue
 	 * @param _value
 	 * @return
 	 */
-	public static WaveDirection create(final String _unit, float _value)
+	public static WaveDirection create(final String _unit, final float _value)
 	{
 		return new WaveDirection(_value, getUnit(_unit));
 	}

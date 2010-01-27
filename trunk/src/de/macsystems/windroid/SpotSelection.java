@@ -249,8 +249,6 @@ public class SpotSelection extends ChainSubActivity
 		return selectionHandler;
 	}
 
-	
-	
 	private OnItemSelectedListener createSpotListener()
 	{
 		final OnItemSelectedListener selectionHandler = new OnItemSelectedListener()
@@ -270,8 +268,6 @@ public class SpotSelection extends ChainSubActivity
 		return selectionHandler;
 	}
 
-	
-
 	/**
 	 * @param _resID
 	 * @return
@@ -281,7 +277,7 @@ public class SpotSelection extends ChainSubActivity
 	{
 		final Spinner spinner = (Spinner) findViewById(_resID);
 		final Cursor cursor = (Cursor) spinner.getSelectedItem();
-//		Util.printCursorColumnNames(cursor);
+		// Util.printCursorColumnNames(cursor);
 		final int index = cursor.getColumnIndexOrThrow("id");
 		return cursor.getString(index);
 	}

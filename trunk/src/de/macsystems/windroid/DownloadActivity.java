@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import de.macsystems.windroid.db.DAOFactory;
 import de.macsystems.windroid.db.ISpotDAO;
+import de.macsystems.windroid.identifyable.World;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.io.task.XMLParseTask;
 import de.macsystems.windroid.progress.IProgress;
@@ -89,11 +90,11 @@ public class DownloadActivity extends ChainSubActivity
 					final XMLParseTask task = new XMLParseTask(new URI(IOUtils.stationsXMLFilePath), databaseProgress);
 					final int stationsFound = task.execute(DownloadActivity.this);
 					downloadProgress.incrementBy(50);
-
+					final World world = task.getWorld();
 					databaseProgress.setMax(stationsFound);
 
 					final ISpotDAO updater = DAOFactory.getSpotDAO(DownloadActivity.this, databaseProgress);
-					updater.insertSpots();
+					updater.insertSpots(world);
 					// final ConfigImpl config = new ConfigImpl(database);
 					// config.setDatabaseStatus("succsess");
 					showInstallSucceed();
@@ -127,8 +128,8 @@ public class DownloadActivity extends ChainSubActivity
 				final String message = DownloadActivity.this.getString(R.string.download_failure_text);
 				final String header = DownloadActivity.this.getString(R.string.download_failure_header);
 
-				new AlertDialog.Builder(DownloadActivity.this).setPositiveButton(ok, getOkListener(Main.class)).setTitle(
-						header).setMessage(message + stackTrace).show();
+				new AlertDialog.Builder(DownloadActivity.this).setPositiveButton(ok, getOkListener(Main.class))
+						.setTitle(header).setMessage(message + stackTrace).show();
 			}
 		});
 	}
@@ -147,8 +148,9 @@ public class DownloadActivity extends ChainSubActivity
 				final String message = DownloadActivity.this.getString(R.string.download_success_text);
 				final String header = DownloadActivity.this.getString(R.string.download_success_header);
 
-				new AlertDialog.Builder(DownloadActivity.this).setPositiveButton(ok, getOkListener(SpotSelection.class))
-						.setTitle(header).setMessage(message).show();
+				new AlertDialog.Builder(DownloadActivity.this)
+						.setPositiveButton(ok, getOkListener(SpotSelection.class)).setTitle(header).setMessage(message)
+						.show();
 			}
 		});
 	}

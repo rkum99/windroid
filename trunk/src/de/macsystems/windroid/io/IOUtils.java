@@ -142,8 +142,9 @@ public class IOUtils
 	 * @throws RetryLaterException
 	 * @throws IOException
 	 */
-	public static void updateCachedStationXML(final Context _context, final URL _stationXMLURL, IProgress _progress)
-			throws RetryLaterException, IOException
+	public static void updateCachedStationXML(final Context _context, final URL _stationXMLURL, final IProgress _progress)
+			throws RetryLaterException,
+			IOException
 	{
 
 		try
@@ -449,7 +450,8 @@ public class IOUtils
 	 * @throws IOException
 	 */
 	public static List<String> readTextfile(final Context _context, final int _resourceId)
-			throws Resources.NotFoundException, IOException
+			throws Resources.NotFoundException,
+			IOException
 	{
 		BufferedReader bufReader = null;
 		InputStream inStream = null;

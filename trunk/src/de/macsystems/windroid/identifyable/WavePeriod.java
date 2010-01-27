@@ -19,7 +19,7 @@ public final class WavePeriod extends MeasureValue
 	 * @param _value
 	 * @return
 	 */
-	public static WavePeriod create(final String _unit, float _value)
+	public static WavePeriod create(final String _unit, final float _value)
 	{
 		return new WavePeriod(_value, getUnit(_unit));
 	}

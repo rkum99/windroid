@@ -37,7 +37,7 @@ public class PreferenceImpl extends BaseImpl implements IPreferencesDAO
 		try
 		{
 			cursor = fetchBy("key", _key);
-			cursor.moveToFirst();
+			moveToFirstOrThrow(cursor);
 			final int index = cursor.getColumnIndexOrThrow("value");
 			result = cursor.getString(index);
 		}

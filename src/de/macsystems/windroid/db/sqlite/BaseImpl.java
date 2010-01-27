@@ -224,7 +224,7 @@ public class BaseImpl implements IDAO
 		return _value == 0 ? false : true;
 	}
 
-	public final String getString(final Cursor _c, final String _columnName) throws IllegalArgumentException
+	public static final String getString(final Cursor _c, final String _columnName) throws IllegalArgumentException
 	{
 		final int index = _c.getColumnIndexOrThrow(_columnName);
 		return _c.getString(index);

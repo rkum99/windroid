@@ -12,7 +12,7 @@ import java.util.TreeSet;
  * @version $Id$
  * @param <T>
  */
-public class GenericNode<T> implements Node<T>
+public abstract class GenericNode<T> implements Node<T>
 {
 	private final Set<T> collection;
 

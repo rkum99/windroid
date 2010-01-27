@@ -41,6 +41,7 @@ public class BaseImpl implements IDAO
 	 *             if any parameter is null.
 	 */
 	protected BaseImpl(final Database _database, final String _tableName, final IProgress _progress)
+			throws NullPointerException
 	{
 		if (_database == null)
 		{
@@ -67,6 +68,8 @@ public class BaseImpl implements IDAO
 	 * @param _database
 	 * @param _tableName
 	 * @see NullProgressAdapter
+	 * @throws NullPointerException
+	 *             if any parameter is null.
 	 */
 	protected BaseImpl(final Database _database, final String _tableName)
 	{

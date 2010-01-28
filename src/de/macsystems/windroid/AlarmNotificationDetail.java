@@ -31,7 +31,6 @@ public class AlarmNotificationDetail extends Activity
 		final Intent intent = getIntent();
 		if (intent != null)
 		{
-
 			final Parcelable pdetails = intent.getParcelableExtra(IntentConstants.ALARM_DETAIL);
 			final AlarmDetail alarmDetail = (AlarmDetail) pdetails;
 			cancelAlarm(this, alarmDetail.getId());
@@ -56,7 +55,5 @@ public class AlarmNotificationDetail extends Activity
 	protected void onResume()
 	{
 		super.onResume();
-
 	}
-
 }

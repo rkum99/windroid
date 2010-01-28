@@ -5,8 +5,9 @@
 
 <resources>
 	<string
-		name="ongoing_update_text">Dieser Status zeigt an das Windroid im Begriff ist ein
-		Update auf ihre konfigurierten Spots durchzuführen. Diese Meldung
-		verschwindet selbständig wieder sobald das update durchgeführt wurde.
+		name="ongoing_update_text">Monitoring der Konfigurierten Spots.
 	</string>
+	<string
+		name="ongoing_update_title">Monitoring</string>
+
 </resources>

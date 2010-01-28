@@ -1,10 +1,15 @@
 package de.macsystems.windroid.db.sqlite;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import de.macsystems.windroid.SpotConfigurationVO;
+import de.macsystems.windroid.Util;
 import de.macsystems.windroid.db.ISelectedDAO;
 import de.macsystems.windroid.db.ISpotDAO;
 import de.macsystems.windroid.identifyable.Repeat;
@@ -155,50 +160,67 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 					+ "FROM selected AS A, spot AS B WHERE A._id=? AND B.spotid=?", new String[]
 			{ Long.toString(_id), tempID });
 
-			if (!c.moveToFirst())
-			{
-				throw new IllegalStateException("Cursor ist empty. Id was " + _id + ", spotid was " + tempID);
-			}
+			moveToFirstOrThrow(c);
 
-			final boolean activ = getBoolean(c, COLUMN_ACTIV);
-			final String keyword = getString(c, ISpotDAO.COLUMN_KEYWORD);
-			final String spotID = getString(c, COLUMN_SPOTID);
-			final String name = getString(c, COLUMN_NAME);
-			final boolean useDirection = getBoolean(c, COLUMN_USEDIRECTION);
-
-			final boolean superforecast = getBoolean(c, ISpotDAO.COLUMN_SUPERFORECAST);
-			final boolean forecast = getBoolean(c, ISpotDAO.COLUMN_FORECAST);
-			final boolean report = getBoolean(c, ISpotDAO.COLUMN_REPORT);
-			final boolean statistic = getBoolean(c, ISpotDAO.COLUMN_STATISTIC);
-			final boolean wavereport = getBoolean(c, ISpotDAO.COLUMN_WAVEREPORT);
-			final boolean waveforecast = getBoolean(c, ISpotDAO.COLUMN_WAVEFORECAST);
-
-			final String starting = getString(c, COLUMN_STARTING);
-			final String till = getString(c, COLUMN_TILL);
-			final String windmeasure = getString(c, COLUMN_WINDMEASURE);
-			final float minWind = getFloat(c, COLUMN_MINWIND);
-			final float maxWind = getFloat(c, COLUMN_MAXWIND);
-
-			spotVO = new SpotConfigurationVO();
-			spotVO.setActiv(activ);
-			spotVO.setUseWindirection(useDirection);
-			spotVO.setPreferredWindUnit(WindUnit.getById(windmeasure));
-			spotVO.setToDirection(WindDirection.getByShortName(till));
-			spotVO.setFromDirection(WindDirection.getByShortName(starting));
-			spotVO.setWindspeedMin(minWind);
-			spotVO.setWindspeedMax(maxWind);
-
-			final Schedule schedule = new Schedule(Repeat.DAILY, 1000 * 15, true);
-
-			final Station station = new Station(name, spotID, keyword, forecast, superforecast, statistic, report,
-					wavereport, waveforecast);
-			spotVO.setStation(station);
-			spotVO.setSchedule(schedule);
+			spotVO = createSpotConfigurationVO(c);
 		}
 		finally
 		{
 			IOUtils.close(db);
 		}
+		return spotVO;
+	}
+
+	/**
+	 * @param c
+	 * @return
+	 * @throws IllegalArgumentException
+	 * @throws NullPointerException
+	 */
+	private static SpotConfigurationVO createSpotConfigurationVO(Cursor c)
+			throws IllegalArgumentException,
+			NullPointerException
+	{
+
+		Util.printCursorColumnNames(c);
+
+		SpotConfigurationVO spotVO;
+		final boolean activ = getBoolean(c, COLUMN_ACTIV);
+		final String keyword = getString(c, ISpotDAO.COLUMN_KEYWORD);
+		final String spotID = getString(c, COLUMN_SPOTID);
+		final String name = getString(c, COLUMN_NAME);
+		final boolean useDirection = getBoolean(c, COLUMN_USEDIRECTION);
+
+		final boolean superforecast = getBoolean(c, ISpotDAO.COLUMN_SUPERFORECAST);
+		final boolean forecast = getBoolean(c, ISpotDAO.COLUMN_FORECAST);
+		final boolean report = getBoolean(c, ISpotDAO.COLUMN_REPORT);
+		final boolean statistic = getBoolean(c, ISpotDAO.COLUMN_STATISTIC);
+		final boolean wavereport = getBoolean(c, ISpotDAO.COLUMN_WAVEREPORT);
+		final boolean waveforecast = getBoolean(c, ISpotDAO.COLUMN_WAVEFORECAST);
+
+		final String starting = getString(c, COLUMN_STARTING);
+		final String till = getString(c, COLUMN_TILL);
+		final String windmeasure = getString(c, COLUMN_WINDMEASURE);
+		final float minWind = getFloat(c, COLUMN_MINWIND);
+		final float maxWind = getFloat(c, COLUMN_MAXWIND);
+
+		spotVO = new SpotConfigurationVO();
+		spotVO.setActiv(activ);
+		spotVO.setUseWindirection(useDirection);
+		spotVO.setPreferredWindUnit(WindUnit.getById(windmeasure));
+		spotVO.setToDirection(WindDirection.getByShortName(till));
+		spotVO.setFromDirection(WindDirection.getByShortName(starting));
+		spotVO.setWindspeedMin(minWind);
+		spotVO.setWindspeedMax(maxWind);
+		/**
+		 * TODO : Repeat is fix
+		 */
+		final Schedule schedule = new Schedule(Repeat.DAILY, 1000 * 15, true);
+
+		final Station station = new Station(name, spotID, keyword, forecast, superforecast, statistic, report,
+				wavereport, waveforecast);
+		spotVO.setStation(station);
+		spotVO.setSchedule(schedule);
 		return spotVO;
 	}
 
@@ -241,17 +263,70 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 	}
 
 	@Override
-	public Cursor getSpots()
+	public Cursor getConfiguredSpots()
 	{
 		final SQLiteDatabase db = getReadableDatabase();
-
-		// CREATE TABLE IF NOT EXISTS selected (_id INTEGER PRIMARY KEY
-		// AUTOINCREMENT, spotid text NOT NULL, activ BOOLEAN, usedirection
-		// BOOLEAN, starting TEXT, till TEXT, windmeasure TEXT NOT NULL, minwind
-		// INTEGER, maxwind INTEGER);
 		return db.rawQuery(
-				"SELECT B._id, A.name, B.minwind, B.maxwind, B.windmeasure, B.starting, B.till,B.activ FROM selected as B, "
-						+ "spot as A where A.spotid=B.spotid", null);
+				"SELECT B._id, A.name, A.keyword, B.minwind, B.maxwind, B.windmeasure, B.starting, B.till,B.activ FROM selected as B, "
+						+ "spot as A WHERE A.spotid=B.spotid", null);
+	}
+
+	@Override
+	public boolean isSpotActiv()
+	{
+		SQLiteDatabase db = null;
+		Cursor c = null;
+		try
+		{
+			db = getReadableDatabase();
+			c = db.rawQuery("SELECT * FROM selected WHERE activ=?", new String[]
+			{ "1" });
+			return c.moveToFirst();
+		}
+		finally
+		{
+			IOUtils.close(c);
+			IOUtils.close(db);
+		}
+	}
+
+	@Override
+	public Collection<SpotConfigurationVO> getActivSpots()
+	{
+		final List<SpotConfigurationVO> spots = new ArrayList<SpotConfigurationVO>();
+		SQLiteDatabase db = null;
+		Cursor c = null;
+		try
+		{
+			db = getReadableDatabase();
+
+			c = db.rawQuery(
+					"SELECT B._id, A.*, B.* FROM selected as B, spot as A WHERE A.spotid=B.spotid AND B.activ=?",
+					new String[]
+					{ "1" });
+			moveToFirstOrThrow(c);
+			do
+			{
+				try
+				{
+					final SpotConfigurationVO spot = createSpotConfigurationVO(c);
+					Log.d("DEBUG", "Spot from DB " + spot);
+					spots.add(spot);
+				}
+				catch (Exception e)
+				{
+					Log.e("DEBUG", "" + e.getMessage());
+				}
+			}
+			while (c.moveToNext());
+
+		}
+		finally
+		{
+			IOUtils.close(c);
+			IOUtils.close(db);
+		}
+		return spots;
 	}
 
 }

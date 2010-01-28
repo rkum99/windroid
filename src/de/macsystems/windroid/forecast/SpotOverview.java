@@ -55,7 +55,7 @@ public class SpotOverview extends ListActivity
 	{
 		super.onResume();
 		final ISelectedDAO dao = DAOFactory.getSelectedDAO(this);
-		final Cursor c = dao.getSpots();
+		final Cursor c = dao.getConfiguredSpots();
 		setupMapping(c);
 		//
 		getListView().setOnCreateContextMenuListener(new OnCreateContextMenuListener()
@@ -132,7 +132,7 @@ public class SpotOverview extends ListActivity
 	{
 		final ISelectedDAO dao = DAOFactory.getSelectedDAO(this);
 		dao.setActiv((selectedID), _state);
-		final Cursor c = dao.getSpots();
+		final Cursor c = dao.getConfiguredSpots();
 		setupMapping(c);
 		// Log.d(LOG_TAG, "Updating View");
 	}

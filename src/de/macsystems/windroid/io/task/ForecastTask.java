@@ -37,5 +37,4 @@ public class ForecastTask extends IOTask<Forecast, InputStream>
 		final StringBuilder builder = IOUtils.asString(_instream);
 		return ForecastParser.parse(builder);
 	}
-
 }

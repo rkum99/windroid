@@ -8,6 +8,7 @@ DROP TABLE IF EXISTS country;
 DROP TABLE IF EXISTS region;
 DROP TABLE IF EXISTS selected;
 DROP TABLE IF EXISTS schedule;
+DROP TABLE IF EXISTS repeat;
 
 
 CREATE TABLE IF NOT EXISTS internal (id TEXT PRIMARY KEY, value text);
@@ -31,25 +32,6 @@ CREATE INDEX IF NOT EXISTS selectedsid ON selected (spotid);
 --  schedule 
 CREATE TABLE IF NOT EXISTS schedule (_id INTEGER PRIMARY KEY AUTOINCREMENT, selectedid INTEGER, repeat String NOT NULL, long time, activ BOOLEAN);
 CREATE INDEX scheduleid ON schedule (selectedid); 
-
-
--- Preferences
-DROP TABLE IF EXISTS preferences;
-CREATE TABLE IF NOT EXISTS preferences (_id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT NOT NULL, value TEXT);
--- Insert Values into table so that update will work on preferences
-INSERT INTO preferences ('key','value') VALUES ('spot_winddirection_to','n/a');
-INSERT INTO preferences ('key','value') VALUES ('spot_station_keyword','alger-port');
-INSERT INTO preferences ('key','value') VALUES ('vibrate_on_alarm','false');
-INSERT INTO preferences ('key','value') VALUES ('spot_station_id','dz2');
-INSERT INTO preferences ('key','value') VALUES ('spot_station_has_statistic','true');
-INSERT INTO preferences ('key','value') VALUES ('launch_on_boot','true');
-INSERT INTO preferences ('key','value') VALUES ('spot_windspeed_max','63');
-INSERT INTO preferences ('key','value') VALUES ('warn_when_update_failed','false');
-INSERT INTO preferences ('key','value') VALUES ('spot_station_has_superforecast','true');
-INSERT INTO preferences ('key','value') VALUES ('music_on_alarm','false');
-INSERT INTO preferences ('key','value') VALUES ('spot_winddirection_from','n/a');
-INSERT INTO preferences ('key','value') VALUES ('spot_station_name','Alger-Port');
-INSERT INTO preferences ('key','value') VALUES ('preferred_continent','North America');
-INSERT INTO preferences ('key','value') VALUES ('spot_windspeed_min','0');
-INSERT INTO preferences ('key','value') VALUES ('update_while_roaming','false');
-INSERT INTO preferences ('key','value') VALUES ('spot_preferred_unit','kts');
+-- repeat
+CREATE TABLE IF NOT EXISTS repeat (_id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT NOT NULL, defaultvalue TEXT NOT  NULL);
+CREATE INDEX repeatkey ON repeat (key); 

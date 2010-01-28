@@ -7,5 +7,5 @@ package de.macsystems.windroid.identifyable;
  */
 public enum Repeat
 {
-	DAILY, MONDAY, TUESDAY, WENDSDAY, THURSDAY, FRIDAY;
+	DAILY, MONDAY, TUESDAY, WENDSDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY;
 }

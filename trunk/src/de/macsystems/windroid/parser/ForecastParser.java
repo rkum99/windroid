@@ -67,6 +67,7 @@ public final class ForecastParser
 		final String directionString = forecastDetailMap.getString(CLOUDS);
 		final int index = IdentityUtil.indexOf(directionString, Cavok.values());
 		final Cavok cavok = Cavok.values()[index];
+		Log.d(LOG_TAG, "Cavok :" + cavok.name());
 		builder.setClouds(cavok);
 	}
 
@@ -234,7 +235,7 @@ public final class ForecastParser
 			parseWindGustsMap(windGustsMap, builder);
 			final JSONObject windSpeedMap = forecastDetailMap.getJSONObject("wind_speed");
 			parseWindSpeedMap(windSpeedMap, builder);
-			parseWeather(forecastDetailMap, builder);
+//			parseWeather(forecastDetailMap, builder);
 			parseClouds(forecastDetailMap, builder);
 			final JSONObject airePressureMap = forecastDetailMap.getJSONObject("air_pressure");
 			parseAirPresure(airePressureMap, builder);

@@ -20,14 +20,17 @@ import de.macsystems.windroid.identifyable.WindUnit;
  */
 public class SpotOverviewViewBinder implements SimpleCursorAdapter.ViewBinder
 {
-
+	/**
+	 * Index is depending on SQL column order.
+	 */
 	private static final int INDEX_SPOT_NAME = 1;
-	private static final int INDEX_WIND_START = 2;
-	private static final int INDEX_WIND_END = 3;
-	private static final int INDEX_WINDUNIT_ID = 4;
-	private static final int INDEX_WIND_DIRECTION_START = 5;
-	private static final int INDEX_WIND_DIRECTION_END = 6;
-	private static final int INDEX_SPOT_ACTIV = 7;
+//	private static final int INDEX_KEYWORD = 2;
+	private static final int INDEX_WIND_START = 3;
+	private static final int INDEX_WIND_END = 4;
+	private static final int INDEX_WINDUNIT_ID = 5;
+	private static final int INDEX_WIND_DIRECTION_START = 6;
+	private static final int INDEX_WIND_DIRECTION_END = 7;
+	private static final int INDEX_SPOT_ACTIV = 8;
 
 	/**
 	 * Converts integer representing a boolean (0,1) of enabled or disabled icon

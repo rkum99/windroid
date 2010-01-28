@@ -32,7 +32,9 @@ public abstract class IOTask<V, I> implements Task<V, I>
 	private final static String LOG_TAG = IOTask.class.getSimpleName();
 
 	private final static HttpClient client = new DefaultHttpClient();
-
+	/**
+	 * HTTP User Agent
+	 */
 	public static final String MOZILLA_5_0 = "Mozilla/5.0";
 
 	private final URI uri;

@@ -9,6 +9,7 @@ DROP TABLE IF EXISTS country;
 DROP TABLE IF EXISTS region;
 DROP TABLE IF EXISTS selected;
 DROP TABLE IF EXISTS schedule;
+DROP TABLE IF EXISTS repeat;
 
 
 CREATE TABLE IF NOT EXISTS internal (id TEXT PRIMARY KEY, value text);
@@ -32,6 +33,9 @@ CREATE INDEX IF NOT EXISTS selectedsid ON selected (spotid);
 --  schedule 
 CREATE TABLE IF NOT EXISTS schedule (_id INTEGER PRIMARY KEY AUTOINCREMENT, selectedid INTEGER, repeat String NOT NULL, long time, activ BOOLEAN);
 CREATE INDEX scheduleid ON schedule (selectedid); 
+-- repeat
+CREATE TABLE IF NOT EXISTS repeat (_id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT NOT NULL, defaultvalue TEXT NOT  NULL);
+CREATE INDEX repeatkey ON repeat (key); 
 
 
 -- Preferences

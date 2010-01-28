@@ -1,5 +1,7 @@
 package de.macsystems.windroid.db;
 
+import java.util.Collection;
+
 import android.database.Cursor;
 import de.macsystems.windroid.SpotConfigurationVO;
 
@@ -74,6 +76,20 @@ public interface ISelectedDAO extends IDAO
 	 * 
 	 * @return
 	 */
-	public Cursor getSpots();
+	public Cursor getConfiguredSpots();
+
+	/**
+	 * Returns true when at least one spot is configured and activ.
+	 * 
+	 * @return
+	 */
+	public boolean isSpotActiv();
+
+	/**
+	 * Returns a Collection of Spots which are active.
+	 * 
+	 * @return
+	 */
+	public Collection<SpotConfigurationVO> getActivSpots();
 
 }

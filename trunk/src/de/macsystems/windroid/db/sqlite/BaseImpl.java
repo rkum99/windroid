@@ -236,7 +236,7 @@ public class BaseImpl implements IDAO
 		return _c.getFloat(index);
 	}
 
-	public final long getLong(final Cursor _c, final String _columnName) throws IllegalArgumentException
+	public static final long getLong(final Cursor _c, final String _columnName) throws IllegalArgumentException
 	{
 		final int index = _c.getColumnIndexOrThrow(_columnName);
 		return _c.getLong(index);
@@ -248,7 +248,7 @@ public class BaseImpl implements IDAO
 		return _c.getInt(index);
 	}
 
-	public final double getDouble(final Cursor _c, final String _columnName) throws IllegalArgumentException
+	public static final double getDouble(final Cursor _c, final String _columnName) throws IllegalArgumentException
 	{
 		final int index = _c.getColumnIndexOrThrow(_columnName);
 		return _c.getDouble(index);

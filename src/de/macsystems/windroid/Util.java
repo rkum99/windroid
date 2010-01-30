@@ -4,6 +4,8 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import android.app.Activity;
@@ -281,6 +283,47 @@ public final class Util
 			throw new IllegalArgumentException("ResultCode not valid. Must be RESULT or RESULT_CANCELED but was "
 					+ _resultCode);
 		}
+	}
+
+	/**
+	 * Returns amount of days to roll to get to next Weekday depending on given
+	 * time (mill).
+	 * 
+	 * @param _now
+	 * @param dayInWeek
+	 * @return
+	 */
+	public static int getDayToRoll(final long _now, final int dayInWeek)
+	{
+		if (dayInWeek < 0 || dayInWeek > 7)
+		{
+			throw new IllegalArgumentException("Days not in range");
+		}
+		final Calendar now = new GregorianCalendar();
+		now.setTimeInMillis(_now);
+		final int dayNow = (now.get(Calendar.DAY_OF_WEEK) - 1);
+		//
+		final Calendar future = Calendar.getInstance();
+		future.setTimeInMillis(_now);
+		future.set(Calendar.DAY_OF_WEEK, dayInWeek);
+
+		final int dayFuture = (future.get(Calendar.DAY_OF_WEEK) - 1);
+		final int daysToRoll;
+		if (dayNow < dayFuture)
+		{
+			daysToRoll = dayFuture - dayNow;
+		}
+		else if (dayNow > dayFuture)
+		{
+			daysToRoll = 7 - (dayNow - dayFuture);
+		}
+		else
+		{
+			daysToRoll = 0;
+		}
+
+		now.roll(Calendar.DAY_OF_YEAR, daysToRoll);
+		return daysToRoll;
 	}
 
 }

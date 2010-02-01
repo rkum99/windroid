@@ -1,6 +1,8 @@
 package de.macsystems.windroid.identifyable;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Scheduling Plan for a Station
@@ -11,7 +13,7 @@ import java.io.Serializable;
 public final class Schedule implements Serializable
 {
 	private static final long serialVersionUID = 1L;
-	private Repeat repeat;
+	private final List<Repeat> repeats = new ArrayList<Repeat>();
 	private long time;
 	private boolean activ;
 
@@ -28,31 +30,73 @@ public final class Schedule implements Serializable
 		{
 			throw new NullPointerException("repeat");
 		}
-		repeat = _repeat;
+		repeats.add(_repeat);
 		time = _time;
 		activ = _activ;
 	}
 
 	/**
+	 * @param time
+	 * @param activ
+	 */
+	public Schedule(final long time, final boolean activ)
+	{
+		super();
+		this.time = time;
+		this.activ = activ;
+	}
+
+	/**
 	 * @return the repeat
 	 */
-	public Repeat getRepeat()
+	public List<Repeat> getRepeat()
 	{
-		return repeat;
+		return new ArrayList<Repeat>(repeats);
 	}
 
 	/**
 	 * @param repeat
-	 *            the repeat to set
+	 *            the repeat to add
 	 * @throws NullPointerException
 	 */
-	public void setRepeat(final Repeat repeat) throws NullPointerException
+	public void addRepeat(final Repeat repeat) throws NullPointerException
 	{
 		if (repeat == null)
 		{
 			throw new NullPointerException("repeat");
 		}
-		this.repeat = repeat;
+		repeats.add(repeat);
+	}
+
+	/**
+	 * Removes repeat at index;
+	 * 
+	 * @param _index
+	 * @throws IndexOutOfBoundsException
+	 */
+	public void removeRepeat(final int _index) throws IndexOutOfBoundsException
+	{
+		repeats.remove(_index);
+	}
+
+	/**
+	 * Removes repeat with id.
+	 * 
+	 * @param _id
+	 * @return
+	 * @throws IndexOutOfBoundsException
+	 */
+	public boolean removeRepeat(final long _id) throws IndexOutOfBoundsException
+	{
+		for (int i = repeats.size() - 1; i > 0; i--)
+		{
+			if (repeats.get(i).getId() == _id)
+			{
+				repeats.remove(i);
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -89,15 +133,13 @@ public final class Schedule implements Serializable
 		this.activ = activ;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString()
 	{
-		return "Schedule [activ=" + activ + ", repeat=" + repeat + ", time=" + time + "]";
+		return "Schedule [activ=" + activ + ", repeats=" + repeats + ", time=" + time + "]";
 	}
 
 	/*
@@ -111,7 +153,7 @@ public final class Schedule implements Serializable
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (activ ? 1231 : 1237);
-		result = prime * result + ((repeat == null) ? 0 : repeat.hashCode());
+		result = prime * result + ((repeats == null) ? 0 : repeats.hashCode());
 		result = prime * result + (int) (time ^ (time >>> 32));
 		return result;
 	}
@@ -141,14 +183,14 @@ public final class Schedule implements Serializable
 		{
 			return false;
 		}
-		if (repeat == null)
+		if (repeats == null)
 		{
-			if (other.repeat != null)
+			if (other.repeats != null)
 			{
 				return false;
 			}
 		}
-		else if (!repeat.equals(other.repeat))
+		else if (!repeats.equals(other.repeats))
 		{
 			return false;
 		}

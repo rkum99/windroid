@@ -10,7 +10,7 @@ import java.util.TreeSet;
  * A Continent has country's and a display name id is DB id not primary key..
  * 
  * @author mac
- * @version $Id$
+ * @version $Id: Continent.java 172 2010-01-27 02:09:20Z jens.hohl $
  */
 public class Continent implements IdentifyAble, Node<Country>
 {
@@ -21,7 +21,7 @@ public class Continent implements IdentifyAble, Node<Country>
 
 	private final Set<Country> countrys;
 
-	public static class NewContinentComparator implements Comparator<Continent>, Serializable
+	public static class ContinentComparator implements Comparator<Continent>, Serializable
 	{
 		private static final long serialVersionUID = 1L;
 

@@ -17,7 +17,7 @@ public class World implements IdentifyAble, Node<Continent>
 
 	public World()
 	{
-		continents = new TreeSet<Continent>(new Continent.NewContinentComparator());
+		continents = new TreeSet<Continent>(new Continent.ContinentComparator());
 	}
 
 	/**

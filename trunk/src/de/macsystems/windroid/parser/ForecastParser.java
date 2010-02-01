@@ -36,7 +36,6 @@ public final class ForecastParser
 
 	private static final String WIND_DIRECTION = "wind_direction";
 	private static final String CLOUDS = "clouds";
-	private static final String WEATHER = "weather";
 	private static final String UNIT = "unit";
 	private static final String VALUE = "value";
 
@@ -69,15 +68,6 @@ public final class ForecastParser
 		final Cavok cavok = Cavok.values()[index];
 		Log.d(LOG_TAG, "Cavok :" + cavok.name());
 		builder.setClouds(cavok);
-	}
-
-	private static void parseWeather(final JSONObject forecastDetailMap, final Builder builder) throws JSONException
-	{
-		final String weatherString = forecastDetailMap.getString(WEATHER);
-		// final int index = IdentityUtil.indexOf(directionString,
-		// WindDirection.values());
-		// final WindDirection direction = WindDirection.values()[index];
-		// builder.setWinddirection(direction);
 	}
 
 	private static void parseWindSpeedMap(final JSONObject windSpeedMap, final Builder builder) throws JSONException
@@ -235,7 +225,7 @@ public final class ForecastParser
 			parseWindGustsMap(windGustsMap, builder);
 			final JSONObject windSpeedMap = forecastDetailMap.getJSONObject("wind_speed");
 			parseWindSpeedMap(windSpeedMap, builder);
-//			parseWeather(forecastDetailMap, builder);
+			// parseWeather(forecastDetailMap, builder);
 			parseClouds(forecastDetailMap, builder);
 			final JSONObject airePressureMap = forecastDetailMap.getJSONObject("air_pressure");
 			parseAirPresure(airePressureMap, builder);

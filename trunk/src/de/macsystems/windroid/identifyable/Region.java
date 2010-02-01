@@ -27,7 +27,7 @@ public class Region implements IdentifyAble, Node<Station>
 		@Override
 		public int compare(final Region object1, final Region object2)
 		{
-			return object1.getName().compareTo(object2.getName());
+			return object1.getId().compareTo(object2.getId());
 		}
 	}
 

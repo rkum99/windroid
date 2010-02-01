@@ -3,10 +3,8 @@ package de.macsystems.windroid;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,10 +12,7 @@ import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.util.Log;
-import de.macsystems.windroid.identifyable.IdentityUtil;
 import de.macsystems.windroid.identifyable.Continent;
-import de.macsystems.windroid.identifyable.Station;
-import de.macsystems.windroid.identifyable.WindDirection;
 import de.macsystems.windroid.identifyable.WindUnit;
 
 /**
@@ -27,23 +22,6 @@ import de.macsystems.windroid.identifyable.WindUnit;
  */
 public final class Util
 {
-
-	public static final String SPOT_STATION_HAS_STATISTIC = "spot_station_has_statistic";
-	public static final String SPOT_STATION_HAS_SUPERFORECAST = "spot_station_has_superforecast";
-
-	public static final String SPOT_STATION_HAS_FORECAST = "spot_station_has_forecast";
-	public static final String SPOT_STATION_HAS_WAVERFORECAST = "spot_station_has_waveforecast";
-	public static final String SPOT_STATION_HAS_WAVEREPORT = "spot_station_has_wavereport";
-	public static final String SPOT_STATION_HAS_REPORT = "spot_station_has_report";
-
-	public static final String SPOT_PREFERRED_WIND_UNIT = "spot_preferred_unit";
-	public static final String SPOT_WINDDIRECTION_TO_ID = "spot_winddirection_to";
-	public static final String SPOT_WINDDIRECTION_FROM_ID = "spot_winddirection_from";
-	public static final String SPOT_STATION_KEYWORD = "spot_station_keyword";
-	public static final String SPOT_STATION_NAME = "spot_station_name";
-	public static final String SPOT_STATION_ID = "spot_station_id";
-	public static final String SPOT_WINDSPEED_MIN = "spot_windspeed_min";
-	public static final String SPOT_WINDSPEED_MAX = "spot_windspeed_max";
 
 	/**
 	 * {@value #DEFAULT_WIND_UNIT}
@@ -153,88 +131,6 @@ public final class Util
 	}
 
 	/**
-	 * A Configured Spot has a id, name, keyword and preferred unit.
-	 * 
-	 * @param _context
-	 * @return
-	 */
-	public static final boolean isSpotConfigured(final Context _context)
-	{
-		final SharedPreferences prefs = getSharedPreferences(_context);
-		//
-		final String stationID = prefs.getString(SPOT_STATION_ID, null);
-		final String stationName = prefs.getString(SPOT_STATION_NAME, null);
-		final String spotKeyword = prefs.getString(SPOT_STATION_KEYWORD, null);
-		final String preferredUnit = prefs.getString(SPOT_PREFERRED_WIND_UNIT, null);
-
-		// Actual we don't care about wind directions,statistics or
-		// superforecast
-
-		return stationID != null && stationName != null && spotKeyword != null && preferredUnit != null;
-	}
-
-	/**
-	 * 
-	 * @param _context
-	 * @return
-	 * @throws IllegalArgumentException
-	 *             if no spot configured
-	 * @see #isSpotConfigured(Context)
-	 */
-	public final static List<SpotConfigurationVO> getSpotConfiguration(final Context _context)
-			throws IllegalArgumentException
-	{
-		if (!isSpotConfigured(_context))
-		{
-			throw new IllegalArgumentException("No Spot Configured.");
-		}
-
-		final SharedPreferences prefs = getSharedPreferences(_context);
-		//
-		final SpotConfigurationVO spotConfiguration = new SpotConfigurationVO();
-		//
-		final String stationID = prefs.getString(SPOT_STATION_ID, null);
-		final String stationName = prefs.getString(SPOT_STATION_NAME, null);
-		final String spotKeyword = prefs.getString(SPOT_STATION_KEYWORD, null);
-		final String preferredUnit = prefs.getString(SPOT_PREFERRED_WIND_UNIT, null);
-
-		final boolean hasSuperForecast = prefs.getBoolean(SPOT_STATION_HAS_SUPERFORECAST, false);
-		final boolean hasStatistic = prefs.getBoolean(SPOT_STATION_HAS_STATISTIC, false);
-
-		final String winddirectionFrom = prefs.getString(SPOT_WINDDIRECTION_FROM_ID, null);
-		final String winddirectionTo = prefs.getString(SPOT_WINDDIRECTION_TO_ID, null);
-
-		final boolean hasReport = prefs.getBoolean(SPOT_STATION_HAS_REPORT, false);
-		final boolean hasForecast = prefs.getBoolean(SPOT_STATION_HAS_FORECAST, false);
-		final boolean hasWavereport = prefs.getBoolean(SPOT_STATION_HAS_WAVEREPORT, false);
-		final boolean hasWaveforecast = prefs.getBoolean(SPOT_STATION_HAS_WAVERFORECAST, false);
-		//
-		// Some parameter not readed yet so we put default values
-		//
-		final Station station = new Station(stationName, stationID, spotKeyword, hasForecast, hasSuperForecast,
-				hasStatistic, hasReport, hasWavereport, hasWaveforecast);
-		spotConfiguration.setStation(station);
-		//
-		final int indexPreferredWindUnit = IdentityUtil.indexOf(preferredUnit, WindUnit.values());
-		final WindUnit preferredWindUnit = WindUnit.values()[indexPreferredWindUnit];
-		spotConfiguration.setPreferredWindUnit(preferredWindUnit);
-		//
-		final int indexFromWindID = IdentityUtil.indexOf(winddirectionFrom, WindDirection.values());
-		final int indexToWindID = IdentityUtil.indexOf(winddirectionTo, WindDirection.values());
-
-		final WindDirection fromWindDirection = WindDirection.values()[indexFromWindID];
-		final WindDirection toWindDirection = WindDirection.values()[indexToWindID];
-
-		spotConfiguration.setFromDirection(fromWindDirection);
-		spotConfiguration.setToDirection(toWindDirection);
-		//
-		final List<SpotConfigurationVO> configurations = new ArrayList<SpotConfigurationVO>();
-		configurations.add(spotConfiguration);
-		return configurations;
-
-	}
-
-	/**
 	 * 
 	 * @param aThrowable
 	 * @return
@@ -292,6 +188,7 @@ public final class Util
 	 * @param _now
 	 * @param dayInWeek
 	 * @return
+	 * @see {@link Calendar.DAY_OF_YEAR}
 	 */
 	public static int getDayToRoll(final long _now, final int dayInWeek)
 	{
@@ -324,6 +221,18 @@ public final class Util
 
 		now.roll(Calendar.DAY_OF_YEAR, daysToRoll);
 		return daysToRoll;
+	}
+
+	/**
+	 * Checks if day of week is valid.
+	 * 
+	 * @param _day
+	 * @return
+	 * @see Calendar
+	 */
+	public static boolean isValidDayOfWeek(final int _day)
+	{
+		return (_day < Calendar.SUNDAY || _day > Calendar.SATURDAY) ? true : false;
 	}
 
 }

@@ -167,7 +167,7 @@ public class SpotConfiguration extends ChainSubActivity
 				stationInfo.setWindspeedMax(currentMaximum);
 				stationInfo.setPreferredWindUnit(SpotConfiguration.this.currentSelectUnit);
 
-				final Intent intent = new Intent(SpotConfiguration.this, SpotSummary.class);
+				final Intent intent = new Intent(SpotConfiguration.this, ScheduleActivity.class);
 				intent.putExtra(IntentConstants.SPOT_TO_CONFIGURE, stationInfo);
 
 				startActivityForResult(intent, Main.CONFIGURATION_REQUEST_CODE);

@@ -91,5 +91,8 @@ public interface ISelectedDAO extends IDAO
 	 * @return
 	 */
 	public Collection<SpotConfigurationVO> getActivSpots();
+	
+	
+
 
 }

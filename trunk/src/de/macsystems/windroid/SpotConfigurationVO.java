@@ -36,10 +36,29 @@ public final class SpotConfigurationVO implements Serializable
 
 	private boolean isActiv = true;
 
+	private long primaryKey = -1;
+
 	/**
 	 * Preferred Windunit of User.
 	 */
 	private WindUnit preferredWindUnit = WindUnit.KNOTS;
+
+	/**
+	 * @return the primaryKey
+	 */
+	public long getPrimaryKey()
+	{
+		return primaryKey;
+	}
+
+	/**
+	 * @param primaryKey
+	 *            the primaryKey to set
+	 */
+	public void setPrimaryKey(long primaryKey)
+	{
+		this.primaryKey = primaryKey;
+	}
 
 	/**
 	 * @return the station

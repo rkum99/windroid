@@ -12,7 +12,6 @@ import de.macsystems.windroid.SpotConfigurationVO;
 import de.macsystems.windroid.Util;
 import de.macsystems.windroid.db.ISelectedDAO;
 import de.macsystems.windroid.db.ISpotDAO;
-import de.macsystems.windroid.identifyable.Repeat;
 import de.macsystems.windroid.identifyable.Schedule;
 import de.macsystems.windroid.identifyable.Station;
 import de.macsystems.windroid.identifyable.WindDirection;
@@ -154,7 +153,7 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 
 			Log.d("SelectedImpl", "Searched SpotID is :" + tempID);
 
-			c = db.rawQuery("SELECT B.name, B.spotid ,B.keyword, B.report ,B.superforecast,  "
+			c = db.rawQuery("SELECT A._id, B.name, B.spotid, B.keyword, B.report, B.superforecast,  "
 					+ "B.forecast, B.statistic, B.wavereport, B.waveforecast, A.activ, "
 					+ "A.usedirection, A.starting, A.till, A.windmeasure, A.minwind, A.maxwind "
 					+ "FROM selected AS A, spot AS B WHERE A._id=? AND B.spotid=?", new String[]
@@ -185,6 +184,7 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 		Util.printCursorColumnNames(c);
 
 		SpotConfigurationVO spotVO;
+		final long _id = getLong(c, COLUMN_ID);
 		final boolean activ = getBoolean(c, COLUMN_ACTIV);
 		final String keyword = getString(c, ISpotDAO.COLUMN_KEYWORD);
 		final String spotID = getString(c, COLUMN_SPOTID);
@@ -205,6 +205,7 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 		final float maxWind = getFloat(c, COLUMN_MAXWIND);
 
 		spotVO = new SpotConfigurationVO();
+		spotVO.setPrimaryKey(_id);
 		spotVO.setActiv(activ);
 		spotVO.setUseWindirection(useDirection);
 		spotVO.setPreferredWindUnit(WindUnit.getById(windmeasure));
@@ -215,7 +216,7 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 		/**
 		 * TODO : Repeat is fix
 		 */
-		final Schedule schedule = new Schedule(Repeat.DAILY, 1000 * 15, true);
+		final Schedule schedule = new Schedule(12L * 60L * 60L * 1000L, true);
 
 		final Station station = new Station(name, spotID, keyword, forecast, superforecast, statistic, report,
 				wavereport, waveforecast);

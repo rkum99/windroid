@@ -6,8 +6,8 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import android.util.Log;
 import de.macsystems.windroid.WindUtils;
-import de.macsystems.windroid.identifyable.Country;
 import de.macsystems.windroid.identifyable.Continent;
+import de.macsystems.windroid.identifyable.Country;
 import de.macsystems.windroid.identifyable.Region;
 import de.macsystems.windroid.identifyable.Station;
 import de.macsystems.windroid.identifyable.World;

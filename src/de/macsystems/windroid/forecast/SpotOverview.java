@@ -66,14 +66,14 @@ public class SpotOverview extends ListActivity
 
 				Log.d(LOG_TAG, "ContextMenu ID :" + ((AdapterContextMenuInfo) menuInfo).id);
 				Log.d(LOG_TAG, "ContextMenu position :" + ((AdapterContextMenuInfo) menuInfo).position);
-
-				// final long selectedItemID = getSelectedItemId();
-
+				/**
+				 * Cache id as when context menu shows up the focus is lost and
+				 * the i returned is invalid.
+				 */
 				selectedID = ((AdapterContextMenuInfo) menuInfo).id;
 
 				Log.d(LOG_TAG, "Selected item for Context :" + ((AdapterContextMenuInfo) menuInfo).id);
 
-				// dao.getSp7otConfiguration(selectedID).getStation().ha
 				final boolean isActiv = dao.isActiv(selectedID);
 				menu.add(0, EDIT_ITEM_ID, 0, R.string.spot_overview_spot_edit);
 				if (isActiv)

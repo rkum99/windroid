@@ -30,7 +30,7 @@ public class Country implements IdentifyAble, Node<Region>
 		@Override
 		public int compare(final Country object1, final Country object2)
 		{
-			return object1.getName().compareTo(object2.getName());
+			return object1.getId().compareTo(object2.getId());
 		}
 	}
 

@@ -36,6 +36,7 @@ public class BootCompletedBroadcastReceiver extends BroadcastReceiver
 		{
 			Log.i(LOG_TAG, "Boot completed.");
 
+			// TODO Use DB!
 			final SharedPreferences preferences = Util.getSharedPreferences(_context);
 			final boolean isLaunchOnBoot = Util.isLaunchOnBoot(preferences);
 			Log.i(LOG_TAG, "Start SpotService on boot :" + isLaunchOnBoot);

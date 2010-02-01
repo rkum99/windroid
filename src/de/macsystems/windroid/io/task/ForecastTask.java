@@ -9,6 +9,7 @@ import de.macsystems.windroid.forecast.Forecast;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.parser.ForecastParser;
 import de.macsystems.windroid.progress.IProgress;
+import de.macsystems.windroid.progress.NullProgressAdapter;
 
 /**
  * Parses the JSON Forecast for a station
@@ -18,6 +19,17 @@ import de.macsystems.windroid.progress.IProgress;
  */
 public class ForecastTask extends IOTask<Forecast, InputStream>
 {
+
+	/**
+	 * 
+	 * @param _uri
+	 *            the json url
+	 * @throws NullPointerException
+	 */
+	public ForecastTask(final URI _uri) throws NullPointerException
+	{
+		super(_uri, NullProgressAdapter.INSTANCE);
+	}
 
 	/**
 	 * 

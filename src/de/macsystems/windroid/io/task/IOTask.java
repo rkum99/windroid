@@ -53,11 +53,11 @@ public abstract class IOTask<V, I> implements Task<V, I>
 	{
 		if (_uri == null)
 		{
-			throw new NullPointerException();
+			throw new NullPointerException("uri");
 		}
 		if (_progress == null)
 		{
-			throw new NullPointerException();
+			throw new NullPointerException("progress");
 		}
 		uri = _uri;
 		progress = _progress;

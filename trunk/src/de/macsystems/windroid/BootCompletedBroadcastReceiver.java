@@ -43,7 +43,7 @@ public class BootCompletedBroadcastReceiver extends BroadcastReceiver
 			if (isLaunchOnBoot)
 			{
 				final Intent startServiceIntent = new Intent();
-				startServiceIntent.setAction(SpotService.DE_MACSYSTEMS_WINDROID_START_SPOT_SERVICE_ACTION);
+				startServiceIntent.setAction(IntentConstants.DE_MACSYSTEMS_WINDROID_START_SPOT_SERVICE_ACTION);
 				final ComponentName name = _context.startService(startServiceIntent);
 				if (name == null)
 				{

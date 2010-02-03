@@ -117,7 +117,7 @@ public class Region implements IdentifyAble, Node<Station>
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object obj)
+	public boolean equals(final Object obj)
 	{
 		if (this == obj)
 		{
@@ -131,7 +131,7 @@ public class Region implements IdentifyAble, Node<Station>
 		{
 			return false;
 		}
-		Region other = (Region) obj;
+		final Region other = (Region) obj;
 		if (id == null)
 		{
 			if (other.id != null)

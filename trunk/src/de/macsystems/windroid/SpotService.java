@@ -1,21 +1,30 @@
 package de.macsystems.windroid;
 
+import java.io.IOException;
+import java.net.URI;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
 import de.macsystems.windroid.db.DAOFactory;
 import de.macsystems.windroid.db.ISelectedDAO;
+import de.macsystems.windroid.forecast.Forecast;
+import de.macsystems.windroid.forecast.ForecastDetail;
+import de.macsystems.windroid.identifyable.WindSpeed;
+import de.macsystems.windroid.io.RetryLaterException;
+import de.macsystems.windroid.io.task.ForecastTask;
 
 /**
  * @author Jens Hohl
@@ -27,104 +36,42 @@ public class SpotService extends Service
 
 	private final static String LOG_TAG = SpotService.class.getSimpleName();
 	/**
-	 * Name of Action which will start this Service
+	 * The Threadpool used to schedule all kind of tasks.
 	 */
-	public static final String DE_MACSYSTEMS_WINDROID_START_SPOT_SERVICE_ACTION = "de.macsystems.windroid.START_SPOT_SERVICE_ACTION";
+	private ScheduledThreadPoolExecutor threadPool;
 	/**
-	 * Name of Intent Action which will be broadcasted on Spot update (use a
-	 * IntentFilter).
+	 * Thread save integer which can be used to count alarm id.
 	 */
-	public static final String DE_MACSYSTEMS_WINDROID_SPOT_UPDATE_ACTION = "de.macsystems.windroid.SPOT_UPDATE_ACTION";
-
-	private static final int POOLSIZE = 2;
-
-	private ScheduledExecutorService threadPool;
-
-	/**
-	 * Holds state of Service
-	 */
-	private final AtomicBoolean isServiceRunning = new AtomicBoolean(false);
-
-
-
-
-
-	/**
-	 * Task which checks for Updates on configured Spots.
-	 */
-	private final Runnable enqueConfiguredSpotsTask = new Runnable()
-	{
-		@Override
-		public void run()
-		{
-			Log.d(LOG_TAG, "Entering enqueConfiguredSpotsTask.....................");
-			if (!isServiceRunning())
-			{
-				Log.i(LOG_TAG, "Service stopped, nothing to do.");
-				return;
-			}
-
-			final ISelectedDAO dao = DAOFactory.getSelectedDAO(SpotService.this);
-
-			if (!dao.isSpotActiv())
-			{
-				Log.i(LOG_TAG, "No Activ Spot Configured.");
-				return;
-			}
-			// A Spot is Configured, show Update Icon
-			final Collection<SpotConfigurationVO> spots = dao.getActivSpots();// Util.getSpotConfiguration(SpotService.this);
-			Log.i(LOG_TAG, "Found " + spots.size() + " Spots to update.");
-
-			final Iterator<SpotConfigurationVO> iter = spots.iterator();
-			while (iter.hasNext())
-			{
-				final SpotConfigurationVO spot = iter.next();
-				Log.d(LOG_TAG, "Primary Key is: " + spot.getPrimaryKey());
-				createAlarm(spot.getPrimaryKey());
-			}
-
-		}
-	};
-
-	/**
-	 * @return the isServiceRunning
-	 */
-	private boolean isServiceRunning()
-	{
-		return isServiceRunning.get();
-	}
-
-	/**
-	 * @param _isServiceRunning
-	 *            the isServiceRunning to set
-	 */
-	private void setServiceRunning(final boolean _isServiceRunning)
-	{
-		isServiceRunning.set(_isServiceRunning);
-	}
+	private final AtomicInteger notificationCounter = new AtomicInteger(1);
 
 	private final ISpotService serviceBinder = new ISpotService.Stub()
 	{
-
 		@Override
-		public boolean isRunning() throws RemoteException
+		public void initAlarms() throws RemoteException
 		{
-			Log.d(LOG_TAG, "ISpotService#isRunning called");
-			return isServiceRunning.get();
+			Log.d(LOG_TAG, "ISpotService#initAlarms called");
+			threadPool.schedule(createAlarmsOnAllSpots(), 100L, TimeUnit.MILLISECONDS);
 		}
 
 		@Override
-		public void start() throws RemoteException
+		public void updateAll() throws RemoteException
 		{
-			setServiceRunning(true);
-			Log.d(LOG_TAG, "ISpotService#start called");
+			Log.d(LOG_TAG, "ISpotService#updateAll called");
+			threadPool.schedule(createUpdateAllSpotsTask(), 100L, TimeUnit.MILLISECONDS);
 		}
 
 		@Override
 		public void stop() throws RemoteException
 		{
-			setServiceRunning(false);
 			Log.d(LOG_TAG, "ISpotService#stop called");
+		}
+
+		@Override
+		public void update(final long _id)
+		{
+			Log.d(LOG_TAG, "ISpotService#update(long) called");
+			final Runnable run = createUpdateSpotTask(_id);
+			threadPool.schedule(run, 100L, TimeUnit.MILLISECONDS);
 		}
 	};
 
@@ -148,8 +95,8 @@ public class SpotService extends Service
 	public void onCreate()
 	{
 		super.onCreate();
-		Log.i(LOG_TAG, "Service created");
 		createThreadPool();
+		Log.i(LOG_TAG, "Service created");
 	}
 
 	/*
@@ -161,28 +108,12 @@ public class SpotService extends Service
 	public void onStart(final Intent intent, final int startId)
 	{
 		super.onStart(intent, startId);
-		Log.i(LOG_TAG, "Service started");
 		createThreadPool();
+
+		Log.i(LOG_TAG, "Service started");
 	}
 
-	/**
-	 * Checks if ThreadPool already instantiated, when not it creates it
-	 */
-	private synchronized void createThreadPool()
-	{
-
-		final long initialDelay = 5L;
-		final long updateDelay = 15L;
-
-		if (threadPool == null)
-		{
-			threadPool = Executors.newScheduledThreadPool(POOLSIZE);
-			threadPool.scheduleAtFixedRate(enqueConfiguredSpotsTask, initialDelay, updateDelay, TimeUnit.SECONDS);
-			Log.d(LOG_TAG, "Thread Pool Created.");
-		}
-	}
-
-	public void createAlarm(final long _id)
+	private void createAlarm(final long _id)
 	{
 
 		final long now = System.currentTimeMillis();
@@ -191,8 +122,7 @@ public class SpotService extends Service
 		intent.putExtra(AlarmBroadcastReciever.SELECTED_PRIMARY_KEY, _id);
 		final PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 400, intent, 0);
 		final AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-		alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (5 * 1000),
-				(AlarmManager.INTERVAL_DAY), pendingIntent);
+		alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, now + (5 * 1000), AlarmManager.INTERVAL_DAY, pendingIntent);
 		//
 		// final NotificationManager notificationManager = (NotificationManager)
 		// getSystemService(Context.NOTIFICATION_SERVICE);
@@ -215,4 +145,186 @@ public class SpotService extends Service
 
 	}
 
+	private int showStatus(final Context context, final NotificationManager notificationManager,
+			final String notificationTitle, final String notificationDetails)
+	{
+
+		final int notificationID = notificationCounter.getAndIncrement();
+
+		final long when = System.currentTimeMillis(); // notification time
+		final Intent notificationIntent = new Intent(context, OngoingUpdate.class);
+		final PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+
+		final Notification notification = new Notification(R.drawable.icon_update, notificationTitle, when);
+		notification.flags |= Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
+		notification.setLatestEventInfo(context, notificationTitle, notificationDetails, contentIntent);
+
+		notificationManager.notify(notificationID, notification);
+		return notificationID;
+	}
+
+	protected Runnable createAlarmsOnAllSpots()
+	{
+		final Runnable task = new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				final ISelectedDAO dao = DAOFactory.getSelectedDAO(SpotService.this);
+
+				if (!dao.isSpotActiv())
+				{
+					Log.i(LOG_TAG, "No Activ Spot Configured.");
+					return;
+				}
+				final Collection<SpotConfigurationVO> spots = dao.getActivSpots();// Util.getSpotConfiguration(SpotService.this);
+				Log.i(LOG_TAG, "Found " + spots.size() + " Spots to Alarm.");
+
+				final Iterator<SpotConfigurationVO> iter = spots.iterator();
+				while (iter.hasNext())
+				{
+					final SpotConfigurationVO spot = iter.next();
+					Log.d(LOG_TAG, "Primary Key is: " + spot.getPrimaryKey());
+					createAlarm(spot.getPrimaryKey());
+				}
+			}
+		};
+		return task;
+	}
+
+	/**
+	 * Creates an task which checks for updates on all active configured Spots.
+	 * 
+	 * @returns {@link Runnable}
+	 */
+	private Runnable createUpdateAllSpotsTask()
+	{
+		final Runnable task = new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				final int alarmID = SpotService.this.showStatus(SpotService.this,
+						(NotificationManager) SpotService.this.getSystemService(Context.NOTIFICATION_SERVICE),
+						getString(R.string.ongoing_update_title), getString(R.string.ongoing_update_text));
+
+				try
+				{
+					final ISelectedDAO dao = DAOFactory.getSelectedDAO(SpotService.this);
+
+					if (!dao.isSpotActiv())
+					{
+						Log.i(LOG_TAG, "No Activ Spot Configured.");
+						return;
+					}
+					final Collection<SpotConfigurationVO> spots = dao.getActivSpots();// Util.getSpotConfiguration(SpotService.this);
+					Log.i(LOG_TAG, "Found " + spots.size() + " Spots to update.");
+
+					final Iterator<SpotConfigurationVO> iter = spots.iterator();
+					while (iter.hasNext())
+					{
+						final SpotConfigurationVO spot = iter.next();
+						Log.d(LOG_TAG, "Primary Key is: " + spot.getPrimaryKey());
+						createAlarm(spot.getPrimaryKey());
+					}
+
+				}
+				finally
+				{
+					removeUpdateOnStatusBar((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE),
+							alarmID);
+				}
+
+			}
+		};
+		return task;
+	}
+
+	/**
+	 * Creates an task which performs update of spot with by given primary key
+	 * without starting it.
+	 * 
+	 * @param _primaryKey
+	 * @return Task to run
+	 */
+	private Runnable createUpdateSpotTask(final long _primaryKey)
+	{
+		final Runnable run = new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				final ISelectedDAO dao = DAOFactory.getSelectedDAO(SpotService.this);
+				final int alarmID = SpotService.this.showStatus(SpotService.this,
+						(NotificationManager) SpotService.this.getSystemService(Context.NOTIFICATION_SERVICE),
+						getString(R.string.ongoing_update_title), getString(R.string.ongoing_update_text));
+
+				final SpotConfigurationVO vo = dao.getSpotConfiguration(_primaryKey);
+
+				Log.d(LOG_TAG, "Alarm for :" + vo.getStation().getName());
+
+				if (!vo.isActiv())
+				{
+					// TODO: What to do if Spot is inactive ? Cancel pending
+					// Alarms
+					// ?
+					return;
+				}
+
+				try
+				{
+					final URI uri = WindUtils.getJSONForcastURL(vo.getStation().getId()).toURI();
+					final ForecastTask task = new ForecastTask(uri);
+					final Forecast forecast = task.execute(SpotService.this);
+					final Iterator<ForecastDetail> iter = forecast.iterator();
+					while (iter.hasNext())
+					{
+						final ForecastDetail detail = iter.next();
+						final WindSpeed windspeed = detail.getWindSpeed();
+						Log.i(LOG_TAG, windspeed.getValue() + " " + windspeed.getUnit());
+					}
+				}
+				catch (final IOException e)
+				{
+					Log.d(LOG_TAG, "", e);
+				}
+				catch (final RetryLaterException e)
+				{
+					Log.d(LOG_TAG, "", e);
+				}
+				catch (final Exception e)
+				{
+					Log.e(LOG_TAG, "", e);
+				}
+
+				removeUpdateOnStatusBar((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE), alarmID);
+
+			}
+		};
+		return run;
+	}
+
+	/**
+	 * 
+	 * @param _notificationManager
+	 * @param _intentID
+	 */
+	private static void removeUpdateOnStatusBar(final NotificationManager _notificationManager,
+			final int _cancelIntentID)
+	{
+		_notificationManager.cancel(_cancelIntentID);
+	}
+
+	/**
+	 * Checks if ThreadPool already instantiated, when not it creates it
+	 */
+	private synchronized void createThreadPool()
+	{
+		if (threadPool == null)
+		{
+			final int poolSize = getResources().getInteger(R.array.schedule_threadpool_size);
+			threadPool = new ScheduledThreadPoolExecutor(poolSize);
+			Log.d(LOG_TAG, "Thread Pool Created with size :" + poolSize);
+		}
+	}
 }

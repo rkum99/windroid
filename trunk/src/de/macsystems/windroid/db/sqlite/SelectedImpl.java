@@ -9,7 +9,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import de.macsystems.windroid.SpotConfigurationVO;
-import de.macsystems.windroid.Util;
 import de.macsystems.windroid.db.ISelectedDAO;
 import de.macsystems.windroid.db.ISpotDAO;
 import de.macsystems.windroid.identifyable.Schedule;
@@ -176,12 +175,10 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 	 * @throws IllegalArgumentException
 	 * @throws NullPointerException
 	 */
-	private static SpotConfigurationVO createSpotConfigurationVO(Cursor c)
+	private static SpotConfigurationVO createSpotConfigurationVO(final Cursor c)
 			throws IllegalArgumentException,
 			NullPointerException
 	{
-
-		Util.printCursorColumnNames(c);
 
 		SpotConfigurationVO spotVO;
 		final long _id = getLong(c, COLUMN_ID);
@@ -216,7 +213,7 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 		/**
 		 * TODO : Repeat is fix
 		 */
-		final Schedule schedule = new Schedule(12L * 60L * 60L * 1000L, true);
+		final Schedule schedule = new Schedule();
 
 		final Station station = new Station(name, spotID, keyword, forecast, superforecast, statistic, report,
 				wavereport, waveforecast);
@@ -314,7 +311,7 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 					Log.d("DEBUG", "Spot from DB " + spot);
 					spots.add(spot);
 				}
-				catch (Exception e)
+				catch (final Exception e)
 				{
 					Log.e("DEBUG", "" + e.getMessage());
 				}

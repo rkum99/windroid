@@ -129,7 +129,7 @@ public class Continent implements IdentifyAble, Node<Country>
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object obj)
+	public boolean equals(final Object obj)
 	{
 		if (this == obj)
 		{
@@ -143,7 +143,7 @@ public class Continent implements IdentifyAble, Node<Country>
 		{
 			return false;
 		}
-		Continent other = (Continent) obj;
+		final Continent other = (Continent) obj;
 		if (countrys == null)
 		{
 			if (other.countrys != null)

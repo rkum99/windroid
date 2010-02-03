@@ -11,6 +11,7 @@ import de.macsystems.windroid.db.ISpotDAO;
 import de.macsystems.windroid.identifyable.Continent;
 import de.macsystems.windroid.identifyable.Country;
 import de.macsystems.windroid.identifyable.Region;
+import de.macsystems.windroid.identifyable.Schedule;
 import de.macsystems.windroid.identifyable.Station;
 import de.macsystems.windroid.identifyable.World;
 import de.macsystems.windroid.io.IOUtils;
@@ -276,6 +277,8 @@ public class SpotImpl extends BaseImpl implements ISpotDAO
 			final Station station = new Station(name, spotid, keyword, hasReport, hasForecast, hasSuperforecast,
 					hasStatistic, hasWavereport, hasWaveforecast);
 			vo.setStation(station);
+
+			vo.setSchedule(new Schedule());
 		}
 		finally
 		{

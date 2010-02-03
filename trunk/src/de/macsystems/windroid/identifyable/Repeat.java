@@ -28,32 +28,30 @@ public final class Repeat implements Serializable
 	 * is active ?
 	 */
 	private boolean activ = false;
-	/**
-	 * primary key
-	 */
-	private final long id;
-	/**
-	 * Primary key of selected
-	 */
-	private long selectedId;
+
+	// /**
+	// * primary key
+	// */
+	// private final long id;
+	// /**
+	// * Primary key of selected
+	// */
+	// private long selectedId;
 
 	/**
 	 * @param id
 	 */
-	public Repeat(final long _id)
+	public Repeat()
 	{
 		super();
-		id = _id;
 	}
 
 	/**
 	 * @param _dayOfWeek
 	 * @param _dayTime
 	 * @param _activ
-	 * @param _id
-	 * @param _selectedId
 	 */
-	public Repeat(final int _dayOfWeek, final long _dayTime, final boolean _activ, final long _id, final long _selectedId)
+	public Repeat(final int _dayOfWeek, final long _dayTime, final boolean _activ)
 	{
 		super();
 		if (!Util.isValidDayOfWeek(_dayOfWeek))
@@ -63,8 +61,6 @@ public final class Repeat implements Serializable
 		dayOfWeek = _dayOfWeek;
 		dayTime = _dayTime;
 		activ = _activ;
-		id = _id;
-		selectedId = _selectedId;
 	}
 
 	/**
@@ -118,39 +114,15 @@ public final class Repeat implements Serializable
 		this.activ = _activ;
 	}
 
-	/**
-	 * @return the selectedid
-	 */
-	public long getSelectedId()
-	{
-		return selectedId;
-	}
-
-	/**
-	 * @param _selectedId
-	 *            the selectedid to set
-	 */
-	public void setSelectedId(final long _selectedId)
-	{
-		this.selectedId = _selectedId;
-	}
-
-	/**
-	 * @return the _id
-	 */
-	public long getId()
-	{
-		return id;
-	}
-
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString()
 	{
-		return "Repeat [activ=" + activ + ", dayOfWeek=" + dayOfWeek + ", dayTime=" + dayTime + ", id=" + id
-				+ ", selectedId=" + selectedId + "]";
+		return "Repeat [activ=" + activ + ", dayOfWeek=" + dayOfWeek + ", dayTime=" + dayTime + "]";
 	}
 
 }

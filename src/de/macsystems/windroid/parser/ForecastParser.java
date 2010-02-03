@@ -66,13 +66,13 @@ public final class ForecastParser
 		final String directionString = forecastDetailMap.getString(CLOUDS);
 		final int index = IdentityUtil.indexOf(directionString, Cavok.values());
 		final Cavok cavok = Cavok.values()[index];
-		Log.d(LOG_TAG, "Cavok :" + cavok.name());
+		// Log.d(LOG_TAG, "Cavok :" + cavok.name());
 		builder.setClouds(cavok);
 	}
 
 	private static void parseWindSpeedMap(final JSONObject windSpeedMap, final Builder builder) throws JSONException
 	{
-		Log.d(LOG_TAG, "windSpeedMap :" + windSpeedMap.toString());
+		// Log.d(LOG_TAG, "windSpeedMap :" + windSpeedMap.toString());
 		final float value = getFloat(windSpeedMap, VALUE);
 		final String unit = windSpeedMap.getString(UNIT);
 
@@ -82,7 +82,7 @@ public final class ForecastParser
 
 	private static void parseWindGustsMap(final JSONObject windGustsMap, final Builder builder) throws JSONException
 	{
-		Log.d(LOG_TAG, "windGustsMap :" + windGustsMap.toString());
+		// Log.d(LOG_TAG, "windGustsMap :" + windGustsMap.toString());
 		final float value = getFloat(windGustsMap, VALUE);
 		final String unit = windGustsMap.getString(UNIT);
 
@@ -113,7 +113,8 @@ public final class ForecastParser
 	private static void parseWaterTemperatureMap(final JSONObject waterTemperatureMap, final Builder builder)
 			throws JSONException
 	{
-		Log.d(LOG_TAG, "waterTemperatureMap :" + waterTemperatureMap.toString());
+		// Log.d(LOG_TAG, "waterTemperatureMap :" +
+		// waterTemperatureMap.toString());
 		final float value = getFloat(waterTemperatureMap, VALUE);
 		final String unit = waterTemperatureMap.getString(UNIT);
 
@@ -132,7 +133,7 @@ public final class ForecastParser
 
 	private static void parseWavePeriod(final JSONObject wavePeriodMap, final Builder builder) throws JSONException
 	{
-		Log.d(LOG_TAG, "wavePeriodMap :" + wavePeriodMap.toString());
+		// Log.d(LOG_TAG, "wavePeriodMap :" + wavePeriodMap.toString());
 
 		final float value = getFloat(wavePeriodMap, VALUE);
 		final String unit = wavePeriodMap.getString(UNIT);
@@ -144,7 +145,7 @@ public final class ForecastParser
 	private static void parsePrecipitationMap(final JSONObject precipitationMap, final Builder builder)
 			throws JSONException
 	{
-		Log.d(LOG_TAG, "precipitationMap :" + precipitationMap.toString());
+		// Log.d(LOG_TAG, "precipitationMap :" + precipitationMap.toString());
 		final float value = getFloat(precipitationMap, VALUE);
 		final String unit = precipitationMap.getString(UNIT);
 

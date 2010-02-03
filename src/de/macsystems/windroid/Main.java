@@ -236,7 +236,7 @@ public class Main extends Activity
 				{
 					if (_isChecked)
 					{
-						_connection.start();
+						_connection.initAlarms();
 					}
 					else
 					{
@@ -283,7 +283,7 @@ public class Main extends Activity
 		{
 			Log.d(LOG_TAG, "Starting Service");
 			final Intent startServiceIntent = new Intent();
-			startServiceIntent.setAction(SpotService.DE_MACSYSTEMS_WINDROID_START_SPOT_SERVICE_ACTION);
+			startServiceIntent.setAction(IntentConstants.DE_MACSYSTEMS_WINDROID_START_SPOT_SERVICE_ACTION);
 			startService(startServiceIntent);
 		}
 		else

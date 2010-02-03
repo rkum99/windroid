@@ -142,9 +142,8 @@ public class IOUtils
 	 * @throws RetryLaterException
 	 * @throws IOException
 	 */
-	public static void updateCachedStationXML(final Context _context, final URL _stationXMLURL, final IProgress _progress)
-			throws RetryLaterException,
-			IOException
+	public static void updateCachedStationXML(final Context _context, final URL _stationXMLURL,
+			final IProgress _progress) throws RetryLaterException, IOException
 	{
 
 		try

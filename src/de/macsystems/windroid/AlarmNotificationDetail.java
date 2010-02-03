@@ -11,7 +11,8 @@ import de.macsystems.windroid.alarm.AlarmDetail;
 
 /**
  * @author Jens Hohl
- * @version $Id$
+ * @version $Id: AlarmNotificationDetail.java 179 2010-01-28 02:55:59Z jens.hohl
+ *          $
  * 
  */
 public class AlarmNotificationDetail extends Activity

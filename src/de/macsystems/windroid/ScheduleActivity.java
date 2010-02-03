@@ -1,17 +1,22 @@
 package de.macsystems.windroid;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import de.macsystems.windroid.identifyable.Repeat;
+import de.macsystems.windroid.identifyable.Schedule;
 
 /**
  * Activity which allows user to configure update schedule
@@ -24,9 +29,9 @@ public class ScheduleActivity extends ChainSubActivity
 
 	private static final String LOG_TAG = ScheduleActivity.class.getSimpleName();
 
-	private final List<Integer> checkboxes = new ArrayList<Integer>();
-	private final List<Integer> timeButtons = new ArrayList<Integer>();
-	private final List<Integer> timeTextViews = new ArrayList<Integer>();
+	private final Map<Integer, Integer> checkboxesMap = new HashMap<Integer, Integer>();
+	private final Map<Integer, Integer> timeButtonsMap = new HashMap<Integer, Integer>();
+	private final Map<Integer, Integer> timeTextViewsMap = new HashMap<Integer, Integer>();
 
 	private SpotConfigurationVO spotInfo = null;
 
@@ -47,34 +52,34 @@ public class ScheduleActivity extends ChainSubActivity
 		}
 		spotInfo = WindUtils.getConfigurationFromIntent(getIntent());
 
-		checkboxes.add(R.id.schedule_checkbox_weekday_monday);
-		checkboxes.add(R.id.schedule_checkbox_weekday_tuesday);
-		checkboxes.add(R.id.schedule_checkbox_weekday_wednesday);
-		checkboxes.add(R.id.schedule_checkbox_weekday_thursday);
-		checkboxes.add(R.id.schedule_checkbox_weekday_friday);
-		checkboxes.add(R.id.schedule_checkbox_weekday_saturday);
-		checkboxes.add(R.id.schedule_checkbox_weekday_sunday);
+		checkboxesMap.put(Calendar.MONDAY, R.id.schedule_checkbox_weekday_monday);
+		checkboxesMap.put(Calendar.TUESDAY, R.id.schedule_checkbox_weekday_tuesday);
+		checkboxesMap.put(Calendar.WEDNESDAY, R.id.schedule_checkbox_weekday_wednesday);
+		checkboxesMap.put(Calendar.THURSDAY, R.id.schedule_checkbox_weekday_thursday);
+		checkboxesMap.put(Calendar.FRIDAY, R.id.schedule_checkbox_weekday_friday);
+		checkboxesMap.put(Calendar.SATURDAY, R.id.schedule_checkbox_weekday_saturday);
+		checkboxesMap.put(Calendar.SUNDAY, R.id.schedule_checkbox_weekday_sunday);
 		//
-		timeButtons.add(R.id.schedule_button_weekday_monday);
-		timeButtons.add(R.id.schedule_button_weekday_tuesday);
-		timeButtons.add(R.id.schedule_button_weekday_wednesday);
-		timeButtons.add(R.id.schedule_button_weekday_thursday);
-		timeButtons.add(R.id.schedule_button_weekday_friday);
-		timeButtons.add(R.id.schedule_button_weekday_saturday);
-		timeButtons.add(R.id.schedule_button_weekday_sunday);
+		timeButtonsMap.put(Calendar.MONDAY, R.id.schedule_button_weekday_monday);
+		timeButtonsMap.put(Calendar.TUESDAY, R.id.schedule_button_weekday_tuesday);
+		timeButtonsMap.put(Calendar.WEDNESDAY, R.id.schedule_button_weekday_wednesday);
+		timeButtonsMap.put(Calendar.THURSDAY, R.id.schedule_button_weekday_thursday);
+		timeButtonsMap.put(Calendar.FRIDAY, R.id.schedule_button_weekday_friday);
+		timeButtonsMap.put(Calendar.SATURDAY, R.id.schedule_button_weekday_saturday);
+		timeButtonsMap.put(Calendar.SUNDAY, R.id.schedule_button_weekday_sunday);
 		//
-		timeTextViews.add(R.id.schedule_label_weekday_monday);
-		timeTextViews.add(R.id.schedule_label_weekday_tuesday);
-		timeTextViews.add(R.id.schedule_label_weekday_wednesday);
-		timeTextViews.add(R.id.schedule_label_weekday_thursday);
-		timeTextViews.add(R.id.schedule_label_weekday_friday);
-		timeTextViews.add(R.id.schedule_label_weekday_saturday);
-		timeTextViews.add(R.id.schedule_label_weekday_sunday);
+		timeTextViewsMap.put(Calendar.MONDAY, R.id.schedule_label_weekday_monday);
+		timeTextViewsMap.put(Calendar.TUESDAY, R.id.schedule_label_weekday_tuesday);
+		timeTextViewsMap.put(Calendar.WEDNESDAY, R.id.schedule_label_weekday_wednesday);
+		timeTextViewsMap.put(Calendar.THURSDAY, R.id.schedule_label_weekday_thursday);
+		timeTextViewsMap.put(Calendar.FRIDAY, R.id.schedule_label_weekday_friday);
+		timeTextViewsMap.put(Calendar.SATURDAY, R.id.schedule_label_weekday_saturday);
+		timeTextViewsMap.put(Calendar.SUNDAY, R.id.schedule_label_weekday_sunday);
 
-		installListenerOnCheckBoxes(checkboxes, timeButtons);
-		installListenerOnTimeButtons(timeButtons, timeTextViews);
-		enableTimeButtons(timeButtons, false);
-		selectCheckBoxes(checkboxes, false);
+		installListenerOnCheckBoxes(checkboxesMap, timeButtonsMap);
+		installListenerOnTimeButtons(timeButtonsMap, timeTextViewsMap);
+		enableTimeButtons(timeButtonsMap, false);
+		selectCheckBoxes(checkboxesMap, false);
 
 		final Button okButton = (Button) findViewById(R.id.schedule_button_ok);
 		okButton.setOnClickListener(new OnClickListener()
@@ -85,18 +90,32 @@ public class ScheduleActivity extends ChainSubActivity
 				final Intent intent = new Intent(ScheduleActivity.this, SpotSummary.class);
 				intent.putExtra(IntentConstants.SPOT_TO_CONFIGURE, spotInfo);
 
+				final Iterator<Integer> iter = checkboxesMap.keySet().iterator();
+				while (iter.hasNext())
+				{
+					final int resID = checkboxesMap.get(iter.next());
+					final CheckBox box = (CheckBox) findViewById(resID);
+					final boolean checked = box.isChecked();
+					final Schedule schedule = spotInfo.getSchedule();
+					schedule.addRepeat(resID, new Repeat(resID, 12L * 60L * 60L * 1000L, checked));
+				}
+
 				startActivityForResult(intent, Main.CONFIGURATION_REQUEST_CODE);
 			}
 		});
 	}
 
-	private void installListenerOnCheckBoxes(final List<Integer> _checkBoxes, final List<Integer> _timeButtons)
+	private void installListenerOnCheckBoxes(final Map<Integer, Integer> _checkBoxes,
+			final Map<Integer, Integer> _timeButtons)
 	{
-		final int size = _checkBoxes.size();
-		for (int i = 0; i < size; i++)
+
+		final Iterator<Integer> iter = _checkBoxes.keySet().iterator();
+		Log.d(LOG_TAG, _checkBoxes.toString());
+		while (iter.hasNext())
 		{
-			final CheckBox box = (CheckBox) findViewById(_checkBoxes.get(i));
-			final int index = i;
+			final int resID = iter.next();
+			Log.d(LOG_TAG, "index " + resID);
+			final CheckBox box = (CheckBox) findViewById(_checkBoxes.get(resID));
 			box.setOnClickListener(new View.OnClickListener()
 			{
 
@@ -104,20 +123,22 @@ public class ScheduleActivity extends ChainSubActivity
 				public final void onClick(final View _v)
 				{
 					final CheckBox clickedBox = (CheckBox) _v;
-					final Button button = (Button) findViewById(_timeButtons.get(index));
+					final Button button = (Button) findViewById(_timeButtons.get(resID));
 					button.setEnabled(clickedBox.isChecked());
 				}
 			});
 		}
 	}
 
-	private void installListenerOnTimeButtons(final List<Integer> _list, final List<Integer> _timeTextViews)
+	private void installListenerOnTimeButtons(final Map<Integer, Integer> _list,
+			final Map<Integer, Integer> _timeTextViews)
 	{
-		final int size = _list.size();
-		for (int i = 0; i < size; i++)
+		final Iterator<Integer> iter = _list.keySet().iterator();
+		while (iter.hasNext())
 		{
-			final int index = i;
-			final Button view = (Button) findViewById(_list.get(i));
+			final int day = iter.next();
+			final int resID = _list.get(day);
+			final Button view = (Button) findViewById(resID);
 			view.setOnClickListener(new View.OnClickListener()
 			{
 
@@ -128,7 +149,7 @@ public class ScheduleActivity extends ChainSubActivity
 					{
 						public final void onTimeSet(final TimePicker _view, final int _hourOfDay, final int _minute)
 						{
-							final TextView timeView = (TextView) findViewById(_timeTextViews.get(index));
+							final TextView timeView = (TextView) findViewById(_timeTextViews.get(day));
 							final StringBuilder builder = new StringBuilder();
 							builder.append(_hourOfDay < 10 ? "0" + _hourOfDay : _hourOfDay);
 							builder.append(":");
@@ -144,25 +165,25 @@ public class ScheduleActivity extends ChainSubActivity
 		}
 	}
 
-	private void enableTimeButtons(final List<Integer> _list, final boolean _enabled)
+	private void enableTimeButtons(final Map<Integer, Integer> _list, final boolean _enabled)
 	{
-		final int size = _list.size();
-		for (int i = 0; i < size; i++)
-
+		final Iterator<Integer> iter = _list.keySet().iterator();
+		while (iter.hasNext())
 		{
-			final Button view = (Button) findViewById(_list.get(i));
+			final int resID = _list.get(iter.next());
+			final Button view = (Button) findViewById(resID);
 			view.setEnabled(_enabled);
 		}
 	}
 
-	private void selectCheckBoxes(final List<Integer> _list, final boolean _selected)
+	private void selectCheckBoxes(final Map<Integer, Integer> _list, final boolean _selected)
 	{
-		final int size = _list.size();
-		for (int i = 0; i < size; i++)
+		final Iterator<Integer> iter = _list.keySet().iterator();
+		while (iter.hasNext())
 		{
-			final CheckBox view = (CheckBox) findViewById(_list.get(i));
+			final int resID = _list.get(iter.next());
+			final CheckBox view = (CheckBox) findViewById(resID);
 			view.setSelected(_selected);
 		}
 	}
-
 }

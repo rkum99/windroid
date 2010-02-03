@@ -24,7 +24,7 @@ public class SpotOverviewViewBinder implements SimpleCursorAdapter.ViewBinder
 	 * Index is depending on SQL column order.
 	 */
 	private static final int INDEX_SPOT_NAME = 1;
-//	private static final int INDEX_KEYWORD = 2;
+	// private static final int INDEX_KEYWORD = 2;
 	private static final int INDEX_WIND_START = 3;
 	private static final int INDEX_WIND_END = 4;
 	private static final int INDEX_WINDUNIT_ID = 5;

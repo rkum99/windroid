@@ -10,7 +10,7 @@ import android.util.AndroidRuntimeException;
 import android.util.Log;
 import android.view.View;
 import de.macsystems.windroid.ISpotService;
-import de.macsystems.windroid.SpotService;
+import de.macsystems.windroid.IntentConstants;
 
 /**
  * Proxy Class with implements the ISpotService Interface to control the
@@ -50,10 +50,10 @@ public final class SpotServiceConnection implements ServiceConnection, ISpotServ
 		viewToEnable = _viewToEnable;
 
 		final boolean success = _context.bindService(new Intent(
-				SpotService.DE_MACSYSTEMS_WINDROID_START_SPOT_SERVICE_ACTION), this, Context.BIND_AUTO_CREATE);
+				IntentConstants.DE_MACSYSTEMS_WINDROID_START_SPOT_SERVICE_ACTION), this, Context.BIND_AUTO_CREATE);
 		if (!success)
 		{
-			throw new AndroidRuntimeException("Failed to start Service.");
+			throw new AndroidRuntimeException("Failed to bind Service.");
 		}
 	}
 
@@ -91,22 +91,27 @@ public final class SpotServiceConnection implements ServiceConnection, ISpotServ
 	}
 
 	@Override
-	public boolean isRunning() throws RemoteException
-	{
-		if (delegate == null)
-		{
-			return false;
-		}
-		return delegate.isRunning();
-	}
-
-	@Override
-	public void start() throws RemoteException
+	public void initAlarms() throws RemoteException
 	{
 		if (delegate != null)
 		{
-			delegate.start();
+			delegate.initAlarms();
 		}
+	}
+
+	@Override
+	public void updateAll() throws RemoteException
+	{
+		if (delegate != null)
+		{
+			delegate.updateAll();
+		}
+	}
+
+	@Override
+	public void update(final long _id)
+	{
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
@@ -128,4 +133,5 @@ public final class SpotServiceConnection implements ServiceConnection, ISpotServ
 	{
 		return delegate.asBinder();
 	}
+
 }

@@ -22,7 +22,7 @@ public final class SpotConfigurationVO implements Serializable
 
 	private Station station;
 
-	private Schedule schedule;
+	private Schedule schedule = null;
 
 	private boolean useWindirection;
 
@@ -55,7 +55,7 @@ public final class SpotConfigurationVO implements Serializable
 	 * @param primaryKey
 	 *            the primaryKey to set
 	 */
-	public void setPrimaryKey(long primaryKey)
+	public void setPrimaryKey(final long primaryKey)
 	{
 		this.primaryKey = primaryKey;
 	}

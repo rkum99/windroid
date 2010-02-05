@@ -6,6 +6,5 @@
 <resources>
 	<item
 		name="schedule_threadpool_size"
-		format="integer"
-		type="array">1</item>
+		type="integer">1</item>
 </resources>

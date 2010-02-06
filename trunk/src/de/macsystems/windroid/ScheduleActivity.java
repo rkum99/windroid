@@ -1,6 +1,8 @@
 package de.macsystems.windroid;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -15,6 +17,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 import de.macsystems.windroid.identifyable.Repeat;
 import de.macsystems.windroid.identifyable.Schedule;
 
@@ -27,6 +30,8 @@ import de.macsystems.windroid.identifyable.Schedule;
 public class ScheduleActivity extends ChainSubActivity
 {
 
+	private static final long NOT_SELECTED = -1L;
+
 	private static final String LOG_TAG = ScheduleActivity.class.getSimpleName();
 
 	private final Map<Integer, Integer> checkboxesMap = new HashMap<Integer, Integer>();
@@ -36,6 +41,8 @@ public class ScheduleActivity extends ChainSubActivity
 	private final Map<Integer, Long> dayToDaytimeMap = new HashMap<Integer, Long>();
 
 	private SpotConfigurationVO spotInfo = null;
+
+	private final static SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm a");
 
 	/*
 	 * (non-Javadoc)
@@ -78,13 +85,13 @@ public class ScheduleActivity extends ChainSubActivity
 		timeTextViewsMap.put(Calendar.SATURDAY, R.id.schedule_label_weekday_saturday);
 		timeTextViewsMap.put(Calendar.SUNDAY, R.id.schedule_label_weekday_sunday);
 		//
-		dayToDaytimeMap.put(Calendar.MONDAY, -1L);
-		dayToDaytimeMap.put(Calendar.TUESDAY, -1L);
-		dayToDaytimeMap.put(Calendar.WEDNESDAY, -1L);
-		dayToDaytimeMap.put(Calendar.THURSDAY, -1L);
-		dayToDaytimeMap.put(Calendar.FRIDAY, -1L);
-		dayToDaytimeMap.put(Calendar.SATURDAY, -1L);
-		dayToDaytimeMap.put(Calendar.SUNDAY, -1L);
+		dayToDaytimeMap.put(Calendar.MONDAY, NOT_SELECTED);
+		dayToDaytimeMap.put(Calendar.TUESDAY, NOT_SELECTED);
+		dayToDaytimeMap.put(Calendar.WEDNESDAY, NOT_SELECTED);
+		dayToDaytimeMap.put(Calendar.THURSDAY, NOT_SELECTED);
+		dayToDaytimeMap.put(Calendar.FRIDAY, NOT_SELECTED);
+		dayToDaytimeMap.put(Calendar.SATURDAY, NOT_SELECTED);
+		dayToDaytimeMap.put(Calendar.SUNDAY, NOT_SELECTED);
 
 		installListenerOnCheckBoxes(checkboxesMap, timeButtonsMap);
 		installListenerOnTimeButtons(timeButtonsMap, timeTextViewsMap);
@@ -97,20 +104,33 @@ public class ScheduleActivity extends ChainSubActivity
 			@Override
 			public final void onClick(final View v)
 			{
-				final Intent intent = new Intent(ScheduleActivity.this, SpotSummary.class);
-				intent.putExtra(IntentConstants.SPOT_TO_CONFIGURE, spotInfo);
 
-				final Iterator<Integer> iter = checkboxesMap.keySet().iterator();
-				while (iter.hasNext())
+				if (!isAnyCheckboxChecked())
 				{
-					final int resID = checkboxesMap.get(iter.next());
-					final CheckBox box = (CheckBox) findViewById(resID);
-					final boolean checked = box.isChecked();
-					final Schedule schedule = spotInfo.getSchedule();
-					schedule.addRepeat(resID, new Repeat(resID, 12L * 60L * 60L * 1000L, checked));
+					Toast.makeText(ScheduleActivity.this, "Select at least one day ", Toast.LENGTH_LONG).show();
+				}
+				if (!isAnyValidDayTimeChoosen())
+				{
+					Toast.makeText(ScheduleActivity.this, "Select a daytime ", Toast.LENGTH_LONG).show();
 				}
 
-				startActivityForResult(intent, Main.CONFIGURATION_REQUEST_CODE);
+				else
+				{
+					final Intent intent = new Intent(ScheduleActivity.this, SpotSummary.class);
+					intent.putExtra(IntentConstants.SPOT_TO_CONFIGURE, spotInfo);
+
+					final Iterator<Integer> iter = checkboxesMap.keySet().iterator();
+					while (iter.hasNext())
+					{
+						final int resID = checkboxesMap.get(iter.next());
+						final CheckBox box = (CheckBox) findViewById(resID);
+						final boolean checked = box.isChecked();
+						final Schedule schedule = spotInfo.getSchedule();
+						schedule.addRepeat(resID, new Repeat(resID, 12L * 60L * 60L * 1000L, checked));
+					}
+
+					startActivityForResult(intent, Main.CONFIGURATION_REQUEST_CODE);
+				}
 			}
 		});
 	}
@@ -123,18 +143,22 @@ public class ScheduleActivity extends ChainSubActivity
 		Log.d(LOG_TAG, _checkBoxes.toString());
 		while (iter.hasNext())
 		{
-			final int resID = iter.next();
-			Log.d(LOG_TAG, "index " + resID);
-			final CheckBox box = (CheckBox) findViewById(_checkBoxes.get(resID));
+			final int day = iter.next();
+			Log.d(LOG_TAG, "day " + day);
+			final CheckBox box = (CheckBox) findViewById(_checkBoxes.get(day));
 			box.setOnClickListener(new View.OnClickListener()
 			{
-
 				@Override
 				public final void onClick(final View _v)
 				{
 					final CheckBox clickedBox = (CheckBox) _v;
-					final Button button = (Button) findViewById(_timeButtons.get(resID));
+					final Button button = (Button) findViewById(_timeButtons.get(day));
 					button.setEnabled(clickedBox.isChecked());
+
+					if (!clickedBox.isChecked())
+					{
+						dayToDaytimeMap.put(day, NOT_SELECTED);
+					}
 				}
 			});
 		}
@@ -162,17 +186,10 @@ public class ScheduleActivity extends ChainSubActivity
 
 							final long dayTime = calcDayTime(_hourOfDay, _minute);
 							dayToDaytimeMap.put(day, dayTime);
-							Log.d(LOG_TAG, "Day :"+day+" daytime :" + dayTime);
-
 							final TextView timeView = (TextView) findViewById(_timeTextViews.get(day));
-							final StringBuilder builder = new StringBuilder();
-							// builder.append("Day ").append(day).append(" ");
-							builder.append(_hourOfDay < 10 ? "0" + _hourOfDay : _hourOfDay);
-							builder.append(":");
-							builder.append(_minute < 10 ? "0" + _minute : _minute);
-							timeView.setText(builder);
+							final String time = dateFormat.format(new Date(dayTime));
+							timeView.setText(time);
 						}
-
 					};
 
 					final TimePickerDialog dialog = new TimePickerDialog(ScheduleActivity.this, listener, 12, 0, false);
@@ -205,14 +222,51 @@ public class ScheduleActivity extends ChainSubActivity
 	}
 
 	/**
+	 * Returns time in milliseconds.
+	 * 
 	 * @param _hourOfDay
 	 * @param _minute
 	 * @return
 	 */
 	private static long calcDayTime(final int _hourOfDay, final int _minute)
 	{
-		long dayTime = (_hourOfDay * 60L * 60L * 1000L) + (_minute * 60 * 1000L);
+		long dayTime = (_hourOfDay * 60L * 60L * 1000L) + (_minute * 60L * 1000L);
 		return dayTime;
+	}
+
+	private boolean isAnyCheckboxChecked()
+	{
+		final boolean result = false;
+
+		final Iterator<Integer> iter = checkboxesMap.keySet().iterator();
+		while (iter.hasNext())
+		{
+			final int key = iter.next();
+			final CheckBox box = (CheckBox) findViewById(checkboxesMap.get(key));
+			if (box.isChecked())
+			{
+				return true;
+			}
+		}
+
+		return result;
+	}
+
+	private boolean isAnyValidDayTimeChoosen()
+	{
+		final boolean result = false;
+
+		final Iterator<Integer> iter = dayToDaytimeMap.keySet().iterator();
+		while (iter.hasNext())
+		{
+			final int key = iter.next();
+			if (NOT_SELECTED != dayToDaytimeMap.get(key))
+			{
+				return true;
+			}
+		}
+
+		return result;
 	}
 
 }

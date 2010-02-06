@@ -1,4 +1,4 @@
-package de.macsystems.windroid.forecast;
+package de.macsystems.windroid;
 
 import android.database.Cursor;
 import android.util.Log;

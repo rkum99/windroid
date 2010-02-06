@@ -11,15 +11,12 @@ import android.util.Log;
  * to be monitored.
  * 
  * @author mac
- * @version $Id$
+ * @version $Id: AlarmBroadcastReciever.java 190 2010-02-06 01:04:09Z jens.hohl
+ *          $
  */
 public class AlarmBroadcastReciever extends BroadcastReceiver
 {
 	private final static String LOG_TAG = AlarmBroadcastReciever.class.getSimpleName();
-
-	/**
-	 * Lookup Key for primary key in a Intent {@value #SELECTED_PRIMARY_KEY}
-	 */
 
 	/*
 	 * (non-Javadoc)

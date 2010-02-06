@@ -34,7 +34,6 @@ import de.macsystems.windroid.alarm.AlarmDetail;
 import de.macsystems.windroid.db.DAOFactory;
 import de.macsystems.windroid.db.ISelectedDAO;
 import de.macsystems.windroid.db.ISpotDAO;
-import de.macsystems.windroid.forecast.SpotOverview;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.proxy.SpotServiceConnection;
 

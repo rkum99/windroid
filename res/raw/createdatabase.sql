@@ -30,8 +30,8 @@ CREATE TABLE IF NOT EXISTS selected (_id INTEGER PRIMARY KEY AUTOINCREMENT, spot
 CREATE INDEX IF NOT EXISTS selectedsid ON selected (spotid); 
 
 --  schedule 
-CREATE TABLE IF NOT EXISTS schedule (_id INTEGER PRIMARY KEY AUTOINCREMENT, selectedid INTEGER, repeat String NOT NULL, long time, activ BOOLEAN);
+CREATE TABLE IF NOT EXISTS schedule (_id INTEGER PRIMARY KEY AUTOINCREMENT, selectedid INTEGER, activ BOOLEAN);
 CREATE INDEX scheduleid ON schedule (selectedid); 
 -- repeat
-CREATE TABLE IF NOT EXISTS repeat (_id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT NOT NULL, defaultvalue TEXT NOT  NULL);
-CREATE INDEX repeatkey ON repeat (key); 
+CREATE TABLE IF NOT EXISTS repeat (_id INTEGER PRIMARY KEY AUTOINCREMENT, scheduleid LONG, weekday INTEGER, daytime  LONG, activ BOOLEAN);
+CREATE INDEX repeatkey ON repeat (scheduleid); 

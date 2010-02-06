@@ -33,6 +33,8 @@ public class ScheduleActivity extends ChainSubActivity
 	private final Map<Integer, Integer> timeButtonsMap = new HashMap<Integer, Integer>();
 	private final Map<Integer, Integer> timeTextViewsMap = new HashMap<Integer, Integer>();
 
+	private final Map<Integer, Long> dayToDaytimeMap = new HashMap<Integer, Long>();
+
 	private SpotConfigurationVO spotInfo = null;
 
 	/*
@@ -75,6 +77,14 @@ public class ScheduleActivity extends ChainSubActivity
 		timeTextViewsMap.put(Calendar.FRIDAY, R.id.schedule_label_weekday_friday);
 		timeTextViewsMap.put(Calendar.SATURDAY, R.id.schedule_label_weekday_saturday);
 		timeTextViewsMap.put(Calendar.SUNDAY, R.id.schedule_label_weekday_sunday);
+		//
+		dayToDaytimeMap.put(Calendar.MONDAY, -1L);
+		dayToDaytimeMap.put(Calendar.TUESDAY, -1L);
+		dayToDaytimeMap.put(Calendar.WEDNESDAY, -1L);
+		dayToDaytimeMap.put(Calendar.THURSDAY, -1L);
+		dayToDaytimeMap.put(Calendar.FRIDAY, -1L);
+		dayToDaytimeMap.put(Calendar.SATURDAY, -1L);
+		dayToDaytimeMap.put(Calendar.SUNDAY, -1L);
 
 		installListenerOnCheckBoxes(checkboxesMap, timeButtonsMap);
 		installListenerOnTimeButtons(timeButtonsMap, timeTextViewsMap);
@@ -149,13 +159,20 @@ public class ScheduleActivity extends ChainSubActivity
 					{
 						public final void onTimeSet(final TimePicker _view, final int _hourOfDay, final int _minute)
 						{
+
+							final long dayTime = calcDayTime(_hourOfDay, _minute);
+							dayToDaytimeMap.put(day, dayTime);
+							Log.d(LOG_TAG, "Day :"+day+" daytime :" + dayTime);
+
 							final TextView timeView = (TextView) findViewById(_timeTextViews.get(day));
 							final StringBuilder builder = new StringBuilder();
+							// builder.append("Day ").append(day).append(" ");
 							builder.append(_hourOfDay < 10 ? "0" + _hourOfDay : _hourOfDay);
 							builder.append(":");
 							builder.append(_minute < 10 ? "0" + _minute : _minute);
 							timeView.setText(builder);
 						}
+
 					};
 
 					final TimePickerDialog dialog = new TimePickerDialog(ScheduleActivity.this, listener, 12, 0, false);
@@ -186,4 +203,16 @@ public class ScheduleActivity extends ChainSubActivity
 			view.setSelected(_selected);
 		}
 	}
+
+	/**
+	 * @param _hourOfDay
+	 * @param _minute
+	 * @return
+	 */
+	private static long calcDayTime(final int _hourOfDay, final int _minute)
+	{
+		long dayTime = (_hourOfDay * 60L * 60L * 1000L) + (_minute * 60 * 1000L);
+		return dayTime;
+	}
+
 }

@@ -73,7 +73,7 @@
 			android:label="@string/app_name"
 			android:icon="@drawable/icon" />
 		<activity
-			android:name="de.macsystems.windroid.forecast.SpotOverview"
+			android:name="de.macsystems.windroid.SpotOverview"
 			android:label="@string/spot_overview_title"
 			android:icon="@drawable/icon" />
 		<receiver

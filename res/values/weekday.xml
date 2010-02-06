@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+	<!--
+		@version $Id$
+	-->
 <resources>
 	<string
 		name="weekday_monday">Monday</string>
@@ -14,4 +17,20 @@
 		name="weekday_saturday">Saturday</string>
 	<string
 		name="weekday_sunday">Sunday</string>
+
+	<string
+		name="weekday_monday_short">Mo</string>
+	<string
+		name="weekday_tuesday_short">Tu</string>
+	<string
+		name="weekday_wednesday_short">We</string>
+	<string
+		name="weekday_thursday_short">Th</string>
+	<string
+		name="weekday_friday_short">Fr</string>
+	<string
+		name="weekday_saturday_short">Sa</string>
+	<string
+		name="weekday_sunday_short">Su</string>
+
 </resources>

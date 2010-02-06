@@ -29,14 +29,15 @@ public final class Repeat implements Serializable
 	 */
 	private boolean activ = false;
 
-	// /**
-	// * primary key
-	// */
-	// private final long id;
-	// /**
-	// * Primary key of selected
-	// */
-	// private long selectedId;
+	/**
+	 * primary key
+	 */
+	private long id;
+
+	/**
+	 * Primary key of selected
+	 */
+	private long selectedId;
 
 	/**
 	 * @param id
@@ -44,6 +45,17 @@ public final class Repeat implements Serializable
 	public Repeat()
 	{
 		super();
+	}
+
+	/**
+	 * @param _id
+	 * @param _selectedId
+	 */
+	public Repeat(long _id, long _selectedId)
+	{
+		super();
+		id = _id;
+		selectedId = _selectedId;
 	}
 
 	/**
@@ -61,6 +73,22 @@ public final class Repeat implements Serializable
 		dayOfWeek = _dayOfWeek;
 		dayTime = _dayTime;
 		activ = _activ;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public long getId()
+	{
+		return id;
+	}
+
+	/**
+	 * @return the selectedId
+	 */
+	public long getSelectedId()
+	{
+		return selectedId;
 	}
 
 	/**
@@ -122,7 +150,8 @@ public final class Repeat implements Serializable
 	@Override
 	public String toString()
 	{
-		return "Repeat [activ=" + activ + ", dayOfWeek=" + dayOfWeek + ", dayTime=" + dayTime + "]";
+		return "Repeat [activ=" + activ + ", dayOfWeek=" + dayOfWeek + ", dayTime=" + dayTime + ", id=" + id
+				+ ", selectedId=" + selectedId + "]";
 	}
 
 }

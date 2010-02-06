@@ -1,8 +1,11 @@
 package de.macsystems.windroid.identifyable;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
+import android.util.Log;
 
 /**
  * Scheduling Plan for a Station
@@ -13,9 +16,28 @@ import java.util.Map;
 public final class Schedule implements Serializable
 {
 	private static final long serialVersionUID = 1L;
-	// private final List<Repeat> repeats = new ArrayList<Repeat>();
 
-	private final Map<Integer, Repeat> repeats = new HashMap<Integer, Repeat>();
+	private final static String LOG_TAG = Schedule.class.getSimpleName();
+
+	/**
+	 * Maps weekdays like Calendar#MONDAY to repeat.
+	 */
+	private final Map<Integer, Repeat> repeats = Collections.synchronizedMap(new HashMap<Integer, Repeat>());
+	/**
+	 * primary key
+	 */
+	private long _id = -1;
+
+	/**
+	 * 
+	 * @param _id
+	 *            primary key
+	 */
+	public Schedule(final long _id)
+	{
+		super();
+		this._id = _id;
+	}
 
 	/**
 	 * 
@@ -62,6 +84,15 @@ public final class Schedule implements Serializable
 			throw new NullPointerException("repeat");
 		}
 		repeats.put(_day, _repeat);
+		Log.d(LOG_TAG, "Added repeat on schedule: " + _repeat.toString());
+	}
+
+	/**
+	 * @return the _id
+	 */
+	public long get_id()
+	{
+		return _id;
 	}
 
 	/*
@@ -72,7 +103,7 @@ public final class Schedule implements Serializable
 	@Override
 	public String toString()
 	{
-		return "Schedule [repeats=" + repeats + "]";
+		return "Schedule [_id=" + _id + ", repeats=" + repeats + "]";
 	}
 
 	/*

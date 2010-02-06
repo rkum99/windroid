@@ -23,6 +23,7 @@ import de.macsystems.windroid.db.ISelectedDAO;
 import de.macsystems.windroid.forecast.Forecast;
 import de.macsystems.windroid.forecast.ForecastDetail;
 import de.macsystems.windroid.identifyable.WindSpeed;
+import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.io.RetryLaterException;
 import de.macsystems.windroid.io.task.ForecastTask;
 
@@ -44,19 +45,19 @@ public class SpotService extends Service
 	 */
 	private final AtomicInteger notificationCounter = new AtomicInteger(1);
 
+	private final AtomicInteger alarmCounter = new AtomicInteger(1);
+
 	private final ISpotService serviceBinder = new ISpotService.Stub()
 	{
 		@Override
 		public void initAlarms() throws RemoteException
 		{
-			Log.d(LOG_TAG, "ISpotService#initAlarms called");
 			threadPool.schedule(createAlarmsOnAllSpots(), 100L, TimeUnit.MILLISECONDS);
 		}
 
 		@Override
 		public void updateAll() throws RemoteException
 		{
-			Log.d(LOG_TAG, "ISpotService#updateAll called");
 			threadPool.schedule(createUpdateAllSpotsTask(), 100L, TimeUnit.MILLISECONDS);
 		}
 
@@ -69,7 +70,6 @@ public class SpotService extends Service
 		@Override
 		public void update(final long _id)
 		{
-			Log.d(LOG_TAG, "ISpotService#update(long) called");
 			final Runnable run = createUpdateSpotTask(_id);
 			threadPool.schedule(run, 100L, TimeUnit.MILLISECONDS);
 		}
@@ -105,22 +105,89 @@ public class SpotService extends Service
 	 * @see android.app.Service#onStart(android.content.Intent, int)
 	 */
 	@Override
-	public void onStart(final Intent intent, final int startId)
+	public void onStart(final Intent _intent, final int _startId)
 	{
-		super.onStart(intent, startId);
+		super.onStart(_intent, _startId);
 		createThreadPool();
+		Log.i(LOG_TAG, "Service started ");
+		final boolean found = isSelectedID(_intent);
+		if (!found)
+		{
+			Log.i(LOG_TAG, "Found no spot to update!");
+			return;
+		}
+		//
+		final long selectedID = getSelectedID(_intent);
+		try
+		{
+			serviceBinder.update(selectedID);
+		}
+		catch (final RemoteException e)
+		{
+			Log.e(LOG_TAG, "Failed to call Service Stub", e);
+		}
+	}
 
-		Log.i(LOG_TAG, "Service started");
+	/**
+	 * Returns <code>true</code> if a id is present
+	 * 
+	 * @param _intent
+	 * @return
+	 * @see #getSelectedID(Intent)
+	 */
+	private final static boolean isSelectedID(final Intent _intent)
+	{
+		if (_intent == null)
+		{
+			return false;
+		}
+		return -1 != _intent.getLongExtra(IntentConstants.SELECTED_PRIMARY_KEY, -1);
+	}
+
+	/**
+	 * Returns primary key of selected spot which needs to be updated.
+	 * 
+	 * @param _intent
+	 * @return
+	 * @see #isSelectedID(Intent)
+	 */
+	private final static long getSelectedID(final Intent _intent)
+	{
+		if (_intent == null)
+		{
+			throw new NullPointerException("Intent");
+		}
+		return _intent.getLongExtra(IntentConstants.SELECTED_PRIMARY_KEY, -1);
+	}
+
+	/**
+	 * Creates an Alarm which should be executed whenever the network is not
+	 * reachable
+	 * 
+	 * @param _id
+	 */
+	private void createRetryAlarm(final long _id)
+	{
+		Log.d(LOG_TAG, "Creating retry alarm for selected with id :" + _id);
+		final long now = System.currentTimeMillis();
+
+		final Intent intent = new Intent(this, AlarmBroadcastReciever.class);
+		intent.putExtra(IntentConstants.SELECTED_PRIMARY_KEY, _id);
+		final int requestID = alarmCounter.incrementAndGet();
+		final PendingIntent pendingIntent = PendingIntent.getBroadcast(this, requestID, intent, 0);
+		final AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+		alarmManager.set(AlarmManager.RTC_WAKEUP, now + (AlarmManager.INTERVAL_HALF_HOUR), pendingIntent);
 	}
 
 	private void createAlarm(final long _id)
 	{
-
+		Log.d(LOG_TAG, "Creating alarm");
 		final long now = System.currentTimeMillis();
 
 		final Intent intent = new Intent(this, AlarmBroadcastReciever.class);
-		intent.putExtra(AlarmBroadcastReciever.SELECTED_PRIMARY_KEY, _id);
-		final PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 400, intent, 0);
+		intent.putExtra(IntentConstants.SELECTED_PRIMARY_KEY, _id);
+		final int requestID = alarmCounter.incrementAndGet();
+		final PendingIntent pendingIntent = PendingIntent.getBroadcast(this, requestID, intent, 0);
 		final AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 		alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, now + (5 * 1000), AlarmManager.INTERVAL_DAY, pendingIntent);
 		//
@@ -149,7 +216,7 @@ public class SpotService extends Service
 			final String notificationTitle, final String notificationDetails)
 	{
 
-		final int notificationID = notificationCounter.getAndIncrement();
+		final int notificationID = notificationCounter.incrementAndGet();
 
 		final long when = System.currentTimeMillis(); // notification time
 		final Intent notificationIntent = new Intent(context, OngoingUpdate.class);
@@ -174,11 +241,11 @@ public class SpotService extends Service
 
 				if (!dao.isSpotActiv())
 				{
-					Log.i(LOG_TAG, "No Activ Spot Configured.");
+					Log.i(LOG_TAG, "No active spot configured.");
 					return;
 				}
 				final Collection<SpotConfigurationVO> spots = dao.getActivSpots();// Util.getSpotConfiguration(SpotService.this);
-				Log.i(LOG_TAG, "Found " + spots.size() + " Spots to Alarm.");
+				Log.i(LOG_TAG, "Found " + spots.size() + " spot(s) to install alarm trigger(s).");
 
 				final Iterator<SpotConfigurationVO> iter = spots.iterator();
 				while (iter.hasNext())
@@ -214,7 +281,7 @@ public class SpotService extends Service
 
 					if (!dao.isSpotActiv())
 					{
-						Log.i(LOG_TAG, "No Activ Spot Configured.");
+						Log.i(LOG_TAG, "No active spot configured.");
 						return;
 					}
 					final Collection<SpotConfigurationVO> spots = dao.getActivSpots();// Util.getSpotConfiguration(SpotService.this);
@@ -241,7 +308,7 @@ public class SpotService extends Service
 	}
 
 	/**
-	 * Creates an task which performs update of spot with by given primary key
+	 * Creates an task which performs update of spot by given primary key
 	 * without starting it.
 	 * 
 	 * @param _primaryKey
@@ -254,22 +321,29 @@ public class SpotService extends Service
 			@Override
 			public void run()
 			{
+
 				final ISelectedDAO dao = DAOFactory.getSelectedDAO(SpotService.this);
+				final SpotConfigurationVO vo = dao.getSpotConfiguration(_primaryKey);
+
+				if (!vo.isActiv())
+				{
+					Log.d(LOG_TAG, "Cancel update as spot is not active: " + vo.getStation().getName());
+					return;
+				}
+
+				final boolean available = IOUtils.isNetworkReachable(SpotService.this);
+				if (!available)
+				{
+					Log.d(LOG_TAG, "Cancel update as network not reachable.");
+					createRetryAlarm(_primaryKey);
+					return;
+				}
+
 				final int alarmID = SpotService.this.showStatus(SpotService.this,
 						(NotificationManager) SpotService.this.getSystemService(Context.NOTIFICATION_SERVICE),
 						getString(R.string.ongoing_update_title), getString(R.string.ongoing_update_text));
 
-				final SpotConfigurationVO vo = dao.getSpotConfiguration(_primaryKey);
-
-				Log.d(LOG_TAG, "Alarm for :" + vo.getStation().getName());
-
-				if (!vo.isActiv())
-				{
-					// TODO: What to do if Spot is inactive ? Cancel pending
-					// Alarms
-					// ?
-					return;
-				}
+				Log.d(LOG_TAG, "Alarm for: " + vo.getStation().getName());
 
 				try
 				{
@@ -286,7 +360,7 @@ public class SpotService extends Service
 				}
 				catch (final IOException e)
 				{
-					Log.d(LOG_TAG, "", e);
+					Log.d(LOG_TAG, "Failed to create uri", e);
 				}
 				catch (final RetryLaterException e)
 				{
@@ -316,13 +390,13 @@ public class SpotService extends Service
 	}
 
 	/**
-	 * Checks if ThreadPool already instantiated, when not it creates it
+	 * Checks if ThreadPool already created, if not it creates it
 	 */
 	private synchronized void createThreadPool()
 	{
 		if (threadPool == null)
 		{
-			final int poolSize = getResources().getInteger(R.array.schedule_threadpool_size);
+			final int poolSize = getResources().getInteger(R.integer.schedule_threadpool_size);
 			threadPool = new ScheduledThreadPoolExecutor(poolSize);
 			Log.d(LOG_TAG, "Thread Pool Created with size :" + poolSize);
 		}

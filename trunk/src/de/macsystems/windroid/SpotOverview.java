@@ -1,4 +1,4 @@
-package de.macsystems.windroid.forecast;
+package de.macsystems.windroid;
 
 import android.app.Activity;
 import android.app.ListActivity;
@@ -13,12 +13,7 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnCreateContextMenuListener;
 import android.widget.SimpleCursorAdapter;
 import android.widget.AdapterView.AdapterContextMenuInfo;
-import de.macsystems.windroid.IntentConstants;
 import de.macsystems.windroid.R;
-import de.macsystems.windroid.SpotConfiguration;
-import de.macsystems.windroid.SpotConfigurationVO;
-import de.macsystems.windroid.Util;
-import de.macsystems.windroid.WindUtils;
 import de.macsystems.windroid.db.DAOFactory;
 import de.macsystems.windroid.db.ISelectedDAO;
 

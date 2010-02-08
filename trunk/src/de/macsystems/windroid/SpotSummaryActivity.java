@@ -1,5 +1,7 @@
 package de.macsystems.windroid;
 
+import de.macsystems.windroid.common.IntentConstants;
+import de.macsystems.windroid.common.SpotConfigurationVO;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -16,10 +18,10 @@ import android.widget.Button;
  * @version $Id$
  * 
  */
-public class SpotSummary extends Activity
+public class SpotSummaryActivity extends Activity
 {
 
-	private final static String LOG_TAG = SpotSummary.class.getSimpleName();
+	private final static String LOG_TAG = SpotSummaryActivity.class.getSimpleName();
 
 	private SpotConfigurationVO stationInfo = null;
 
@@ -99,7 +101,7 @@ public class SpotSummary extends Activity
 					}
 				};
 
-				new AlertDialog.Builder(SpotSummary.this).setTitle(R.string.spot_summary_delete_alert_title)
+				new AlertDialog.Builder(SpotSummaryActivity.this).setTitle(R.string.spot_summary_delete_alert_title)
 						.setMessage(R.string.spot_summary_delete_alert_text).setNegativeButton(android.R.string.no,
 								null).setPositiveButton(android.R.string.yes, okListener).setIcon(R.drawable.icon)
 						.show();
@@ -115,7 +117,7 @@ public class SpotSummary extends Activity
 	private void returnToStartActivity(final int _resultCode)
 	{
 		Util.checkResultCode(_resultCode);
-		final Intent intent = WindUtils.createIntent(SpotSummary.this, Main.class, stationInfo);
+		final Intent intent = WindUtils.createIntent(SpotSummaryActivity.this, MainActivity.class, stationInfo);
 		setResult(_resultCode, intent);
 		finish();
 	}

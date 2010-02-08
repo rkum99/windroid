@@ -10,7 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import de.macsystems.windroid.R;
-import de.macsystems.windroid.SpotConfigurationVO;
+import de.macsystems.windroid.common.SpotConfigurationVO;
 
 /**
  * @author Jens Hohl

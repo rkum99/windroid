@@ -31,6 +31,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import de.macsystems.windroid.alarm.AlarmDetail;
+import de.macsystems.windroid.common.IntentConstants;
+import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.db.DAOFactory;
 import de.macsystems.windroid.db.ISelectedDAO;
 import de.macsystems.windroid.db.ISpotDAO;
@@ -44,7 +46,7 @@ import de.macsystems.windroid.proxy.SpotServiceConnection;
  * @version $Id$
  * 
  */
-public class Main extends Activity
+public class MainActivity extends Activity
 {
 
 	private final static int ABOUT_MENU_ID = 777;
@@ -53,7 +55,7 @@ public class Main extends Activity
 	 */
 	public final static int CONFIGURATION_REQUEST_CODE = 0x100;
 
-	private final static String LOG_TAG = Main.class.getSimpleName();
+	private final static String LOG_TAG = MainActivity.class.getSimpleName();
 
 	private EnableViewConnectionBroadcastReciever broadcastReceiver;
 
@@ -93,7 +95,7 @@ public class Main extends Activity
 					builder.append("Wind From: ").append(spot.getFromDirection()).append("\n");
 					builder.append("Wind To: ").append(spot.getToDirection()).append("\n");
 					builder.append("Take care of Windirection: ").append(spot.isUseWindirection()).append("\n");
-					Toast.makeText(Main.this, builder.toString(), Toast.LENGTH_LONG).show();
+					Toast.makeText(MainActivity.this, builder.toString(), Toast.LENGTH_LONG).show();
 				}
 
 			}
@@ -170,7 +172,7 @@ public class Main extends Activity
 			@Override
 			public final void onClick(final View v)
 			{
-				Main.this.launchSetupOrSpotSelectionActivity();
+				MainActivity.this.launchSetupOrSpotSelectionActivity();
 			}
 		});
 		final Button selectPreferencesButton = (Button) findViewById(R.id.button_show_station_preferences);
@@ -179,8 +181,8 @@ public class Main extends Activity
 			@Override
 			public final void onClick(final View v)
 			{
-				final Intent intent = new Intent(Main.this, Preferences.class);
-				Main.this.startActivity(intent);
+				final Intent intent = new Intent(MainActivity.this, Preferences.class);
+				MainActivity.this.startActivity(intent);
 			}
 		});
 
@@ -190,7 +192,7 @@ public class Main extends Activity
 			@Override
 			public final void onClick(final View v)
 			{
-				Main.this.showSpotOverview();
+				MainActivity.this.showSpotOverview();
 			}
 		});
 
@@ -307,7 +309,7 @@ public class Main extends Activity
 			public final void onClick(final View v)
 			{
 				final NotificationManager mManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-				showNotification(Main.this, mManager, 999, "Windalarm", "Alarm für Station XYZ wurde ausgelöst.");
+				showNotification(MainActivity.this, mManager, 999, "Windalarm", "Alarm für Station XYZ wurde ausgelöst.");
 			}
 		};
 		button.setOnClickListener(listener);
@@ -389,7 +391,7 @@ public class Main extends Activity
 	 */
 	private void showSpotOverview()
 	{
-		final Intent intent = new Intent(this, SpotOverview.class);
+		final Intent intent = new Intent(this, SpotOverviewActivity.class);
 		startActivity(intent);
 	}
 
@@ -404,13 +406,13 @@ public class Main extends Activity
 	}
 
 	/**
-	 * Launches {@link DownloadActivity} Activity or the {@link SpotSelection}
+	 * Launches {@link DownloadActivity} Activity or the {@link SpotSelectionActivity}
 	 * Activity which depends on database
 	 * 
 	 */
 	private void launchSetupOrSpotSelectionActivity()
 	{
-		final ISpotDAO dao = DAOFactory.getSpotDAO(Main.this);
+		final ISpotDAO dao = DAOFactory.getSpotDAO(MainActivity.this);
 		final boolean spotsfound = dao.hasSpots();
 
 		final SpotConfigurationVO spotConfigurationVO = new SpotConfigurationVO();
@@ -422,7 +424,7 @@ public class Main extends Activity
 			 * If user wants to configure a Spot we create an Transport Object
 			 * to collect all properties
 			 */
-			intent = new Intent(Main.this, SpotSelection.class);
+			intent = new Intent(MainActivity.this, SpotSelectionActivity.class);
 			intent.putExtra(IntentConstants.SPOT_TO_CONFIGURE, spotConfigurationVO);
 		}
 		else
@@ -431,7 +433,7 @@ public class Main extends Activity
 			 * Start download of data first, then user can configure a spot
 			 * using Transport Object to collect all properties.
 			 */
-			intent = new Intent(Main.this, DownloadActivity.class);
+			intent = new Intent(MainActivity.this, DownloadActivity.class);
 			intent.putExtra(IntentConstants.SPOT_TO_CONFIGURE, spotConfigurationVO);
 		}
 		// We expect a result in method onActivityResult(....)

@@ -8,7 +8,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-import de.macsystems.windroid.SpotConfigurationVO;
+import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.db.ISelectedDAO;
 import de.macsystems.windroid.db.ISpotDAO;
 import de.macsystems.windroid.identifyable.Schedule;

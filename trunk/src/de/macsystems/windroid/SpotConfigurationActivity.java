@@ -15,6 +15,9 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import de.macsystems.windroid.common.IntentConstants;
+import de.macsystems.windroid.common.SpotConfigurationVO;
+import de.macsystems.windroid.custom.activity.ChainSubActivity;
 import de.macsystems.windroid.identifyable.IdentityUtil;
 import de.macsystems.windroid.identifyable.WindDirection;
 import de.macsystems.windroid.identifyable.WindUnit;
@@ -24,9 +27,9 @@ import de.macsystems.windroid.identifyable.WindUnit;
  * @version $Id$
  * 
  */
-public class SpotConfiguration extends ChainSubActivity
+public class SpotConfigurationActivity extends ChainSubActivity
 {
-	private final String LOG_TAG = SpotConfiguration.class.getSimpleName();
+	private final String LOG_TAG = SpotConfigurationActivity.class.getSimpleName();
 
 	private WindUnit currentSelectUnit = WindUnit.BEAUFORT;
 
@@ -165,12 +168,12 @@ public class SpotConfiguration extends ChainSubActivity
 
 				stationInfo.setWindspeedMin(currentMinimum);
 				stationInfo.setWindspeedMax(currentMaximum);
-				stationInfo.setPreferredWindUnit(SpotConfiguration.this.currentSelectUnit);
+				stationInfo.setPreferredWindUnit(SpotConfigurationActivity.this.currentSelectUnit);
 
-				final Intent intent = new Intent(SpotConfiguration.this, ScheduleActivity.class);
+				final Intent intent = new Intent(SpotConfigurationActivity.this, ScheduleActivity.class);
 				intent.putExtra(IntentConstants.SPOT_TO_CONFIGURE, stationInfo);
 
-				startActivityForResult(intent, Main.CONFIGURATION_REQUEST_CODE);
+				startActivityForResult(intent, MainActivity.CONFIGURATION_REQUEST_CODE);
 			}
 		};
 		return listener;
@@ -216,17 +219,17 @@ public class SpotConfiguration extends ChainSubActivity
 
 				Log.d(LOG_TAG, "From user:" + fromUser);
 
-				if (progress >= SpotConfiguration.this.currentMaximum)
+				if (progress >= SpotConfigurationActivity.this.currentMaximum)
 				{
 
-					progress = SpotConfiguration.this.currentMaximum;
+					progress = SpotConfigurationActivity.this.currentMaximum;
 					seekBar.setProgress(progress);
 					vibrator.vibrate(VIBRATE_DURATION);
 				}
-				SpotConfiguration.this.currentMinimum = progress;
-				Log.d(LOG_TAG, "current minimum:" + SpotConfiguration.this.currentMinimum);
-				updateDeltaTextView(currentSelectUnit, SpotConfiguration.this.currentMinimum,
-						SpotConfiguration.this.currentMaximum);
+				SpotConfigurationActivity.this.currentMinimum = progress;
+				Log.d(LOG_TAG, "current minimum:" + SpotConfigurationActivity.this.currentMinimum);
+				updateDeltaTextView(currentSelectUnit, SpotConfigurationActivity.this.currentMinimum,
+						SpotConfigurationActivity.this.currentMaximum);
 
 			}
 
@@ -273,16 +276,16 @@ public class SpotConfiguration extends ChainSubActivity
 			public final void onProgressChanged(final SeekBar seekBar, int progress, final boolean fromUser)
 			{
 				Log.d(LOG_TAG, "From user:" + fromUser);
-				if (SpotConfiguration.this.currentMinimum >= progress)
+				if (SpotConfigurationActivity.this.currentMinimum >= progress)
 				{
-					progress = SpotConfiguration.this.currentMinimum;
-					seekBar.setProgress(SpotConfiguration.this.currentMinimum);
+					progress = SpotConfigurationActivity.this.currentMinimum;
+					seekBar.setProgress(SpotConfigurationActivity.this.currentMinimum);
 					vibrator.vibrate(VIBRATE_DURATION);
 				}
-				SpotConfiguration.this.currentMaximum = progress;
-				Log.d(LOG_TAG, "current maximum:" + SpotConfiguration.this.currentMaximum);
-				updateDeltaTextView(currentSelectUnit, SpotConfiguration.this.currentMinimum,
-						SpotConfiguration.this.currentMaximum);
+				SpotConfigurationActivity.this.currentMaximum = progress;
+				Log.d(LOG_TAG, "current maximum:" + SpotConfigurationActivity.this.currentMaximum);
+				updateDeltaTextView(currentSelectUnit, SpotConfigurationActivity.this.currentMinimum,
+						SpotConfigurationActivity.this.currentMaximum);
 
 			}
 

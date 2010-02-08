@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import de.macsystems.windroid.alarm.AlarmDetail;
+import de.macsystems.windroid.common.IntentConstants;
 
 /**
  * @author Jens Hohl

@@ -12,6 +12,7 @@ import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.util.Log;
+import de.macsystems.windroid.common.PrefConstants;
 import de.macsystems.windroid.identifyable.Continent;
 import de.macsystems.windroid.identifyable.WindUnit;
 

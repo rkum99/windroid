@@ -1,7 +1,7 @@
 package de.macsystems.windroid.db;
 
 import android.database.Cursor;
-import de.macsystems.windroid.SpotConfigurationVO;
+import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.identifyable.World;
 
 /**

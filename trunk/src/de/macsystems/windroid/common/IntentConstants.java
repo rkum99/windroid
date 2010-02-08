@@ -1,4 +1,4 @@
-package de.macsystems.windroid;
+package de.macsystems.windroid.common;
 
 /**
  * @author Jens Hohl
@@ -16,7 +16,7 @@ public final class IntentConstants
 	/**
 	 * Used to recieve AlarmDetail Object {@value #ALARM_DETAIL}
 	 */
-	static final String ALARM_DETAIL = "AlarmDetail";
+	public static final String ALARM_DETAIL = "AlarmDetail";
 
 	/**
 	 * Name of Action which will start this Service

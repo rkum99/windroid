@@ -9,6 +9,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import de.macsystems.windroid.common.IntentConstants;
+import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.io.RetryLaterException;
 import de.macsystems.windroid.io.task.MD5Task;

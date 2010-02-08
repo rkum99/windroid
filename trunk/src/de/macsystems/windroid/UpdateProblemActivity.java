@@ -8,7 +8,7 @@ import android.os.Bundle;
  * @version $Id$
  * 
  */
-public class UpdateProblem extends Activity
+public class UpdateProblemActivity extends Activity
 {
 
 	/*

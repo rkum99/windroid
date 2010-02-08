@@ -18,6 +18,9 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
+import de.macsystems.windroid.common.IntentConstants;
+import de.macsystems.windroid.common.SpotConfigurationVO;
+import de.macsystems.windroid.concurrent.ThreadFactory;
 import de.macsystems.windroid.db.DAOFactory;
 import de.macsystems.windroid.db.ISelectedDAO;
 import de.macsystems.windroid.forecast.Forecast;
@@ -397,7 +400,7 @@ public class SpotService extends Service
 		if (threadPool == null)
 		{
 			final int poolSize = getResources().getInteger(R.integer.schedule_threadpool_size);
-			threadPool = new ScheduledThreadPoolExecutor(poolSize);
+			threadPool = new ScheduledThreadPoolExecutor(poolSize, new ThreadFactory());
 			Log.d(LOG_TAG, "Thread Pool Created with size :" + poolSize);
 		}
 	}

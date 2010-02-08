@@ -1,4 +1,4 @@
-package de.macsystems.windroid;
+package de.macsystems.windroid.custom.activity;
 
 import android.app.Activity;
 import android.content.Intent;

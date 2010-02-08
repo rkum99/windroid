@@ -2,7 +2,7 @@ package de.macsystems.windroid.parser;
 
 import java.util.Iterator;
 
-import de.macsystems.windroid.SpotConfigurationVO;
+import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.forecast.Forecast;
 import de.macsystems.windroid.forecast.ForecastDetail;
 import de.macsystems.windroid.identifyable.WindSpeed;

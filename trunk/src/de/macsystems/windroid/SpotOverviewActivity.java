@@ -14,6 +14,8 @@ import android.view.View.OnCreateContextMenuListener;
 import android.widget.SimpleCursorAdapter;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import de.macsystems.windroid.R;
+import de.macsystems.windroid.common.IntentConstants;
+import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.db.DAOFactory;
 import de.macsystems.windroid.db.ISelectedDAO;
 
@@ -24,12 +26,12 @@ import de.macsystems.windroid.db.ISelectedDAO;
  * @version $Id$
  * 
  */
-public class SpotOverview extends ListActivity
+public class SpotOverviewActivity extends ListActivity
 {
 
 	private final static int EDIT_SPOT_REQUEST_CODE = 400;
 
-	private final static String LOG_TAG = SpotOverview.class.getSimpleName();
+	private final static String LOG_TAG = SpotOverviewActivity.class.getSimpleName();
 	private static final int ENABLE_ITEM_ID = 0;
 	private static final int DISABLE_ITEM_ID = 1;
 	private static final int EDIT_ITEM_ID = 2;
@@ -174,7 +176,7 @@ public class SpotOverview extends ListActivity
 		final ISelectedDAO dao = DAOFactory.getSelectedDAO(this);
 		final SpotConfigurationVO vo = dao.getSpotConfiguration(_id);
 
-		final Intent intent = new Intent(SpotOverview.this, SpotConfiguration.class);
+		final Intent intent = new Intent(SpotOverviewActivity.this, SpotConfigurationActivity.class);
 		intent.putExtra(IntentConstants.SPOT_TO_CONFIGURE, vo);
 		startActivityForResult(intent, EDIT_SPOT_REQUEST_CODE);
 	}

@@ -77,7 +77,7 @@
 			android:label="@string/spot_overview_title"
 			android:icon="@drawable/icon" />
 		<receiver
-			android:name="de.macsystems.windroid.BootCompletedBroadcastReceiver"
+			android:name="de.macsystems.windroid.receiver.BootCompletedBroadcastReceiver"
 			android:label="@string/app_name"
 			android:enabled="true"
 			android:exported="false">
@@ -87,7 +87,7 @@
 			</intent-filter>
 		</receiver>
 		<receiver
-			android:name="de.macsystems.windroid.AlarmBroadcastReciever"
+			android:name="de.macsystems.windroid.receiver.AlarmBroadcastReciever"
 			android:label="@string/app_name"
 			android:enabled="true"
 			android:exported="false">
@@ -104,7 +104,7 @@
 				android:resource="@xml/homescreen_appwidget_info" />
 		</receiver>
 		<service
-			android:name="de.macsystems.windroid.SpotService"
+			android:name="de.macsystems.windroid.service.SpotService"
 			android:label="@string/app_name"
 			android:enabled="true">
 			<intent-filter>

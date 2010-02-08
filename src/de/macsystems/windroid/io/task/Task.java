@@ -6,7 +6,7 @@ import android.content.Context;
 import de.macsystems.windroid.io.RetryLaterException;
 
 /**
- * Interface for io tasks.
+ * Interface for common tasks.
  * 
  * @author Jens Hohl
  * @version $Id$

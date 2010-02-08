@@ -222,7 +222,7 @@ public class SpotService extends Service
 		final int notificationID = notificationCounter.incrementAndGet();
 
 		final long when = System.currentTimeMillis(); // notification time
-		final Intent notificationIntent = new Intent(context, OngoingUpdate.class);
+		final Intent notificationIntent = new Intent(context, OngoingUpdateActivity.class);
 		final PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 
 		final Notification notification = new Notification(R.drawable.icon_update, notificationTitle, when);

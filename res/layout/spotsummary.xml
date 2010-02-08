@@ -48,7 +48,7 @@
 					android:layout_width="100dip"
 					android:layout_height="fill_parent" />
 
-				<de.macsystems.windroid.CompassView
+				<de.macsystems.windroid.custom.view.CompassView
 					android:id="@+id/compass"
 					android:background="@drawable/windrose_200x200"
 					android:layout_width="200dip"

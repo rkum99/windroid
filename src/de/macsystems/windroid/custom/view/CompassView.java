@@ -1,4 +1,4 @@
-package de.macsystems.windroid;
+package de.macsystems.windroid.custom.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -71,7 +71,7 @@ public class CompassView extends ImageView
 	 * 
 	 * @param _from
 	 */
-	protected void setFromDirection(final WindDirection _from)
+	public void setFromDirection(final WindDirection _from)
 	{
 		fromDirection = _from;
 		if (Log.isLoggable(LOG_TAG, Log.DEBUG))
@@ -84,7 +84,7 @@ public class CompassView extends ImageView
 	 * 
 	 * @param _to
 	 */
-	protected void setToDirection(final WindDirection _to)
+	public void setToDirection(final WindDirection _to)
 	{
 		toDirection = _to;
 		if (Log.isLoggable(LOG_TAG, Log.DEBUG))

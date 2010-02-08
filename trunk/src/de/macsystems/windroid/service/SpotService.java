@@ -1,4 +1,4 @@
-package de.macsystems.windroid;
+package de.macsystems.windroid.service;
 
 import java.io.IOException;
 import java.net.URI;
@@ -18,6 +18,10 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
+import de.macsystems.windroid.ISpotService;
+import de.macsystems.windroid.OngoingUpdateActivity;
+import de.macsystems.windroid.R;
+import de.macsystems.windroid.WindUtils;
 import de.macsystems.windroid.common.IntentConstants;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.concurrent.ThreadFactory;
@@ -29,6 +33,7 @@ import de.macsystems.windroid.identifyable.WindSpeed;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.io.RetryLaterException;
 import de.macsystems.windroid.io.task.ForecastTask;
+import de.macsystems.windroid.receiver.AlarmBroadcastReciever;
 
 /**
  * @author Jens Hohl

@@ -1,4 +1,4 @@
-package de.macsystems.windroid;
+package de.macsystems.windroid.receiver;
 
 import java.util.ArrayList;
 import java.util.Collection;

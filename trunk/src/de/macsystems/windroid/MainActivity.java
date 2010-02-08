@@ -38,6 +38,7 @@ import de.macsystems.windroid.db.ISelectedDAO;
 import de.macsystems.windroid.db.ISpotDAO;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.proxy.SpotServiceConnection;
+import de.macsystems.windroid.receiver.EnableViewConnectionBroadcastReciever;
 
 /**
  * This is the Entry Point when the Application will be launched.

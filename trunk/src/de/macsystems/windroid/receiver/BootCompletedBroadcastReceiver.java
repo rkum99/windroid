@@ -1,5 +1,6 @@
-package de.macsystems.windroid;
+package de.macsystems.windroid.receiver;
 
+import de.macsystems.windroid.Util;
 import de.macsystems.windroid.common.IntentConstants;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;

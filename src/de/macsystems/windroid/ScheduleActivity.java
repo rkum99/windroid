@@ -18,6 +18,9 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+import de.macsystems.windroid.common.IntentConstants;
+import de.macsystems.windroid.common.SpotConfigurationVO;
+import de.macsystems.windroid.custom.activity.ChainSubActivity;
 import de.macsystems.windroid.identifyable.Repeat;
 import de.macsystems.windroid.identifyable.Schedule;
 
@@ -116,7 +119,7 @@ public class ScheduleActivity extends ChainSubActivity
 
 				else
 				{
-					final Intent intent = new Intent(ScheduleActivity.this, SpotSummary.class);
+					final Intent intent = new Intent(ScheduleActivity.this, SpotSummaryActivity.class);
 					intent.putExtra(IntentConstants.SPOT_TO_CONFIGURE, spotInfo);
 
 					final Iterator<Integer> iter = checkboxesMap.keySet().iterator();
@@ -129,7 +132,7 @@ public class ScheduleActivity extends ChainSubActivity
 						schedule.addRepeat(resID, new Repeat(resID, 12L * 60L * 60L * 1000L, checked));
 					}
 
-					startActivityForResult(intent, Main.CONFIGURATION_REQUEST_CODE);
+					startActivityForResult(intent, MainActivity.CONFIGURATION_REQUEST_CODE);
 				}
 			}
 		});

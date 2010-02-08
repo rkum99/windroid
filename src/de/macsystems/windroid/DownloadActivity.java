@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import de.macsystems.windroid.custom.activity.ChainSubActivity;
 import de.macsystems.windroid.db.DAOFactory;
 import de.macsystems.windroid.db.ISpotDAO;
 import de.macsystems.windroid.identifyable.World;
@@ -128,7 +129,7 @@ public class DownloadActivity extends ChainSubActivity
 				final String message = DownloadActivity.this.getString(R.string.download_failure_text);
 				final String header = DownloadActivity.this.getString(R.string.download_failure_header);
 
-				new AlertDialog.Builder(DownloadActivity.this).setPositiveButton(ok, getOkListener(Main.class))
+				new AlertDialog.Builder(DownloadActivity.this).setPositiveButton(ok, getOkListener(MainActivity.class))
 						.setTitle(header).setMessage(message + stackTrace).show();
 			}
 		});
@@ -149,7 +150,7 @@ public class DownloadActivity extends ChainSubActivity
 				final String header = DownloadActivity.this.getString(R.string.download_success_header);
 
 				new AlertDialog.Builder(DownloadActivity.this)
-						.setPositiveButton(ok, getOkListener(SpotSelection.class)).setTitle(header).setMessage(message)
+						.setPositiveButton(ok, getOkListener(SpotSelectionActivity.class)).setTitle(header).setMessage(message)
 						.show();
 			}
 		});
@@ -168,7 +169,7 @@ public class DownloadActivity extends ChainSubActivity
 			public final void onClick(final DialogInterface dialog, final int which)
 			{
 				final Intent nextActivitiyIntent = new Intent(DownloadActivity.this, _nextActivity);
-				startActivityForResult(nextActivitiyIntent, Main.CONFIGURATION_REQUEST_CODE);
+				startActivityForResult(nextActivitiyIntent, MainActivity.CONFIGURATION_REQUEST_CODE);
 			}
 		};
 		return listener;
@@ -184,7 +185,7 @@ public class DownloadActivity extends ChainSubActivity
 			@Override
 			public final void onClick(final View v)
 			{
-				setResult(ActivityResult.CANCELED);
+				setResult(Activity.RESULT_CANCELED);
 				finish();
 			}
 		};

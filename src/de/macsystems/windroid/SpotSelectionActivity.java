@@ -12,6 +12,9 @@ import android.widget.Button;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
+import de.macsystems.windroid.common.IntentConstants;
+import de.macsystems.windroid.common.SpotConfigurationVO;
+import de.macsystems.windroid.custom.activity.ChainSubActivity;
 import de.macsystems.windroid.db.DAOFactory;
 import de.macsystems.windroid.db.IContinentDAO;
 import de.macsystems.windroid.db.ICountryDAO;
@@ -24,10 +27,10 @@ import de.macsystems.windroid.db.ISpotDAO;
  * @author Jens Hohl
  * @version $Id$
  */
-public class SpotSelection extends ChainSubActivity
+public class SpotSelectionActivity extends ChainSubActivity
 {
 
-	private final static String LOG_TAG = SpotSelection.class.getSimpleName();
+	private final static String LOG_TAG = SpotSelectionActivity.class.getSimpleName();
 
 	private final Handler handler = new Handler();
 
@@ -53,7 +56,7 @@ public class SpotSelection extends ChainSubActivity
 				/**
 				 * Post selected Station to next Activity.
 				 */
-				final Intent intent = new Intent(SpotSelection.this, SpotConfiguration.class);
+				final Intent intent = new Intent(SpotSelectionActivity.this, SpotConfigurationActivity.class);
 
 				final Spinner spotSpinner = (Spinner) findViewById(R.id.stationSpinner);
 				/**
@@ -64,12 +67,12 @@ public class SpotSelection extends ChainSubActivity
 				final int index = cursor.getColumnIndexOrThrow("spotid");
 				final String spotId = cursor.getString(index);
 
-				final ISpotDAO dao = DAOFactory.getSpotDAO(SpotSelection.this);
+				final ISpotDAO dao = DAOFactory.getSpotDAO(SpotSelectionActivity.this);
 				final SpotConfigurationVO info = dao.fetchBy(spotId);
 
 				intent.putExtra(IntentConstants.SPOT_TO_CONFIGURE, info);
 				// SpotSelection.this.startActivity(intent);
-				SpotSelection.this.startActivityForResult(intent, Main.CONFIGURATION_REQUEST_CODE);
+				SpotSelectionActivity.this.startActivityForResult(intent, MainActivity.CONFIGURATION_REQUEST_CODE);
 			}
 		});
 	}
@@ -82,10 +85,10 @@ public class SpotSelection extends ChainSubActivity
 			public void run()
 			{
 				{
-					final SharedPreferences pref = Util.getSharedPreferences(SpotSelection.this);
+					final SharedPreferences pref = Util.getSharedPreferences(SpotSelectionActivity.this);
 					final String continentID = Util.getSelectedContinentID(pref);
 
-					final IContinentDAO continentDAO = DAOFactory.getContinentDAO(SpotSelection.this);
+					final IContinentDAO continentDAO = DAOFactory.getContinentDAO(SpotSelectionActivity.this);
 					final int selectionIndex = continentDAO.getIndexByID(continentID);
 
 					Log.d(LOG_TAG, "preferred continentID is     :" + continentID);
@@ -97,7 +100,7 @@ public class SpotSelection extends ChainSubActivity
 					{ "id", "name" };
 					final int[] to = new int[]
 					{ android.R.id.text1, android.R.id.text2 };
-					final SimpleCursorAdapter shows = new SimpleCursorAdapter(SpotSelection.this,
+					final SimpleCursorAdapter shows = new SimpleCursorAdapter(SpotSelectionActivity.this,
 							android.R.layout.simple_spinner_item, c, from, to);
 
 					final Spinner continentSpinner = (Spinner) findViewById(R.id.continentSpinner);
@@ -151,7 +154,7 @@ public class SpotSelection extends ChainSubActivity
 			public final void onItemSelected(final AdapterView<?> parent, final View view, final int position,
 					final long _id)
 			{
-				final ICountryDAO dao = DAOFactory.getCountryDAO(SpotSelection.this);
+				final ICountryDAO dao = DAOFactory.getCountryDAO(SpotSelectionActivity.this);
 				final String id = getID(R.id.continentSpinner);
 
 				final Cursor c = dao.fetchByContinentID(id);
@@ -160,7 +163,7 @@ public class SpotSelection extends ChainSubActivity
 				{ "name", "id" };
 				final int[] to = new int[]
 				{ android.R.id.text1, android.R.id.text2 };
-				final SimpleCursorAdapter shows = new SimpleCursorAdapter(SpotSelection.this,
+				final SimpleCursorAdapter shows = new SimpleCursorAdapter(SpotSelectionActivity.this,
 						android.R.layout.simple_spinner_item, c, from, to);
 
 				final Spinner countrySpinner = (Spinner) findViewById(R.id.countrySpinner);
@@ -186,7 +189,7 @@ public class SpotSelection extends ChainSubActivity
 			public final void onItemSelected(final AdapterView<?> parent, final View view, final int position,
 					final long _id)
 			{
-				final IRegionDAO dao = DAOFactory.getRegionDAO(SpotSelection.this);
+				final IRegionDAO dao = DAOFactory.getRegionDAO(SpotSelectionActivity.this);
 				final String id = getID(R.id.countrySpinner);
 
 				final Cursor c = dao.fetchByCountryID(id);
@@ -195,7 +198,7 @@ public class SpotSelection extends ChainSubActivity
 				{ "name", "id" };
 				final int[] to = new int[]
 				{ android.R.id.text1, android.R.id.text2 };
-				final SimpleCursorAdapter shows = new SimpleCursorAdapter(SpotSelection.this,
+				final SimpleCursorAdapter shows = new SimpleCursorAdapter(SpotSelectionActivity.this,
 						android.R.layout.simple_spinner_item, c, from, to);
 
 				final Spinner regionSpinner = (Spinner) findViewById(R.id.regionSpinner);
@@ -220,7 +223,7 @@ public class SpotSelection extends ChainSubActivity
 			public final void onItemSelected(final AdapterView<?> parent, final View view, final int position,
 					final long _id)
 			{
-				final ISpotDAO dao = DAOFactory.getSpotDAO(SpotSelection.this);
+				final ISpotDAO dao = DAOFactory.getSpotDAO(SpotSelectionActivity.this);
 				final Spinner spotSpinner = (Spinner) findViewById(R.id.stationSpinner);
 				//
 				final String countryID = getID(R.id.countrySpinner);
@@ -233,7 +236,7 @@ public class SpotSelection extends ChainSubActivity
 				{ "name", "spotid" };
 				final int[] to = new int[]
 				{ android.R.id.text1, android.R.id.text2 };
-				final SimpleCursorAdapter shows = new SimpleCursorAdapter(SpotSelection.this,
+				final SimpleCursorAdapter shows = new SimpleCursorAdapter(SpotSelectionActivity.this,
 						android.R.layout.simple_spinner_item, c, from, to);
 
 				spotSpinner.setAdapter(shows);

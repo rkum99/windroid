@@ -4,8 +4,8 @@ import java.net.URI;
 import java.util.concurrent.Callable;
 
 import android.content.Context;
-import de.macsystems.windroid.SpotConfigurationVO;
 import de.macsystems.windroid.WindUtils;
+import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.forecast.Forecast;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.io.RetryLaterException;

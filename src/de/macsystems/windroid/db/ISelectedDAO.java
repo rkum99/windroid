@@ -3,7 +3,7 @@ package de.macsystems.windroid.db;
 import java.util.Collection;
 
 import android.database.Cursor;
-import de.macsystems.windroid.SpotConfigurationVO;
+import de.macsystems.windroid.common.SpotConfigurationVO;
 
 /**
  * @author Jens Hohl

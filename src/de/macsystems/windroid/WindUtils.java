@@ -76,17 +76,6 @@ public class WindUtils
 	}
 
 	/**
-	 * Converts "1" into <code>true</code> else false will be returned.
-	 * 
-	 * @param _value
-	 * @return
-	 */
-	public final static boolean toBoolean(final String _value)
-	{
-		return "1".equals(_value);
-	}
-
-	/**
 	 * Returns URL where all Stations are defined.
 	 * 
 	 * @return

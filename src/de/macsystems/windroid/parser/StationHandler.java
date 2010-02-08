@@ -5,7 +5,6 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import android.util.Log;
-import de.macsystems.windroid.WindUtils;
 import de.macsystems.windroid.identifyable.Continent;
 import de.macsystems.windroid.identifyable.Country;
 import de.macsystems.windroid.identifyable.Region;
@@ -124,14 +123,14 @@ public class StationHandler extends DefaultHandler
 
 		final String stationid = attributes.getValue(indexID);
 		final String stationName = attributes.getValue(indexName);
-		final boolean hasSuperforecast = WindUtils.toBoolean(attributes.getValue(indexSuperforecast));
-		final boolean hasStatistic = WindUtils.toBoolean(attributes.getValue(indexStatistic));
+		final boolean hasSuperforecast = asBoolean(attributes.getValue(indexSuperforecast));
+		final boolean hasStatistic = asBoolean(attributes.getValue(indexStatistic));
 		final String keyword = attributes.getValue(indexKeyword);
 
-		final boolean hasReport = WindUtils.toBoolean(attributes.getValue(indexReport));
-		final boolean hasWaveReport = WindUtils.toBoolean(attributes.getValue(indexWaveReport));
-		final boolean hasWaveforecast = WindUtils.toBoolean(attributes.getValue(indexWaveforecast));
-		final boolean hasForecast = WindUtils.toBoolean(attributes.getValue(indexForecast));
+		final boolean hasReport = asBoolean(attributes.getValue(indexReport));
+		final boolean hasWaveReport = asBoolean(attributes.getValue(indexWaveReport));
+		final boolean hasWaveforecast = asBoolean(attributes.getValue(indexWaveforecast));
+		final boolean hasForecast = asBoolean(attributes.getValue(indexForecast));
 
 		final Station station = new Station(stationName, stationid, keyword, hasForecast, hasSuperforecast,
 				hasStatistic, hasReport, hasWaveReport, hasWaveforecast);
@@ -166,5 +165,16 @@ public class StationHandler extends DefaultHandler
 		final Continent newContinent = new Continent(id, name);
 		world.add(newContinent);
 		currentContinent = newContinent;
+	}
+
+	/**
+	 * Converts "1" into <code>true</code> else false will be returned.
+	 * 
+	 * @param _value
+	 * @return
+	 */
+	private final static boolean asBoolean(final String _value)
+	{
+		return "1".equals(_value);
 	}
 }

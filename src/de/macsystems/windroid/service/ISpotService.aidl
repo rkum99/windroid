@@ -1,4 +1,4 @@
-package de.macsystems.windroid;
+package de.macsystems.windroid.service;
 
 interface ISpotService
 {

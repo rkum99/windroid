@@ -1,8 +1,5 @@
 package de.macsystems.windroid;
 
-import de.macsystems.windroid.common.IntentConstants;
-import de.macsystems.windroid.common.SpotConfigurationVO;
-import de.macsystems.windroid.custom.view.CompassView;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -10,6 +7,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import de.macsystems.windroid.common.IntentConstants;
+import de.macsystems.windroid.common.SpotConfigurationVO;
+import de.macsystems.windroid.custom.view.CompassView;
 
 /**
  * Activity which shows spot configuration and allows user finally to select or

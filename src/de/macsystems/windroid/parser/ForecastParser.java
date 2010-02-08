@@ -2,6 +2,7 @@ package de.macsystems.windroid.parser;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.json.JSONArray;
@@ -38,6 +39,8 @@ public final class ForecastParser
 	private static final String CLOUDS = "clouds";
 	private static final String UNIT = "unit";
 	private static final String VALUE = "value";
+	private static final String TIME = "time";
+	private static final String DATE = "date";
 
 	private ForecastParser()
 	{
@@ -213,6 +216,7 @@ public final class ForecastParser
 			final Builder builder = new ForecastDetail.Builder("dummy id");
 
 			final JSONObject forecastDetailMap = forecastArray.getJSONObject(i);
+			//
 			final JSONObject precipitationMap = forecastDetailMap.getJSONObject("precipitation");
 			parsePrecipitationMap(precipitationMap, builder);
 			final JSONObject wavePeriodMap = forecastDetailMap.getJSONObject("wave_period");
@@ -220,6 +224,8 @@ public final class ForecastParser
 			final JSONObject waveHeightMap = forecastDetailMap.getJSONObject("wave_height");
 			parseWaveHeight(waveHeightMap, builder);
 			parseWindDirection(forecastDetailMap, builder);
+			parseTime(forecastDetailMap, builder);
+			parseDate(forecastDetailMap, builder);
 			final JSONObject waterTemperatureMap = forecastDetailMap.getJSONObject("water_temperature");
 			parseWaterTemperatureMap(waterTemperatureMap, builder);
 			final JSONObject windGustsMap = forecastDetailMap.getJSONObject("wind_gusts");
@@ -234,6 +240,87 @@ public final class ForecastParser
 			forecast.add(builder.build());
 		}
 		return forecast;
+	}
+
+	/**
+	 * "date":"20100207"
+	 * 
+	 * "date":"2010 02 07"
+	 * 
+	 * @param forecastDetailMap
+	 * @param builder
+	 * @throws JSONException
+	 */
+	private static void parseDate(JSONObject forecastDetailMap, Builder builder) throws JSONException
+	{
+		final String timeString = forecastDetailMap.getString(DATE);
+
+		if (timeString.length() != 8)
+		{
+			throw new IllegalArgumentException("wrong format, expected length of 6.");
+		}
+
+		final int year = Integer.parseInt(timeString.substring(0, 4));
+		final int month = Integer.parseInt(timeString.substring(4, 6)) - 1;
+		final int day = Integer.parseInt(timeString.substring(6, 8));
+
+		final Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.YEAR, year);
+		cal.set(Calendar.MONTH, month);
+		cal.set(Calendar.DAY_OF_MONTH, day);
+
+		Log.d(LOG_TAG, "year string is : " + timeString.substring(0, 4));
+		Log.d(LOG_TAG, "month string is : " + timeString.substring(4, 6));
+		Log.d(LOG_TAG, "day string is : " + timeString.substring(6, 8));
+		//
+		// Log.d(LOG_TAG, "hrs is : " + hrs);
+		// Log.d(LOG_TAG, "min is : " + min);
+		// Log.d(LOG_TAG, "sec is : " + sec);
+		//
+		// Log.d(LOG_TAG, "TimeString is : " + timeString);
+		Log.d(LOG_TAG, "Time is : " + cal.getTime());
+		// Log.d(LOG_TAG, "Time as Date is : " + new Date(time));
+
+		builder.setDate(cal.getTime());
+
+	}
+
+	/**
+	 * parses the time of a forecast "time":"02 00 00"
+	 * 
+	 * TODO: Keep care of Timezone (GMT) when calculating.
+	 * 
+	 * @param forecastDetailMap
+	 * @param builder
+	 * @throws JSONException
+	 */
+	private static void parseTime(JSONObject forecastDetailMap, Builder builder) throws JSONException
+	{
+		final String timeString = forecastDetailMap.getString(TIME);
+
+		if (timeString.length() != 6)
+		{
+			throw new IllegalArgumentException("wrong format, expected length of 6.");
+		}
+
+		final long hrs = Long.parseLong(timeString.substring(0, 2));
+		final long min = Long.parseLong(timeString.substring(2, 4));
+		final long sec = Long.parseLong(timeString.substring(4, 6));
+		final long time = (hrs * 60L * 60L * 1000L) + (min * 60L * 1000L) + (sec * 1000L);
+
+		// Log.d(LOG_TAG, "hrs string is : " + timeString.substring(0, 2));
+		// Log.d(LOG_TAG, "min string is : " + timeString.substring(2, 4));
+		// Log.d(LOG_TAG, "sec string is : " + timeString.substring(4, 6));
+		//
+		// Log.d(LOG_TAG, "hrs is : " + hrs);
+		// Log.d(LOG_TAG, "min is : " + min);
+		// Log.d(LOG_TAG, "sec is : " + sec);
+		//
+		// Log.d(LOG_TAG, "TimeString is : " + timeString);
+		// Log.d(LOG_TAG, "Time is : " + time);
+		// Log.d(LOG_TAG, "Time as Date is : " + new Date(time));
+
+		builder.setTime((int) time);
 	}
 
 }

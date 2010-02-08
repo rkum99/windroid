@@ -1,11 +1,11 @@
 package de.macsystems.windroid.receiver;
 
-import de.macsystems.windroid.common.IntentConstants;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import de.macsystems.windroid.common.IntentConstants;
 
 /**
  * Called when Alarm comes up. The primary key received is the Spot which needs

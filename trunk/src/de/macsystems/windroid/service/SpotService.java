@@ -18,7 +18,6 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
-import de.macsystems.windroid.ISpotService;
 import de.macsystems.windroid.OngoingUpdateActivity;
 import de.macsystems.windroid.R;
 import de.macsystems.windroid.WindUtils;

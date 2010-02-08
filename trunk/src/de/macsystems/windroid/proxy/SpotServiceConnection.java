@@ -9,8 +9,8 @@ import android.os.RemoteException;
 import android.util.AndroidRuntimeException;
 import android.util.Log;
 import android.view.View;
-import de.macsystems.windroid.ISpotService;
 import de.macsystems.windroid.common.IntentConstants;
+import de.macsystems.windroid.service.ISpotService;
 
 /**
  * Proxy Class with implements the ISpotService Interface to control the

@@ -8,7 +8,7 @@ import android.os.Bundle;
  * @version $Id$
  * 
  */
-public class OngoingUpdate extends Activity
+public class OngoingUpdateActivity extends Activity
 {
 
 	/*

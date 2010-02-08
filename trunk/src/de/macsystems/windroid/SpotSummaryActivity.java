@@ -2,6 +2,7 @@ package de.macsystems.windroid;
 
 import de.macsystems.windroid.common.IntentConstants;
 import de.macsystems.windroid.common.SpotConfigurationVO;
+import de.macsystems.windroid.custom.view.CompassView;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;

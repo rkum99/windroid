@@ -14,7 +14,7 @@ public final class Logging
 	 * 
 	 * @return
 	 */
-	public final static boolean isLogging()
+	public final static boolean isLoggingEnabled()
 	{
 		return true;
 	}

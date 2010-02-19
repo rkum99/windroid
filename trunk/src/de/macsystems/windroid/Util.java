@@ -149,9 +149,14 @@ public final class Util
 	 * will do nothing.
 	 * 
 	 * @param _cursor
+	 * @see Logging#isLoggingEnabled()
 	 */
 	public final static void printCursorColumnNames(final Cursor _cursor)
 	{
+		if (!Logging.isLoggingEnabled())
+		{
+			return;
+		}
 		if (_cursor == null)
 		{
 			return;
@@ -233,7 +238,7 @@ public final class Util
 	 */
 	public static boolean isValidDayOfWeek(final int _day)
 	{
-		return (_day < Calendar.SUNDAY || _day > Calendar.SATURDAY) ? true : false;
+		return (_day >= Calendar.SUNDAY && _day <= Calendar.SATURDAY) ? true : false;
 	}
 
 }

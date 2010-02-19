@@ -48,7 +48,7 @@ public enum WindUnit implements IdentifyAble
 		}
 		for (final WindUnit unit : WindUnit.values())
 		{
-			if (_id.equals(unit.id))
+			if (_id.equalsIgnoreCase(unit.id))
 			{
 				return unit;
 			}

@@ -73,10 +73,16 @@ public class MainActivity extends Activity
 
 		if (requestCode == CONFIGURATION_REQUEST_CODE)
 		{
-			Log.d(LOG_TAG, "Recieved requestcode CONFIGURATION_REQUEST_CODE");
+			if (Logging.isLoggingEnabled())
+			{
+				Log.d(LOG_TAG, "Recieved requestcode CONFIGURATION_REQUEST_CODE");
+			}
 			if (resultCode == Activity.RESULT_OK)
 			{
-				Log.d(LOG_TAG, "Recieved resultcode RESULT_OK");
+				if (Logging.isLoggingEnabled())
+				{
+					Log.d(LOG_TAG, "Recieved resultcode RESULT_OK");
+				}
 				// updateSpot(data);
 				if (WindUtils.isSpotConfigured(data))
 				{
@@ -102,7 +108,10 @@ public class MainActivity extends Activity
 			}
 			else if (resultCode == Activity.RESULT_CANCELED)
 			{
-				Log.d(LOG_TAG, "Recieved resultCode RESULT_CANCELED");
+				if (Logging.isLoggingEnabled())
+				{
+					Log.d(LOG_TAG, "Recieved resultCode RESULT_CANCELED");
+				}
 			}
 		}
 		else
@@ -207,6 +216,18 @@ public class MainActivity extends Activity
 			}
 		});
 
+		final Button forecastButton = (Button) findViewById(R.id.button_show_forecast);
+		forecastButton.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public final void onClick(final View v)
+			{
+				final Intent intent = new Intent(MainActivity.this, ForecastActivity.class);
+				MainActivity.this.startActivity(intent);
+			}
+
+		});
+
 		final CompoundButton toogleServiceButton = (CompoundButton) findViewById(R.id.button_toogle_service);
 		final SpotServiceConnection serviceConnection = new SpotServiceConnection(toogleServiceButton, this);
 		toogleServiceButton.setOnCheckedChangeListener(createServiceToogleListener(serviceConnection));
@@ -267,9 +288,12 @@ public class MainActivity extends Activity
 
 		for (int i = 0; i < services.size(); i++)
 		{
-			Log.d(LOG_TAG, "Service Nr. " + i + " :" + services.get(i).service);
-			Log.d(LOG_TAG, "Service Nr. " + i + " package name : " + services.get(i).service.getPackageName());
-			Log.d(LOG_TAG, "Service Nr. " + i + " class name   : " + services.get(i).service.getClassName());
+			if (Logging.isLoggingEnabled())
+			{
+				Log.d(LOG_TAG, "Service Nr. " + i + " :" + services.get(i).service);
+				Log.d(LOG_TAG, "Service Nr. " + i + " package name : " + services.get(i).service.getPackageName());
+				Log.d(LOG_TAG, "Service Nr. " + i + " class name   : " + services.get(i).service.getClassName());
+			}
 
 			if ("de.macsystems.windroid".equals(services.get(i).service.getPackageName()))
 			{
@@ -283,14 +307,20 @@ public class MainActivity extends Activity
 
 		if (!isServiceFound)
 		{
-			Log.d(LOG_TAG, "Starting Service");
+			if (Logging.isLoggingEnabled())
+			{
+				Log.d(LOG_TAG, "Starting Service");
+			}
 			final Intent startServiceIntent = new Intent();
 			startServiceIntent.setAction(IntentConstants.DE_MACSYSTEMS_WINDROID_START_SPOT_SERVICE_ACTION);
 			startService(startServiceIntent);
 		}
 		else
 		{
-			Log.i(LOG_TAG, "Nothing to do, SpotService already running !!!!!");
+			if (Logging.isLoggingEnabled())
+			{
+				Log.i(LOG_TAG, "Nothing to do, SpotService already running !!!!!");
+			}
 		}
 	}
 
@@ -310,7 +340,8 @@ public class MainActivity extends Activity
 			public final void onClick(final View v)
 			{
 				final NotificationManager mManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-				showNotification(MainActivity.this, mManager, 999, "Windalarm", "Alarm für Station XYZ wurde ausgelöst.");
+				showNotification(MainActivity.this, mManager, 999, "Windalarm",
+						"Alarm für Station XYZ wurde ausgelöst.");
 			}
 		};
 		button.setOnClickListener(listener);
@@ -357,8 +388,10 @@ public class MainActivity extends Activity
 	public boolean onOptionsItemSelected(final MenuItem item)
 	{
 		super.onOptionsItemSelected(item);
-
-		Log.d(LOG_TAG, "selected icon id " + item.getItemId());
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "selected icon id " + item.getItemId());
+		}
 		boolean result = false;
 		if (item.getItemId() == ABOUT_MENU_ID)
 		{
@@ -407,8 +440,8 @@ public class MainActivity extends Activity
 	}
 
 	/**
-	 * Launches {@link DownloadActivity} Activity or the {@link SpotSelectionActivity}
-	 * Activity which depends on database
+	 * Launches {@link DownloadActivity} Activity or the
+	 * {@link SpotSelectionActivity} Activity which depends on database
 	 * 
 	 */
 	private void launchSetupOrSpotSelectionActivity()

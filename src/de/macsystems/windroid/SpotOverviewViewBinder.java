@@ -1,7 +1,6 @@
 package de.macsystems.windroid;
 
 import android.database.Cursor;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
@@ -89,7 +88,6 @@ public class SpotOverviewViewBinder implements SimpleCursorAdapter.ViewBinder
 		}
 		else if (columnIndex == INDEX_WIND_DIRECTION_START)
 		{
-			Log.d("ViewBinder", " Class name: " + view.getClass().getName());
 			final ImageView tv = (ImageView) view;
 			final String id = cursor.getString(columnIndex);
 			final int index = IdentityUtil.indexOf(id, WindDirection.values());

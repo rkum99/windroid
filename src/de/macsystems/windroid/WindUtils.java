@@ -106,25 +106,38 @@ public class WindUtils
 	 */
 	public final static boolean isStationListUpdateAvailable(final Context _context) throws IOException
 	{
-		Log.d(LOG_TAG, "Updating cache.");
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "Updating cache.");
+		}
 
 		if (!isCachedStationXmlValid(_context))
 		{
-			Log.d(LOG_TAG, "Station file is not valid, force update.");
+			if (Logging.isLoggingEnabled())
+			{
+				Log.d(LOG_TAG, "Station file is not valid, force update.");
+			}
 			return true;
 		}
 
 		final Properties config = IOUtils.getConfigProperties(_context);
 		final String md5 = config.getProperty(STATION_MD5);
-
-		Log.d(LOG_TAG, "Cached MD5 " + md5);
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "Cached MD5 " + md5);
+		}
 
 		final String serverMD5 = getLatestStationMD5(_context);
-		Log.i(LOG_TAG, "Server MD5 " + serverMD5);
+		if (Logging.isLoggingEnabled())
+		{
+			Log.i(LOG_TAG, "Server MD5 " + serverMD5);
+		}
 
 		final boolean result = md5 != null ? md5.equals(serverMD5) : true;
-
-		Log.i(LOG_TAG, result ? "Cache must be updated." + serverMD5 : "Cache is uptodate.");
+		if (Logging.isLoggingEnabled())
+		{
+			Log.i(LOG_TAG, result ? "Cache must be updated." + serverMD5 : "Cache is uptodate.");
+		}
 
 		return result;
 	}
@@ -151,27 +164,44 @@ public class WindUtils
 			IOException
 
 	{
-		Log.d(LOG_TAG, "Updating cache.");
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "Updating cache.");
+		}
 		final Properties config = IOUtils.getConfigProperties(_context);
 		String md5 = config.getProperty(STATION_MD5);
-
-		Log.d(LOG_TAG, "Cached MD5 " + md5);
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "Cached MD5 " + md5);
+		}
 
 		final String latestMD5 = getLatestStationMD5(_context);
-		Log.i(LOG_TAG, "Server MD5 " + latestMD5);
+		if (Logging.isLoggingEnabled())
+		{
+			Log.i(LOG_TAG, "Server MD5 " + latestMD5);
+		}
 		if (md5 == null || !md5.equals(latestMD5))
 		{
-			Log.i(LOG_TAG, "Station.xml will be updated.");
+			if (Logging.isLoggingEnabled())
+			{
+				Log.i(LOG_TAG, "Station.xml will be updated.");
+			}
 			IOUtils.updateCachedStationXML(_context, getStationXMLUrl(), _downloadProgress);
 
 			md5 = latestMD5;
 			config.put(STATION_MD5, md5);
 			IOUtils.writeConfiguration(_context, config);
-			Log.i(LOG_TAG, "Stations list was updated.");
+			if (Logging.isLoggingEnabled())
+			{
+				Log.i(LOG_TAG, "Stations list was updated.");
+			}
 		}
 		else
 		{
-			Log.i(LOG_TAG, "Cache is up to date.");
+			if (Logging.isLoggingEnabled())
+			{
+				Log.i(LOG_TAG, "Cache is up to date.");
+			}
 		}
 	}
 
@@ -210,7 +240,7 @@ public class WindUtils
 	}
 
 	/**
-	 * Return JSON URL
+	 * Return URL of JSON Forecast
 	 * 
 	 * @return
 	 * @throws IOException
@@ -228,7 +258,7 @@ public class WindUtils
 	}
 
 	/**
-	 * Return JSON URL
+	 * Return URL of XML Forecast
 	 * 
 	 * @return
 	 * @throws IOException

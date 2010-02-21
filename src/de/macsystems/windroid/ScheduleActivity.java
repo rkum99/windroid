@@ -101,6 +101,9 @@ public class ScheduleActivity extends ChainSubActivity
 		enableTimeButtons(timeButtonsMap, false);
 		selectCheckBoxes(checkboxesMap, false);
 
+		//
+		preSelectUI(spotInfo);
+
 		final Button okButton = (Button) findViewById(R.id.schedule_button_ok);
 		okButton.setOnClickListener(new OnClickListener()
 		{
@@ -125,17 +128,47 @@ public class ScheduleActivity extends ChainSubActivity
 					final Iterator<Integer> iter = checkboxesMap.keySet().iterator();
 					while (iter.hasNext())
 					{
-						final int resID = checkboxesMap.get(iter.next());
+						final int day = iter.next();
+						final int resID = checkboxesMap.get(day);
 						final CheckBox box = (CheckBox) findViewById(resID);
 						final boolean checked = box.isChecked();
 						final Schedule schedule = spotInfo.getSchedule();
-						schedule.addRepeat(resID, new Repeat(resID, 12L * 60L * 60L * 1000L, checked));
+						// TODO read daytime
+						schedule.addRepeat(new Repeat(day, 12L * 60L * 60L * 1000L, checked));
 					}
 
 					startActivityForResult(intent, MainActivity.CONFIGURATION_REQUEST_CODE);
 				}
 			}
 		});
+	}
+
+	private void preSelectUI(final SpotConfigurationVO _spotInfo)
+	{
+		final Iterator<Integer> iter = _spotInfo.getSchedule().getRepeatIterator();
+		while (iter.hasNext())
+		{
+			final int day = iter.next();
+			final Repeat repeat = _spotInfo.getSchedule().getRepeat(day);
+			if (repeat.isActiv())
+			{
+				final int timeViewResID = timeTextViewsMap.get(day);
+				final TextView timeView = (TextView) findViewById(timeViewResID);
+				final String time = dateFormat.format(new Date(repeat.getDayTime()));
+				dayToDaytimeMap.put(day, repeat.getDayTime());
+				timeView.setText(time);
+				//
+				final int checkBoxResID = checkboxesMap.get(day);
+				final CheckBox checkBox = (CheckBox) findViewById(checkBoxResID);
+				checkBox.setChecked(true);
+				//
+				final int timeButtonResID = timeButtonsMap.get(day);
+				final Button timButton = (Button) findViewById(timeButtonResID);
+				timButton.setEnabled(true);
+				//
+
+			}
+		}
 	}
 
 	private void installListenerOnCheckBoxes(final Map<Integer, Integer> _checkBoxes,
@@ -147,7 +180,10 @@ public class ScheduleActivity extends ChainSubActivity
 		while (iter.hasNext())
 		{
 			final int day = iter.next();
-			Log.d(LOG_TAG, "day " + day);
+			if (Logging.isLoggingEnabled())
+			{
+				Log.d(LOG_TAG, "day " + day);
+			}
 			final CheckBox box = (CheckBox) findViewById(_checkBoxes.get(day));
 			box.setOnClickListener(new View.OnClickListener()
 			{
@@ -233,7 +269,7 @@ public class ScheduleActivity extends ChainSubActivity
 	 */
 	private static long calcDayTime(final int _hourOfDay, final int _minute)
 	{
-		long dayTime = (_hourOfDay * 60L * 60L * 1000L) + (_minute * 60L * 1000L);
+		final long dayTime = (_hourOfDay * 60L * 60L * 1000L) + (_minute * 60L * 1000L);
 		return dayTime;
 	}
 

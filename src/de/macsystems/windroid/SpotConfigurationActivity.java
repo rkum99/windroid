@@ -24,7 +24,8 @@ import de.macsystems.windroid.identifyable.WindUnit;
 
 /**
  * @author Jens Hohl
- * @version $Id$
+ * @version $Id: SpotConfigurationActivity.java 195 2010-02-08 02:02:06Z
+ *          jens.hohl $
  * 
  */
 public class SpotConfigurationActivity extends ChainSubActivity
@@ -216,8 +217,10 @@ public class SpotConfigurationActivity extends ChainSubActivity
 			@Override
 			public final void onProgressChanged(final SeekBar seekBar, int progress, final boolean fromUser)
 			{
-
-				Log.d(LOG_TAG, "From user:" + fromUser);
+				if (Logging.isLoggingEnabled())
+				{
+					Log.d(LOG_TAG, "From user:" + fromUser);
+				}
 
 				if (progress >= SpotConfigurationActivity.this.currentMaximum)
 				{
@@ -227,10 +230,12 @@ public class SpotConfigurationActivity extends ChainSubActivity
 					vibrator.vibrate(VIBRATE_DURATION);
 				}
 				SpotConfigurationActivity.this.currentMinimum = progress;
-				Log.d(LOG_TAG, "current minimum:" + SpotConfigurationActivity.this.currentMinimum);
+				if (Logging.isLoggingEnabled())
+				{
+					Log.d(LOG_TAG, "current minimum:" + SpotConfigurationActivity.this.currentMinimum);
+				}
 				updateDeltaTextView(currentSelectUnit, SpotConfigurationActivity.this.currentMinimum,
 						SpotConfigurationActivity.this.currentMaximum);
-
 			}
 
 			/*
@@ -275,7 +280,10 @@ public class SpotConfigurationActivity extends ChainSubActivity
 			@Override
 			public final void onProgressChanged(final SeekBar seekBar, int progress, final boolean fromUser)
 			{
-				Log.d(LOG_TAG, "From user:" + fromUser);
+				if (Logging.isLoggingEnabled())
+				{
+					Log.d(LOG_TAG, "From user:" + fromUser);
+				}
 				if (SpotConfigurationActivity.this.currentMinimum >= progress)
 				{
 					progress = SpotConfigurationActivity.this.currentMinimum;
@@ -283,7 +291,10 @@ public class SpotConfigurationActivity extends ChainSubActivity
 					vibrator.vibrate(VIBRATE_DURATION);
 				}
 				SpotConfigurationActivity.this.currentMaximum = progress;
-				Log.d(LOG_TAG, "current maximum:" + SpotConfigurationActivity.this.currentMaximum);
+				if (Logging.isLoggingEnabled())
+				{
+					Log.d(LOG_TAG, "current maximum:" + SpotConfigurationActivity.this.currentMaximum);
+				}
 				updateDeltaTextView(currentSelectUnit, SpotConfigurationActivity.this.currentMinimum,
 						SpotConfigurationActivity.this.currentMaximum);
 
@@ -346,7 +357,6 @@ public class SpotConfigurationActivity extends ChainSubActivity
 	 */
 	private void updateDeltaTextView(final WindUnit unit, final int min, final int max)
 	{
-		Log.d(LOG_TAG, "Mein " + min + " Max " + max);
 		final TextView deltaView = (TextView) findViewById(R.id.unit_delta_textview);
 		deltaView.setText(unit.toString() + " " + Integer.toString(min) + " - " + Integer.toString(max));
 	}

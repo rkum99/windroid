@@ -32,9 +32,11 @@ public class ForecastDetail
 {
 
 	private final String spotName;
+
 	private final String spotID;
 
 	private final Date date;
+
 	private final int time;
 
 	private final Temperature airTemperature;
@@ -77,17 +79,6 @@ public class ForecastDetail
 		this.waveDirection = _builder.waveDirection;
 		this.airPressure = _builder.airPressure;
 
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString()
-	{
-		return "ForecastDetail [spotName=+" + spotName + ", spotID=" + spotID + "]";
 	}
 
 	/**
@@ -208,6 +199,21 @@ public class ForecastDetail
 	public MeasureValue getWaveDirection()
 	{
 		return waveDirection;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString()
+	{
+		return "ForecastDetail [airPressure=" + airPressure + ", airTemperature=" + airTemperature + ", clouds="
+				+ clouds + ", date=" + date + ", precipitation=" + precipitation + ", spotID=" + spotID + ", spotName="
+				+ spotName + ", time=" + time + ", waterTemperature=" + waterTemperature + ", waveDirection="
+				+ waveDirection + ", waveHeight=" + waveHeight + ", wavePeriod=" + wavePeriod + ", windGusts="
+				+ windGusts + ", windSpeed=" + windSpeed + ", winddirection=" + winddirection + "]";
 	}
 
 	public static class Builder

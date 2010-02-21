@@ -30,23 +30,10 @@ public class Preferences extends PreferenceActivity
 	protected void onPause()
 	{
 		super.onPause();
-		Log.d(LOG_TAG, "onPause");
 		// Commit changes to Database
 		final IPreferencesDAO dao = DAOFactory.getPreferencesDAO(this);
 		final Map<String, ?> prefs = Util.getSharedPreferences(this).getAll();
 		dao.update(prefs);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onResume()
-	 */
-	@Override
-	protected void onResume()
-	{
-		super.onResume();
-		Log.d(LOG_TAG, "onResume");
 	}
 
 	/*
@@ -68,12 +55,18 @@ public class Preferences extends PreferenceActivity
 	private void logSharedPreferences()
 	{
 		final SharedPreferences pref = Util.getSharedPreferences(this);
-		Log.d(LOG_TAG, "SharedPreferences contain " + pref.getAll().size() + " Entry(s).");
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "SharedPreferences contain " + pref.getAll().size() + " Entry(s).");
+		}
 		final Iterator<?> keyIter = pref.getAll().keySet().iterator();
 		while (keyIter.hasNext())
 		{
 			final Object o = keyIter.next();
-			Log.d(LOG_TAG, "Preference Key:" + o + "=" + pref.getAll().get(o));
+			if (Logging.isLoggingEnabled())
+			{
+				Log.d(LOG_TAG, "Preference Key:" + o + "=" + pref.getAll().get(o));
+			}
 		}
 	}
 }

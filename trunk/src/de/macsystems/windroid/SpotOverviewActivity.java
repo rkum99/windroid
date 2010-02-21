@@ -34,12 +34,13 @@ public class SpotOverviewActivity extends ListActivity
 	private static final int ENABLE_ITEM_ID = 0;
 	private static final int DISABLE_ITEM_ID = 1;
 	private static final int EDIT_ITEM_ID = 2;
+	private static final int FORECAST_ITEM_ID = 3;
 
 	SimpleCursorAdapter shows = null;
 	/**
 	 * We cache the ID as when focus lost on context menu to use it.
 	 */
-	private long selectedID = -1;
+	private int selectedID = -1;
 
 	/*
 	 * (non-Javadoc)
@@ -59,21 +60,26 @@ public class SpotOverviewActivity extends ListActivity
 			@Override
 			public final void onCreateContextMenu(final ContextMenu menu, final View v, final ContextMenuInfo menuInfo)
 			{
-
-				Log.d(LOG_TAG, "ContextMenu ID :" + ((AdapterContextMenuInfo) menuInfo).id);
-				Log.d(LOG_TAG, "ContextMenu position :" + ((AdapterContextMenuInfo) menuInfo).position);
+				if (Logging.isLoggingEnabled())
+				{
+					Log.d(LOG_TAG, "ContextMenu ID :" + ((AdapterContextMenuInfo) menuInfo).id);
+					Log.d(LOG_TAG, "ContextMenu position :" + ((AdapterContextMenuInfo) menuInfo).position);
+				}
 				/**
 				 * Cache id as when context menu shows up the focus is lost and
 				 * the i returned is invalid.
 				 */
-				selectedID = ((AdapterContextMenuInfo) menuInfo).id;
-
-				Log.d(LOG_TAG, "Selected item for Context :" + ((AdapterContextMenuInfo) menuInfo).id);
+				selectedID = (int) ((AdapterContextMenuInfo) menuInfo).id;
+				if (Logging.isLoggingEnabled())
+				{
+					Log.d(LOG_TAG, "Selected item for Context :" + ((AdapterContextMenuInfo) menuInfo).id);
+				}
 
 				final boolean isActiv = dao.isActiv(selectedID);
 				menu.add(0, EDIT_ITEM_ID, 0, R.string.spot_overview_spot_edit);
 				if (isActiv)
 				{
+					menu.add(0, FORECAST_ITEM_ID, 0, "Aktuelle Vorhersage");
 					menu.add(0, DISABLE_ITEM_ID, 0, R.string.spot_overview_spot_monitoring_disable);
 				}
 				else
@@ -117,6 +123,9 @@ public class SpotOverviewActivity extends ListActivity
 		case EDIT_ITEM_ID:
 			editSpot(selectedID);
 			break;
+		case FORECAST_ITEM_ID:
+			forecastSpot(selectedID);
+			break;
 		default:
 			throw new IllegalArgumentException("Unknown Item ID " + _item.getItemId());
 		}
@@ -124,13 +133,16 @@ public class SpotOverviewActivity extends ListActivity
 		return true;
 	}
 
+	/**
+	 * 
+	 * @param _state
+	 */
 	private void setActive(final boolean _state)
 	{
 		final ISelectedDAO dao = DAOFactory.getSelectedDAO(this);
 		dao.setActiv((selectedID), _state);
 		final Cursor c = dao.getConfiguredSpots();
 		setupMapping(c);
-		// Log.d(LOG_TAG, "Updating View");
 	}
 
 	/**
@@ -148,7 +160,7 @@ public class SpotOverviewActivity extends ListActivity
 		}
 		startManagingCursor(_cursor);
 
-		Util.printCursorColumnNames(_cursor);
+		// Util.printCursorColumnNames(_cursor);
 
 		final String[] from = new String[]
 		{ "name", "minwind", "maxwind", "windmeasure", "starting", "till", "activ" };
@@ -192,15 +204,25 @@ public class SpotOverviewActivity extends ListActivity
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == EDIT_SPOT_REQUEST_CODE)
 		{
-			Log.d(LOG_TAG, "Recieved requestcode EDIT_SPOT_REQUEST_CODE");
+			if (Logging.isLoggingEnabled())
+			{
+				Log.d(LOG_TAG, "Recieved requestcode EDIT_SPOT_REQUEST_CODE");
+			}
+			// --
 			if (resultCode == Activity.RESULT_OK)
 			{
-				Log.d(LOG_TAG, "Recieved resultcode RESULT_OK");
+				if (Logging.isLoggingEnabled())
+				{
+					Log.d(LOG_TAG, "Recieved resultcode RESULT_OK");
+				}
 				updateSpot(data);
 			}
 			else if (resultCode == Activity.RESULT_CANCELED)
 			{
-				Log.d(LOG_TAG, "Recieved resultCode RESULT_CANCELED");
+				if (Logging.isLoggingEnabled())
+				{
+					Log.d(LOG_TAG, "Recieved resultCode RESULT_CANCELED");
+				}
 			}
 		}
 		else
@@ -225,11 +247,28 @@ public class SpotOverviewActivity extends ListActivity
 		{
 			throw new IllegalArgumentException("No SpotConfiguration found.");
 		}
-
-		Log.d(LOG_TAG, "Updating Spot in Database");
+		// --
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "Updating Spot in Database");
+		}
 
 		final ISelectedDAO dao = DAOFactory.getSelectedDAO(this);
 		final SpotConfigurationVO vo = WindUtils.getConfigurationFromIntent(_intent);
 		dao.update(vo);
 	}
+
+	/**
+	 * Shows Forecast of selected Spot
+	 * 
+	 * @param _id
+	 */
+	private void forecastSpot(int _id)
+	{
+		final Intent intent = new Intent(SpotOverviewActivity.this, ForecastActivity.class);
+		intent.putExtra(IntentConstants.SELECTED_PRIMARY_KEY, _id);
+		startActivity(intent);
+
+	}
+
 }

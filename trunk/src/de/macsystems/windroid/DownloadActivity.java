@@ -75,7 +75,7 @@ public class DownloadActivity extends ChainSubActivity
 			@Override
 			public final void run()
 			{
-				if (Log.isLoggable(LOG_TAG, Log.DEBUG))
+				if (Logging.isLoggingEnabled())
 				{
 					Log.d(LOG_TAG, "Parsing Thread started.");
 				}
@@ -107,7 +107,7 @@ public class DownloadActivity extends ChainSubActivity
 				}
 				finally
 				{
-					if (Log.isLoggable(LOG_TAG, Log.DEBUG))
+					if (Logging.isLoggingEnabled())
 					{
 						Log.d(LOG_TAG, "Parsing Thread ended.");
 					}
@@ -149,9 +149,8 @@ public class DownloadActivity extends ChainSubActivity
 				final String message = DownloadActivity.this.getString(R.string.download_success_text);
 				final String header = DownloadActivity.this.getString(R.string.download_success_header);
 
-				new AlertDialog.Builder(DownloadActivity.this)
-						.setPositiveButton(ok, getOkListener(SpotSelectionActivity.class)).setTitle(header).setMessage(message)
-						.show();
+				new AlertDialog.Builder(DownloadActivity.this).setPositiveButton(ok,
+						getOkListener(SpotSelectionActivity.class)).setTitle(header).setMessage(message).show();
 			}
 		});
 	}

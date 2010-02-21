@@ -22,13 +22,10 @@
 	-->
 
 	<application
-		android:icon="@drawable/icon"
-		android:label="@string/app_name"
-		android:permission="android.permission.INTERNET"
 		android:allowClearUserData="true">
-
 		<activity
 			android:name="de.macsystems.windroid.MainActivity"
+			android:layoutAnimation="@anim/layout_slide_right"
 			android:label="@string/app_name"
 			android:icon="@drawable/icon">
 			<intent-filter>
@@ -42,9 +39,14 @@
 			android:name="de.macsystems.windroid.DownloadActivity"
 			android:label="@string/download_title"
 			android:icon="@drawable/icon" />
-
+		<activity
+			android:name="de.macsystems.windroid.ForecastActivity"
+			android:label="Forecast"
+			android:icon="@drawable/icon"
+			android:screenOrientation="landscape" />
 		<activity
 			android:name="de.macsystems.windroid.SpotSelectionActivity"
+			android:layoutAnimation="@anim/layout_slide_right"
 			android:label="@string/spot_selection_title"
 			android:icon="@drawable/icon" />
 		<activity
@@ -53,6 +55,7 @@
 			android:icon="@drawable/icon" />
 		<activity
 			android:name="de.macsystems.windroid.SpotConfigurationActivity"
+			android:layoutAnimation="@anim/layout_slide_right"
 			android:label="@string/spot_configuration_title"
 			android:icon="@drawable/icon" />
 		<activity

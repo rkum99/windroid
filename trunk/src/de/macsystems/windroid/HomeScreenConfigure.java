@@ -26,8 +26,10 @@ public class HomeScreenConfigure extends Activity
 	protected void onCreate(final Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		Log.d(LOG_TAG, "protected void onCreate(Bundle savedInstanceState)");
-
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "protected void onCreate(Bundle savedInstanceState)");
+		}
 		// Find the widget id from the intent.
 		final Intent intent = getIntent();
 		final Bundle extras = intent.getExtras();

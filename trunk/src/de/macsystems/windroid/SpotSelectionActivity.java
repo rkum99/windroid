@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -90,9 +89,6 @@ public class SpotSelectionActivity extends ChainSubActivity
 
 					final IContinentDAO continentDAO = DAOFactory.getContinentDAO(SpotSelectionActivity.this);
 					final int selectionIndex = continentDAO.getIndexByID(continentID);
-
-					Log.d(LOG_TAG, "preferred continentID is     :" + continentID);
-					Log.d(LOG_TAG, "preferred Index is :" + selectionIndex);
 
 					final Cursor c = continentDAO.fetchAll();
 					startManagingCursor(c);

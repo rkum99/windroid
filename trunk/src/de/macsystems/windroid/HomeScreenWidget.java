@@ -27,8 +27,11 @@ public class HomeScreenWidget extends AppWidgetProvider
 	@Override
 	public void onDeleted(final Context context, final int[] appWidgetIds)
 	{
-		Log.d(LOG_TAG, "public void onDeleted(Context context, int[] appWidgetIds)");
 		super.onDeleted(context, appWidgetIds);
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "public void onDeleted(Context context, int[] appWidgetIds)");
+		}
 	}
 
 	/*
@@ -40,9 +43,11 @@ public class HomeScreenWidget extends AppWidgetProvider
 	@Override
 	public void onDisabled(final Context context)
 	{
-
-		Log.d(LOG_TAG, "public void onDisabled(Context context)");
 		super.onDisabled(context);
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "public void onDisabled(Context context)");
+		}
 	}
 
 	/*
@@ -54,8 +59,11 @@ public class HomeScreenWidget extends AppWidgetProvider
 	@Override
 	public void onEnabled(final Context context)
 	{
-		Log.d(LOG_TAG, "public void onEnabled(Context context)");
 		super.onEnabled(context);
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "public void onEnabled(Context context)");
+		}
 	}
 
 	/*
@@ -68,8 +76,11 @@ public class HomeScreenWidget extends AppWidgetProvider
 	@Override
 	public void onReceive(final Context context, final Intent intent)
 	{
-		Log.d(LOG_TAG, "public void onReceive(Context context, Intent intent)");
 		super.onReceive(context, intent);
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "public void onReceive(Context context, Intent intent)");
+		}
 	}
 
 	/*
@@ -82,8 +93,11 @@ public class HomeScreenWidget extends AppWidgetProvider
 	@Override
 	public void onUpdate(final Context context, final AppWidgetManager appWidgetManager, final int[] appWidgetIds)
 	{
-		Log.d(LOG_TAG, "public void onUpdate(final Context context, "
-				+ "final AppWidgetManager appWidgetManager, final int[] appWidgetIds)");
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "public void onUpdate(final Context context, "
+					+ "final AppWidgetManager appWidgetManager, final int[] appWidgetIds)");
+		}
 		// super.onUpdate(context, appWidgetManager, appWidgetIds);
 		for (int index = 0; index < appWidgetIds.length; index++)
 		{

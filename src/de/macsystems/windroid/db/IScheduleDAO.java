@@ -1,6 +1,5 @@
 package de.macsystems.windroid.db;
 
-import de.macsystems.windroid.identifyable.Repeat;
 import de.macsystems.windroid.identifyable.Schedule;
 
 /**
@@ -9,11 +8,20 @@ import de.macsystems.windroid.identifyable.Schedule;
  */
 public interface IScheduleDAO extends IDAO
 {
-	public boolean isActiv(final long _id);
 
-	public Repeat getRepeat(final long _id);
+	public final static String COLUMN_REPEAT_ID = "repeatid";
 
-	public Schedule getSchedule(final long _id);
+	public final static String COLUMN_SELECTED_ID = "selectedid";
 
-	public long getTime(final long _id);
+	public final static String COLUMN_ACTIV = "activ";
+
+	public boolean isActiv(final int _id);
+
+	public Schedule getSchedule(final int _id);
+
+	public Schedule getScheduleByScheduleID(final int _selectedID);
+
+	public long getTime(final int _id);
+
+	public void insert(final Schedule _schedule, final int _selectedID);
 }

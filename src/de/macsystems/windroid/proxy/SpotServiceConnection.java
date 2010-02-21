@@ -9,6 +9,7 @@ import android.os.RemoteException;
 import android.util.AndroidRuntimeException;
 import android.util.Log;
 import android.view.View;
+import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.common.IntentConstants;
 import de.macsystems.windroid.service.ISpotService;
 
@@ -67,7 +68,10 @@ public final class SpotServiceConnection implements ServiceConnection, ISpotServ
 	@Override
 	public void onServiceConnected(final ComponentName name, final IBinder binder)
 	{
-		Log.d(LOG_TAG, "public void onServiceConnected(ComponentName name, IBinder binder)");
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "public void onServiceConnected(ComponentName name, IBinder binder)");
+		}
 
 		delegate = ISpotService.Stub.asInterface(binder);
 		viewToEnable.setEnabled(true);
@@ -83,7 +87,10 @@ public final class SpotServiceConnection implements ServiceConnection, ISpotServ
 	@Override
 	public void onServiceDisconnected(final ComponentName name)
 	{
-		Log.d(LOG_TAG, "public void onServiceDisconnected(ComponentName name)");
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "public void onServiceDisconnected(ComponentName name)");
+		}
 
 		delegate = null;
 
@@ -109,7 +116,7 @@ public final class SpotServiceConnection implements ServiceConnection, ISpotServ
 	}
 
 	@Override
-	public void update(final long _id)
+	public void update(final int _id)
 	{
 		throw new UnsupportedOperationException();
 	}

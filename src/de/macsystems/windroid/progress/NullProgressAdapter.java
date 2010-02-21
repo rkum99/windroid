@@ -1,7 +1,7 @@
 package de.macsystems.windroid.progress;
 
 /**
- * NULL Value which can be used if no progress need to be monitored.
+ * NULL Object which can be used if no progress need to be monitored.
  * 
  * @author Jens Hohl
  * @version $Id$
@@ -33,7 +33,7 @@ public final class NullProgressAdapter implements IProgress
 	 * @see de.macsystems.windroid.progress.IProgress#incrementBy(int)
 	 */
 	@Override
-	public void incrementBy(final int value)
+	public void incrementBy(final int _value)
 	{
 
 	}

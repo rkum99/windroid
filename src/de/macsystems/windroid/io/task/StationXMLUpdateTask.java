@@ -8,6 +8,7 @@ import java.net.URI;
 
 import android.content.Context;
 import android.util.Log;
+import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.progress.IProgress;
 
@@ -61,7 +62,7 @@ public class StationXMLUpdateTask extends IOTask<Void, InputStream>
 			{
 				fout.write(buffer, 0, bytesRead);
 			}
-			if (Log.isLoggable(LOG_TAG, Log.DEBUG))
+			if (Logging.isLoggingEnabled())
 			{
 				Log.d(LOG_TAG, stationsXMLFilePath + " updated");
 			}

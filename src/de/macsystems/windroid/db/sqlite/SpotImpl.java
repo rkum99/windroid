@@ -22,7 +22,7 @@ import de.macsystems.windroid.progress.IProgress;
  * @author Jens Hohl
  * @version $Id$
  */
-public class SpotImpl extends BaseImpl implements ISpotDAO
+public final class SpotImpl extends BaseImpl implements ISpotDAO
 {
 
 	private static final String SPOT = "spot";

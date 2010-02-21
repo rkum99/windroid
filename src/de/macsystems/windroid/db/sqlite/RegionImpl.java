@@ -11,7 +11,7 @@ import de.macsystems.windroid.progress.IProgress;
  * @author mac
  * @version $Id$
  */
-public class RegionImpl extends BaseImpl implements IRegionDAO
+public final class RegionImpl extends BaseImpl implements IRegionDAO
 {
 
 	private static final String REGION = "region";

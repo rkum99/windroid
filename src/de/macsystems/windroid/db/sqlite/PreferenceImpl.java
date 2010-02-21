@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.db.IPreferencesDAO;
 import de.macsystems.windroid.io.IOUtils;
 
@@ -15,7 +16,7 @@ import de.macsystems.windroid.io.IOUtils;
  * @author mac
  * @version $Id$
  */
-public class PreferenceImpl extends BaseImpl implements IPreferencesDAO
+public final class PreferenceImpl extends BaseImpl implements IPreferencesDAO
 {
 	private final static String LOG_TAG = PreferenceImpl.class.getSimpleName();
 
@@ -124,6 +125,7 @@ public class PreferenceImpl extends BaseImpl implements IPreferencesDAO
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void update(final Map<?, ?> sharedPreferences)
 	{
@@ -142,7 +144,7 @@ public class PreferenceImpl extends BaseImpl implements IPreferencesDAO
 			final StringBuilder builder = new StringBuilder(128);
 			while (iterNew.hasNext())
 			{
-				final Entry<String, ?> entry = (Entry<String, ?>) iterNew.next();
+				final Entry<String, String> entry = (Entry<String, String>) iterNew.next();
 
 				builder.append("UPDATE preferences SET value='");
 				builder.append(entry.getValue());
@@ -154,7 +156,10 @@ public class PreferenceImpl extends BaseImpl implements IPreferencesDAO
 				{
 					db.execSQL(builder.toString());
 					// TODO: uncomment logging for production version
-					Log.d(LOG_TAG, "Execute SQL : " + builder.toString());
+					if (Logging.isLoggingEnabled())
+					{
+						Log.d(LOG_TAG, "Execute SQL : " + builder.toString());
+					}
 				}
 				catch (final Exception e)
 				{

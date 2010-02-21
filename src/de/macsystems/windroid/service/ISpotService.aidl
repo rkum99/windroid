@@ -7,7 +7,7 @@ interface ISpotService
 
 	 void updateAll();
 	 
-	 void update(long _id);
+	 void update(int _id);
 
 	 void stop();
 

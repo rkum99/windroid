@@ -1,5 +1,6 @@
 package de.macsystems.windroid.custom.activity;
 
+import de.macsystems.windroid.Logging;
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
@@ -27,7 +28,10 @@ public abstract class ChainSubActivity extends Activity
 	protected void onActivityResult(final int _requestCode, final int _resultCode, final Intent _data)
 	{
 		super.onActivityResult(_requestCode, _resultCode, _data);
-		Log.d(LOG_TAG, "recieved requestCode :" + _requestCode + " recieved resultCode :" + _resultCode);
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "recieved requestCode :" + _requestCode + " recieved resultCode :" + _resultCode);
+		}
 		setResult(_resultCode, _data);
 		finish();
 	}

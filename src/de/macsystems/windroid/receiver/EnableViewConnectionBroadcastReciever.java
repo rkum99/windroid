@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import de.macsystems.windroid.Logging;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -75,7 +77,7 @@ public class EnableViewConnectionBroadcastReciever extends BroadcastReceiver
 		viewsToEnable = new ArrayList<View>(_viewsToEnable);
 		_contextToRegister.registerReceiver(this, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
-		if (Log.isLoggable(LOG_TAG, Log.DEBUG))
+		if (Logging.isLoggingEnabled())
 		{
 			Log.d(LOG_TAG, "EnableViewConnectionBroadcastReciever created.");
 		}
@@ -87,7 +89,7 @@ public class EnableViewConnectionBroadcastReciever extends BroadcastReceiver
 		try
 		{
 			final boolean isConnected = intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
-			if (Log.isLoggable(LOG_TAG, Log.DEBUG))
+			if (Logging.isLoggingEnabled())
 			{
 				Log.i(LOG_TAG, "EnableViewConnectionBroadcastReciever: "
 						+ (isConnected ? "connection established" : "connection lost"));

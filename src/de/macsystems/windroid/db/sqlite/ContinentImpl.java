@@ -12,7 +12,7 @@ import de.macsystems.windroid.progress.IProgress;
  * @author Jens Hohl
  * @version $Id$
  */
-public class ContinentImpl extends BaseImpl implements IContinentDAO
+public final class ContinentImpl extends BaseImpl implements IContinentDAO
 {
 	private static final String CONTINENT = "continent";
 

@@ -13,6 +13,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.content.Context;
 import android.util.Log;
+import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.io.RetryLaterException;
 import de.macsystems.windroid.progress.IProgress;
@@ -77,11 +78,16 @@ public abstract class IOTask<V, I> implements Task<V, I>
 	{
 		if (!IOUtils.isNetworkReachable(_context))
 		{
-			Log.d(LOG_TAG, "Network not reachable.");
+			if (Logging.isLoggingEnabled())
+			{
+				Log.d(LOG_TAG, "Network not reachable.");
+			}
 			throw new RetryLaterException("Cannot execute, Network not reachable.");
 		}
-
-		Log.d(LOG_TAG, "Connecting to :" + uri.toString());
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "Connecting to :" + uri.toString());
+		}
 
 		final HttpGet httpGet = new HttpGet(uri);
 		httpGet.addHeader("User-Agent", MOZILLA_5_0);
@@ -105,7 +111,10 @@ public abstract class IOTask<V, I> implements Task<V, I>
 		try
 		{
 			instream = response.getEntity().getContent();
-			Log.d(LOG_TAG, "HTTP Content Lenght:" + response.getEntity().getContentLength());
+			if (Logging.isLoggingEnabled())
+			{
+				Log.d(LOG_TAG, "HTTP Content Lenght:" + response.getEntity().getContentLength());
+			}
 			return process(_context, instream);
 		}
 		catch (final Exception e)

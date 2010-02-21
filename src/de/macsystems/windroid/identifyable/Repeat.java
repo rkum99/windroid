@@ -8,7 +8,7 @@ import de.macsystems.windroid.Util;
 /**
  * 
  * @author mac
- * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
+ * @version $Id$
  */
 public final class Repeat implements Serializable
 {
@@ -32,12 +32,7 @@ public final class Repeat implements Serializable
 	/**
 	 * primary key
 	 */
-	private long id;
-
-	/**
-	 * Primary key of selected
-	 */
-	private long selectedId;
+	private int id;
 
 	/**
 	 * @param id
@@ -49,13 +44,11 @@ public final class Repeat implements Serializable
 
 	/**
 	 * @param _id
-	 * @param _selectedId
 	 */
-	public Repeat(long _id, long _selectedId)
+	public Repeat(final int _id)
 	{
-		super();
+		this();
 		id = _id;
-		selectedId = _selectedId;
 	}
 
 	/**
@@ -78,17 +71,17 @@ public final class Repeat implements Serializable
 	/**
 	 * @return the id
 	 */
-	public long getId()
+	public int getId()
 	{
 		return id;
 	}
 
 	/**
-	 * @return the selectedId
+	 * @return the id
 	 */
-	public long getSelectedId()
+	public void setId(final int _id)
 	{
-		return selectedId;
+		id = _id;
 	}
 
 	/**
@@ -105,6 +98,10 @@ public final class Repeat implements Serializable
 	 */
 	public void setDayOfWeek(final int _dayOfWeek)
 	{
+		if (!Util.isValidDayOfWeek(_dayOfWeek))
+		{
+			throw new IllegalArgumentException("Invalid day of week:" + _dayOfWeek);
+		}
 		this.dayOfWeek = _dayOfWeek;
 	}
 
@@ -150,8 +147,7 @@ public final class Repeat implements Serializable
 	@Override
 	public String toString()
 	{
-		return "Repeat [activ=" + activ + ", dayOfWeek=" + dayOfWeek + ", dayTime=" + dayTime + ", id=" + id
-				+ ", selectedId=" + selectedId + "]";
+		return "Repeat [activ=" + activ + ", dayOfWeek=" + dayOfWeek + ", dayTime=" + dayTime + ", id=" + id + "]";
 	}
 
 }

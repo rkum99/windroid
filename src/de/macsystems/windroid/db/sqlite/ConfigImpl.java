@@ -10,7 +10,7 @@ import de.macsystems.windroid.progress.IProgress;
  * @author Jens Hohl
  * @version $Id$
  */
-public class ConfigImpl extends BaseImpl implements IConfigDAO
+public final class ConfigImpl extends BaseImpl implements IConfigDAO
 {
 
 	private static final String CONFIG = "config";

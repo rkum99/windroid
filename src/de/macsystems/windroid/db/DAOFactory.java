@@ -4,6 +4,7 @@ import android.content.Context;
 import de.macsystems.windroid.db.sqlite.ContinentImpl;
 import de.macsystems.windroid.db.sqlite.CountryImpl;
 import de.macsystems.windroid.db.sqlite.Database;
+import de.macsystems.windroid.db.sqlite.ForecastImpl;
 import de.macsystems.windroid.db.sqlite.PreferenceImpl;
 import de.macsystems.windroid.db.sqlite.RegionImpl;
 import de.macsystems.windroid.db.sqlite.SelectedImpl;
@@ -19,6 +20,11 @@ public final class DAOFactory
 {
 	private DAOFactory()
 	{
+	}
+
+	public final static IForecast getForecast(final Context _context)
+	{
+		return new ForecastImpl(new Database(_context), NullProgressAdapter.INSTANCE);
 	}
 
 	public final static ISpotDAO getSpotDAO(final Context _context)

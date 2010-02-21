@@ -1,8 +1,13 @@
 package de.macsystems.windroid.db.sqlite;
 
+import java.util.Iterator;
+
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.db.IForecast;
 import de.macsystems.windroid.forecast.Forecast;
+import de.macsystems.windroid.forecast.ForecastDetail;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.progress.IProgress;
 
@@ -17,6 +22,8 @@ public class ForecastImpl extends BaseImpl implements IForecast
 {
 
 	private final static String FORECAST = "forecast";
+
+	private final static String LOG_TAG = ForecastImpl.class.getSimpleName();
 
 	/**
 	 * @param _database
@@ -51,7 +58,16 @@ public class ForecastImpl extends BaseImpl implements IForecast
 		final SQLiteDatabase db = getWritableDatabase();
 		try
 		{
+			final Iterator<ForecastDetail> iter = forecast.iterator();
+			while (iter.hasNext())
+			{
+				final ForecastDetail detail = iter.next();
+				if (Logging.isLoggingEnabled())
+				{
+					Log.d(LOG_TAG, "Insert a forecast into Database " + detail.toString());
+				}
 
+			}
 		}
 		finally
 		{
@@ -59,5 +75,4 @@ public class ForecastImpl extends BaseImpl implements IForecast
 		}
 
 	}
-
 }

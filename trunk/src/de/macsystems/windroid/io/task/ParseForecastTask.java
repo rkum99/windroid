@@ -17,7 +17,7 @@ import de.macsystems.windroid.progress.NullProgressAdapter;
  * @author Jens Hohl
  * @version $Id$
  */
-public class ForecastTask extends IOTask<Forecast, InputStream>
+public class ParseForecastTask extends IOTask<Forecast, InputStream>
 {
 
 	/**
@@ -26,7 +26,7 @@ public class ForecastTask extends IOTask<Forecast, InputStream>
 	 *            the json url
 	 * @throws NullPointerException
 	 */
-	public ForecastTask(final URI _uri) throws NullPointerException
+	public ParseForecastTask(final URI _uri) throws NullPointerException
 	{
 		super(_uri, NullProgressAdapter.INSTANCE);
 	}
@@ -38,7 +38,7 @@ public class ForecastTask extends IOTask<Forecast, InputStream>
 	 * @param _progress
 	 * @throws NullPointerException
 	 */
-	public ForecastTask(final URI _uri, final IProgress _progress) throws NullPointerException
+	public ParseForecastTask(final URI _uri, final IProgress _progress) throws NullPointerException
 	{
 		super(_uri, _progress);
 	}

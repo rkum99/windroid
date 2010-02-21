@@ -12,8 +12,6 @@ import de.macsystems.windroid.identifyable.WindUnit;
  * 
  * @author Jens Hohl
  * @version $Id$
- * 
- * 
  */
 public final class SpotConfigurationVO implements Serializable
 {
@@ -36,7 +34,7 @@ public final class SpotConfigurationVO implements Serializable
 
 	private boolean isActiv = true;
 
-	private long primaryKey = -1;
+	private int primaryKey = -1;
 
 	/**
 	 * Preferred Windunit of User.
@@ -46,7 +44,7 @@ public final class SpotConfigurationVO implements Serializable
 	/**
 	 * @return the primaryKey
 	 */
-	public long getPrimaryKey()
+	public int getPrimaryKey()
 	{
 		return primaryKey;
 	}
@@ -55,7 +53,7 @@ public final class SpotConfigurationVO implements Serializable
 	 * @param primaryKey
 	 *            the primaryKey to set
 	 */
-	public void setPrimaryKey(final long primaryKey)
+	public void setPrimaryKey(final int primaryKey)
 	{
 		this.primaryKey = primaryKey;
 	}

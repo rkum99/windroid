@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import de.macsystems.windroid.Logging;
 
 /**
  * Creates or updates the underlying SQLite Database.
@@ -21,7 +22,7 @@ public final class Database extends SQLiteOpenHelper
 
 	private final static String DATABASE_NAME = "windroid.db";
 
-	private final static int VERSION = 69;
+	private final static int VERSION = 87;
 
 	private final Context context;
 
@@ -45,7 +46,10 @@ public final class Database extends SQLiteOpenHelper
 	@Override
 	public void onCreate(final SQLiteDatabase database)
 	{
-		Log.d(LOG_TAG, "onCreate Database");
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "onCreate Database");
+		}
 
 		try
 		{
@@ -58,7 +62,10 @@ public final class Database extends SQLiteOpenHelper
 		}
 		finally
 		{
-			Log.d(LOG_TAG, "onCreate Database finished");
+			if (Logging.isLoggingEnabled())
+			{
+				Log.d(LOG_TAG, "onCreate Database finished");
+			}
 		}
 	}
 
@@ -72,7 +79,10 @@ public final class Database extends SQLiteOpenHelper
 	@Override
 	public void onUpgrade(final SQLiteDatabase database, final int oldVersion, final int newVersion)
 	{
-		Log.d(LOG_TAG, "Upgrade Database from version " + oldVersion + " to " + newVersion);
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "Upgrade Database from version " + oldVersion + " to " + newVersion);
+		}
 		try
 		{
 			final List<String> script = ScriptLoader.getUpdateScript(context);
@@ -84,7 +94,11 @@ public final class Database extends SQLiteOpenHelper
 		}
 		finally
 		{
-			Log.d(LOG_TAG, "Upgrade Database finished");
+			if (Logging.isLoggingEnabled())
+			{
+				Log.d(LOG_TAG, "Upgrade Database finished");
+			}
+
 		}
 	}
 
@@ -99,7 +113,10 @@ public final class Database extends SQLiteOpenHelper
 			for (int i = 0; i < _script.size(); i++)
 			{
 				final String sql = _script.get(i);
-				Log.d(LOG_TAG, "Executing :" + sql);
+				if (Logging.isLoggingEnabled())
+				{
+					Log.d(LOG_TAG, "Executing :" + sql);
+				}
 				database.execSQL(sql);
 			}
 		}

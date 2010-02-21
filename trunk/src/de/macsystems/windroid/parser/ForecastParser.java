@@ -251,7 +251,7 @@ public final class ForecastParser
 	 * @param builder
 	 * @throws JSONException
 	 */
-	private static void parseDate(JSONObject forecastDetailMap, Builder builder) throws JSONException
+	private static void parseDate(final JSONObject forecastDetailMap, final Builder builder) throws JSONException
 	{
 		final String timeString = forecastDetailMap.getString(DATE);
 
@@ -294,7 +294,7 @@ public final class ForecastParser
 	 * @param builder
 	 * @throws JSONException
 	 */
-	private static void parseTime(JSONObject forecastDetailMap, Builder builder) throws JSONException
+	private static void parseTime(final JSONObject forecastDetailMap, final Builder builder) throws JSONException
 	{
 		final String timeString = forecastDetailMap.getString(TIME);
 

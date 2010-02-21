@@ -23,6 +23,7 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.net.NetworkInfo.State;
 import android.util.Log;
+import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.R;
 import de.macsystems.windroid.io.task.StationXMLUpdateTask;
 import de.macsystems.windroid.progress.IProgress;
@@ -105,7 +106,7 @@ public class IOUtils
 	public final static void writeConfiguration(final Context _context, final Properties _properties)
 			throws IOException
 	{
-		if (Log.isLoggable(LOG_TAG, Log.DEBUG))
+		if (Logging.isLoggingEnabled())
 		{
 			Log.d(LOG_TAG, "Attempt updating configuration.");
 		}
@@ -127,7 +128,7 @@ public class IOUtils
 		{
 			close(outStream);
 		}
-		if (Log.isLoggable(LOG_TAG, Log.DEBUG))
+		if (Logging.isLoggingEnabled())
 		{
 			Log.d(LOG_TAG, "Attempt updating configuration successfully.");
 		}

@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.db.IDAO;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.progress.IProgress;
@@ -136,7 +137,10 @@ public class BaseImpl implements IDAO
 			c = db.rawQuery("SELECT count(*) from " + tableName, null);
 			if (!c.moveToFirst())
 			{
-				Log.d(LOG_TAG, "no entrys in " + _tabelName);
+				if (Logging.isLoggingEnabled())
+				{
+					Log.d(LOG_TAG, "no entrys in " + _tabelName);
+				}
 				return result;
 			}
 			final int index = c.getColumnIndexOrThrow("count(*)");
@@ -224,11 +228,28 @@ public class BaseImpl implements IDAO
 		return _value == 0 ? false : true;
 	}
 
+	/**
+	 * Returns value found in column as String
+	 * 
+	 * @param _c
+	 * @param _columnName
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
 	public static final String getString(final Cursor _c, final String _columnName) throws IllegalArgumentException
 	{
 		final int index = _c.getColumnIndexOrThrow(_columnName);
 		return _c.getString(index);
 	}
+
+	/**
+	 * Returns value found in column as float
+	 * 
+	 * @param _c
+	 * @param _columnName
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
 
 	public static final float getFloat(final Cursor _c, final String _columnName) throws IllegalArgumentException
 	{
@@ -236,17 +257,44 @@ public class BaseImpl implements IDAO
 		return _c.getFloat(index);
 	}
 
+	/**
+	 * Returns value found in column as long
+	 * 
+	 * @param _c
+	 * @param _columnName
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+
 	public static final long getLong(final Cursor _c, final String _columnName) throws IllegalArgumentException
 	{
 		final int index = _c.getColumnIndexOrThrow(_columnName);
 		return _c.getLong(index);
 	}
 
-	public static final long getInt(final Cursor _c, final String _columnName) throws IllegalArgumentException
+	/**
+	 * Returns value found in column as integer
+	 * 
+	 * @param _c
+	 * @param _columnName
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+
+	public static final int getInt(final Cursor _c, final String _columnName) throws IllegalArgumentException
 	{
 		final int index = _c.getColumnIndexOrThrow(_columnName);
 		return _c.getInt(index);
 	}
+
+	/**
+	 * Returns value found in column as double
+	 * 
+	 * @param _c
+	 * @param _columnName
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
 
 	public static final double getDouble(final Cursor _c, final String _columnName) throws IllegalArgumentException
 	{
@@ -254,11 +302,29 @@ public class BaseImpl implements IDAO
 		return _c.getDouble(index);
 	}
 
+	/**
+	 * Returns value found in column as boolean
+	 * 
+	 * @param _c
+	 * @param _columnName
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+
 	public static final boolean getBoolean(final Cursor _c, final String _columnName) throws IllegalArgumentException
 	{
 		final int index = _c.getColumnIndexOrThrow(_columnName);
 		return asBoolean(_c.getInt(index));
 	}
+
+	/**
+	 * Returns value found in column as short
+	 * 
+	 * @param _c
+	 * @param _columnName
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
 
 	public static final short getShort(final Cursor _c, final String _columnName) throws IllegalArgumentException
 	{
@@ -281,4 +347,27 @@ public class BaseImpl implements IDAO
 
 	}
 
+	/**
+	 * Returns the actual primary key of last insert on table.<br>
+	 * SELECT MAX (_id) from table;<br>
+	 * <br>
+	 * Database will not be closed!
+	 * 
+	 * @param _db
+	 * @return
+	 */
+	public final int getPrimaryKey(final SQLiteDatabase _db)
+	{
+		Cursor c = null;
+		try
+		{
+			c = _db.rawQuery("SELECT MAX(" + COLUMN_ID + ") from " + tableName, null);
+			moveToFirstOrThrow(c);
+			return getInt(c, COLUMN_MAX_ID);
+		}
+		finally
+		{
+			IOUtils.close(c);
+		}
+	}
 }

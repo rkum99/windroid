@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.common.IntentConstants;
 
 /**
@@ -28,13 +29,15 @@ public class AlarmBroadcastReciever extends BroadcastReceiver
 	@Override
 	public void onReceive(final Context context, final Intent intent)
 	{
-		final long id = intent.getLongExtra(IntentConstants.SELECTED_PRIMARY_KEY, -1);
+		final int id = intent.getIntExtra(IntentConstants.SELECTED_PRIMARY_KEY, -1);
 		if (id == -1)
 		{
 			throw new IllegalArgumentException("missing id");
 		}
-
-		Log.d(LOG_TAG, "Alarm for Station " + id + " triggered.");
+		if(Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "Alarm for Station " + id + " triggered.");
+		}
 		final Intent startServiceIntent = new Intent();
 		startServiceIntent.putExtra(IntentConstants.SELECTED_PRIMARY_KEY, id);
 		startServiceIntent.setAction(IntentConstants.DE_MACSYSTEMS_WINDROID_START_SPOT_SERVICE_ACTION);

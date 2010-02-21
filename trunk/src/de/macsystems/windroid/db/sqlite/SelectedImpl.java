@@ -2,15 +2,20 @@ package de.macsystems.windroid.db.sqlite;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.common.SpotConfigurationVO;
+import de.macsystems.windroid.db.IRepeatDAO;
+import de.macsystems.windroid.db.IScheduleDAO;
 import de.macsystems.windroid.db.ISelectedDAO;
 import de.macsystems.windroid.db.ISpotDAO;
+import de.macsystems.windroid.identifyable.Repeat;
 import de.macsystems.windroid.identifyable.Schedule;
 import de.macsystems.windroid.identifyable.Station;
 import de.macsystems.windroid.identifyable.WindDirection;
@@ -22,8 +27,11 @@ import de.macsystems.windroid.progress.IProgress;
  * @author Jens Hohl
  * @version $Id$
  */
-public class SelectedImpl extends BaseImpl implements ISelectedDAO
+public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 {
+
+	private final static String LOG_TAG = SelectedImpl.class.getSimpleName();
+
 	private static final String SELECTED = "selected";
 
 	/**
@@ -50,18 +58,18 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 	 * 
 	 * @see
 	 * de.macsystems.windroid.db.ISelectedDAO#insertSpot(de.macsystems.windroid
-	 * .SpotConfigurationVO)
+	 * .common.SpotConfigurationVO)
 	 */
 	@Override
-	public long insertSpot(final SpotConfigurationVO _vo)
+	public void insertSpot(final SpotConfigurationVO _vo)
 	{
 		if (_vo == null)
 		{
 			throw new NullPointerException("SpotConfigurationVO");
 		}
 
-		long newID = -1;
 		final SQLiteDatabase db = getWritableDatabase();
+		final Cursor c = null;
 		try
 		{
 			final ContentValues values = new ContentValues();
@@ -74,14 +82,27 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 			values.put(COLUMN_MINWIND, _vo.getWindspeedMin());
 			values.put(COLUMN_MAXWIND, _vo.getWindspeedMax());
 			//
-			newID = db.insert(tableName, null, values);
+			final int selectedID = (int) db.insert(tableName, null, values);
+			_vo.setPrimaryKey(selectedID);
+			//
+			final IRepeatDAO repDAO = new RepeatImpl(getDatabase());
+			final Schedule schedule = _vo.getSchedule();
+
+			final Iterator<Integer> iter = schedule.getRepeatIterator();
+			while (iter.hasNext())
+			{
+				final Repeat repeat = schedule.getRepeat(iter.next());
+				repDAO.update(repeat);
+			}
+			//
+			final IScheduleDAO schDAO = new ScheduleImpl(getDatabase());
+			schDAO.insert(schedule, selectedID);
 		}
 		finally
 		{
+			IOUtils.close(c);
 			IOUtils.close(db);
 		}
-
-		return newID;
 	}
 
 	/*
@@ -150,7 +171,10 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 		{
 			final String tempID = getSpotIdByID(_id);
 
-			Log.d("SelectedImpl", "Searched SpotID is :" + tempID);
+			if (Logging.isLoggingEnabled())
+			{
+				Log.d("SelectedImpl", "Searched SpotID is :" + tempID);
+			}
 
 			c = db.rawQuery("SELECT A._id, B.name, B.spotid, B.keyword, B.report, B.superforecast,  "
 					+ "B.forecast, B.statistic, B.wavereport, B.waveforecast, A.activ, "
@@ -175,13 +199,12 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 	 * @throws IllegalArgumentException
 	 * @throws NullPointerException
 	 */
-	private static SpotConfigurationVO createSpotConfigurationVO(final Cursor c)
+	private SpotConfigurationVO createSpotConfigurationVO(final Cursor c)
 			throws IllegalArgumentException,
 			NullPointerException
 	{
 
-		SpotConfigurationVO spotVO;
-		final long _id = getLong(c, COLUMN_ID);
+		final int _id = getInt(c, COLUMN_ID);
 		final boolean activ = getBoolean(c, COLUMN_ACTIV);
 		final String keyword = getString(c, ISpotDAO.COLUMN_KEYWORD);
 		final String spotID = getString(c, COLUMN_SPOTID);
@@ -201,7 +224,7 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 		final float minWind = getFloat(c, COLUMN_MINWIND);
 		final float maxWind = getFloat(c, COLUMN_MAXWIND);
 
-		spotVO = new SpotConfigurationVO();
+		final SpotConfigurationVO spotVO = new SpotConfigurationVO();
 		spotVO.setPrimaryKey(_id);
 		spotVO.setActiv(activ);
 		spotVO.setUseWindirection(useDirection);
@@ -210,15 +233,14 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 		spotVO.setFromDirection(WindDirection.getByShortName(starting));
 		spotVO.setWindspeedMin(minWind);
 		spotVO.setWindspeedMax(maxWind);
-		/**
-		 * TODO : Repeat is fix
-		 */
-		final Schedule schedule = new Schedule();
-
+		//
+		final IScheduleDAO dao = new ScheduleImpl(getDatabase());
+		final Schedule schedule = dao.getScheduleByScheduleID(_id);
+		spotVO.setSchedule(schedule);
+		//
 		final Station station = new Station(name, spotID, keyword, forecast, superforecast, statistic, report,
 				wavereport, waveforecast);
 		spotVO.setStation(station);
-		spotVO.setSchedule(schedule);
 		return spotVO;
 	}
 
@@ -257,7 +279,45 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 		{
 			throw new NullPointerException("SpotConfigurationVO");
 		}
+		if (_vo == null)
+		{
+			throw new NullPointerException("SpotConfigurationVO");
+		}
 
+		final SQLiteDatabase db = getWritableDatabase();
+		final Cursor c = null;
+		try
+		{
+			final ContentValues values = new ContentValues();
+			values.put(COLUMN_SPOTID, _vo.getStation().getId());
+			values.put(COLUMN_ACTIV, _vo.isActiv());
+			values.put(COLUMN_USEDIRECTION, _vo.isUseWindirection());
+			values.put(COLUMN_STARTING, _vo.getFromDirection().getId());
+			values.put(COLUMN_TILL, _vo.getToDirection().getId());
+			values.put(COLUMN_WINDMEASURE, _vo.getPreferredWindUnit().getId());
+			values.put(COLUMN_MINWIND, _vo.getWindspeedMin());
+			values.put(COLUMN_MAXWIND, _vo.getWindspeedMax());
+			//
+			db.update(tableName, values, null, null);
+			//
+			final IRepeatDAO repDAO = new RepeatImpl(getDatabase());
+			final Schedule schedule = _vo.getSchedule();
+
+			final Iterator<Integer> iter = schedule.getRepeatIterator();
+			while (iter.hasNext())
+			{
+				final Repeat repeat = schedule.getRepeat(iter.next());
+				repDAO.update(repeat);
+			}
+			//
+			// final IScheduleDAO schDAO = new ScheduleImpl(getDatabase());
+			// schDAO.insert(schedule, selectedID);
+		}
+		finally
+		{
+			IOUtils.close(c);
+			IOUtils.close(db);
+		}
 	}
 
 	@Override
@@ -308,12 +368,15 @@ public class SelectedImpl extends BaseImpl implements ISelectedDAO
 				try
 				{
 					final SpotConfigurationVO spot = createSpotConfigurationVO(c);
-					Log.d("DEBUG", "Spot from DB " + spot);
+					if (Logging.isLoggingEnabled())
+					{
+						Log.d("DEBUG", "Spot from DB " + spot);
+					}
 					spots.add(spot);
 				}
 				catch (final Exception e)
 				{
-					Log.e("DEBUG", "" + e.getMessage());
+					Log.e("ERROR", "Database Exception", e);
 				}
 			}
 			while (c.moveToNext());

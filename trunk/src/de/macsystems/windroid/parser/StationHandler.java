@@ -5,6 +5,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import android.util.Log;
+import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.identifyable.Continent;
 import de.macsystems.windroid.identifyable.Country;
 import de.macsystems.windroid.identifyable.Region;
@@ -74,7 +75,10 @@ public class StationHandler extends DefaultHandler
 	public void endDocument() throws SAXException
 	{
 		final long parsingTime = System.currentTimeMillis() - startTime;
-		Log.d(LOG_TAG, "Parsing End. Parsing time :" + parsingTime + " ms.");
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "Parsing End. Parsing time :" + parsingTime + " ms.");
+		}
 		super.endDocument();
 	}
 
@@ -82,7 +86,10 @@ public class StationHandler extends DefaultHandler
 	public void startDocument() throws SAXException
 	{
 		startTime = System.currentTimeMillis();
-		Log.d(LOG_TAG, "Parsing Start");
+		if(Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "Parsing Start");
+		}
 		super.startDocument();
 	}
 

@@ -10,6 +10,16 @@ import android.database.Cursor;
  */
 public interface IDAO
 {
+
+	/**
+	 * Primary key {@value #COLUMN_ID}
+	 */
+	public final static String COLUMN_ID = "_id";
+	/**
+	 * Constant for MAX (_id). {@value #COLUMN_MAX_ID}
+	 */
+	public final static String COLUMN_MAX_ID = "MAX(" + COLUMN_ID + ")";
+
 	/**
 	 * Returns size of table
 	 * 

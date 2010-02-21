@@ -3,6 +3,7 @@ package de.macsystems.windroid.concurrent;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import android.util.Log;
+import de.macsystems.windroid.Logging;
 
 /**
  * Creates Threads with some default name, which makes debugging a bit easier.
@@ -33,7 +34,10 @@ public final class ThreadFactory implements java.util.concurrent.ThreadFactory
 		final int counter = count.getAndIncrement();
 		final String name = threadName + counter;
 		thread.setName(threadName + counter);
-		Log.d(LOG_TAG, "Created Thread :" + name);
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "Created Thread :" + name);
+		}
 		return thread;
 	}
 }

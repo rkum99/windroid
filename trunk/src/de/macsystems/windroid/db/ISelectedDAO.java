@@ -17,8 +17,6 @@ public interface ISelectedDAO extends IDAO
 
 	public final static String COLUMN_NAME = "name";
 
-	public final static String COLUMN_ID = "_id";
-
 	public final static String COLUMN_USEDIRECTION = "usedirection";
 
 	public final static String COLUMN_STARTING = "starting";
@@ -35,9 +33,8 @@ public interface ISelectedDAO extends IDAO
 	 * Adds a Spot
 	 * 
 	 * @param _vo
-	 * @returns id of spot or -1 if something went wrong.
 	 */
-	public long insertSpot(SpotConfigurationVO _vo);
+	public void insertSpot(SpotConfigurationVO _vo);
 
 	/**
 	 * Enables or Disables a Spot

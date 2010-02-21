@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
+import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.Util;
 import de.macsystems.windroid.common.IntentConstants;
 
@@ -32,16 +33,25 @@ public class BootCompletedBroadcastReceiver extends BroadcastReceiver
 	@Override
 	public void onReceive(final Context _context, final Intent _intent)
 	{
-		Log.d(LOG_TAG, "BootCompletedBroadcastReceiver#onRecieve(...) called.");
+		if(Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "BootCompletedBroadcastReceiver#onRecieve(...) called.");
+		}
 
 		if (Intent.ACTION_BOOT_COMPLETED.equals(_intent.getAction()))
 		{
-			Log.i(LOG_TAG, "Boot completed.");
+			if(Logging.isLoggingEnabled())
+			{
+				Log.i(LOG_TAG, "Boot completed.");
+			}
 
 			// TODO Use DB!
 			final SharedPreferences preferences = Util.getSharedPreferences(_context);
 			final boolean isLaunchOnBoot = Util.isLaunchOnBoot(preferences);
-			Log.i(LOG_TAG, "Start SpotService on boot :" + isLaunchOnBoot);
+			if(Logging.isLoggingEnabled())
+			{
+				Log.i(LOG_TAG, "Start SpotService on boot :" + isLaunchOnBoot);
+			}
 			if (isLaunchOnBoot)
 			{
 				final Intent startServiceIntent = new Intent();
@@ -53,7 +63,10 @@ public class BootCompletedBroadcastReceiver extends BroadcastReceiver
 				}
 				else
 				{
-					Log.i(LOG_TAG, "SpotService on boot launched.");
+					if(Logging.isLoggingEnabled())
+					{
+						Log.i(LOG_TAG, "SpotService on boot launched.");
+					}
 				}
 			}
 		}

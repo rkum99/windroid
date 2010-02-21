@@ -15,7 +15,7 @@ import de.macsystems.windroid.io.IOUtils;
  * @author mac
  * @version $Id$
  */
-public class ScriptLoader
+public final class ScriptLoader
 {
 
 	private ScriptLoader()

@@ -10,7 +10,7 @@ import de.macsystems.windroid.progress.IProgress;
  * @author mac
  * @version $Id$
  */
-public class CountryImpl extends BaseImpl implements ICountryDAO
+public final class CountryImpl extends BaseImpl implements ICountryDAO
 {
 
 	private static final String COUNTRY = "country";

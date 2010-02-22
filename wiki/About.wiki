@@ -1,6 +1,10 @@
-#summary Windroid
+#summary Table of Contents
 #labels Featured
 
-= Introduction =
-
-Displays Wind and Wave Conditions and alerts if conditions matches.
+ * [Introduction]
+ * [Gallery GIMP capabilities (gallery)]
+ * [GPS_Video_Tutorials]
+ * [Features]
+ * [Installation]
+ * [BrainStorm Brainstorming] 
+ * [LinkPage Useful links]

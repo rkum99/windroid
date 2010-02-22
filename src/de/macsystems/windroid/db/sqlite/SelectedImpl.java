@@ -92,7 +92,7 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 			while (iter.hasNext())
 			{
 				final Repeat repeat = schedule.getRepeat(iter.next());
-				repDAO.update(repeat);
+				repDAO.insert(repeat);
 			}
 			//
 			final IScheduleDAO schDAO = new ScheduleImpl(getDatabase());

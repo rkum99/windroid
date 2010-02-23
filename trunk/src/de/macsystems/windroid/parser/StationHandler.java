@@ -86,7 +86,7 @@ public class StationHandler extends DefaultHandler
 	public void startDocument() throws SAXException
 	{
 		startTime = System.currentTimeMillis();
-		if(Logging.isLoggingEnabled())
+		if (Logging.isLoggingEnabled())
 		{
 			Log.d(LOG_TAG, "Parsing Start");
 		}

@@ -248,26 +248,18 @@ public class ForecastDetail
 
 		public Builder(final String _id)
 		{
+			nullCheck(_id);
 			spotID = _id;
 		}
 
 		/**
-		 * @param spotName
-		 *            the spotName to set
-		 */
-		public Builder setSpotName(final String spotName)
-		{
-			this.spotName = spotName;
-			return this;
-		}
-
-		/**
-		 * @param date
+		 * @param _date
 		 *            the date to set
 		 */
-		public Builder setDate(final Date date)
+		public Builder setDate(final Date _date)
 		{
-			this.date = date;
+			nullCheck(_date);
+			this.date = _date;
 			return this;
 		}
 
@@ -282,112 +274,123 @@ public class ForecastDetail
 		}
 
 		/**
-		 * @param airTemperature
+		 * @param _airTemperature
 		 *            the airTemperature to set
 		 */
-		public Builder setAirTemperature(final Temperature airTemperature)
+		public Builder setAirTemperature(final Temperature _airTemperature)
 		{
-			this.airTemperature = airTemperature;
+			nullCheck(_airTemperature);
+			this.airTemperature = _airTemperature;
 			return this;
 		}
 
 		/**
-		 * @param waterTemperature
+		 * @param _waterTemperature
 		 *            the waterTemperature to set
 		 */
-		public Builder setWaterTemperature(final Temperature waterTemperature)
+		public Builder setWaterTemperature(final Temperature _waterTemperature)
 		{
-			this.waterTemperature = waterTemperature;
+			nullCheck(_waterTemperature);
+			this.waterTemperature = _waterTemperature;
 			return this;
 		}
 
 		/**
-		 * @param winddirection
+		 * @param _winddirection
 		 *            the winddirection to set
 		 */
-		public Builder setWinddirection(final WindDirection winddirection)
+		public Builder setWinddirection(final WindDirection _winddirection)
 		{
-			this.winddirection = winddirection;
+			nullCheck(_winddirection);
+			this.winddirection = _winddirection;
 			return this;
 		}
 
 		/**
-		 * @param windSpeed
+		 * @param _windSpeed
 		 *            the windSpeed to set
 		 */
-		public Builder setWindSpeed(final WindSpeed windSpeed)
+		public Builder setWindSpeed(final WindSpeed _windSpeed)
 		{
-			this.windSpeed = windSpeed;
+			nullCheck(_windSpeed);
+			this.windSpeed = _windSpeed;
 			return this;
 		}
 
 		/**
-		 * @param windGusts
+		 * @param _windGusts
 		 *            the windGusts to set
 		 */
-		public Builder setWindGusts(final WindSpeed windGusts)
+		public Builder setWindGusts(final WindSpeed _windGusts)
 		{
-			this.windGusts = windGusts;
+			nullCheck(_windGusts);
+			this.windGusts = _windGusts;
 			return this;
 		}
 
 		/**
-		 * @param clouds
+		 * @param _clouds
 		 *            the clouds to set
 		 */
-		public Builder setClouds(final Cavok clouds)
+		public Builder setClouds(final Cavok _clouds)
 		{
-			this.clouds = clouds;
+			nullCheck(_clouds);
+			this.clouds = _clouds;
 			return this;
 		}
 
 		/**
-		 * @param precipitation
+		 * @param _precipitation
 		 *            the precipitation to set
 		 */
-		public Builder setPrecipitation(final Precipitation precipitation)
+		public Builder setPrecipitation(final Precipitation _precipitation)
 		{
-			this.precipitation = precipitation;
+			nullCheck(_precipitation);
+			this.precipitation = _precipitation;
 			return this;
 		}
 
 		/**
-		 * @param waveHeight
+		 * @param _waveHeight
 		 *            the waveHeight to set
 		 */
-		public Builder setWaveHeight(final WaveHeight waveHeight)
+		public Builder setWaveHeight(final WaveHeight _waveHeight)
 		{
-			this.waveHeight = waveHeight;
+			nullCheck(_waveHeight);
+			this.waveHeight = _waveHeight;
 			return this;
 		}
 
 		/**
-		 * @param wavePeriod
+		 * @param _wavePeriod
 		 *            the wavePeriod to set
 		 */
-		public Builder setWavePeriod(final WavePeriod wavePeriod)
+		public Builder setWavePeriod(final WavePeriod _wavePeriod)
 		{
-			this.wavePeriod = wavePeriod;
+			nullCheck(_wavePeriod);
+			this.wavePeriod = _wavePeriod;
 			return this;
 		}
 
 		/**
-		 * @param waveDirection
+		 * @param _waveDirection
 		 *            the waveDirection to set
 		 */
-		public Builder setWaveDirection(final MeasureValue waveDirection)
+		public Builder setWaveDirection(final MeasureValue _waveDirection)
 		{
-			this.waveDirection = waveDirection;
+			nullCheck(_waveDirection);
+			this.waveDirection = _waveDirection;
 			return this;
 		}
 
 		/**
-		 * @param airPressure
+		 * @param _airPressure
 		 *            the airPressure to set
 		 */
-		public Builder setAirPressure(final Pressure airPressure)
+		public Builder setAirPressure(final Pressure _airPressure)
 		{
-			this.airPressure = airPressure;
+			nullCheck(_airPressure);
+			this.airPressure = _airPressure;
 			return this;
 		}
 
@@ -400,6 +403,18 @@ public class ForecastDetail
 			return new ForecastDetail(this);
 		}
 
+	}
+
+	/**
+	 * 
+	 * @param _object
+	 */
+	public final static void nullCheck(final Object _object)
+	{
+		if (null == _object)
+		{
+			throw new NullPointerException();
+		}
 	}
 
 }

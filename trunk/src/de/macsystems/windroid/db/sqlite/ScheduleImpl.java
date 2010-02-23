@@ -60,7 +60,7 @@ public final class ScheduleImpl extends BaseImpl implements IScheduleDAO
 	@Override
 	public Schedule getScheduleByScheduleID(final int _selectedID)
 	{
-		if(Logging.isLoggingEnabled())
+		if (Logging.isLoggingEnabled())
 		{
 			Log.d(LOG_TAG, "getScheduleByScheduleID::selectedID :" + _selectedID);
 		}

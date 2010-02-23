@@ -67,7 +67,7 @@ public final class Schedule implements Serializable
 
 		final int id = _repeat.getDayOfWeek();
 		repeats.put(id, _repeat);
-		if(Logging.isLoggingEnabled())
+		if (Logging.isLoggingEnabled())
 		{
 			Log.d(LOG_TAG, "Added repeat on schedule: " + _repeat.toString());
 		}

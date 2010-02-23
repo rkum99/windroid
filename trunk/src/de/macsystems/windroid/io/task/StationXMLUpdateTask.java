@@ -82,5 +82,4 @@ public class StationXMLUpdateTask extends IOTask<Void, InputStream>
 		return null;
 
 	}
-
 }

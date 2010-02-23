@@ -263,7 +263,7 @@ public class SpotOverviewActivity extends ListActivity
 	 * 
 	 * @param _id
 	 */
-	private void forecastSpot(int _id)
+	private void forecastSpot(final int _id)
 	{
 		final Intent intent = new Intent(SpotOverviewActivity.this, ForecastActivity.class);
 		intent.putExtra(IntentConstants.SELECTED_PRIMARY_KEY, _id);

@@ -17,7 +17,7 @@ import de.macsystems.windroid.db.IPreferencesDAO;
  * @version $Id$
  * 
  */
-public class Preferences extends PreferenceActivity
+public final class Preferences extends PreferenceActivity
 {
 	private final static String LOG_TAG = Preferences.class.getSimpleName();
 
@@ -54,19 +54,18 @@ public class Preferences extends PreferenceActivity
 	 */
 	private void logSharedPreferences()
 	{
-		final SharedPreferences pref = Util.getSharedPreferences(this);
-		if (Logging.isLoggingEnabled())
+
+		if (!Logging.isLoggingEnabled())
 		{
-			Log.d(LOG_TAG, "SharedPreferences contain " + pref.getAll().size() + " Entry(s).");
+			return;
 		}
+		final SharedPreferences pref = Util.getSharedPreferences(this);
+		Log.d(LOG_TAG, "SharedPreferences contain " + pref.getAll().size() + " Entry(s).");
 		final Iterator<?> keyIter = pref.getAll().keySet().iterator();
 		while (keyIter.hasNext())
 		{
 			final Object o = keyIter.next();
-			if (Logging.isLoggingEnabled())
-			{
-				Log.d(LOG_TAG, "Preference Key:" + o + "=" + pref.getAll().get(o));
-			}
+			Log.d(LOG_TAG, "Preference Key:" + o + "=" + pref.getAll().get(o));
 		}
 	}
 }

@@ -34,7 +34,7 @@ public class AlarmBroadcastReciever extends BroadcastReceiver
 		{
 			throw new IllegalArgumentException("missing id");
 		}
-		if(Logging.isLoggingEnabled())
+		if (Logging.isLoggingEnabled())
 		{
 			Log.d(LOG_TAG, "Alarm for Station " + id + " triggered.");
 		}

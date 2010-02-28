@@ -11,6 +11,7 @@ import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.WindUtils;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.db.DAOFactory;
+import de.macsystems.windroid.db.IForecastDAO;
 import de.macsystems.windroid.db.ISelectedDAO;
 import de.macsystems.windroid.forecast.Forecast;
 import de.macsystems.windroid.forecast.ForecastDetail;
@@ -19,7 +20,8 @@ import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.io.RetryLaterException;
 
 /**
- * Callable which will update the current forecast of a spot.
+ * Callable which will update the current forecast of a spot and updates the
+ * Database.
  * 
  * @author Jens Hohl
  * @version $Id$
@@ -84,13 +86,10 @@ public class UpdateSpotsTask implements Callable<Forecast>
 			final URI uri = WindUtils.getJSONForcastURL(vo.getStation().getId()).toURI();
 			final ParseForecastTask task = new ParseForecastTask(uri);
 			final Forecast forecast = task.execute(context);
-			final Iterator<ForecastDetail> iter = forecast.iterator();
-			while (iter.hasNext())
-			{
-				final ForecastDetail detail = iter.next();
-				final WindSpeed windspeed = detail.getWindSpeed();
-				Log.i(LOG_TAG, windspeed.getValue() + " " + windspeed.getUnit());
-			}
+			// Update Forecast in DB
+			final IForecastDAO forecastDAO = DAOFactory.getForecast(context);
+			forecastDAO.setForecast(forecast);
+			//
 			return forecast;
 		}
 		catch (final IOException e)

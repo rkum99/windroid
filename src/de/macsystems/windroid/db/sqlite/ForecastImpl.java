@@ -62,6 +62,8 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO
 			throw new NullPointerException("forecast");
 		}
 
+		// testInsertForecast();
+
 		final SQLiteDatabase db = getWritableDatabase();
 		try
 		{
@@ -76,18 +78,16 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO
 					final ContentValues values = new ContentValues();
 					values.put(COLUMN_AIR_PRESSURE, detail.getAirPressure().getValue());
 					values.put(COLUMN_AIR_PRESSURE_UNIT, detail.getAirPressure().getMeasure().getId());
-					//
-					// values.put(COLUMN_AIR_TEMPERATURE,
-					// detail.getAirTemperature().getValue());
-					insertValue(values, COLUMN_AIR_TEMPERATURE, detail.getAirTemperature());
-					// values.put(COLUMN_AIR_TEMPERATURE_UNIT,
-					// detail.getAirTemperature().getMeasure().getId());
+					values.put(COLUMN_AIR_TEMPERATURE, detail.getAirTemperature().getValue());
+					values.put(COLUMN_AIR_TEMPERATURE_UNIT, detail.getAirTemperature().getMeasure().getId());
 					//
 					values.put(COLUMN_CLOUDS, detail.getClouds().getId());
 					//
 					values.put(COLUMN_DATE, detail.getDate().toString());
+					values.put(COLUMN_TIME, detail.getTime());
 					//
 					values.put(COLUMN_PRECIPITATION, detail.getPrecipitation().getValue());
+					values.put(COLUMN_PRECIPITATION_UNIT, detail.getPrecipitation().getMeasure().getId());
 					// TODO Precipitation Unit needed.
 					//
 					values.put(COLUMN_WATER_TEMPERATURE, detail.getWaterTemperature().getValue());
@@ -99,7 +99,7 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO
 					values.put(COLUMN_WAVE_HEIGHT_UNIT, detail.getWaveHeight().getMeasure().getId());
 					//
 					values.put(COLUMN_WAVE_PERIOD, detail.getWavePeriod().getValue());
-					values.put(COLUMN_WAVE_PERIOD_UNIT, detail.getWaveHeight().getMeasure().getId());
+					values.put(COLUMN_WAVE_PERIOD_UNIT, detail.getWavePeriod().getMeasure().getId());
 					//
 					values.put(COLUMN_WIND_DIRECTION, detail.getWinddirection().getId());
 					//
@@ -109,7 +109,7 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO
 					values.put(COLUMN_WIND_SPEED, detail.getWindSpeed().getValue());
 					values.put(COLUMN_WIND_SPEED_UNIT, detail.getWindSpeed().getUnit().getId());
 					//
-					db.insert(tableName, null, values);
+					db.insert(tableName, "99", values);
 				}
 			}
 		}
@@ -117,6 +117,35 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO
 		{
 			IOUtils.close(db);
 		}
+
+	}
+
+	/**
+	 *CREATE TABLE IF NOT EXISTS forecast (_id INTEGER PRIMARY KEY, date TEXT
+	 * NOT NULL, time TEXT NOT NULL, wave_period FLOAT,wave_period_unit TEXT,
+	 * wind_direction TEXT NOT NULL, wave_direction TEXT NOT NULL, precipitation
+	 * FLOAT, air_pressure FLOAT, air_pressure_unit TEXT, wind_gusts FLOAT,
+	 * wind_gusts_unit TEXT, water_temperature FLOAT,water_temperature_unit
+	 * TEXT, air_temperature FLOAT, air_temperature_unit TEXT, wave_height
+	 * FLOAT, wave_height_unit TEXT, clouds TEXT, wind_speed
+	 * FLOAT,wind_speed_unit TEXT);
+	 */
+	private void testInsertForecast()
+	{
+		final SQLiteDatabase db = getWritableDatabase();
+		try
+		{
+			final ContentValues values = new ContentValues();
+			values.put(COLUMN_AIR_PRESSURE, 10.0f);
+			values.put(COLUMN_AIR_PRESSURE_UNIT, "hpa");
+
+			db.insert(tableName, null, values);
+		}
+		finally
+		{
+			IOUtils.close(db);
+		}
+
 	}
 
 	private void insertValue(ContentValues _v, String _column, MeasureValue _mv)
@@ -131,7 +160,7 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO
 		}
 		else
 		{
-			Log.d(LOG_TAG, "MeasureValue for "+_column+" = " + _mv.getValue());
+			Log.d(LOG_TAG, "MeasureValue for " + _column + " = " + _mv.getValue());
 			_v.put(_column, _mv.getValue());
 		}
 	}

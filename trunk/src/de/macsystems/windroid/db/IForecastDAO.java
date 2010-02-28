@@ -18,6 +18,7 @@ public interface IForecastDAO extends IDAO
 	public final static String COLUMN_WIND_DIRECTION = "wind_direction";
 	public final static String COLUMN_WAVE_DIRECTION = "wave_direction";
 	public final static String COLUMN_PRECIPITATION = "precipitation";
+	public final static String COLUMN_PRECIPITATION_UNIT = "precipitation_unit";
 	public final static String COLUMN_AIR_PRESSURE = "air_pressure";
 	public final static String COLUMN_AIR_PRESSURE_UNIT = "air_pressure_unit";
 	public final static String COLUMN_WIND_GUSTS = "wind_gusts";

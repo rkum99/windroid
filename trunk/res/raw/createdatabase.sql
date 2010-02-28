@@ -9,7 +9,9 @@ DROP TABLE IF EXISTS region;
 DROP TABLE IF EXISTS selected;
 DROP TABLE IF EXISTS schedule;
 DROP TABLE IF EXISTS repeat;
-drop TABLE IF EXISTS schedule_repeat_relation;
+DROP TABLE IF EXISTS schedule_repeat_relation;
+DROP TABLE IF EXISTS forecast;
+DROP TABLE IF EXISTS forecast_releation;
 -- 
 -- Tables
 -- 
@@ -18,6 +20,8 @@ CREATE TABLE IF NOT EXISTS spot (_id INTEGER PRIMARY KEY AUTOINCREMENT, spotid T
 CREATE TABLE IF NOT EXISTS continent (_id INTEGER PRIMARY KEY AUTOINCREMENT ,id INTEGER, name TEXT);
 CREATE TABLE IF NOT EXISTS country (_id INTEGER PRIMARY KEY AUTOINCREMENT,id INTEGER, name TEXT NOT NULL, continentid TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS region (_id INTEGER PRIMARY KEY AUTOINCREMENT,id INTEGER, name TEXT NOT NULL, countryid TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS forecast_releation (_id PRIMARY KEY, updatefailed BOOLEAN, forecastid INTEGER);
+CREATE TABLE IF NOT EXISTS forecast (_id INTEGER PRIMARY KEY, date TEXT, time TEXT,  wave_period FLOAT,wave_period_unit TEXT,  wind_direction TEXT, wave_direction TEXT, precipitation FLOAT, precipitation_unit TEXT, air_pressure FLOAT, air_pressure_unit TEXT, wind_gusts FLOAT, wind_gusts_unit TEXT, water_temperature FLOAT,water_temperature_unit TEXT, air_temperature FLOAT, air_temperature_unit TEXT, wave_height FLOAT, wave_height_unit TEXT, clouds TEXT, wind_speed FLOAT,wind_speed_unit TEXT);
 
 CREATE INDEX spotindex ON spot (spotid);
 CREATE INDEX countryindex ON country (id);
@@ -30,15 +34,13 @@ CREATE INDEX coid ON country (id);
 --  selected
 CREATE TABLE IF NOT EXISTS selected (_id INTEGER PRIMARY KEY AUTOINCREMENT, spotid text NOT NULL, activ BOOLEAN, usedirection BOOLEAN, starting TEXT, till TEXT, windmeasure TEXT NOT NULL, minwind INTEGER, maxwind INTEGER); 
 CREATE INDEX IF NOT EXISTS selectedid ON selected (spotid); 
-
---  schedule 
+-- schedule 
 -- CREATE TABLE IF NOT EXISTS schedule (_id INTEGER PRIMARY KEY AUTOINCREMENT, selectedid INTEGER);
 -- CREATE INDEX scheduleid ON schedule (selectedid); 
 -- repeat
 CREATE TABLE IF NOT EXISTS repeat (_id INTEGER PRIMARY KEY AUTOINCREMENT, weekday INTEGER, daytime LONG, activ BOOLEAN);
 -- schedule_repeat_relation
 CREATE TABLE IF NOT EXISTS schedule_repeat_relation (_id INTEGER PRIMARY KEY AUTOINCREMENT, selectedid INTEGER, repeatid INTEGER)
-
 -- 
 -- Triggers
 -- 

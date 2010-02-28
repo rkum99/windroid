@@ -55,6 +55,15 @@ public final class ForecastParser
 		builder.setAirPressure(airPressure);
 	}
 
+	private static void parseAirTemperature(final JSONObject airTempMap, final Builder builder) throws JSONException
+	{
+		final float value = getFloat(airTempMap, VALUE);
+		final String unit = airTempMap.getString(UNIT);
+
+		final Temperature temp = Temperature.create(value, unit);
+		builder.setAirTemperature(temp);
+	}
+
 	private static void parseWaveHeight(final JSONObject wavePeriodMap, final Builder builder) throws JSONException
 	{
 		final float value = getFloat(wavePeriodMap, VALUE);
@@ -236,7 +245,9 @@ public final class ForecastParser
 			parseClouds(forecastDetailMap, builder);
 			final JSONObject airePressureMap = forecastDetailMap.getJSONObject("air_pressure");
 			parseAirPresure(airePressureMap, builder);
-
+			final JSONObject airTempMap = forecastDetailMap.getJSONObject("air_temperature");
+			parseAirTemperature(airTempMap, builder);
+			//
 			forecast.add(builder.build());
 		}
 		return forecast;
@@ -253,25 +264,25 @@ public final class ForecastParser
 	 */
 	private static void parseDate(final JSONObject forecastDetailMap, final Builder builder) throws JSONException
 	{
-		final String timeString = forecastDetailMap.getString(DATE);
+		final String dateString = forecastDetailMap.getString(DATE);
 
-		if (timeString.length() != 8)
+		if (dateString.length() != 8)
 		{
 			throw new IllegalArgumentException("wrong format, expected length of 6.");
 		}
 
-		final int year = Integer.parseInt(timeString.substring(0, 4));
-		final int month = Integer.parseInt(timeString.substring(4, 6)) - 1;
-		final int day = Integer.parseInt(timeString.substring(6, 8));
+		final int year = Integer.parseInt(dateString.substring(0, 4));
+		final int month = Integer.parseInt(dateString.substring(4, 6)) - 1;
+		final int day = Integer.parseInt(dateString.substring(6, 8));
 
 		final Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.YEAR, year);
 		cal.set(Calendar.MONTH, month);
 		cal.set(Calendar.DAY_OF_MONTH, day);
 
-		Log.d(LOG_TAG, "year string is : " + timeString.substring(0, 4));
-		Log.d(LOG_TAG, "month string is : " + timeString.substring(4, 6));
-		Log.d(LOG_TAG, "day string is : " + timeString.substring(6, 8));
+		Log.d(LOG_TAG, "year string is : " + dateString.substring(0, 4));
+		Log.d(LOG_TAG, "month string is : " + dateString.substring(4, 6));
+		Log.d(LOG_TAG, "day string is : " + dateString.substring(6, 8));
 		//
 		// Log.d(LOG_TAG, "hrs is : " + hrs);
 		// Log.d(LOG_TAG, "min is : " + min);

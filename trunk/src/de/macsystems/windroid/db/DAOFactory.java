@@ -22,7 +22,7 @@ public final class DAOFactory
 	{
 	}
 
-	public final static IForecast getForecast(final Context _context)
+	public final static IForecastDAO getForecast(final Context _context)
 	{
 		return new ForecastImpl(new Database(_context), NullProgressAdapter.INSTANCE);
 	}

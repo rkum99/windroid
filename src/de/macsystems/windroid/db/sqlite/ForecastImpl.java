@@ -2,12 +2,14 @@ package de.macsystems.windroid.db.sqlite;
 
 import java.util.Iterator;
 
+import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import de.macsystems.windroid.Logging;
-import de.macsystems.windroid.db.IForecast;
+import de.macsystems.windroid.db.IForecastDAO;
 import de.macsystems.windroid.forecast.Forecast;
 import de.macsystems.windroid.forecast.ForecastDetail;
+import de.macsystems.windroid.identifyable.MeasureValue;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.progress.IProgress;
 
@@ -18,7 +20,7 @@ import de.macsystems.windroid.progress.IProgress;
  * @author mac
  * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
  */
-public class ForecastImpl extends BaseImpl implements IForecast
+public class ForecastImpl extends BaseImpl implements IForecastDAO
 {
 
 	private final static String FORECAST = "forecast";
@@ -55,6 +57,11 @@ public class ForecastImpl extends BaseImpl implements IForecast
 	@Override
 	public void setForecast(final Forecast forecast)
 	{
+		if (forecast == null)
+		{
+			throw new NullPointerException("forecast");
+		}
+
 		final SQLiteDatabase db = getWritableDatabase();
 		try
 		{
@@ -65,14 +72,68 @@ public class ForecastImpl extends BaseImpl implements IForecast
 				if (Logging.isLoggingEnabled())
 				{
 					Log.d(LOG_TAG, "Insert a forecast into Database " + detail.toString());
-				}
 
+					final ContentValues values = new ContentValues();
+					values.put(COLUMN_AIR_PRESSURE, detail.getAirPressure().getValue());
+					values.put(COLUMN_AIR_PRESSURE_UNIT, detail.getAirPressure().getMeasure().getId());
+					//
+					// values.put(COLUMN_AIR_TEMPERATURE,
+					// detail.getAirTemperature().getValue());
+					insertValue(values, COLUMN_AIR_TEMPERATURE, detail.getAirTemperature());
+					// values.put(COLUMN_AIR_TEMPERATURE_UNIT,
+					// detail.getAirTemperature().getMeasure().getId());
+					//
+					values.put(COLUMN_CLOUDS, detail.getClouds().getId());
+					//
+					values.put(COLUMN_DATE, detail.getDate().toString());
+					//
+					values.put(COLUMN_PRECIPITATION, detail.getPrecipitation().getValue());
+					// TODO Precipitation Unit needed.
+					//
+					values.put(COLUMN_WATER_TEMPERATURE, detail.getWaterTemperature().getValue());
+					values.put(COLUMN_WATER_TEMPERATURE_UNIT, detail.getWaterTemperature().getMeasure().getId());
+					//
+					values.put(COLUMN_WAVE_DIRECTION, detail.getWaterTemperature().getValue());
+					//
+					values.put(COLUMN_WAVE_HEIGHT, detail.getWaveHeight().getValue());
+					values.put(COLUMN_WAVE_HEIGHT_UNIT, detail.getWaveHeight().getMeasure().getId());
+					//
+					values.put(COLUMN_WAVE_PERIOD, detail.getWavePeriod().getValue());
+					values.put(COLUMN_WAVE_PERIOD_UNIT, detail.getWaveHeight().getMeasure().getId());
+					//
+					values.put(COLUMN_WIND_DIRECTION, detail.getWinddirection().getId());
+					//
+					values.put(COLUMN_WIND_GUSTS, detail.getWindGusts().getValue());
+					values.put(COLUMN_WIND_GUST_UNIT, detail.getWindGusts().getUnit().getId());
+					//
+					values.put(COLUMN_WIND_SPEED, detail.getWindSpeed().getValue());
+					values.put(COLUMN_WIND_SPEED_UNIT, detail.getWindSpeed().getUnit().getId());
+					//
+					db.insert(tableName, null, values);
+				}
 			}
 		}
 		finally
 		{
 			IOUtils.close(db);
 		}
-
 	}
+
+	private void insertValue(ContentValues _v, String _column, MeasureValue _mv)
+	{
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "Updating MeasureValue for Column:" + _column);
+		}
+		if (_mv.getMeasure() == null)
+		{
+			_v.put(_column, 0);
+		}
+		else
+		{
+			Log.d(LOG_TAG, "MeasureValue for "+_column+" = " + _mv.getValue());
+			_v.put(_column, _mv.getValue());
+		}
+	}
+
 }

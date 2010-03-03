@@ -1,0 +1,17 @@
+#summary Screenshots.
+
+= Screenshots =
+
+[http://windroid.googlecode.com/svn/wiki/download.png]
+[http://windroid.googlecode.com/svn/wiki/createdatabase.png]
+[http://windroid.googlecode.com/svn/wiki/install_success.png]
+
+[http://windroid.googlecode.com/svn/wiki/select_spot.png] 
+[http://windroid.googlecode.com/svn/wiki/select_country.png] 
+[http://windroid.googlecode.com/svn/wiki/create_schedule.png]
+[http://windroid.googlecode.com/svn/wiki/create_schedule_timer.png]
+
+
+[http://windroid.googlecode.com/svn/wiki/forecast_screen.png]
+
+[http://windroid.googlecode.com/svn/wiki/preferences.png]

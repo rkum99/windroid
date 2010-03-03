@@ -1,8 +1,5 @@
 package de.macsystems.windroid.db.sqlite;
 
-import android.content.ContentValues;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import de.macsystems.windroid.db.IConfigDAO;
 import de.macsystems.windroid.progress.IProgress;
 import de.macsystems.windroid.progress.NullProgressAdapter;

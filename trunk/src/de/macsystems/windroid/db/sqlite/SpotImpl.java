@@ -16,6 +16,7 @@ import de.macsystems.windroid.identifyable.Station;
 import de.macsystems.windroid.identifyable.World;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.progress.IProgress;
+import de.macsystems.windroid.progress.NullProgressAdapter;
 
 /**
  * 
@@ -24,8 +25,6 @@ import de.macsystems.windroid.progress.IProgress;
  */
 public final class SpotImpl extends BaseImpl implements ISpotDAO
 {
-
-	private static final String SPOT = "spot";
 
 	private final static String LOG_TAG = SpotImpl.class.getSimpleName();
 
@@ -44,7 +43,7 @@ public final class SpotImpl extends BaseImpl implements ISpotDAO
 	 */
 	public SpotImpl(final Database _database) throws NullPointerException
 	{
-		super(_database, SPOT);
+		this(_database, NullProgressAdapter.INSTANCE);
 	}
 
 	/**
@@ -55,7 +54,7 @@ public final class SpotImpl extends BaseImpl implements ISpotDAO
 	 */
 	public SpotImpl(final Database _database, final IProgress _progress) throws NullPointerException
 	{
-		super(_database, SPOT, _progress);
+		super(_database, "spot", _progress);
 	}
 
 	/*
@@ -253,7 +252,7 @@ public final class SpotImpl extends BaseImpl implements ISpotDAO
 		Cursor cursor = null;
 		try
 		{
-			cursor = db.query(SPOT, colums, "spotid=?", new String[]
+			cursor = db.query(tableName, colums, "spotid=?", new String[]
 			{ _stationid }, null, null, null);
 			moveToFirstOrThrow(cursor);
 			/**

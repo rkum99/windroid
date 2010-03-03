@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.graphics.Region;
 import de.macsystems.windroid.db.IRegionDAO;
 import de.macsystems.windroid.progress.IProgress;
+import de.macsystems.windroid.progress.NullProgressAdapter;
 
 /**
  * DAO for table 'region'
@@ -14,15 +15,13 @@ import de.macsystems.windroid.progress.IProgress;
 public final class RegionImpl extends BaseImpl implements IRegionDAO
 {
 
-	private static final String REGION = "region";
-
 	/**
 	 * @param database
 	 * @param progress
 	 */
 	public RegionImpl(final Database database, final IProgress progress)
 	{
-		super(database, REGION, progress);
+		super(database, "region", progress);
 	}
 
 	/**
@@ -30,7 +29,7 @@ public final class RegionImpl extends BaseImpl implements IRegionDAO
 	 */
 	public RegionImpl(final Database database)
 	{
-		super(database, REGION);
+		this(database, NullProgressAdapter.INSTANCE);
 	}
 
 	/*

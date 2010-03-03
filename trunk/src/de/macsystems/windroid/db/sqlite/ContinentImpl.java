@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import de.macsystems.windroid.db.IContinentDAO;
 import de.macsystems.windroid.identifyable.Continent;
 import de.macsystems.windroid.progress.IProgress;
+import de.macsystems.windroid.progress.NullProgressAdapter;
 
 /**
  * DAO for Table Continent
@@ -14,15 +15,13 @@ import de.macsystems.windroid.progress.IProgress;
  */
 public final class ContinentImpl extends BaseImpl implements IContinentDAO
 {
-	private static final String CONTINENT = "continent";
-
 	/**
 	 * 
 	 * @param database
 	 */
 	public ContinentImpl(final Database database)
 	{
-		super(database, CONTINENT);
+		this(database, NullProgressAdapter.INSTANCE);
 	}
 
 	/**
@@ -32,7 +31,7 @@ public final class ContinentImpl extends BaseImpl implements IContinentDAO
 	 */
 	public ContinentImpl(final Database database, final IProgress _progress)
 	{
-		super(database, CONTINENT, _progress);
+		super(database, "continent", _progress);
 	}
 
 	/*
@@ -60,7 +59,7 @@ public final class ContinentImpl extends BaseImpl implements IContinentDAO
 		Cursor cursor = null;
 		try
 		{
-			cursor = db.query(CONTINENT, null, "id=?", new String[]
+			cursor = db.query("continent", null, "id=?", new String[]
 			{ _id }, null, null, null);
 			moveToFirstOrThrow(cursor);
 			final int index = cursor.getColumnIndexOrThrow("_id");

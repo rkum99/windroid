@@ -22,6 +22,7 @@ import de.macsystems.windroid.identifyable.WindDirection;
 import de.macsystems.windroid.identifyable.WindUnit;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.progress.IProgress;
+import de.macsystems.windroid.progress.NullProgressAdapter;
 
 /**
  * @author Jens Hohl
@@ -32,15 +33,13 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 
 	private final static String LOG_TAG = SelectedImpl.class.getSimpleName();
 
-	private static final String SELECTED = "selected";
-
 	/**
 	 * 
 	 * @param _database
 	 */
 	public SelectedImpl(final Database _database)
 	{
-		super(_database, SELECTED);
+		this(_database, NullProgressAdapter.INSTANCE);
 	}
 
 	/**
@@ -50,7 +49,7 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 	 */
 	public SelectedImpl(final Database _database, final IProgress _progress)
 	{
-		super(_database, SELECTED, _progress);
+		super(_database, "selected", _progress);
 	}
 
 	/*

@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import de.macsystems.windroid.db.IConfigDAO;
 import de.macsystems.windroid.progress.IProgress;
+import de.macsystems.windroid.progress.NullProgressAdapter;
 
 /**
  * @author Jens Hohl
@@ -12,8 +13,6 @@ import de.macsystems.windroid.progress.IProgress;
  */
 public final class ConfigImpl extends BaseImpl implements IConfigDAO
 {
-
-	private static final String CONFIG = "config";
 
 	public final String DB_STATUS = "db_status";
 
@@ -23,7 +22,7 @@ public final class ConfigImpl extends BaseImpl implements IConfigDAO
 	 */
 	public ConfigImpl(final Database _database)
 	{
-		super(_database, CONFIG);
+		this(_database, NullProgressAdapter.INSTANCE);
 	}
 
 	/**
@@ -33,7 +32,7 @@ public final class ConfigImpl extends BaseImpl implements IConfigDAO
 	 */
 	public ConfigImpl(final Database _database, final IProgress _progress)
 	{
-		super(_database, CONFIG, _progress);
+		super(_database, "config", _progress);
 	}
 
 	/*
@@ -64,5 +63,4 @@ public final class ConfigImpl extends BaseImpl implements IConfigDAO
 		db.close();
 		return false;
 	}
-
 }

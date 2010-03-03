@@ -42,11 +42,7 @@ public final class ConfigImpl extends BaseImpl implements IConfigDAO
 	 */
 	public String getStatus()
 	{
-		final SQLiteDatabase db = getDatabase().getReadableDatabase();
-		final Cursor cursor = db.rawQuery("SELECT value from internal where id ='" + DB_STATUS + "'", null);
-		cursor.moveToFirst();
-		db.close();
-		return "false";
+		throw new UnsupportedOperationException();
 	}
 
 	/*
@@ -56,11 +52,6 @@ public final class ConfigImpl extends BaseImpl implements IConfigDAO
 	 */
 	public boolean setStatus(final String _status)
 	{
-		final SQLiteDatabase db = getDatabase().getWritableDatabase();
-		final ContentValues args = new ContentValues();
-		args.put(DB_STATUS, _status);
-		// Cursor cursor = db.update("internal",args,);
-		db.close();
-		return false;
+		throw new UnsupportedOperationException();
 	}
 }

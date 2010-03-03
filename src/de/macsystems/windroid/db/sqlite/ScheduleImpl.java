@@ -13,6 +13,7 @@ import de.macsystems.windroid.identifyable.Repeat;
 import de.macsystems.windroid.identifyable.Schedule;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.progress.IProgress;
+import de.macsystems.windroid.progress.NullProgressAdapter;
 
 /**
  * @author mac
@@ -22,15 +23,13 @@ public final class ScheduleImpl extends BaseImpl implements IScheduleDAO
 {
 	private final static String LOG_TAG = ScheduleImpl.class.getSimpleName();
 
-	private static final String SCHEDULE = "schedule_repeat_relation";
-
 	/**
 	 * @param database
 	 * @param progress
 	 */
 	public ScheduleImpl(final Database database, final IProgress progress)
 	{
-		super(database, SCHEDULE, progress);
+		super(database, "schedule_repeat_relation", progress);
 	}
 
 	/**
@@ -38,7 +37,7 @@ public final class ScheduleImpl extends BaseImpl implements IScheduleDAO
 	 */
 	public ScheduleImpl(final Database database)
 	{
-		super(database, SCHEDULE);
+		this(database, NullProgressAdapter.INSTANCE);
 	}
 
 	/*

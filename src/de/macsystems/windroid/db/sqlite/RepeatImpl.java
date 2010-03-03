@@ -9,6 +9,7 @@ import de.macsystems.windroid.db.IRepeatDAO;
 import de.macsystems.windroid.identifyable.Repeat;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.progress.IProgress;
+import de.macsystems.windroid.progress.NullProgressAdapter;
 
 /**
  * @author mac
@@ -18,8 +19,6 @@ public final class RepeatImpl extends BaseImpl implements IRepeatDAO
 {
 	private final static String LOG_TAG = RepeatImpl.class.getSimpleName();
 
-	private static final String REPEAT = "repeat";
-
 	/**
 	 * @param database
 	 * @param progress
@@ -27,7 +26,7 @@ public final class RepeatImpl extends BaseImpl implements IRepeatDAO
 	 */
 	public RepeatImpl(final Database database, final IProgress progress) throws NullPointerException
 	{
-		super(database, REPEAT, progress);
+		super(database, "repeat", progress);
 	}
 
 	/**
@@ -35,7 +34,7 @@ public final class RepeatImpl extends BaseImpl implements IRepeatDAO
 	 */
 	public RepeatImpl(final Database database)
 	{
-		super(database, REPEAT);
+		this(database, NullProgressAdapter.INSTANCE);
 	}
 
 	/*

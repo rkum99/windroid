@@ -3,6 +3,7 @@ package de.macsystems.windroid.db.sqlite;
 import android.database.Cursor;
 import de.macsystems.windroid.db.ICountryDAO;
 import de.macsystems.windroid.progress.IProgress;
+import de.macsystems.windroid.progress.NullProgressAdapter;
 
 /**
  * DAO for table 'country'
@@ -13,15 +14,13 @@ import de.macsystems.windroid.progress.IProgress;
 public final class CountryImpl extends BaseImpl implements ICountryDAO
 {
 
-	private static final String COUNTRY = "country";
-
 	/**
 	 * @param database
 	 * @param progress
 	 */
 	public CountryImpl(final Database database, final IProgress progress)
 	{
-		super(database, COUNTRY, progress);
+		super(database, "country", progress);
 	}
 
 	/**
@@ -29,7 +28,7 @@ public final class CountryImpl extends BaseImpl implements ICountryDAO
 	 */
 	public CountryImpl(final Database database)
 	{
-		super(database, COUNTRY);
+		this(database, NullProgressAdapter.INSTANCE);
 	}
 
 	@Override

@@ -9,7 +9,6 @@ import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.db.IForecastDAO;
 import de.macsystems.windroid.forecast.Forecast;
 import de.macsystems.windroid.forecast.ForecastDetail;
-import de.macsystems.windroid.identifyable.MeasureValue;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.progress.IProgress;
 
@@ -23,8 +22,6 @@ import de.macsystems.windroid.progress.IProgress;
 public class ForecastImpl extends BaseImpl implements IForecastDAO
 {
 
-	private final static String FORECAST = "forecast";
-
 	private final static String LOG_TAG = ForecastImpl.class.getSimpleName();
 
 	/**
@@ -32,7 +29,7 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO
 	 */
 	public ForecastImpl(final Database _database, final IProgress _progress)
 	{
-		super(_database, FORECAST, _progress);
+		super(_database, "forecast", _progress);
 	}
 
 	/*
@@ -62,8 +59,6 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO
 			throw new NullPointerException("forecast");
 		}
 
-		// testInsertForecast();
-
 		final SQLiteDatabase db = getWritableDatabase();
 		try
 		{
@@ -88,7 +83,6 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO
 					//
 					values.put(COLUMN_PRECIPITATION, detail.getPrecipitation().getValue());
 					values.put(COLUMN_PRECIPITATION_UNIT, detail.getPrecipitation().getMeasure().getId());
-					// TODO Precipitation Unit needed.
 					//
 					values.put(COLUMN_WATER_TEMPERATURE, detail.getWaterTemperature().getValue());
 					values.put(COLUMN_WATER_TEMPERATURE_UNIT, detail.getWaterTemperature().getMeasure().getId());
@@ -109,7 +103,7 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO
 					values.put(COLUMN_WIND_SPEED, detail.getWindSpeed().getValue());
 					values.put(COLUMN_WIND_SPEED_UNIT, detail.getWindSpeed().getUnit().getId());
 					//
-					db.insert(tableName, "99", values);
+					db.insert(tableName, null, values);
 				}
 			}
 		}
@@ -117,52 +111,5 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO
 		{
 			IOUtils.close(db);
 		}
-
 	}
-
-	/**
-	 *CREATE TABLE IF NOT EXISTS forecast (_id INTEGER PRIMARY KEY, date TEXT
-	 * NOT NULL, time TEXT NOT NULL, wave_period FLOAT,wave_period_unit TEXT,
-	 * wind_direction TEXT NOT NULL, wave_direction TEXT NOT NULL, precipitation
-	 * FLOAT, air_pressure FLOAT, air_pressure_unit TEXT, wind_gusts FLOAT,
-	 * wind_gusts_unit TEXT, water_temperature FLOAT,water_temperature_unit
-	 * TEXT, air_temperature FLOAT, air_temperature_unit TEXT, wave_height
-	 * FLOAT, wave_height_unit TEXT, clouds TEXT, wind_speed
-	 * FLOAT,wind_speed_unit TEXT);
-	 */
-	private void testInsertForecast()
-	{
-		final SQLiteDatabase db = getWritableDatabase();
-		try
-		{
-			final ContentValues values = new ContentValues();
-			values.put(COLUMN_AIR_PRESSURE, 10.0f);
-			values.put(COLUMN_AIR_PRESSURE_UNIT, "hpa");
-
-			db.insert(tableName, null, values);
-		}
-		finally
-		{
-			IOUtils.close(db);
-		}
-
-	}
-
-	private void insertValue(ContentValues _v, String _column, MeasureValue _mv)
-	{
-		if (Logging.isLoggingEnabled())
-		{
-			Log.d(LOG_TAG, "Updating MeasureValue for Column:" + _column);
-		}
-		if (_mv.getMeasure() == null)
-		{
-			_v.put(_column, 0);
-		}
-		else
-		{
-			Log.d(LOG_TAG, "MeasureValue for " + _column + " = " + _mv.getValue());
-			_v.put(_column, _mv.getValue());
-		}
-	}
-
 }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string
+		name="date">Date</string>
+	<string
+		name="time">Time</string>
+	<string
+		name="clouds">Clouds</string>
+	<string
+		name="wind_direction">Wind direction</string>
+	<string
+		name="wind_speed">Wind speed</string>
+	<string
+		name="wave_period">Wave Period</string>
+	<string
+		name="wave_direction">Wave direction</string>
+	<string
+		name="precipitation">Precipitation</string>
+	<string
+		name="air_pressure">Air pressure</string>
+	<string
+		name="windgust">Windgust</string>
+	<string
+		name="water_temperature">Water temperature</string>
+	<string
+		name="air_temperature">Air temperature</string>
+	<string
+		name="wave_height">Wave height</string>
+</resources>

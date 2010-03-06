@@ -34,6 +34,13 @@ public final class IntentConstants
 	 * Lookup Key for primary key in a Intent {@value #SELECTED_PRIMARY_KEY}
 	 */
 	public final static String SELECTED_PRIMARY_KEY = "selected primary key";
+
+	/**
+	 * Lookup Key for primary key of forecast to show.
+	 * {@value #STORED_FORECAST_KEY}
+	 */
+	public final static String STORED_FORECAST_KEY = "show forecast key";
+
 	/**
 	 * Type of event which
 	 */

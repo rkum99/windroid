@@ -1,5 +1,7 @@
 package de.macsystems.windroid.identifyable;
 
+import de.macsystems.windroid.R;
+
 /**
  * 
  * Cavok ist eine Wetterbeschreibung in der Luftfahrt und steht für ceiling and
@@ -35,14 +37,16 @@ package de.macsystems.windroid.identifyable;
  */
 public enum Cavok implements IdentifyAble
 {
-	SKC("SKC", "sky clear"),
-	FEW("FEW", "few"),
-	SCT("SCT", "scattered"),
-	BKN("BKN", "broken"),
-	OVC("OVC", "overcast"),
-	OBS("OBS", "obscured");
+	SKC("SKC", "sky clear", R.drawable.weather_sky_clear), //
+	FEW("FEW", "few", R.drawable.weather_sky_clear),
+	SCT("SCT", "scattered", R.drawable.weather_sky_clear),
+	BKN("BKN", "broken", R.drawable.weather_sky_clear),
+	OVC("OVC", "overcast", R.drawable.weather_sky_clear),
+	OBS("OBS", "obscured", R.drawable.weather_sky_clear);
 
 	private final String id;
+
+	private final int resId;
 
 	private final String description;
 
@@ -51,10 +55,11 @@ public enum Cavok implements IdentifyAble
 	 * @param _id
 	 * @param _desciption
 	 */
-	private Cavok(final String _id, final String _desciption)
+	private Cavok(final String _id, final String _desciption, final int _resID)
 	{
 		id = _id;
 		description = _desciption;
+		resId = _resID;
 	}
 
 	/**
@@ -69,6 +74,11 @@ public enum Cavok implements IdentifyAble
 	public String getId()
 	{
 		return id;
+	}
+
+	public int getResId()
+	{
+		return resId;
 	}
 
 }

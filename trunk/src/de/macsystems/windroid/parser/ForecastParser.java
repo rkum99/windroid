@@ -69,7 +69,7 @@ public final class ForecastParser
 		final float value = getFloat(wavePeriodMap, VALUE);
 		final String unit = wavePeriodMap.getString(UNIT);
 
-		final WaveHeight waveHeiht = WaveHeight.create(unit, value);
+		final WaveHeight waveHeiht = WaveHeight.create(value, unit);
 		builder.setWaveHeight(waveHeiht);
 	}
 
@@ -125,8 +125,6 @@ public final class ForecastParser
 	private static void parseWaterTemperatureMap(final JSONObject waterTemperatureMap, final Builder builder)
 			throws JSONException
 	{
-		// Log.d(LOG_TAG, "waterTemperatureMap :" +
-		// waterTemperatureMap.toString());
 		final float value = getFloat(waterTemperatureMap, VALUE);
 		final String unit = waterTemperatureMap.getString(UNIT);
 
@@ -145,19 +143,16 @@ public final class ForecastParser
 
 	private static void parseWavePeriod(final JSONObject wavePeriodMap, final Builder builder) throws JSONException
 	{
-		// Log.d(LOG_TAG, "wavePeriodMap :" + wavePeriodMap.toString());
-
 		final float value = getFloat(wavePeriodMap, VALUE);
 		final String unit = wavePeriodMap.getString(UNIT);
 
-		final WavePeriod wavePeriod = WavePeriod.create(unit, value);
+		final WavePeriod wavePeriod = WavePeriod.create(value, unit);
 		builder.setWavePeriod(wavePeriod);
 	}
 
 	private static void parsePrecipitationMap(final JSONObject precipitationMap, final Builder builder)
 			throws JSONException
 	{
-		// Log.d(LOG_TAG, "precipitationMap :" + precipitationMap.toString());
 		final float value = getFloat(precipitationMap, VALUE);
 		final String unit = precipitationMap.getString(UNIT);
 
@@ -214,7 +209,6 @@ public final class ForecastParser
 		final Forecast forecast = new Forecast("dummy", 2, new Date());
 		final JSONTokener tokener = new JSONTokener(_forecast.toString());
 		final JSONObject jsonRoot = new JSONObject(tokener);
-		Log.d(LOG_TAG, "json timestamp: " + jsonRoot.getString("timestamp"));
 
 		final JSONArray stations = jsonRoot.getJSONArray("stations");
 		final JSONObject forecasts = stations.getJSONObject(0);
@@ -268,7 +262,7 @@ public final class ForecastParser
 
 		if (dateString.length() != 8)
 		{
-			throw new IllegalArgumentException("wrong format, expected length of 6.");
+			throw new IllegalArgumentException("wrong format, expected length of 8.");
 		}
 
 		final int year = Integer.parseInt(dateString.substring(0, 4));

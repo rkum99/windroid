@@ -1,14 +1,28 @@
 package de.macsystems.windroid.db.sqlite;
 
+import java.util.Date;
 import java.util.Iterator;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Parcelable.Creator;
 import android.util.Log;
 import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.db.IForecastDAO;
+import de.macsystems.windroid.db.IForecastRelation;
 import de.macsystems.windroid.forecast.Forecast;
 import de.macsystems.windroid.forecast.ForecastDetail;
+import de.macsystems.windroid.identifyable.Cavok;
+import de.macsystems.windroid.identifyable.IdentityUtil;
+import de.macsystems.windroid.identifyable.MeasureValue;
+import de.macsystems.windroid.identifyable.Precipitation;
+import de.macsystems.windroid.identifyable.Pressure;
+import de.macsystems.windroid.identifyable.Temperature;
+import de.macsystems.windroid.identifyable.WaveHeight;
+import de.macsystems.windroid.identifyable.WavePeriod;
+import de.macsystems.windroid.identifyable.WindDirection;
+import de.macsystems.windroid.identifyable.WindSpeed;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.progress.IProgress;
 
@@ -17,12 +31,17 @@ import de.macsystems.windroid.progress.IProgress;
  * DAO for 'Forecast' relation
  * 
  * @author mac
- * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
+ * @version $Id$
  */
-public class ForecastImpl extends BaseImpl implements IForecastDAO
+public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRelation
 {
 
 	private final static String LOG_TAG = ForecastImpl.class.getSimpleName();
+
+	/**
+	 * relation table name
+	 */
+	private final static String RELATION_TABLE = "forecast_releation";
 
 	/**
 	 * @param _database
@@ -41,14 +60,102 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO
 	public Forecast getForecast(final int _forecastID)
 	{
 		final SQLiteDatabase db = getReadableDatabase();
+		Cursor cursor = null;
 		try
 		{
+			cursor = db.query(RELATION_TABLE, null, "", new String[]
+			{ Integer.toString(_forecastID) }, null, null, null);
+			moveToFirstOrThrow(cursor);
+
+			do
+			{
+				final int primaryKey = getInt(cursor, COLUMN_FORECAST_ID);
+			}
+			while (cursor.moveToNext());
+
 			return null;
+
 		}
 		finally
 		{
+			IOUtils.close(cursor);
 			IOUtils.close(db);
 		}
+	}
+
+	private ForecastDetail getForecastDetail(final int _primaryKey)
+	{
+		SQLiteDatabase db = null;
+		Cursor cursor = null;
+
+		try
+		{
+			db = getReadableDatabase();
+
+			cursor = db.query(tableName, null, "_id=?", new String[]
+			{ Integer.toString(_primaryKey) }, null, null, null);
+
+			moveToFirstOrThrow(cursor);
+
+			final Pressure airPressure = Pressure.create(getFloat(cursor, COLUMN_AIR_PRESSURE), getString(cursor,
+					COLUMN_AIR_PRESSURE_UNIT));
+			final Temperature airTemperature = Temperature.create(getFloat(cursor, COLUMN_AIR_TEMPERATURE), getString(
+					cursor, COLUMN_AIR_TEMPERATURE_UNIT));
+			final Temperature waterTemperature = Temperature.create(getFloat(cursor, COLUMN_WATER_TEMPERATURE),
+					getString(cursor, COLUMN_WATER_TEMPERATURE_UNIT));
+			final Precipitation precipitation = Precipitation.create(getFloat(cursor, COLUMN_PRECIPITATION), getString(
+					cursor, COLUMN_PRECIPITATION_UNIT));
+			final WaveHeight waveHeight = WaveHeight.create(getFloat(cursor, COLUMN_WAVE_HEIGHT), getString(cursor,
+					COLUMN_WAVE_HEIGHT_UNIT));
+			final WavePeriod wavePeriod = WavePeriod.create(getFloat(cursor, COLUMN_WAVE_PERIOD), getString(cursor,
+					COLUMN_WAVE_PERIOD_UNIT));
+			final WindSpeed windSpeed = WindSpeed.create(getFloat(cursor, COLUMN_WIND_SPEED), getString(cursor,
+					COLUMN_WIND_SPEED_UNIT));
+			final WindSpeed windGuest = WindSpeed.create(getFloat(cursor, COLUMN_WIND_GUSTS), getString(cursor,
+					COLUMN_WIND_GUST_UNIT));
+			final String waveDirectionString = getString(cursor, COLUMN_WAVE_DIRECTION);
+			final String windDirectionString = getString(cursor, COLUMN_WIND_DIRECTION);
+
+			final WindDirection windDirection = getDirection(windDirectionString);
+			final WindDirection waveDirection = getDirection(waveDirectionString);
+
+			//
+			final String time = getString(cursor, COLUMN_TIME);
+			final String date = getString(cursor, COLUMN_DATE);
+
+			final ForecastDetail.Builder builder = new ForecastDetail.Builder("1");
+			builder.setAirPressure(airPressure);
+			builder.setAirTemperature(airTemperature);
+			final String cavokName = getString(cursor, COLUMN_CLOUDS);
+			final int index = IdentityUtil.indexOf(cavokName, Cavok.values());
+			builder.setClouds(Cavok.values()[index]);
+			builder.setPrecipitation(precipitation);
+			builder.setWaterTemperature(waterTemperature);
+			builder.setWindGusts(windGuest);
+			builder.setWindSpeed(windSpeed);
+			builder.setWavePeriod(wavePeriod);
+			builder.setWaveHeight(waveHeight);
+			builder.setWaveDirection(waveDirection);
+			builder.setWinddirection(windDirection);
+
+			//
+			// TODO: time need to be long/integer in Database!
+			builder.setTime(Integer.valueOf(time));
+			// TODO: Date need to be long in Database!
+			builder.setDate(new Date());
+		}
+		finally
+		{
+			IOUtils.close(cursor);
+			IOUtils.close(db);
+		}
+		return null;
+	}
+
+	private final static WindDirection getDirection(final String _direction)
+	{
+		final int index = IdentityUtil.indexOf(_direction, WindDirection.values());
+		return WindDirection.values()[index];
 	}
 
 	@Override

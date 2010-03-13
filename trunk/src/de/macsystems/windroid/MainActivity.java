@@ -20,7 +20,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.text.Html;
-import android.text.Spanned;
+import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,6 +31,7 @@ import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -280,8 +283,17 @@ public class MainActivity extends Activity
 		builder.setNegativeButton(android.R.string.no, listener);
 		builder.setPositiveButton(android.R.string.yes, listener);
 		builder.setTitle(R.string.licence_title);
-		final Spanned spanned = Html.fromHtml(getResources().getString(R.string.licence));
-		builder.setMessage(spanned);
+
+		final TextView gplTextView = new TextView(this);
+		final ScrollView scrollView = new ScrollView(this);
+		scrollView.setPadding(10, 10, 10, 10);
+
+		scrollView.addView(gplTextView);
+		final SpannableString spanned = new SpannableString(Html.fromHtml(getResources().getString(R.string.licence)));
+		Linkify.addLinks(spanned, Linkify.ALL);
+		gplTextView.setMovementMethod(LinkMovementMethod.getInstance());
+		gplTextView.setText(spanned);
+		builder.setView(scrollView);
 		final AlertDialog dialog = builder.show();
 		dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND,
 				WindowManager.LayoutParams.FLAG_BLUR_BEHIND);

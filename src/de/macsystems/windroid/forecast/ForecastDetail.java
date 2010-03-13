@@ -79,6 +79,22 @@ public class ForecastDetail
 		this.waveDirection = _builder.waveDirection;
 		this.airPressure = _builder.airPressure;
 
+		nullCheck(spotName);
+		nullCheck(spotID);
+		nullCheck(date);
+		nullCheck(time);
+		nullCheck(airTemperature);
+		nullCheck(waterTemperature);
+		nullCheck(winddirection);
+		nullCheck(windSpeed);
+		nullCheck(windGusts);
+		nullCheck(windGusts);
+		nullCheck(clouds);
+		nullCheck(precipitation);
+		nullCheck(waveHeight);
+		nullCheck(wavePeriod);
+		nullCheck(waveDirection);
+		nullCheck(airPressure);
 	}
 
 	/**
@@ -248,7 +264,6 @@ public class ForecastDetail
 
 		public Builder(final String _id)
 		{
-			nullCheck(_id);
 			spotID = _id;
 		}
 
@@ -258,7 +273,6 @@ public class ForecastDetail
 		 */
 		public Builder setDate(final Date _date)
 		{
-			nullCheck(_date);
 			this.date = _date;
 			return this;
 		}
@@ -279,7 +293,6 @@ public class ForecastDetail
 		 */
 		public Builder setAirTemperature(final Temperature _airTemperature)
 		{
-			nullCheck(_airTemperature);
 			this.airTemperature = _airTemperature;
 			return this;
 		}
@@ -290,7 +303,6 @@ public class ForecastDetail
 		 */
 		public Builder setWaterTemperature(final Temperature _waterTemperature)
 		{
-			nullCheck(_waterTemperature);
 			this.waterTemperature = _waterTemperature;
 			return this;
 		}
@@ -301,7 +313,6 @@ public class ForecastDetail
 		 */
 		public Builder setWinddirection(final WindDirection _winddirection)
 		{
-			nullCheck(_winddirection);
 			this.winddirection = _winddirection;
 			return this;
 		}
@@ -312,7 +323,6 @@ public class ForecastDetail
 		 */
 		public Builder setWindSpeed(final WindSpeed _windSpeed)
 		{
-			nullCheck(_windSpeed);
 			this.windSpeed = _windSpeed;
 			return this;
 		}
@@ -323,7 +333,7 @@ public class ForecastDetail
 		 */
 		public Builder setWindGusts(final WindSpeed _windGusts)
 		{
-			nullCheck(_windGusts);
+
 			this.windGusts = _windGusts;
 			return this;
 		}
@@ -334,7 +344,6 @@ public class ForecastDetail
 		 */
 		public Builder setClouds(final Cavok _clouds)
 		{
-			nullCheck(_clouds);
 			this.clouds = _clouds;
 			return this;
 		}
@@ -356,7 +365,6 @@ public class ForecastDetail
 		 */
 		public Builder setWaveHeight(final WaveHeight _waveHeight)
 		{
-			nullCheck(_waveHeight);
 			this.waveHeight = _waveHeight;
 			return this;
 		}
@@ -367,7 +375,6 @@ public class ForecastDetail
 		 */
 		public Builder setWavePeriod(final WavePeriod _wavePeriod)
 		{
-			nullCheck(_wavePeriod);
 			this.wavePeriod = _wavePeriod;
 			return this;
 		}
@@ -378,7 +385,6 @@ public class ForecastDetail
 		 */
 		public Builder setWaveDirection(final MeasureValue _waveDirection)
 		{
-			nullCheck(_waveDirection);
 			this.waveDirection = _waveDirection;
 			return this;
 		}
@@ -389,7 +395,6 @@ public class ForecastDetail
 		 */
 		public Builder setAirPressure(final Pressure _airPressure)
 		{
-			nullCheck(_airPressure);
 			this.airPressure = _airPressure;
 			return this;
 		}

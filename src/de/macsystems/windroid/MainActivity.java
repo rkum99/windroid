@@ -282,7 +282,10 @@ public class MainActivity extends Activity
 		builder.setTitle(R.string.licence_title);
 		final Spanned spanned = Html.fromHtml(getResources().getString(R.string.licence));
 		builder.setMessage(spanned);
-		builder.create().show();
+		final AlertDialog dialog = builder.show();
+		dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND,
+				WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+
 	}
 
 	/**

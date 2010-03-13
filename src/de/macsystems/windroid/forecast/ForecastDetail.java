@@ -61,7 +61,13 @@ public class ForecastDetail
 
 	private final Pressure airPressure;
 
-	private ForecastDetail(final Builder _builder)
+	/**
+	 * 
+	 * @param _builder
+	 * @throws NullPointerException
+	 *             if any parameter is <code>null</code>.
+	 */
+	private ForecastDetail(final Builder _builder) throws NullPointerException
 	{
 		this.spotName = _builder.spotName;
 		this.spotID = _builder.spotID;

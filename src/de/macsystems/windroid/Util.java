@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.util.Log;
 import de.macsystems.windroid.common.PrefConstants;
@@ -40,6 +41,10 @@ public final class Util
 	 * Update when roaming activated
 	 */
 	private final static boolean DEFAULT_UPDATE_WHILE_ROAMING = false;
+
+	private final static boolean DEFAUL_LICENCE_ACCEPTED = false;
+
+	private final static String LICENCE_ACCEPTED = "isLicenceAccepted";
 
 	/**
 	 * Returns the <code>SharedPreferences</code> of given
@@ -116,6 +121,36 @@ public final class Util
 	public final static boolean isLaunchOnBoot(final SharedPreferences _pref)
 	{
 		return _pref.getBoolean(PrefConstants.LAUNCH_ON_BOOT, DEFAULT_LAUNCH_ON_BOOT);
+	}
+
+	/**
+	 * Returns <code>true</code> when user already accepts the licence.
+	 * 
+	 * @param _context
+	 * @return
+	 */
+	public final static boolean isLicenceAccepted(Context _context)
+	{
+		final SharedPreferences prefs = getSharedPreferences(_context);
+		return prefs.getBoolean(LICENCE_ACCEPTED, DEFAUL_LICENCE_ACCEPTED);
+	}
+
+	/**
+	 * Sets the status of end user for licence.
+	 * 
+	 */
+	public synchronized final static void setLicenceAccepted(Context _context, boolean _accepted)
+	{
+		final SharedPreferences prefs = getSharedPreferences(_context);
+		final Editor editor = prefs.edit();
+		try
+		{
+			editor.putBoolean(LICENCE_ACCEPTED, _accepted);
+		}
+		finally
+		{
+			editor.commit();
+		}
 	}
 
 	/**

@@ -135,7 +135,8 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 			builder.setWindSpeed(windSpeed);
 			builder.setWavePeriod(wavePeriod);
 			builder.setWaveHeight(waveHeight);
-			builder.setWaveDirection(waveDirection);
+			// TODO Set Wave Direction
+//			builder.setWaveDirection(waveDirection);
 			builder.setWinddirection(windDirection);
 
 			//
@@ -176,42 +177,43 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 				if (Logging.isLoggingEnabled())
 				{
 					Log.d(LOG_TAG, "Insert a forecast into Database " + detail.toString());
-
-					final ContentValues values = new ContentValues();
-					values.put(COLUMN_AIR_PRESSURE, detail.getAirPressure().getValue());
-					values.put(COLUMN_AIR_PRESSURE_UNIT, detail.getAirPressure().getMeasure().getId());
-					values.put(COLUMN_AIR_TEMPERATURE, detail.getAirTemperature().getValue());
-					values.put(COLUMN_AIR_TEMPERATURE_UNIT, detail.getAirTemperature().getMeasure().getId());
-					//
-					values.put(COLUMN_CLOUDS, detail.getClouds().getId());
-					//
-					values.put(COLUMN_DATE, detail.getDate().toString());
-					values.put(COLUMN_TIME, detail.getTime());
-					//
-					values.put(COLUMN_PRECIPITATION, detail.getPrecipitation().getValue());
-					values.put(COLUMN_PRECIPITATION_UNIT, detail.getPrecipitation().getMeasure().getId());
-					//
-					values.put(COLUMN_WATER_TEMPERATURE, detail.getWaterTemperature().getValue());
-					values.put(COLUMN_WATER_TEMPERATURE_UNIT, detail.getWaterTemperature().getMeasure().getId());
-					//
-					values.put(COLUMN_WAVE_DIRECTION, detail.getWaterTemperature().getValue());
-					//
-					values.put(COLUMN_WAVE_HEIGHT, detail.getWaveHeight().getValue());
-					values.put(COLUMN_WAVE_HEIGHT_UNIT, detail.getWaveHeight().getMeasure().getId());
-					//
-					values.put(COLUMN_WAVE_PERIOD, detail.getWavePeriod().getValue());
-					values.put(COLUMN_WAVE_PERIOD_UNIT, detail.getWavePeriod().getMeasure().getId());
-					//
-					values.put(COLUMN_WIND_DIRECTION, detail.getWinddirection().getId());
-					//
-					values.put(COLUMN_WIND_GUSTS, detail.getWindGusts().getValue());
-					values.put(COLUMN_WIND_GUST_UNIT, detail.getWindGusts().getUnit().getId());
-					//
-					values.put(COLUMN_WIND_SPEED, detail.getWindSpeed().getValue());
-					values.put(COLUMN_WIND_SPEED_UNIT, detail.getWindSpeed().getUnit().getId());
-					//
-					db.insert(tableName, null, values);
 				}
+
+				final ContentValues values = new ContentValues();
+				values.put(COLUMN_AIR_PRESSURE, detail.getAirPressure().getValue());
+				values.put(COLUMN_AIR_PRESSURE_UNIT, detail.getAirPressure().getMeasure().getId());
+				values.put(COLUMN_AIR_TEMPERATURE, detail.getAirTemperature().getValue());
+				values.put(COLUMN_AIR_TEMPERATURE_UNIT, detail.getAirTemperature().getMeasure().getId());
+				//
+				values.put(COLUMN_CLOUDS, detail.getClouds().getId());
+				//
+				values.put(COLUMN_DATE, detail.getDate().toString());
+				values.put(COLUMN_TIME, detail.getTime());
+				//
+				values.put(COLUMN_PRECIPITATION, detail.getPrecipitation().getValue());
+				values.put(COLUMN_PRECIPITATION_UNIT, detail.getPrecipitation().getMeasure().getId());
+				//
+				values.put(COLUMN_WATER_TEMPERATURE, detail.getWaterTemperature().getValue());
+				values.put(COLUMN_WATER_TEMPERATURE_UNIT, detail.getWaterTemperature().getMeasure().getId());
+				//
+				values.put(COLUMN_WAVE_DIRECTION, detail.getWaterTemperature().getValue());
+				//
+				values.put(COLUMN_WAVE_HEIGHT, detail.getWaveHeight().getValue());
+				values.put(COLUMN_WAVE_HEIGHT_UNIT, detail.getWaveHeight().getMeasure().getId());
+				//
+				values.put(COLUMN_WAVE_PERIOD, detail.getWavePeriod().getValue());
+				values.put(COLUMN_WAVE_PERIOD_UNIT, detail.getWavePeriod().getMeasure().getId());
+				//
+				values.put(COLUMN_WIND_DIRECTION, detail.getWinddirection().getId());
+				//
+				values.put(COLUMN_WIND_GUSTS, detail.getWindGusts().getValue());
+				values.put(COLUMN_WIND_GUST_UNIT, detail.getWindGusts().getUnit().getId());
+				//
+				values.put(COLUMN_WIND_SPEED, detail.getWindSpeed().getValue());
+				values.put(COLUMN_WIND_SPEED_UNIT, detail.getWindSpeed().getUnit().getId());
+				//
+				db.insert(tableName, null, values);
+
 			}
 		}
 		finally

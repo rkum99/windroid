@@ -19,6 +19,8 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.RemoteException;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -173,6 +175,8 @@ public class MainActivity extends Activity
 	{
 		super.onCreate(_savedInstanceState);
 
+		showGPL();
+
 		startSpotService();
 		setContentView(R.layout.main);
 
@@ -234,6 +238,51 @@ public class MainActivity extends Activity
 
 		setupNotificationTest();
 
+	}
+
+	final private void showGPL()
+	{
+		if (Util.isLicenceAccepted(this))
+		{
+			return;
+		}
+
+		final android.content.DialogInterface.OnClickListener listener = new android.content.DialogInterface.OnClickListener()
+		{
+			@Override
+			public void onClick(final DialogInterface _dialog, final int _which)
+			{
+				if (_which == DialogInterface.BUTTON_NEGATIVE)
+				{
+					if (Logging.isLoggingEnabled())
+					{
+						Log.i(LOG_TAG, "GPL not accepted.");
+						Log.i(LOG_TAG, "Closing App.");
+					}
+					Util.setLicenceAccepted(MainActivity.this, false);
+					finish();
+				}
+				else
+				{
+					if (Logging.isLoggingEnabled())
+					{
+						Log.i(LOG_TAG, "GPL accepted.");
+						Log.i(LOG_TAG, "Starting App.");
+					}
+					Util.setLicenceAccepted(MainActivity.this, true);
+				}
+			}
+		};
+
+		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setIcon(R.drawable.icon);
+		builder.setCancelable(false);
+		builder.setNegativeButton(android.R.string.no, listener);
+		builder.setPositiveButton(android.R.string.yes, listener);
+		builder.setTitle(R.string.licence_title);
+		final Spanned spanned = Html.fromHtml(getResources().getString(R.string.licence));
+		builder.setMessage(spanned);
+		builder.create().show();
 	}
 
 	/**

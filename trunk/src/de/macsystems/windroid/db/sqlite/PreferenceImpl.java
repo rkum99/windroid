@@ -144,16 +144,14 @@ public final class PreferenceImpl extends BaseImpl implements IPreferencesDAO
 			final StringBuilder builder = new StringBuilder(128);
 			while (iterNew.hasNext())
 			{
-				final Entry<String, String> entry = (Entry<String, String>) iterNew.next();
-
-				builder.append("UPDATE preferences SET value='");
-				builder.append(entry.getValue());
-				builder.append("' WHERE key='");
-				builder.append(entry.getKey());
-				builder.append("'");
-
+				final Entry<String, ?> entry = (Entry<String, ?>) iterNew.next();
 				try
 				{
+					builder.append("UPDATE preferences SET value='");
+					builder.append(entry.getValue().toString());
+					builder.append("' WHERE key='");
+					builder.append(entry.getKey());
+					builder.append("'");
 					db.execSQL(builder.toString());
 					// TODO: uncomment logging for production version
 					if (Logging.isLoggingEnabled())
@@ -164,6 +162,8 @@ public final class PreferenceImpl extends BaseImpl implements IPreferencesDAO
 				catch (final Exception e)
 				{
 					Log.e(LOG_TAG, "Failed to update. SQL was :" + builder.toString(), e);
+					Log.e(LOG_TAG, "Map Key was :" + entry.getKey());
+					Log.e(LOG_TAG, "Map Entry was :" + entry.getValue());
 				}
 				finally
 				{

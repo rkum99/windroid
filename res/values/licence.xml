@@ -5,7 +5,7 @@
 
 <resources>
 	<string
-		name="licence"> Windroid - Windalarms
+		name="licence"> Windroid - Windalarms&lt;br/&gt;
 		Copyright (C) 2010 Jens Hohl &lt;br/&gt;
 		&lt;br/&gt;
 		This program is free software: you can redistribute it and/or modify

@@ -1,3 +1,20 @@
+/**
+ This file is part of Windroid.
+
+ Windroid is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ Windroid is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with Windroid.  If not, see <http://www.gnu.org/licenses/>.
+
+ */
 package de.macsystems.windroid.db.sqlite;
 
 import java.util.Date;
@@ -6,7 +23,6 @@ import java.util.Iterator;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Parcelable.Creator;
 import android.util.Log;
 import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.db.IForecastDAO;
@@ -15,7 +31,6 @@ import de.macsystems.windroid.forecast.Forecast;
 import de.macsystems.windroid.forecast.ForecastDetail;
 import de.macsystems.windroid.identifyable.Cavok;
 import de.macsystems.windroid.identifyable.IdentityUtil;
-import de.macsystems.windroid.identifyable.MeasureValue;
 import de.macsystems.windroid.identifyable.Precipitation;
 import de.macsystems.windroid.identifyable.Pressure;
 import de.macsystems.windroid.identifyable.Temperature;

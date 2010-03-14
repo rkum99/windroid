@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import de.macsystems.windroid.Logging;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +11,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.util.Log;
 import android.view.View;
+import de.macsystems.windroid.Logging;
 
 /**
  * A Generic BroadcastReciever which enables views whenever connection status

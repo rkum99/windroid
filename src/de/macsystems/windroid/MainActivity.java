@@ -290,7 +290,7 @@ public class MainActivity extends Activity
 
 		scrollView.addView(gplTextView);
 		final SpannableString spanned = new SpannableString(Html.fromHtml(getResources().getString(R.string.licence)));
-		Linkify.addLinks(spanned, Linkify.ALL);
+		Linkify.addLinks(spanned, Linkify.WEB_URLS);
 		gplTextView.setMovementMethod(LinkMovementMethod.getInstance());
 		gplTextView.setText(spanned);
 		builder.setView(scrollView);
@@ -469,7 +469,7 @@ public class MainActivity extends Activity
 	{
 		final AlertDialog.Builder aboutBuilder = new AlertDialog.Builder(this);
 		aboutBuilder.setIcon(R.drawable.icon);
-		aboutBuilder.setTitle(R.string.app_name);
+		aboutBuilder.setTitle(R.string.about_title);
 		aboutBuilder.setMessage(R.string.about_text);
 		aboutBuilder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
 		{

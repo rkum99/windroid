@@ -32,6 +32,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Resources.NotFoundException;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -294,19 +295,30 @@ public class MainActivity extends Activity
 			}
 		};
 
+		showAlertDialogWithLinks(R.string.licence_title, R.string.licence, listener);
+
+	}
+
+	/**
+	 * @param listener
+	 * @throws NotFoundException
+	 */
+	private void showAlertDialogWithLinks(final int _titleResID, final int _textResID,
+			final android.content.DialogInterface.OnClickListener listener) throws NotFoundException
+	{
 		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setIcon(R.drawable.icon);
 		builder.setCancelable(false);
 		builder.setNegativeButton(android.R.string.no, listener);
 		builder.setPositiveButton(android.R.string.yes, listener);
-		builder.setTitle(R.string.licence_title);
+		builder.setTitle(_titleResID);
 
 		final TextView gplTextView = new TextView(this);
 		final ScrollView scrollView = new ScrollView(this);
 		scrollView.setPadding(10, 10, 10, 10);
 
 		scrollView.addView(gplTextView);
-		final SpannableString spanned = new SpannableString(Html.fromHtml(getResources().getString(R.string.licence)));
+		final SpannableString spanned = new SpannableString(Html.fromHtml(getResources().getString(_textResID)));
 		Linkify.addLinks(spanned, Linkify.WEB_URLS);
 		gplTextView.setMovementMethod(LinkMovementMethod.getInstance());
 		gplTextView.setText(spanned);
@@ -314,7 +326,6 @@ public class MainActivity extends Activity
 		final AlertDialog dialog = builder.show();
 		dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND,
 				WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-
 	}
 
 	/**
@@ -456,7 +467,8 @@ public class MainActivity extends Activity
 	public boolean onCreateOptionsMenu(final Menu menu)
 	{
 		super.onCreateOptionsMenu(menu);
-		menu.add(Menu.NONE, ABOUT_MENU_ID, Menu.NONE, R.string.about_button_text);
+		final MenuItem about = menu.add(Menu.NONE, ABOUT_MENU_ID, Menu.NONE, R.string.about_button_text);
+		about.setIcon(R.drawable.info);
 		return true;
 	}
 

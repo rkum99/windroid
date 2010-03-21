@@ -45,7 +45,7 @@ import de.macsystems.windroid.identifyable.WindSpeed;
  *          "unit":"hpa","value":1006.20}}
  * 
  */
-public class ForecastDetail
+public final class ForecastDetail
 {
 
 	private final String spotName;
@@ -102,22 +102,21 @@ public class ForecastDetail
 		this.waveDirection = _builder.waveDirection;
 		this.airPressure = _builder.airPressure;
 
-		nullCheck(spotName);
-		nullCheck(spotID);
-		nullCheck(date);
-		nullCheck(time);
-		nullCheck(airTemperature);
-		nullCheck(waterTemperature);
-		nullCheck(winddirection);
-		nullCheck(windSpeed);
-		nullCheck(windGusts);
-		nullCheck(windGusts);
-		nullCheck(clouds);
-		nullCheck(precipitation);
-		nullCheck(waveHeight);
-		nullCheck(wavePeriod);
-		nullCheck(waveDirection);
-		nullCheck(airPressure);
+		nullCheck(spotName, "spotName");
+		nullCheck(spotID, "spotID");
+		nullCheck(date, "date");
+		nullCheck(time, "time");
+		nullCheck(airTemperature, "airTemperature");
+		nullCheck(waterTemperature, "waterTemperature");
+		nullCheck(winddirection, "winddirection");
+		nullCheck(windSpeed, "windSpeed");
+		nullCheck(windGusts, "windGusts");
+		nullCheck(clouds, "clouds");
+		nullCheck(precipitation, "precipitation");
+		nullCheck(waveHeight, "waveheight");
+		nullCheck(wavePeriod, "waveperiod");
+		nullCheck(waveDirection, "wavedirection");
+		nullCheck(airPressure, "airpressure");
 	}
 
 	/**
@@ -377,7 +376,6 @@ public class ForecastDetail
 		 */
 		public Builder setPrecipitation(final Precipitation _precipitation)
 		{
-			nullCheck(_precipitation);
 			this.precipitation = _precipitation;
 			return this;
 		}
@@ -437,11 +435,11 @@ public class ForecastDetail
 	 * 
 	 * @param _object
 	 */
-	public final static void nullCheck(final Object _object)
+	public final static void nullCheck(final Object _object, final String _name)
 	{
 		if (null == _object)
 		{
-			throw new NullPointerException();
+			throw new NullPointerException(_name);
 		}
 	}
 

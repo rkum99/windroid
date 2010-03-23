@@ -50,7 +50,7 @@ public final class SpotConfigurationVO implements Serializable
 
 	private float windspeedMax;
 
-	private boolean isActiv = true;
+	private boolean active = true;
 
 	private int primaryKey = -1;
 
@@ -200,7 +200,7 @@ public final class SpotConfigurationVO implements Serializable
 	 */
 	public boolean isActiv()
 	{
-		return isActiv;
+		return active;
 	}
 
 	/**
@@ -209,7 +209,7 @@ public final class SpotConfigurationVO implements Serializable
 	 */
 	public void setActiv(final boolean isActiv)
 	{
-		this.isActiv = isActiv;
+		this.active = isActiv;
 	}
 
 	/**

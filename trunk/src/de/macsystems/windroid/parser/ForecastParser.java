@@ -21,6 +21,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,6 +52,9 @@ public final class ForecastParser
 {
 
 	private final static String LOG_TAG = ForecastParser.class.getSimpleName();
+
+	private static SimpleDateFormat yyyyMMddHHFormat = new SimpleDateFormat("yyyyMMddHH", Locale.getDefault());
+	private static SimpleDateFormat yyyyMMddHHmmFormat = new SimpleDateFormat("yyyyMMddHH", Locale.getDefault());
 
 	private static final String WIND_DIRECTION = "wind_direction";
 	private static final String CLOUDS = "clouds";
@@ -95,13 +99,11 @@ public final class ForecastParser
 		final String directionString = forecastDetailMap.getString(CLOUDS);
 		final int index = IdentityUtil.indexOf(directionString, Cavok.values());
 		final Cavok cavok = Cavok.values()[index];
-		// Log.d(LOG_TAG, "Cavok :" + cavok.name());
 		builder.setClouds(cavok);
 	}
 
 	private static void parseWindSpeedMap(final JSONObject windSpeedMap, final Builder builder) throws JSONException
 	{
-		// Log.d(LOG_TAG, "windSpeedMap :" + windSpeedMap.toString());
 		final float value = getFloat(windSpeedMap, VALUE);
 		final String unit = windSpeedMap.getString(UNIT);
 
@@ -111,7 +113,6 @@ public final class ForecastParser
 
 	private static void parseWindGustsMap(final JSONObject windGustsMap, final Builder builder) throws JSONException
 	{
-		// Log.d(LOG_TAG, "windGustsMap :" + windGustsMap.toString());
 		final float value = getFloat(windGustsMap, VALUE);
 		final String unit = windGustsMap.getString(UNIT);
 
@@ -186,8 +187,7 @@ public final class ForecastParser
 	private static Date parseTimezone(final String _timestamp) throws ParseException
 	{
 		final String str = _timestamp.replace("_", "");
-		final SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmm");
-		return formatter.parse(str);
+		return yyyyMMddHHmmFormat.parse(str);
 	}
 
 	/**
@@ -198,8 +198,7 @@ public final class ForecastParser
 	 */
 	private static Date parseForecastDate(final String _date) throws ParseException
 	{
-		final SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHH");
-		return formatter.parse(_date);
+		return yyyyMMddHHFormat.parse(_date);
 	}
 
 	/**

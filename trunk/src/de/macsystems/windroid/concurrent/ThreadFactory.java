@@ -34,7 +34,7 @@ public final class ThreadFactory implements java.util.concurrent.ThreadFactory
 
 	private final static String LOG_TAG = ThreadFactory.class.getSimpleName();
 
-	private final String threadName = "SpotService-";
+	private final static String threadName = "SpotService-";
 	/**
 	 * Reference Counter
 	 */

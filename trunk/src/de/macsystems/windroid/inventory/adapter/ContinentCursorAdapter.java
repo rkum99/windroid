@@ -55,7 +55,7 @@ public class ContinentCursorAdapter implements SimpleCursorAdapter.ViewBinder
 		{
 			final String name = cursor.getString(CONTINENT_NAME_COLUMN);
 			final TextView tv = (TextView) view;
-			tv.setText("" + name);
+			tv.setText(name);
 		}
 		return true;
 	}

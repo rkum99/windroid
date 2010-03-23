@@ -26,6 +26,11 @@ package de.macsystems.windroid;
  */
 public final class Logging
 {
+
+	private Logging()
+	{
+	}
+
 	/**
 	 * Returns <code>true</code> if logging is turned on.
 	 * 

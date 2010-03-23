@@ -25,6 +25,10 @@ package de.macsystems.windroid.common;
  */
 public final class PrefConstants
 {
+	private PrefConstants()
+	{
+	}
+
 	/**
 	 * @see WindUnits.xml
 	 */

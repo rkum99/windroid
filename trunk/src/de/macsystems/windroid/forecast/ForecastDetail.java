@@ -48,8 +48,6 @@ import de.macsystems.windroid.identifyable.WindSpeed;
 public final class ForecastDetail
 {
 
-	private final String spotName;
-
 	private final String spotID;
 
 	private final Date date;
@@ -86,7 +84,6 @@ public final class ForecastDetail
 	 */
 	private ForecastDetail(final Builder _builder) throws NullPointerException
 	{
-		this.spotName = _builder.spotName;
 		this.spotID = _builder.spotID;
 		this.date = _builder.date;
 		this.time = _builder.time;
@@ -102,7 +99,6 @@ public final class ForecastDetail
 		this.waveDirection = _builder.waveDirection;
 		this.airPressure = _builder.airPressure;
 
-		nullCheck(spotName, "spotName");
 		nullCheck(spotID, "spotID");
 		nullCheck(date, "date");
 		nullCheck(time, "time");
@@ -125,14 +121,6 @@ public final class ForecastDetail
 	public Pressure getAirPressure()
 	{
 		return airPressure;
-	}
-
-	/**
-	 * @return the spotName
-	 */
-	public String getSpotName()
-	{
-		return spotName;
 	}
 
 	/**
@@ -248,18 +236,19 @@ public final class ForecastDetail
 	public String toString()
 	{
 		return "ForecastDetail [airPressure=" + airPressure + ", airTemperature=" + airTemperature + ", clouds="
-				+ clouds + ", date=" + date + ", precipitation=" + precipitation + ", spotID=" + spotID + ", spotName="
-				+ spotName + ", time=" + time + ", waterTemperature=" + waterTemperature + ", waveDirection="
-				+ waveDirection + ", waveHeight=" + waveHeight + ", wavePeriod=" + wavePeriod + ", windGusts="
-				+ windGusts + ", windSpeed=" + windSpeed + ", winddirection=" + winddirection + "]";
+				+ clouds + ", date=" + date + ", precipitation=" + precipitation + ", spotID=" + spotID + ", time="
+				+ time + ", waterTemperature=" + waterTemperature + ", waveDirection=" + waveDirection
+				+ ", waveHeight=" + waveHeight + ", wavePeriod=" + wavePeriod + ", windGusts=" + windGusts
+				+ ", windSpeed=" + windSpeed + ", winddirection=" + winddirection + "]";
 	}
 
 	public static class Builder
 	{
-		private String spotName;
-		private final String spotID;
 
 		private Date date;
+
+		private final String spotID;
+
 		private int time;
 
 		private Temperature airTemperature;

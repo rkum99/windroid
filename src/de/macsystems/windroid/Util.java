@@ -41,6 +41,9 @@ import de.macsystems.windroid.identifyable.WindUnit;
  */
 public final class Util
 {
+	private Util()
+	{
+	}
 
 	/**
 	 * {@value #DEFAULT_WIND_UNIT}

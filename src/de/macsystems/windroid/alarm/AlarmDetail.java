@@ -42,11 +42,11 @@ public class AlarmDetail implements Parcelable
 		name = _name;
 	}
 
-	private AlarmDetail(final Parcel in)
+	private AlarmDetail(final Parcel _parcel)
 	{
-		alarmID = in.readInt();
-		name = in.readString();
-		stationID = in.readString();
+		alarmID = _parcel.readInt();
+		name = _parcel.readString();
+		stationID = _parcel.readString();
 	}
 
 	/**

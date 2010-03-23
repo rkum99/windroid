@@ -49,7 +49,7 @@ import de.macsystems.windroid.identifyable.WindDirection;
  */
 public class CompassView extends ImageView
 {
-	private final String LOG_TAG = CompassView.class.getSimpleName();
+	private final static String LOG_TAG = CompassView.class.getSimpleName();
 	/**
 	 * Create an Color with an alpha channel.
 	 */

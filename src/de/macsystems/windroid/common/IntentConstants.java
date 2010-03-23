@@ -25,6 +25,10 @@ package de.macsystems.windroid.common;
  */
 public final class IntentConstants
 {
+	private IntentConstants()
+	{
+	}
+
 	/**
 	 * Lookup Key which is used to get StationInfo eg. Intent or Bundle.
 	 * {@value #SPOT_TO_CONFIGURE}

@@ -64,15 +64,4 @@ public class AlarmNotificationDetail extends Activity
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 		notificationManager.cancel(_alarmID);
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onResume()
-	 */
-	@Override
-	protected void onResume()
-	{
-		super.onResume();
-	}
 }

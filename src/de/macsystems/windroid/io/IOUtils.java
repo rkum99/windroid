@@ -499,13 +499,13 @@ public class IOUtils
 	/**
 	 * Closes Cursor.
 	 * 
-	 * @param _c
+	 * @param _cursor
 	 */
-	public static void close(final Cursor _c)
+	public static void close(final Cursor _cursor)
 	{
-		if (_c != null)
+		if (_cursor != null)
 		{
-			_c.close();
+			_cursor.close();
 		}
 
 	}

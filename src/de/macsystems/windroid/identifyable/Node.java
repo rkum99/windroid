@@ -35,11 +35,11 @@ public interface Node<T> extends Iterable<T>
 	/**
 	 * Adds T as a leaf.
 	 * 
-	 * @param t
+	 * @param node
 	 * @throws NullPointerException
 	 *             if null passed in
 	 */
-	public void add(final T t);
+	public void add(final T node);
 
 	/**
 	 * returns true if node represents a leaf in a tree.

@@ -31,6 +31,6 @@ public interface IdentifyAble
 	 * @return
 	 * @see #indexOf(String, Object[])
 	 */
-	public String getId();
+	String getId();
 
 }

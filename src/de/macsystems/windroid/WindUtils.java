@@ -41,6 +41,9 @@ import de.macsystems.windroid.progress.NullProgressAdapter;
  */
 public class WindUtils
 {
+	private WindUtils()
+	{
+	}
 
 	private static final String LOG_TAG = WindUtils.class.getSimpleName();;
 

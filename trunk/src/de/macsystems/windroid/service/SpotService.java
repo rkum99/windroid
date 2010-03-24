@@ -84,7 +84,10 @@ public class SpotService extends Service
 		@Override
 		public void stop() throws RemoteException
 		{
-			Log.d(LOG_TAG, "ISpotService#stop called");
+			if(Logging.isLoggingEnabled())
+			{
+				Log.d(LOG_TAG, "ISpotService#stop called");
+			}
 		}
 
 		@Override

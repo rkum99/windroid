@@ -15,13 +15,13 @@ DROP TABLE IF EXISTS forecast_releation;
 -- 
 -- Tables
 -- 
-CREATE TABLE IF NOT EXISTS internal (id TEXT PRIMARY KEY, value text);
+CREATE TABLE IF NOT EXISTS internal (_id INTEGER PRIMARY KEY AUTOINCREMENT, keyword TEXT NOT NULL , value text);
 CREATE TABLE IF NOT EXISTS spot (_id INTEGER PRIMARY KEY AUTOINCREMENT, spotid TEXT NOT NULL, continentid TEXT NOT NULL, countryid TEXT NOT NULL, regionid TEXT NOT NULL, name TEXT NOT NULL, keyword TEXT NOT NULL, superforecast BOOLEAN, report BOOLEAN, forecast BOOLEAN, statistic BOOLEAN, wavereport BOOLEAN, waveforecast BOOLEAN);
 CREATE TABLE IF NOT EXISTS continent (_id INTEGER PRIMARY KEY AUTOINCREMENT ,id INTEGER, name TEXT);
 CREATE TABLE IF NOT EXISTS country (_id INTEGER PRIMARY KEY AUTOINCREMENT,id INTEGER, name TEXT NOT NULL, continentid TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS region (_id INTEGER PRIMARY KEY AUTOINCREMENT,id INTEGER, name TEXT NOT NULL, countryid TEXT NOT NULL);
-CREATE TABLE IF NOT EXISTS forecast_releation (_id PRIMARY KEY, updatefailed BOOLEAN, forecastid INTEGER);
-CREATE TABLE IF NOT EXISTS forecast (_id INTEGER PRIMARY KEY, date TEXT, time TEXT,  wave_period FLOAT,wave_period_unit TEXT,  wind_direction TEXT, wave_direction TEXT, precipitation FLOAT, precipitation_unit TEXT, air_pressure FLOAT, air_pressure_unit TEXT, wind_gusts FLOAT, wind_gusts_unit TEXT, water_temperature FLOAT,water_temperature_unit TEXT, air_temperature FLOAT, air_temperature_unit TEXT, wave_height FLOAT, wave_height_unit TEXT, clouds TEXT, wind_speed FLOAT,wind_speed_unit TEXT);
+CREATE TABLE IF NOT EXISTS forecast_releation (_id INTEGER PRIMARY KEY AUTOINCREMENT, updatefailed BOOLEAN, forecastid INTEGER);
+CREATE TABLE IF NOT EXISTS forecast (_id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT, time TEXT,  wave_period FLOAT,wave_period_unit TEXT,  wind_direction TEXT, wave_direction TEXT, precipitation FLOAT, precipitation_unit TEXT, air_pressure FLOAT, air_pressure_unit TEXT, wind_gusts FLOAT, wind_gusts_unit TEXT, water_temperature FLOAT,water_temperature_unit TEXT, air_temperature FLOAT, air_temperature_unit TEXT, wave_height FLOAT, wave_height_unit TEXT, clouds TEXT, wind_speed FLOAT,wind_speed_unit TEXT);
 
 CREATE INDEX spotindex ON spot (spotid);
 CREATE INDEX countryindex ON country (id);
@@ -49,3 +49,23 @@ CREATE TABLE IF NOT EXISTS schedule_repeat_relation (_id INTEGER PRIMARY KEY AUT
 --                                                                           
 --      INSERT  INTO schedule_repeat_relation (scheduleid, repeatid) values (new.scheduleid,new._id);
 --      END
+
+-- Preferences
+CREATE TABLE IF NOT EXISTS preferences (_id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT NOT NULL, value TEXT);
+-- Pre selected Values
+INSERT INTO preferences ('key','value') VALUES ('spot_winddirection_to','n/a');
+INSERT INTO preferences ('key','value') VALUES ('spot_station_keyword','alger-port');
+INSERT INTO preferences ('key','value') VALUES ('vibrate_on_alarm','false');
+INSERT INTO preferences ('key','value') VALUES ('spot_station_id','dz2');
+INSERT INTO preferences ('key','value') VALUES ('spot_station_has_statistic','true');
+INSERT INTO preferences ('key','value') VALUES ('launch_on_boot','true');
+INSERT INTO preferences ('key','value') VALUES ('spot_windspeed_max','63');
+INSERT INTO preferences ('key','value') VALUES ('warn_when_update_failed','false');
+INSERT INTO preferences ('key','value') VALUES ('spot_station_has_superforecast','true');
+INSERT INTO preferences ('key','value') VALUES ('music_on_alarm','false');
+INSERT INTO preferences ('key','value') VALUES ('spot_winddirection_from','n/a');
+INSERT INTO preferences ('key','value') VALUES ('spot_station_name','Alger-Port');
+INSERT INTO preferences ('key','value') VALUES ('preferred_continent','North America');
+INSERT INTO preferences ('key','value') VALUES ('spot_windspeed_min','0');
+INSERT INTO preferences ('key','value') VALUES ('update_while_roaming','false');
+INSERT INTO preferences ('key','value') VALUES ('spot_preferred_unit','kts');

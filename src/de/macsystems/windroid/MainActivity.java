@@ -182,8 +182,8 @@ public class MainActivity extends Activity
 	@Override
 	protected void onStop()
 	{
-		unregisterReceiver(broadcastReceiver);
 		super.onStop();
+		unregisterReceiver(broadcastReceiver);
 	}
 
 	/*

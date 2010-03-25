@@ -78,7 +78,7 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 		Cursor cursor = null;
 		try
 		{
-			cursor = db.query(RELATION_TABLE, null, "", new String[]
+			cursor = db.query(RELATION_TABLE, null, "forecastid=?", new String[]
 			{ Integer.toString(_forecastID) }, null, null, null);
 			moveToFirstOrThrow(cursor);
 
@@ -227,7 +227,13 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 				values.put(COLUMN_WIND_SPEED, detail.getWindSpeed().getValue());
 				values.put(COLUMN_WIND_SPEED_UNIT, detail.getWindSpeed().getUnit().getId());
 				//
-				db.insert(tableName, null, values);
+				final long rowID = db.insert(tableName, null, values);
+				Log.d(LOG_TAG,"*********************************");
+				Log.d(LOG_TAG,"*********************************");
+				Log.d(LOG_TAG,"*********************************");
+				Log.d(LOG_TAG,"Row ID of Forecast Detail:"+rowID);
+				
+				
 
 			}
 		}

@@ -53,8 +53,8 @@ public final class ForecastParser
 
 	private final static String LOG_TAG = ForecastParser.class.getSimpleName();
 
-	private static SimpleDateFormat yyyyMMddHHFormat = new SimpleDateFormat("yyyyMMddHH", Locale.getDefault());
-	private static SimpleDateFormat yyyyMMddHHmmFormat = new SimpleDateFormat("yyyyMMddHH", Locale.getDefault());
+	private final static SimpleDateFormat yyyyMMddHHFormat = new SimpleDateFormat("yyyyMMddHH", Locale.getDefault());
+	private final static SimpleDateFormat yyyyMMddHHmmFormat = new SimpleDateFormat("yyyyMMddHHmm", Locale.getDefault());
 
 	private static final String WIND_DIRECTION = "wind_direction";
 	private static final String CLOUDS = "clouds";
@@ -67,6 +67,12 @@ public final class ForecastParser
 	{
 	}
 
+	/**
+	 * 
+	 * @param airPresureMap
+	 * @param builder
+	 * @throws JSONException
+	 */
 	private static void parseAirPresure(final JSONObject airPresureMap, final Builder builder) throws JSONException
 	{
 		final float value = getFloat(airPresureMap, VALUE);
@@ -76,6 +82,12 @@ public final class ForecastParser
 		builder.setAirPressure(airPressure);
 	}
 
+	/**
+	 * 
+	 * @param airTempMap
+	 * @param builder
+	 * @throws JSONException
+	 */
 	private static void parseAirTemperature(final JSONObject airTempMap, final Builder builder) throws JSONException
 	{
 		final float value = getFloat(airTempMap, VALUE);
@@ -85,6 +97,12 @@ public final class ForecastParser
 		builder.setAirTemperature(temp);
 	}
 
+	/**
+	 * 
+	 * @param wavePeriodMap
+	 * @param builder
+	 * @throws JSONException
+	 */
 	private static void parseWaveHeight(final JSONObject wavePeriodMap, final Builder builder) throws JSONException
 	{
 		final float value = getFloat(wavePeriodMap, VALUE);
@@ -94,6 +112,12 @@ public final class ForecastParser
 		builder.setWaveHeight(waveHeiht);
 	}
 
+	/**
+	 * 
+	 * @param forecastDetailMap
+	 * @param builder
+	 * @throws JSONException
+	 */
 	private static void parseClouds(final JSONObject forecastDetailMap, final Builder builder) throws JSONException
 	{
 		final String directionString = forecastDetailMap.getString(CLOUDS);
@@ -102,6 +126,12 @@ public final class ForecastParser
 		builder.setClouds(cavok);
 	}
 
+	/**
+	 * 
+	 * @param windSpeedMap
+	 * @param builder
+	 * @throws JSONException
+	 */
 	private static void parseWindSpeedMap(final JSONObject windSpeedMap, final Builder builder) throws JSONException
 	{
 		final float value = getFloat(windSpeedMap, VALUE);
@@ -111,14 +141,19 @@ public final class ForecastParser
 		builder.setWindSpeed(windSpeed);
 	}
 
+	/**
+	 * 
+	 * @param windGustsMap
+	 * @param builder
+	 * @throws JSONException
+	 */
 	private static void parseWindGustsMap(final JSONObject windGustsMap, final Builder builder) throws JSONException
 	{
 		final float value = getFloat(windGustsMap, VALUE);
 		final String unit = windGustsMap.getString(UNIT);
-
+		//
 		final WindSpeed windGusts = WindSpeed.create(value, unit);
 		builder.setWindGusts(windGusts);
-
 	}
 
 	/**
@@ -140,6 +175,12 @@ public final class ForecastParser
 		return value;
 	}
 
+	/**
+	 * 
+	 * @param waterTemperatureMap
+	 * @param builder
+	 * @throws JSONException
+	 */
 	private static void parseWaterTemperatureMap(final JSONObject waterTemperatureMap, final Builder builder)
 			throws JSONException
 	{
@@ -150,6 +191,12 @@ public final class ForecastParser
 		builder.setWaterTemperature(waterTemp);
 	}
 
+	/**
+	 * 
+	 * @param jSONObject
+	 * @param builder
+	 * @throws JSONException
+	 */
 	private static void parseWindDirection(final JSONObject jSONObject, final Builder builder) throws JSONException
 	{
 		final String directionString = jSONObject.getString(WIND_DIRECTION);
@@ -159,6 +206,12 @@ public final class ForecastParser
 
 	}
 
+	/**
+	 * 
+	 * @param wavePeriodMap
+	 * @param builder
+	 * @throws JSONException
+	 */
 	private static void parseWavePeriod(final JSONObject wavePeriodMap, final Builder builder) throws JSONException
 	{
 		final float value = getFloat(wavePeriodMap, VALUE);
@@ -168,6 +221,12 @@ public final class ForecastParser
 		builder.setWavePeriod(wavePeriod);
 	}
 
+	/**
+	 * 
+	 * @param precipitationMap
+	 * @param builder
+	 * @throws JSONException
+	 */
 	private static void parsePrecipitationMap(final JSONObject precipitationMap, final Builder builder)
 			throws JSONException
 	{

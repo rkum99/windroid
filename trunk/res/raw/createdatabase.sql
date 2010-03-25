@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS schedule_repeat_relation (_id INTEGER PRIMARY KEY AUT
 --      END
 
 -- Preferences
-CREATE TABLE IF NOT EXISTS preferences (_id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT NOT NULL, value TEXT);
+CREATE TABLE IF NOT EXISTS preferences (_id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT UNIQUE NOT NULL, value TEXT);
 -- Pre selected Values
 INSERT INTO preferences ('key','value') VALUES ('spot_winddirection_to','n/a');
 INSERT INTO preferences ('key','value') VALUES ('spot_station_keyword','alger-port');

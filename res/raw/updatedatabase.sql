@@ -12,7 +12,6 @@ DROP TABLE IF EXISTS repeat;
 DROP TABLE IF EXISTS schedule_repeat_relation;
 DROP TABLE IF EXISTS forecast;
 DROP TABLE IF EXISTS forecast_releation;
-DROP TABLE IF EXISTS preferences;
 -- 
 -- Tables
 -- 

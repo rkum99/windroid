@@ -118,15 +118,6 @@ public final class PreferenceImpl extends BaseImpl implements IPreferencesDAO
 			Log.e(LOG_TAG, "Failed to update \"" + _key + "\" with \"" + _value + "\"", e);
 		}
 
-		// final StringBuilder builder = new StringBuilder(128);
-		// builder.append("UPDATE preferences SET value='");
-		// builder.append(_value);
-		// builder.append("' WHERE key='");
-		// builder.append(_key);
-		// builder.append("'");
-
-		// REPLACE INTO preferences_test ('key','value') VALUES
-		// ('peng','test2');
 		final StringBuilder builder = new StringBuilder(128);
 		builder.append("REPLACE INTO preferences ('key','value') VALUES ('");
 		builder.append(_key);

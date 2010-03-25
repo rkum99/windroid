@@ -2,17 +2,6 @@
 -- 
 -- $Id
 -- 
-DROP TABLE IF EXISTS spot;
-DROP TABLE IF EXISTS continent;
-DROP TABLE IF EXISTS country;
-DROP TABLE IF EXISTS region;
-DROP TABLE IF EXISTS selected;
-DROP TABLE IF EXISTS schedule;
-DROP TABLE IF EXISTS repeat;
-DROP TABLE IF EXISTS schedule_repeat_relation;
-DROP TABLE IF EXISTS forecast;
-DROP TABLE IF EXISTS forecast_releation;
--- 
 -- Tables
 -- 
 CREATE TABLE IF NOT EXISTS internal (_id INTEGER PRIMARY KEY AUTOINCREMENT, keyword TEXT NOT NULL , value text);
@@ -23,14 +12,14 @@ CREATE TABLE IF NOT EXISTS region (_id INTEGER PRIMARY KEY AUTOINCREMENT,id INTE
 CREATE TABLE IF NOT EXISTS forecast_releation (_id INTEGER PRIMARY KEY AUTOINCREMENT, updatefailed BOOLEAN, forecastid INTEGER);
 CREATE TABLE IF NOT EXISTS forecast (_id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT, time TEXT,  wave_period FLOAT,wave_period_unit TEXT,  wind_direction TEXT, wave_direction TEXT, precipitation FLOAT, precipitation_unit TEXT, air_pressure FLOAT, air_pressure_unit TEXT, wind_gusts FLOAT, wind_gusts_unit TEXT, water_temperature FLOAT,water_temperature_unit TEXT, air_temperature FLOAT, air_temperature_unit TEXT, wave_height FLOAT, wave_height_unit TEXT, clouds TEXT, wind_speed FLOAT,wind_speed_unit TEXT);
 
-CREATE INDEX spotindex ON spot (spotid);
-CREATE INDEX countryindex ON country (id);
-CREATE INDEX regionindex ON region (id);
-CREATE INDEX continentindex ON continent (id);
+CREATE INDEX IF NOT EXISTS spotindex ON spot (spotid);
+CREATE INDEX IF NOT EXISTS countryindex ON country (id);
+CREATE INDEX IF NOT EXISTS regionindex ON region (id);
+CREATE INDEX IF NOT EXISTS continentindex ON continent (id);
 
-CREATE INDEX conid ON continent (id); 
-CREATE INDEX regid ON region (id); 
-CREATE INDEX coid ON country (id); 
+CREATE INDEX IF NOT EXISTS conid ON continent (id); 
+CREATE INDEX IF NOT EXISTS regid ON region (id); 
+CREATE INDEX IF NOT EXISTS coid ON country (id); 
 --  selected
 CREATE TABLE IF NOT EXISTS selected (_id INTEGER PRIMARY KEY AUTOINCREMENT, spotid text NOT NULL, activ BOOLEAN, usedirection BOOLEAN, starting TEXT, till TEXT, windmeasure TEXT NOT NULL, minwind INTEGER, maxwind INTEGER); 
 CREATE INDEX IF NOT EXISTS selectedid ON selected (spotid); 
@@ -41,7 +30,7 @@ CREATE INDEX IF NOT EXISTS selectedid ON selected (spotid);
 -- repeat
 CREATE TABLE IF NOT EXISTS repeat (_id INTEGER PRIMARY KEY AUTOINCREMENT, weekday INTEGER, daytime LONG, activ BOOLEAN);
 -- schedule_repeat_relation
-CREATE TABLE IF NOT EXISTS schedule_repeat_relation (_id INTEGER PRIMARY KEY AUTOINCREMENT, selectedid INTEGER, repeatid INTEGER)
+CREATE TABLE IF NOT EXISTS schedule_repeat_relation (_id INTEGER PRIMARY KEY AUTOINCREMENT, selectedid INTEGER, repeatid INTEGER);
 
 -- 
 -- Triggers
@@ -51,7 +40,7 @@ CREATE TABLE IF NOT EXISTS schedule_repeat_relation (_id INTEGER PRIMARY KEY AUT
 --                                                                           
 --      INSERT  INTO schedule_repeat_relation (scheduleid, repeatid) values (new.scheduleid,new._id);
 --      END
-
+CREATE TABLE IF NOT EXISTS preferences (_id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT NOT NULL, value TEXT);
 -- Insert Values into table so that update will work on preferences
 INSERT INTO preferences ('key','value') VALUES ('spot_winddirection_to','n/a');
 INSERT INTO preferences ('key','value') VALUES ('spot_station_keyword','alger-port');

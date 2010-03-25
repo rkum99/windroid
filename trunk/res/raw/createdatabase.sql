@@ -2,16 +2,6 @@
 -- 
 -- $Id
 -- 
-DROP TABLE IF EXISTS spot;
-DROP TABLE IF EXISTS continent;
-DROP TABLE IF EXISTS country;
-DROP TABLE IF EXISTS region;
-DROP TABLE IF EXISTS selected;
-DROP TABLE IF EXISTS schedule;
-DROP TABLE IF EXISTS repeat;
-DROP TABLE IF EXISTS schedule_repeat_relation;
-DROP TABLE IF EXISTS forecast;
-DROP TABLE IF EXISTS forecast_releation;
 -- 
 -- Tables
 -- 
@@ -40,7 +30,7 @@ CREATE INDEX IF NOT EXISTS selectedid ON selected (spotid);
 -- repeat
 CREATE TABLE IF NOT EXISTS repeat (_id INTEGER PRIMARY KEY AUTOINCREMENT, weekday INTEGER, daytime LONG, activ BOOLEAN);
 -- schedule_repeat_relation
-CREATE TABLE IF NOT EXISTS schedule_repeat_relation (_id INTEGER PRIMARY KEY AUTOINCREMENT, selectedid INTEGER, repeatid INTEGER)
+CREATE TABLE IF NOT EXISTS schedule_repeat_relation (_id INTEGER PRIMARY KEY AUTOINCREMENT, selectedid INTEGER, repeatid INTEGER);
 -- 
 -- Triggers
 -- 

@@ -22,7 +22,7 @@ import java.io.Serializable;
 
 import de.macsystems.windroid.identifyable.Schedule;
 import de.macsystems.windroid.identifyable.Station;
-import de.macsystems.windroid.identifyable.WindDirection;
+import de.macsystems.windroid.identifyable.CardinalDirection;
 import de.macsystems.windroid.identifyable.WindUnit;
 
 /**
@@ -42,9 +42,9 @@ public final class SpotConfigurationVO implements Serializable
 
 	private boolean useWindirection;
 
-	private WindDirection fromDirection = WindDirection.NO_DIRECTION;
+	private CardinalDirection fromDirection = CardinalDirection.NO_DIRECTION;
 
-	private WindDirection toDirection = WindDirection.NO_DIRECTION;
+	private CardinalDirection toDirection = CardinalDirection.NO_DIRECTION;
 
 	private float windspeedMin;
 
@@ -130,7 +130,7 @@ public final class SpotConfigurationVO implements Serializable
 	/**
 	 * @return the fromDirection
 	 */
-	public WindDirection getFromDirection()
+	public CardinalDirection getFromDirection()
 	{
 		return fromDirection;
 	}
@@ -139,7 +139,7 @@ public final class SpotConfigurationVO implements Serializable
 	 * @param fromDirection
 	 *            the fromDirection to set
 	 */
-	public void setFromDirection(final WindDirection fromDirection)
+	public void setFromDirection(final CardinalDirection fromDirection)
 	{
 		this.fromDirection = fromDirection;
 	}
@@ -147,7 +147,7 @@ public final class SpotConfigurationVO implements Serializable
 	/**
 	 * @return the toDirection
 	 */
-	public WindDirection getToDirection()
+	public CardinalDirection getToDirection()
 	{
 		return toDirection;
 	}
@@ -156,7 +156,7 @@ public final class SpotConfigurationVO implements Serializable
 	 * @param toDirection
 	 *            the toDirection to set
 	 */
-	public void setToDirection(final WindDirection toDirection)
+	public void setToDirection(final CardinalDirection toDirection)
 	{
 		this.toDirection = toDirection;
 	}

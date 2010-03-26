@@ -27,7 +27,7 @@ import de.macsystems.windroid.R;
  * @version $Id$
  * 
  */
-public enum WindDirection implements IdentifyAble
+public enum CardinalDirection implements IdentifyAble
 {
 
 	N(0, "N", "North", R.drawable.wd_n), //
@@ -65,7 +65,7 @@ public enum WindDirection implements IdentifyAble
 	 * @param _longName
 	 * @param _shortName
 	 */
-	private WindDirection(final float _degrees, final String _shortName, final String _longName, final int _imageID)
+	private CardinalDirection(final float _degrees, final String _shortName, final String _longName, final int _imageID)
 	{
 		degrees = _degrees;
 		shortName = _shortName;
@@ -117,13 +117,13 @@ public enum WindDirection implements IdentifyAble
 	 * @return
 	 * @throws IllegalArgumentException
 	 */
-	public final static WindDirection getByShortName(final String _shortName) throws IllegalArgumentException
+	public final static CardinalDirection getByShortName(final String _shortName) throws IllegalArgumentException
 	{
 		if (_shortName == null)
 		{
 			throw new IllegalArgumentException("_shortName is null.");
 		}
-		for (final WindDirection unit : WindDirection.values())
+		for (final CardinalDirection unit : CardinalDirection.values())
 		{
 			if (_shortName.equals(unit.shortName))
 			{
@@ -141,9 +141,9 @@ public enum WindDirection implements IdentifyAble
 	 * @return
 	 * @throws IllegalArgumentException
 	 */
-	public final static WindDirection getByDegree(final float _degree) throws IllegalArgumentException
+	public final static CardinalDirection getByDegree(final float _degree) throws IllegalArgumentException
 	{
-		for (final WindDirection unit : WindDirection.values())
+		for (final CardinalDirection unit : CardinalDirection.values())
 		{
 			final float THRESHOLD = 0.01f;
 			if (Math.abs(_degree - unit.degrees) < THRESHOLD)
@@ -159,16 +159,16 @@ public enum WindDirection implements IdentifyAble
 	 * 
 	 * @return
 	 */
-	public static WindDirection[] getValues()
+	public static CardinalDirection[] getValues()
 	{
-		final List<WindDirection> temp = new ArrayList<WindDirection>();
-		final WindDirection[] values = values();
+		final List<CardinalDirection> temp = new ArrayList<CardinalDirection>();
+		final CardinalDirection[] values = values();
 		for (int i = 0; i < values.length; i++)
 		{
 			temp.add(values[i]);
 		}
 		temp.remove(NO_DIRECTION);
-		return temp.toArray(new WindDirection[temp.size()]);
+		return temp.toArray(new CardinalDirection[temp.size()]);
 	}
 
 }

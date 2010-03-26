@@ -26,7 +26,7 @@ import de.macsystems.windroid.identifyable.Pressure;
 import de.macsystems.windroid.identifyable.Temperature;
 import de.macsystems.windroid.identifyable.WaveHeight;
 import de.macsystems.windroid.identifyable.WavePeriod;
-import de.macsystems.windroid.identifyable.WindDirection;
+import de.macsystems.windroid.identifyable.CardinalDirection;
 import de.macsystems.windroid.identifyable.WindSpeed;
 
 /**
@@ -58,7 +58,7 @@ public final class ForecastDetail
 
 	private final Temperature waterTemperature;
 
-	private final WindDirection winddirection;
+	private final CardinalDirection winddirection;
 
 	private final WindSpeed windSpeed;
 
@@ -72,7 +72,7 @@ public final class ForecastDetail
 
 	private final WavePeriod wavePeriod;
 
-	private final MeasureValue waveDirection;
+	private final CardinalDirection waveDirection;
 
 	private final Pressure airPressure;
 
@@ -166,7 +166,7 @@ public final class ForecastDetail
 	/**
 	 * @return the winddirection
 	 */
-	public WindDirection getWinddirection()
+	public CardinalDirection getWinddirection()
 	{
 		return winddirection;
 	}
@@ -222,7 +222,7 @@ public final class ForecastDetail
 	/**
 	 * @return the waveDirection
 	 */
-	public MeasureValue getWaveDirection()
+	public CardinalDirection getWaveDirection()
 	{
 		return waveDirection;
 	}
@@ -255,7 +255,7 @@ public final class ForecastDetail
 
 		private Temperature waterTemperature;
 
-		private WindDirection winddirection;
+		private CardinalDirection winddirection;
 
 		private WindSpeed windSpeed;
 
@@ -269,7 +269,7 @@ public final class ForecastDetail
 
 		private WavePeriod wavePeriod;
 
-		private MeasureValue waveDirection;
+		private CardinalDirection waveDirection;
 
 		private Pressure airPressure;
 
@@ -322,7 +322,7 @@ public final class ForecastDetail
 		 * @param _winddirection
 		 *            the winddirection to set
 		 */
-		public Builder setWinddirection(final WindDirection _winddirection)
+		public Builder setWinddirection(final CardinalDirection _winddirection)
 		{
 			this.winddirection = _winddirection;
 			return this;
@@ -393,7 +393,7 @@ public final class ForecastDetail
 		 * @param _waveDirection
 		 *            the waveDirection to set
 		 */
-		public Builder setWaveDirection(final MeasureValue _waveDirection)
+		public Builder setWaveDirection(final CardinalDirection _waveDirection)
 		{
 			this.waveDirection = _waveDirection;
 			return this;

@@ -38,7 +38,7 @@ import android.graphics.drawable.shapes.ArcShape;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ImageView;
-import de.macsystems.windroid.identifyable.WindDirection;
+import de.macsystems.windroid.identifyable.CardinalDirection;
 
 /**
  * View that renders the Compass and the chosen direction of Wind.
@@ -61,11 +61,11 @@ public class CompassView extends ImageView
 	/**
 	 * Start direction of Wind
 	 */
-	private WindDirection fromDirection;
+	private CardinalDirection fromDirection;
 	/**
 	 * End direction of Wind
 	 */
-	private WindDirection toDirection;
+	private CardinalDirection toDirection;
 
 	/**
 	 * 
@@ -101,7 +101,7 @@ public class CompassView extends ImageView
 	 * 
 	 * @param _from
 	 */
-	public void setFromDirection(final WindDirection _from)
+	public void setFromDirection(final CardinalDirection _from)
 	{
 		fromDirection = _from;
 		if (Log.isLoggable(LOG_TAG, Log.DEBUG))
@@ -114,7 +114,7 @@ public class CompassView extends ImageView
 	 * 
 	 * @param _to
 	 */
-	public void setToDirection(final WindDirection _to)
+	public void setToDirection(final CardinalDirection _to)
 	{
 		toDirection = _to;
 		if (Log.isLoggable(LOG_TAG, Log.DEBUG))

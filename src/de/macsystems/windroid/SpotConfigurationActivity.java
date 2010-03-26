@@ -36,7 +36,7 @@ import de.macsystems.windroid.common.IntentConstants;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.custom.activity.ChainSubActivity;
 import de.macsystems.windroid.identifyable.IdentityUtil;
-import de.macsystems.windroid.identifyable.WindDirection;
+import de.macsystems.windroid.identifyable.CardinalDirection;
 import de.macsystems.windroid.identifyable.WindUnit;
 
 /**
@@ -106,24 +106,24 @@ public class SpotConfigurationActivity extends ChainSubActivity
 
 		// --
 		final Spinner directionsFromSpinner = (Spinner) findViewById(R.id.units_windirection_from_spinner);
-		final ArrayAdapter<WindDirection> directionsFrom = new ArrayAdapter<WindDirection>(this,
-				android.R.layout.simple_spinner_item, WindDirection.getValues());
+		final ArrayAdapter<CardinalDirection> directionsFrom = new ArrayAdapter<CardinalDirection>(this,
+				android.R.layout.simple_spinner_item, CardinalDirection.getValues());
 		directionsFrom.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		directionsFromSpinner.setAdapter(directionsFrom);
 		// --
 		final Spinner directionsToSpinner = (Spinner) findViewById(R.id.units_windirection_to_spinner);
-		final ArrayAdapter<WindDirection> directionsTo = new ArrayAdapter<WindDirection>(this,
-				android.R.layout.simple_spinner_item, WindDirection.getValues());
+		final ArrayAdapter<CardinalDirection> directionsTo = new ArrayAdapter<CardinalDirection>(this,
+				android.R.layout.simple_spinner_item, CardinalDirection.getValues());
 		directionsTo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		directionsToSpinner.setAdapter(directionsTo);
 		// --- pre select checkboxes ---
 		if (stationInfo.isUseWindirection())
 		{
-			final WindDirection toDirection = stationInfo.getToDirection();
-			final int selectionToIndex = IdentityUtil.indexOf(toDirection.getId(), WindDirection.getValues());
+			final CardinalDirection toDirection = stationInfo.getToDirection();
+			final int selectionToIndex = IdentityUtil.indexOf(toDirection.getId(), CardinalDirection.getValues());
 			directionsToSpinner.setSelection(selectionToIndex);
-			final WindDirection fromDirection = stationInfo.getFromDirection();
-			final int fromSelectionIndex = IdentityUtil.indexOf(fromDirection.getId(), WindDirection.getValues());
+			final CardinalDirection fromDirection = stationInfo.getFromDirection();
+			final int fromSelectionIndex = IdentityUtil.indexOf(fromDirection.getId(), CardinalDirection.getValues());
 			directionsFromSpinner.setSelection(fromSelectionIndex);
 
 		}
@@ -180,8 +180,8 @@ public class SpotConfigurationActivity extends ChainSubActivity
 				stationInfo.setUseWindirection(selectWinddirection.isChecked());
 				if (selectWinddirection.isChecked())
 				{
-					stationInfo.setFromDirection((WindDirection) directionsFromSpinner.getSelectedItem());
-					stationInfo.setToDirection((WindDirection) directionsToSpinner.getSelectedItem());
+					stationInfo.setFromDirection((CardinalDirection) directionsFromSpinner.getSelectedItem());
+					stationInfo.setToDirection((CardinalDirection) directionsToSpinner.getSelectedItem());
 				}
 
 				stationInfo.setWindspeedMin(currentMinimum);

@@ -23,7 +23,7 @@ import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import de.macsystems.windroid.identifyable.IdentityUtil;
-import de.macsystems.windroid.identifyable.WindDirection;
+import de.macsystems.windroid.identifyable.CardinalDirection;
 import de.macsystems.windroid.identifyable.WindUnit;
 
 /**
@@ -107,16 +107,16 @@ public class SpotOverviewViewBinder implements SimpleCursorAdapter.ViewBinder
 		{
 			final ImageView tv = (ImageView) view;
 			final String id = cursor.getString(columnIndex);
-			final int index = IdentityUtil.indexOf(id, WindDirection.values());
-			final int resID = WindDirection.values()[index].getImage();
+			final int index = IdentityUtil.indexOf(id, CardinalDirection.values());
+			final int resID = CardinalDirection.values()[index].getImage();
 			tv.setImageResource(resID);
 		}
 		else if (columnIndex == INDEX_WIND_DIRECTION_END)
 		{
 			final ImageView tv = (ImageView) view;
 			final String id = cursor.getString(columnIndex);
-			final int index = IdentityUtil.indexOf(id, WindDirection.values());
-			final int resID = WindDirection.values()[index].getImage();
+			final int index = IdentityUtil.indexOf(id, CardinalDirection.values());
+			final int resID = CardinalDirection.values()[index].getImage();
 			tv.setImageResource(resID);
 		}
 

@@ -32,6 +32,7 @@ import android.util.Log;
 import de.macsystems.windroid.forecast.Forecast;
 import de.macsystems.windroid.forecast.ForecastDetail;
 import de.macsystems.windroid.forecast.ForecastDetail.Builder;
+import de.macsystems.windroid.identifyable.CardinalDirection;
 import de.macsystems.windroid.identifyable.Cavok;
 import de.macsystems.windroid.identifyable.IdentityUtil;
 import de.macsystems.windroid.identifyable.Precipitation;
@@ -39,7 +40,6 @@ import de.macsystems.windroid.identifyable.Pressure;
 import de.macsystems.windroid.identifyable.Temperature;
 import de.macsystems.windroid.identifyable.WaveHeight;
 import de.macsystems.windroid.identifyable.WavePeriod;
-import de.macsystems.windroid.identifyable.WindDirection;
 import de.macsystems.windroid.identifyable.WindSpeed;
 
 /**
@@ -57,6 +57,7 @@ public final class ForecastParser
 	private final static SimpleDateFormat yyyyMMddHHmmFormat = new SimpleDateFormat("yyyyMMddHHmm", Locale.getDefault());
 
 	private static final String WIND_DIRECTION = "wind_direction";
+	private static final String WAVE_DIRECTION = "wave_direction";
 	private static final String CLOUDS = "clouds";
 	private static final String UNIT = "unit";
 	private static final String VALUE = "value";
@@ -176,6 +177,24 @@ public final class ForecastParser
 	}
 
 	/**
+	 * Fail safe returns an String. null is interpreted as 'null'
+	 * 
+	 * @param _jsonObject
+	 * @param _key
+	 * @return
+	 * @throws JSONException
+	 */
+	private static String getString(final JSONObject _jsonObject, final String _key) throws JSONException
+	{
+		if (_jsonObject.isNull(_key))
+		{
+			return "null";
+		}
+
+		return _jsonObject.getString(_key);
+	}
+
+	/**
 	 * 
 	 * @param waterTemperatureMap
 	 * @param builder
@@ -200,8 +219,8 @@ public final class ForecastParser
 	private static void parseWindDirection(final JSONObject jSONObject, final Builder builder) throws JSONException
 	{
 		final String directionString = jSONObject.getString(WIND_DIRECTION);
-		final int index = IdentityUtil.indexOf(directionString, WindDirection.values());
-		final WindDirection direction = WindDirection.values()[index];
+		final int index = IdentityUtil.indexOf(directionString, CardinalDirection.values());
+		final CardinalDirection direction = CardinalDirection.values()[index];
 		builder.setWinddirection(direction);
 
 	}
@@ -301,6 +320,10 @@ public final class ForecastParser
 			parseWavePeriod(wavePeriodMap, builder);
 			final JSONObject waveHeightMap = forecastDetailMap.getJSONObject("wave_height");
 			parseWaveHeight(waveHeightMap, builder);
+
+			// final JSONObject waveDirectionMap =
+			// forecastDetailMap.getJSONObject("wave_direction");
+			parseWaveDirection(forecastDetailMap, builder);
 			parseWindDirection(forecastDetailMap, builder);
 			parseTime(forecastDetailMap, builder);
 			parseDate(forecastDetailMap, builder);
@@ -320,6 +343,22 @@ public final class ForecastParser
 			forecast.add(builder.build());
 		}
 		return forecast;
+	}
+
+	/**
+	 * 
+	 * @param waveDirectionMap
+	 * @param builder
+	 * @throws JSONException
+	 */
+	private static void parseWaveDirection(final JSONObject waveDirectionMap, final Builder builder)
+			throws JSONException
+	{
+		final String directionString = waveDirectionMap.getString(WAVE_DIRECTION);
+		final int index = IdentityUtil.indexOf(directionString, CardinalDirection.values());
+		final CardinalDirection direction = CardinalDirection.values()[index];
+		builder.setWaveDirection(direction);
+
 	}
 
 	/**

@@ -48,7 +48,6 @@ public final class SpotImpl extends BaseImpl implements ISpotDAO
 	private final static String INSERT_SPOT = "INSERT INTO spot "
 			+ "(spotid,continentid,countryid,regionid,name,keyword,superforecast,report,forecast,statistic,wavereport,waveforecast) "
 			+ "values (?,?,?,?,?,?,?,?,?,?,?,?);";
-
 	private final static String INSERT_CONTINENT = "INSERT INTO continent (id,name) values (?,?);";
 	private final static String INSERT_COUNTRY = "INSERT INTO country (id,name,continentid) values (?,?,?);";
 	private final static String INSERT_REGION = "INSERT INTO region (id,name,countryid) values (?,?,?);";

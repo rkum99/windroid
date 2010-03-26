@@ -39,6 +39,10 @@ public class MD5Task extends IOTask<String, InputStream>
 
 	private final static String LOG_TAG = MD5Task.class.getSimpleName();
 
+	private static final String MD5 = "<md5>";
+
+	private static final String MD5_CLOSE = "</md5>";
+
 	/**
 	 * 
 	 * @param _uri
@@ -82,8 +86,8 @@ public class MD5Task extends IOTask<String, InputStream>
 		try
 		{
 			final String md5Line = builder.toString();
-			final int indexStart = md5Line.indexOf("<md5>") + "<md5>".length();
-			final int indexEnd = md5Line.indexOf("</md5>");
+			final int indexStart = md5Line.indexOf(MD5) + MD5.length();
+			final int indexEnd = md5Line.indexOf(MD5_CLOSE);
 			md5Hash = md5Line.substring(indexStart, indexEnd);
 		}
 		catch (final IndexOutOfBoundsException e)

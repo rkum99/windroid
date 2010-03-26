@@ -35,7 +35,7 @@ import de.macsystems.windroid.db.ISpotDAO;
 import de.macsystems.windroid.identifyable.Repeat;
 import de.macsystems.windroid.identifyable.Schedule;
 import de.macsystems.windroid.identifyable.Station;
-import de.macsystems.windroid.identifyable.WindDirection;
+import de.macsystems.windroid.identifyable.CardinalDirection;
 import de.macsystems.windroid.identifyable.WindUnit;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.progress.IProgress;
@@ -245,8 +245,8 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 		spotVO.setActiv(activ);
 		spotVO.setUseWindirection(useDirection);
 		spotVO.setPreferredWindUnit(WindUnit.getById(windmeasure));
-		spotVO.setToDirection(WindDirection.getByShortName(till));
-		spotVO.setFromDirection(WindDirection.getByShortName(starting));
+		spotVO.setToDirection(CardinalDirection.getByShortName(till));
+		spotVO.setFromDirection(CardinalDirection.getByShortName(starting));
 		spotVO.setWindspeedMin(minWind);
 		spotVO.setWindspeedMax(maxWind);
 		//

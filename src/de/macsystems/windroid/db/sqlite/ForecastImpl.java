@@ -36,7 +36,7 @@ import de.macsystems.windroid.identifyable.Pressure;
 import de.macsystems.windroid.identifyable.Temperature;
 import de.macsystems.windroid.identifyable.WaveHeight;
 import de.macsystems.windroid.identifyable.WavePeriod;
-import de.macsystems.windroid.identifyable.WindDirection;
+import de.macsystems.windroid.identifyable.CardinalDirection;
 import de.macsystems.windroid.identifyable.WindSpeed;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.progress.IProgress;
@@ -131,8 +131,8 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 			final String waveDirectionString = getString(cursor, COLUMN_WAVE_DIRECTION);
 			final String windDirectionString = getString(cursor, COLUMN_WIND_DIRECTION);
 
-			final WindDirection windDirection = getDirection(windDirectionString);
-			final WindDirection waveDirection = getDirection(waveDirectionString);
+			final CardinalDirection windDirection = getDirection(windDirectionString);
+			final CardinalDirection waveDirection = getDirection(waveDirectionString);
 
 			//
 			final String time = getString(cursor, COLUMN_TIME);
@@ -151,7 +151,7 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 			builder.setWavePeriod(wavePeriod);
 			builder.setWaveHeight(waveHeight);
 			// TODO Set Wave Direction
-//			builder.setWaveDirection(waveDirection);
+			builder.setWaveDirection(waveDirection);
 			builder.setWinddirection(windDirection);
 
 			//
@@ -168,10 +168,10 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 		return null;
 	}
 
-	private final static WindDirection getDirection(final String _direction)
+	private final static CardinalDirection getDirection(final String _direction)
 	{
-		final int index = IdentityUtil.indexOf(_direction, WindDirection.values());
-		return WindDirection.values()[index];
+		final int index = IdentityUtil.indexOf(_direction, CardinalDirection.values());
+		return CardinalDirection.values()[index];
 	}
 
 	@Override
@@ -211,7 +211,7 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 				values.put(COLUMN_WATER_TEMPERATURE, detail.getWaterTemperature().getValue());
 				values.put(COLUMN_WATER_TEMPERATURE_UNIT, detail.getWaterTemperature().getMeasure().getId());
 				//
-				values.put(COLUMN_WAVE_DIRECTION, detail.getWaterTemperature().getValue());
+				values.put(COLUMN_WAVE_DIRECTION, detail.getWaveDirection().getId());
 				//
 				values.put(COLUMN_WAVE_HEIGHT, detail.getWaveHeight().getValue());
 				values.put(COLUMN_WAVE_HEIGHT_UNIT, detail.getWaveHeight().getMeasure().getId());

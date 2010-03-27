@@ -17,6 +17,8 @@
  */
 package de.macsystems.windroid.proxy;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -43,9 +45,12 @@ public final class SpotServiceConnection implements ServiceConnection, ISpotServ
 
 	private final static String LOG_TAG = SpotServiceConnection.class.getSimpleName();
 
+	/**
+	 * TODO: Using weak reference ?
+	 */
 	private final View viewToEnable;
 
-	private volatile ISpotService delegate;
+	private AtomicReference<ISpotService> reference = new AtomicReference<ISpotService>();
 
 	/**
 	 * 
@@ -58,11 +63,11 @@ public final class SpotServiceConnection implements ServiceConnection, ISpotServ
 	{
 		if (_viewToEnable == null)
 		{
-			throw new NullPointerException();
+			throw new NullPointerException("view");
 		}
 		if (_context == null)
 		{
-			throw new NullPointerException();
+			throw new NullPointerException("context");
 		}
 
 		viewToEnable = _viewToEnable;
@@ -89,8 +94,7 @@ public final class SpotServiceConnection implements ServiceConnection, ISpotServ
 		{
 			Log.d(LOG_TAG, "public void onServiceConnected(ComponentName name, IBinder binder)");
 		}
-
-		delegate = ISpotService.Stub.asInterface(binder);
+		reference.set(ISpotService.Stub.asInterface(binder));
 		viewToEnable.setEnabled(true);
 	}
 
@@ -109,7 +113,7 @@ public final class SpotServiceConnection implements ServiceConnection, ISpotServ
 			Log.d(LOG_TAG, "public void onServiceDisconnected(ComponentName name)");
 		}
 
-		delegate = null;
+		reference.set(null);
 
 		viewToEnable.setEnabled(false);
 	}
@@ -117,18 +121,20 @@ public final class SpotServiceConnection implements ServiceConnection, ISpotServ
 	@Override
 	public void initAlarms() throws RemoteException
 	{
-		if (delegate != null)
+		final ISpotService temp = reference.get();
+		if (temp != null)
 		{
-			delegate.initAlarms();
+			temp.initAlarms();
 		}
 	}
 
 	@Override
 	public void updateAll() throws RemoteException
 	{
-		if (delegate != null)
+		final ISpotService temp = reference.get();
+		if (temp != null)
 		{
-			delegate.updateAll();
+			temp.updateAll();
 		}
 	}
 
@@ -141,9 +147,9 @@ public final class SpotServiceConnection implements ServiceConnection, ISpotServ
 	@Override
 	public void stop() throws RemoteException
 	{
-		if (delegate != null)
+		final ISpotService temp = reference.get();
 		{
-			delegate.stop();
+			temp.stop();
 		}
 	}
 
@@ -155,7 +161,7 @@ public final class SpotServiceConnection implements ServiceConnection, ISpotServ
 	@Override
 	public IBinder asBinder()
 	{
-		return delegate.asBinder();
+		return reference.get().asBinder();
 	}
 
 }

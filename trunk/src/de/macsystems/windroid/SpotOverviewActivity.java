@@ -18,17 +18,23 @@
 package de.macsystems.windroid;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnClickListener;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnCreateContextMenuListener;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import de.macsystems.windroid.common.IntentConstants;
 import de.macsystems.windroid.common.SpotConfigurationVO;
@@ -52,6 +58,7 @@ public class SpotOverviewActivity extends ListActivity
 	private static final int DISABLE_ITEM_ID = 1;
 	private static final int EDIT_ITEM_ID = 2;
 	private static final int FORECAST_ITEM_ID = 3;
+	private static final int DELETE_ITEM_ID = 4;
 
 	SimpleCursorAdapter shows = null;
 	/**
@@ -103,6 +110,7 @@ public class SpotOverviewActivity extends ListActivity
 				{
 					menu.add(0, ENABLE_ITEM_ID, 0, R.string.spot_overview_spot_monitoring_enable);
 				}
+				menu.add(0, DELETE_ITEM_ID, 0, "Löschen");
 			}
 		});
 
@@ -143,11 +151,47 @@ public class SpotOverviewActivity extends ListActivity
 		case FORECAST_ITEM_ID:
 			forecastSpot(selectedID);
 			break;
+		case DELETE_ITEM_ID:
+			deleteSpot(selectedID);
+			break;
+
 		default:
 			throw new IllegalArgumentException("Unknown Item ID " + _item.getItemId());
 		}
 
 		return true;
+	}
+
+	private void deleteSpot(final int _id)
+	{
+		final DialogInterface.OnClickListener listener = new OnClickListener()
+		{
+
+			@Override
+			public final void onClick(final DialogInterface _dialog, final int _which)
+			{
+				Toast.makeText(SpotOverviewActivity.this, "User Clicked on Alert Dialog", Toast.LENGTH_LONG).show();
+				if (_which == DialogInterface.BUTTON_POSITIVE)
+				{
+					// delete Spot
+				}
+				else
+				{
+					// do nothing
+				}
+
+			}
+		};
+
+		final Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Delete Spot");
+		builder.setMessage("Are you sure ?");
+		builder.setCancelable(false);
+		builder.setPositiveButton(android.R.string.ok, listener);
+		builder.setNegativeButton(android.R.string.cancel, listener);
+		final AlertDialog dialog = builder.show();
+		dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND,
+				WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
 	}
 
 	/**

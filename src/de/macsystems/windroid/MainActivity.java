@@ -271,7 +271,7 @@ public class MainActivity extends Activity
 		final android.content.DialogInterface.OnClickListener listener = new android.content.DialogInterface.OnClickListener()
 		{
 			@Override
-			public void onClick(final DialogInterface _dialog, final int _which)
+			public final void onClick(final DialogInterface _dialog, final int _which)
 			{
 				if (_which == DialogInterface.BUTTON_NEGATIVE)
 				{

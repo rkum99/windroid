@@ -32,10 +32,10 @@ import de.macsystems.windroid.db.IRepeatDAO;
 import de.macsystems.windroid.db.IScheduleDAO;
 import de.macsystems.windroid.db.ISelectedDAO;
 import de.macsystems.windroid.db.ISpotDAO;
+import de.macsystems.windroid.identifyable.CardinalDirection;
 import de.macsystems.windroid.identifyable.Repeat;
 import de.macsystems.windroid.identifyable.Schedule;
 import de.macsystems.windroid.identifyable.Station;
-import de.macsystems.windroid.identifyable.CardinalDirection;
 import de.macsystems.windroid.identifyable.WindUnit;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.progress.IProgress;
@@ -340,9 +340,10 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 	public Cursor getConfiguredSpots()
 	{
 		final SQLiteDatabase db = getReadableDatabase();
-		return db.rawQuery(
-				"SELECT B._id, A.name, A.keyword, B.minwind, B.maxwind, B.windmeasure, B.starting, B.till,B.activ FROM selected as B, "
-						+ "spot as A WHERE A.spotid=B.spotid", null);
+		return db
+				.rawQuery(
+						"SELECT DISTINCT selected._id as _id, spot.name as name, spot.keyword as keyword, selected.minwind as minwind, selected.maxwind as maxwind, selected.windmeasure as windmeasure, selected.starting as starting, selected.till as till, selected.activ as activ FROM selected, spot WHERE spot.spotid=selected.spotid;",
+						null);
 	}
 
 	@Override

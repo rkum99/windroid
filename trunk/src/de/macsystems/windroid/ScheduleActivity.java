@@ -47,7 +47,7 @@ import de.macsystems.windroid.identifyable.Schedule;
  * @author mac
  * @version $Id$
  */
-public class ScheduleActivity extends ChainSubActivity
+public final class ScheduleActivity extends ChainSubActivity
 {
 
 	private static final long NOT_SELECTED = -1L;

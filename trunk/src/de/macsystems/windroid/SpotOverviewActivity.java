@@ -48,7 +48,7 @@ import de.macsystems.windroid.db.ISelectedDAO;
  * @version $Id$
  * 
  */
-public class SpotOverviewActivity extends ListActivity
+public final class SpotOverviewActivity extends ListActivity
 {
 
 	private final static int EDIT_SPOT_REQUEST_CODE = 400;

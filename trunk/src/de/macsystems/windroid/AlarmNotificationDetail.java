@@ -33,7 +33,7 @@ import de.macsystems.windroid.common.IntentConstants;
  *          $
  * 
  */
-public class AlarmNotificationDetail extends Activity
+public final class AlarmNotificationDetail extends Activity
 {
 
 	/*

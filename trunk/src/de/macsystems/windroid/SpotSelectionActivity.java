@@ -43,7 +43,7 @@ import de.macsystems.windroid.db.ISpotDAO;
  * @author Jens Hohl
  * @version $Id$
  */
-public class SpotSelectionActivity extends ChainSubActivity
+public final class SpotSelectionActivity extends ChainSubActivity
 {
 
 	private final static String LOG_TAG = SpotSelectionActivity.class.getSimpleName();

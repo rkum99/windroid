@@ -45,7 +45,7 @@ import de.macsystems.windroid.identifyable.WindUnit;
  *          jens.hohl $
  * 
  */
-public class SpotConfigurationActivity extends ChainSubActivity
+public final class SpotConfigurationActivity extends ChainSubActivity
 {
 	private final String LOG_TAG = SpotConfigurationActivity.class.getSimpleName();
 

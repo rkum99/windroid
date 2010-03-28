@@ -46,7 +46,7 @@ import de.macsystems.windroid.progress.ProgressBarAdapter;
  * @author Jens Hohl
  * @version $Id$
  */
-public class DownloadActivity extends ChainSubActivity
+public final class DownloadActivity extends ChainSubActivity
 {
 	private final static String LOG_TAG = DownloadActivity.class.getSimpleName();
 

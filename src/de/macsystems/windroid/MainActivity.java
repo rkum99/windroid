@@ -70,7 +70,7 @@ import de.macsystems.windroid.receiver.EnableViewConnectionBroadcastReciever;
  * @version $Id$
  * 
  */
-public class MainActivity extends Activity
+public final class MainActivity extends Activity
 {
 
 	private final static int ABOUT_MENU_ID = 777;

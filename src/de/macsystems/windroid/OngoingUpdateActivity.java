@@ -25,7 +25,7 @@ import android.os.Bundle;
  * @version $Id$
  * 
  */
-public class OngoingUpdateActivity extends Activity
+public final class OngoingUpdateActivity extends Activity
 {
 
 	/*

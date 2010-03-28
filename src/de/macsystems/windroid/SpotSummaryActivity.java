@@ -36,7 +36,7 @@ import de.macsystems.windroid.custom.view.CompassView;
  * @version $Id$
  * 
  */
-public class SpotSummaryActivity extends Activity
+public final class SpotSummaryActivity extends Activity
 {
 
 	private final static String LOG_TAG = SpotSummaryActivity.class.getSimpleName();

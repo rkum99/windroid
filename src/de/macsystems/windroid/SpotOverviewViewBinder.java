@@ -33,7 +33,7 @@ import de.macsystems.windroid.identifyable.WindUnit;
  * @version $Id: SpotOverviewCursorAdapter.java 73 2009-10-25 16:01:54Z
  *          jens.hohl $
  */
-public class SpotOverviewViewBinder implements SimpleCursorAdapter.ViewBinder
+public final class SpotOverviewViewBinder implements SimpleCursorAdapter.ViewBinder
 {
 	/**
 	 * Index is depending on SQL column order.

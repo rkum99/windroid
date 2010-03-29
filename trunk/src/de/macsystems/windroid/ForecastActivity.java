@@ -32,6 +32,7 @@ import de.macsystems.windroid.db.DAOFactory;
 import de.macsystems.windroid.db.IForecastDAO;
 import de.macsystems.windroid.forecast.Forecast;
 import de.macsystems.windroid.forecast.ForecastDetail;
+import de.macsystems.windroid.identifyable.CardinalDirection;
 
 /**
  * @author mac
@@ -41,12 +42,16 @@ public final class ForecastActivity extends Activity
 {
 
 	private final static String LOG_TAG = ForecastActivity.class.getSimpleName();
-
+	/**
+	 * All res id used to set text on a table row
+	 */
 	private final static int[] TEXT_ROW_IDS = new int[]
 	{ R.id.forecast_text_column_1, R.id.forecast_text_column_2, R.id.forecast_text_column_3,
 			R.id.forecast_text_column_4, R.id.forecast_text_column_5, R.id.forecast_text_column_6,
 			R.id.forecast_text_column_7 };
-
+	/**
+	 * All res id used to set images on a table row
+	 */
 	private final static int[] IMAGE_ROW_IDS = new int[]
 	{ R.id.forecast_image_column_1, R.id.forecast_image_column_2, R.id.forecast_image_column_3,
 			R.id.forecast_image_column_4, R.id.forecast_image_column_5, R.id.forecast_image_column_6,
@@ -99,16 +104,42 @@ public final class ForecastActivity extends Activity
 		fillTextRow(rowWindGust, R.string.windgust);
 		//
 		final TableRow rowClouds = (TableRow) findViewById(R.id.forecast_row_clouds);
-		fillWindRow(rowClouds, R.string.wave_direction);
+		fillWindRow(rowClouds, R.string.wave_direction,forecast);
 		final TableRow rowWindDirection = (TableRow) findViewById(R.id.forecast_row_wind_direction);
 		fillCloudRow(rowWindDirection, R.string.wind_direction, forecast);
 		final TableRow rowWaveDirection = (TableRow) findViewById(R.id.forecast_row_wave_direction);
 		fillCloudRow(rowWaveDirection, R.string.wave_direction, forecast);
 	}
 
-	private void fillWindRow(final TableRow rowClouds,final int clouds)
+	private void fillWindRow(final TableRow _rowWind,final int _columNameResID, final Forecast _forecast)
 	{
-		// TODO Auto-generated method stub
+		if (_rowWind == null)
+		{
+			throw new NullPointerException("row");
+		}
+		
+		final TextView rowName = (TextView) _rowWind.findViewById(R.id.forecast_image_column_name);
+		final String text = _rowWind.getResources().getString(_columNameResID);
+		rowName.setText(text);
+		//
+		final Iterator<ForecastDetail> iter = _forecast.iterator();
+
+		for (int i = 0; i < IMAGE_ROW_IDS.length; i++)
+		{
+			final ImageView iv = (ImageView) _rowWind.findViewById(IMAGE_ROW_IDS[i]);
+
+			if (iter.hasNext())
+			{
+				final ForecastDetail detail = iter.next();
+				Log.d(LOG_TAG, "Winddirection " + detail.getWinddirection());
+				iv.setImageResource(detail.getWinddirection().getImage());
+			}
+			else
+			{
+				iv.setImageDrawable(null);
+			}
+		}
+		
 
 	}
 
@@ -122,6 +153,11 @@ public final class ForecastActivity extends Activity
 		final TextView rowName = (TextView) _row.findViewById(R.id.forecast_text_column_name);
 		final String text = _row.getResources().getString(_columNameResID);
 		rowName.setText(text);
+		
+		if(Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG,"rowName "+text);
+		}
 
 		for (int i = 0; i < TEXT_ROW_IDS.length; i++)
 		{

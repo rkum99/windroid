@@ -3,14 +3,14 @@
 	xmlns:android="http://schemas.android.com/apk/res/android">
 	<TextView
 		android:id="@+id/forecast_text_column_name"
-		android:text="Datum"
+		android:text=""
 		android:textStyle="bold"
 		android:background="#00000000"
 		android:textColor="#000000"
 		android:layout_margin="1dip" />
 	<TextView
 		android:id="@+id/forecast_text_column_1"
-		android:text="20"
+		android:text=""
 		android:gravity="center"
 		android:textStyle="bold"
 		android:background="#00000000"
@@ -18,7 +18,7 @@
 		android:layout_margin="1dip" />
 	<TextView
 		android:id="@+id/forecast_text_column_2"
-		android:text="20"
+		android:text=""
 		android:gravity="center"
 		android:textStyle="bold"
 		android:background="#00000000"
@@ -26,7 +26,7 @@
 		android:layout_margin="1dip" />
 	<TextView
 		android:id="@+id/forecast_text_column_3"
-		android:text="20"
+		android:text=""
 		android:gravity="center"
 		android:textStyle="bold"
 		android:background="#00000000"
@@ -34,7 +34,7 @@
 		android:layout_margin="1dip" />
 	<TextView
 		android:id="@+id/forecast_text_column_4"
-		android:text="20"
+		android:text=""
 		android:gravity="center"
 		android:textStyle="bold"
 		android:background="#00000000"
@@ -42,7 +42,7 @@
 		android:layout_margin="1dip" />
 	<TextView
 		android:id="@+id/forecast_text_column_5"
-		android:text="21"
+		android:text=""
 		android:gravity="center"
 		android:textStyle="bold"
 		android:background="#00000000"
@@ -50,7 +50,7 @@
 		android:layout_margin="1dip" />
 	<TextView
 		android:id="@+id/forecast_text_column_6"
-		android:text="21"
+		android:text=""
 		android:gravity="center"
 		android:textStyle="bold"
 		android:background="#00000000"
@@ -58,7 +58,7 @@
 		android:layout_margin="1dip" />
 	<TextView
 		android:id="@+id/forecast_text_column_7"
-		android:text="21"
+		android:text=""
 		android:gravity="center"
 		android:textStyle="bold"
 		android:background="#00000000"

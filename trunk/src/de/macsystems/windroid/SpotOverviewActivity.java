@@ -143,7 +143,7 @@ public final class SpotOverviewActivity extends ListActivity
 			editSpot(selectedID);
 			break;
 		case FORECAST_ITEM_ID:
-			forecastSpot(selectedID);
+			showForcastForSpot(selectedID);
 			break;
 		case DELETE_ITEM_ID:
 			deleteSpot(selectedID);
@@ -215,14 +215,9 @@ public final class SpotOverviewActivity extends ListActivity
 		}
 		startManagingCursor(_cursor);
 
-		// Util.printCursorColumnNames(_cursor);
-
 		final String[] from = new String[]
 		{ "name", "minwind", "maxwind", "windmeasure", "starting", "till", "activ" };
 		final int[] to = new int[]
-
-		// "SELECT A.name, B.spotid, B.starting, B.till,B.activ FROM selected as B,spot as A where A.spotid=B.spotid"
-		// custom_spotoverview_wind_details
 		{ R.id.custom_spotoverview_name, R.id.custom_spotoverview_wind_start, R.id.custom_spotoverview_wind_end,
 				R.id.custom_spotoverview_wind_details, R.id.custom_spotoverview_wind_from,
 				R.id.custom_spotoverview_wind_to, R.id.custom_spotoverview_activ };
@@ -318,7 +313,7 @@ public final class SpotOverviewActivity extends ListActivity
 	 * 
 	 * @param _id
 	 */
-	private void forecastSpot(final int _id)
+	private void showForcastForSpot(final int _id)
 	{
 		final Intent intent = new Intent(SpotOverviewActivity.this, ForecastActivity.class);
 		intent.putExtra(IntentConstants.STORED_FORECAST_KEY, _id);

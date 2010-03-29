@@ -98,8 +98,8 @@ public final class DownloadActivity extends ChainSubActivity
 				}
 				try
 				{
-
 					downloadProgress.setMax(100);
+					// 
 					if (WindUtils.isStationListUpdateAvailable(DownloadActivity.this))
 					{
 						WindUtils.updateStationList(DownloadActivity.this, downloadProgress);
@@ -108,13 +108,12 @@ public final class DownloadActivity extends ChainSubActivity
 					final XMLParseTask task = new XMLParseTask(new URI(IOUtils.stationsXMLFilePath), databaseProgress);
 					final int stationsFound = task.execute(DownloadActivity.this);
 					downloadProgress.incrementBy(50);
+					//
 					final World world = task.getWorld();
 					databaseProgress.setMax(stationsFound);
-
+					//
 					final ISpotDAO updater = DAOFactory.getSpotDAO(DownloadActivity.this, databaseProgress);
 					updater.insertSpots(world);
-					// final ConfigImpl config = new ConfigImpl(database);
-					// config.setDatabaseStatus("succsess");
 					showInstallSucceed();
 				}
 				catch (final Exception e)

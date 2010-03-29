@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.util.Config;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -295,19 +296,20 @@ public final class SpotConfigurationActivity extends ChainSubActivity
 			 * (android.widget.SeekBar, int, boolean)
 			 */
 			@Override
-			public final void onProgressChanged(final SeekBar seekBar, int progress, final boolean fromUser)
+			public final void onProgressChanged(final SeekBar _seekBar, int _progress, final boolean _fromUser)
 			{
+
 				if (Logging.isLoggingEnabled())
 				{
-					Log.d(LOG_TAG, "From user:" + fromUser);
+					Log.d(LOG_TAG, "From user:" + _fromUser);
 				}
-				if (SpotConfigurationActivity.this.currentMinimum >= progress)
+				if (SpotConfigurationActivity.this.currentMinimum >= _progress)
 				{
-					progress = SpotConfigurationActivity.this.currentMinimum;
-					seekBar.setProgress(SpotConfigurationActivity.this.currentMinimum);
+					_progress = SpotConfigurationActivity.this.currentMinimum;
+					_seekBar.setProgress(SpotConfigurationActivity.this.currentMinimum);
 					vibrator.vibrate(VIBRATE_DURATION);
 				}
-				SpotConfigurationActivity.this.currentMaximum = progress;
+				SpotConfigurationActivity.this.currentMaximum = _progress;
 				if (Logging.isLoggingEnabled())
 				{
 					Log.d(LOG_TAG, "current maximum:" + SpotConfigurationActivity.this.currentMaximum);

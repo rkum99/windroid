@@ -437,6 +437,11 @@ public class IOUtils
 	 */
 	public static StringBuilder asString(final InputStream _instream) throws IOException
 	{
+		if (_instream == null)
+		{
+			throw new NullPointerException("InputStream");
+		}
+
 		final BufferedReader reader = new BufferedReader(new InputStreamReader(_instream), 4000);
 
 		try

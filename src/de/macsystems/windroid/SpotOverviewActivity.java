@@ -84,11 +84,6 @@ public final class SpotOverviewActivity extends ListActivity
 			@Override
 			public final void onCreateContextMenu(final ContextMenu menu, final View v, final ContextMenuInfo menuInfo)
 			{
-				if (Logging.isLoggingEnabled())
-				{
-					Log.d(LOG_TAG, "ContextMenu ID :" + ((AdapterContextMenuInfo) menuInfo).id);
-					Log.d(LOG_TAG, "ContextMenu position :" + ((AdapterContextMenuInfo) menuInfo).position);
-				}
 				/**
 				 * Cache id as when context menu shows up the focus is lost and
 				 * the i returned is invalid.
@@ -103,17 +98,16 @@ public final class SpotOverviewActivity extends ListActivity
 				menu.add(0, EDIT_ITEM_ID, 0, R.string.spot_overview_spot_edit);
 				if (isActiv)
 				{
-					menu.add(0, FORECAST_ITEM_ID, 0, "Aktuelle Vorhersage");
+					menu.add(0, FORECAST_ITEM_ID, 0, R.string.spot_overview_spot_forecast);
 					menu.add(0, DISABLE_ITEM_ID, 0, R.string.spot_overview_spot_monitoring_disable);
 				}
 				else
 				{
 					menu.add(0, ENABLE_ITEM_ID, 0, R.string.spot_overview_spot_monitoring_enable);
 				}
-				menu.add(0, DELETE_ITEM_ID, 0, "Löschen");
+				menu.add(0, DELETE_ITEM_ID, 0, R.string.spot_overview_spot_delete);
 			}
 		});
-
 	}
 
 	/*
@@ -184,8 +178,8 @@ public final class SpotOverviewActivity extends ListActivity
 		};
 
 		final Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("Delete Spot");
-		builder.setMessage("Are you sure ?");
+		builder.setTitle(R.string.spot_overview_spot_delete_dialog_title);
+		builder.setMessage(R.string.spot_overview_spot_delete_dialog_message);
 		builder.setCancelable(false);
 		builder.setPositiveButton(android.R.string.ok, listener);
 		builder.setNegativeButton(android.R.string.cancel, listener);

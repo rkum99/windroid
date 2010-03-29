@@ -110,6 +110,12 @@ public enum CardinalDirection implements IdentifyAble
 		return shortName;
 	}
 
+	public final static CardinalDirection getDirection(final String _direction)
+	{
+		final int index = IdentityUtil.indexOf(_direction, values());
+		return values()[index];
+	}
+
 	/**
 	 * Returns <code>WindDirection</code> by its shortname (eg. NNW).
 	 * 

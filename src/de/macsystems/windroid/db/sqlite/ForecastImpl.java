@@ -76,26 +76,27 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 	{
 		final SQLiteDatabase db = getReadableDatabase();
 		Cursor cursor = null;
+		final Forecast forecast = new Forecast("test", 1, new Date());
 		try
 		{
-			cursor = db.query(RELATION_TABLE, null, "forecastid=?", new String[]
+			cursor = db.query(RELATION_TABLE, null, "selectedid=?", new String[]
 			{ Integer.toString(_forecastID) }, null, null, null);
 			moveToFirstOrThrow(cursor);
 
 			do
 			{
-				final int primaryKey = getInt(cursor, COLUMN_FORECAST_ID);
+				final int forcastID = getInt(cursor, COLUMN_FORECAST_ID);
+				final ForecastDetail detail = getForecastDetail(forcastID);
+				forecast.add(detail);
 			}
 			while (cursor.moveToNext());
-
-			return null;
-
 		}
 		finally
 		{
 			IOUtils.close(cursor);
 			IOUtils.close(db);
 		}
+		return forecast;
 	}
 
 	private ForecastDetail getForecastDetail(final int _primaryKey)
@@ -131,8 +132,8 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 			final String waveDirectionString = getString(cursor, COLUMN_WAVE_DIRECTION);
 			final String windDirectionString = getString(cursor, COLUMN_WIND_DIRECTION);
 
-			final CardinalDirection windDirection = getDirection(windDirectionString);
-			final CardinalDirection waveDirection = getDirection(waveDirectionString);
+			final CardinalDirection windDirection = CardinalDirection.getDirection(windDirectionString);
+			final CardinalDirection waveDirection = CardinalDirection.getDirection(waveDirectionString);
 
 			//
 			final String time = getString(cursor, COLUMN_TIME);
@@ -159,19 +160,14 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 			builder.setTime(Integer.valueOf(time));
 			// TODO: Date need to be long in Database!
 			builder.setDate(new Date());
+			//
+			return builder.build();
 		}
 		finally
 		{
 			IOUtils.close(cursor);
 			IOUtils.close(db);
 		}
-		return null;
-	}
-
-	private final static CardinalDirection getDirection(final String _direction)
-	{
-		final int index = IdentityUtil.indexOf(_direction, CardinalDirection.values());
-		return CardinalDirection.values()[index];
 	}
 
 	@Override
@@ -185,6 +181,8 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 		final SQLiteDatabase db = getWritableDatabase();
 		try
 		{
+			final StringBuilder relationUpdateBuilder = new StringBuilder(128);
+
 			final Iterator<ForecastDetail> iter = forecast.iterator();
 			while (iter.hasNext())
 			{
@@ -228,13 +226,17 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 				values.put(COLUMN_WIND_SPEED_UNIT, detail.getWindSpeed().getUnit().getId());
 				//
 				final long rowID = db.insert(tableName, null, values);
-				Log.d(LOG_TAG,"*********************************");
-				Log.d(LOG_TAG,"*********************************");
-				Log.d(LOG_TAG,"*********************************");
-				Log.d(LOG_TAG,"Row ID of Forecast Detail:"+rowID);
-				
-				
+				// Update Forecast
+				relationUpdateBuilder
+						.append("replace into forecast_releation (updatefailed,selectedid,forecastid) values (");
+				relationUpdateBuilder.append("1,");
+				relationUpdateBuilder.append("1,");
+				relationUpdateBuilder.append(rowID);
+				relationUpdateBuilder.append(")");
+				db.execSQL(relationUpdateBuilder.toString());
 
+				// clear buffer
+				relationUpdateBuilder.setLength(0);
 			}
 		}
 		finally

@@ -33,6 +33,8 @@ import de.macsystems.windroid.progress.NullProgressAdapter;
  * 
  * @author Jens Hohl
  * @version $Id$
+ * @see ForecastParser
+ * @see Forecast
  */
 public class ParseForecastTask extends IOTask<Forecast, InputStream>
 {

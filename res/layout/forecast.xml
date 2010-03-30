@@ -26,35 +26,36 @@
 				android:id="@+id/forecast_row_clouds"
 				layout="@layout/forecast_image_row" />
 			<include
-				android:id="@+id/forecast_row_wind_direction"
-				layout="@layout/forecast_image_row" />
-			<include
-				android:id="@+id/forecast_row_wind_speed"
-				layout="@layout/forecast_text_row" />
-			<include
-				android:id="@+id/forecast_row_wave_period"
-				layout="@layout/forecast_text_row" />
-			<include
-				android:id="@+id/forecast_row_wave_direction"
-				layout="@layout/forecast_image_row" />
-			<include
-				android:id="@+id/forecast_row_precipitation"
-				layout="@layout/forecast_text_row" />
-			<include
-				android:id="@+id/forecast_row_air_pressure"
-				layout="@layout/forecast_text_row" />
-			<include
-				android:id="@+id/forecast_row_windgust"
+				android:id="@+id/forecast_row_air_temperature"
 				layout="@layout/forecast_text_row" />
 			<include
 				android:id="@+id/forecast_row_water_temperature"
 				layout="@layout/forecast_text_row" />
 			<include
-				android:id="@+id/forecast_row_air_temperature"
+				android:id="@+id/forecast_row_wind_direction"
+				layout="@layout/forecast_image_row" />
+			<include
+				android:id="@+id/forecast_row_precipitation"
+				layout="@layout/forecast_text_row" />
+			<include
+				android:id="@+id/forecast_row_wind_speed"
+				layout="@layout/forecast_text_row" />
+			<include
+				android:id="@+id/forecast_row_windgust"
 				layout="@layout/forecast_text_row" />
 			<include
 				android:id="@+id/forecast_row_wave_height"
 				layout="@layout/forecast_text_row" />
+			<include
+				android:id="@+id/forecast_row_wave_direction"
+				layout="@layout/forecast_image_row" />
+			<include
+				android:id="@+id/forecast_row_wave_period"
+				layout="@layout/forecast_text_row" />
+			<include
+				android:id="@+id/forecast_row_air_pressure"
+				layout="@layout/forecast_text_row" />
+
 		</TableLayout>
 	</ScrollView>
 </LinearLayout>

@@ -26,22 +26,25 @@ package de.macsystems.windroid.identifyable;
 public enum Measure implements IdentifyAble
 {
 
-	METER("m"), //
-	MILLIMETER("mm"),
-	SECONDS("s"),
-	FAHRENHEIT("fahrenheit"),
-	CELSIUS("celsius"),
-	HEKTOPASCAL("hpa");
+	METER("m", "m"), //
+	MILLIMETER("mm", "mm"),
+	SECONDS("s", "s"),
+	FAHRENHEIT("fahrenheit", "f"),
+	CELSIUS("celsius", "c"),
+	HEKTOPASCAL("hpa", "hpa");
 
 	private final String id;
+
+	private final String shortDisplayName;
 
 	/**
 	 * 
 	 * @param _id
 	 */
-	private Measure(final String _id)
+	private Measure(final String _id, final String _shortDisplayName)
 	{
 		id = _id;
+		shortDisplayName = _shortDisplayName;
 	}
 
 	/*
@@ -53,4 +56,15 @@ public enum Measure implements IdentifyAble
 	{
 		return id;
 	}
+
+	/**
+	 * returns a shortcut to display
+	 * 
+	 * @return
+	 */
+	public String getShortDisplayName()
+	{
+		return shortDisplayName;
+	}
+
 }

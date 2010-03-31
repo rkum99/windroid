@@ -19,14 +19,13 @@ package de.macsystems.windroid.forecast;
 
 import java.util.Date;
 
+import de.macsystems.windroid.identifyable.CardinalDirection;
 import de.macsystems.windroid.identifyable.Cavok;
-import de.macsystems.windroid.identifyable.MeasureValue;
 import de.macsystems.windroid.identifyable.Precipitation;
 import de.macsystems.windroid.identifyable.Pressure;
 import de.macsystems.windroid.identifyable.Temperature;
 import de.macsystems.windroid.identifyable.WaveHeight;
 import de.macsystems.windroid.identifyable.WavePeriod;
-import de.macsystems.windroid.identifyable.CardinalDirection;
 import de.macsystems.windroid.identifyable.WindSpeed;
 
 /**

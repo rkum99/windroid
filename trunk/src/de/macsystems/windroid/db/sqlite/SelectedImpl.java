@@ -185,7 +185,7 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 
 		try
 		{
-			final String tempID = getSpotIdByID(_id);
+			final String tempID = getSpotIdByID(_id, db);
 
 			if (Logging.isLoggingEnabled())
 			{
@@ -264,17 +264,16 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 	 * Returns spotid by its _id.
 	 * 
 	 * @param _id
+	 * @param _db
 	 * @return
 	 */
-	protected final String getSpotIdByID(final long _id)
+	protected final String getSpotIdByID(final long _id, final SQLiteDatabase _db)
 	{
 		Cursor c = null;
-		SQLiteDatabase db = null;
 		String spotid = null;
 		try
 		{
-			db = getReadableDatabase();
-			c = db.rawQuery("SELECT spotid FROM " + tableName + " WHERE _id=?", new String[]
+			c = _db.rawQuery("SELECT spotid FROM " + tableName + " WHERE _id=?", new String[]
 			{ Long.toString(_id) });
 
 			moveToFirstOrThrow(c);
@@ -291,10 +290,6 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 	@Override
 	public void update(final SpotConfigurationVO _vo)
 	{
-		if (_vo == null)
-		{
-			throw new NullPointerException("SpotConfigurationVO");
-		}
 		if (_vo == null)
 		{
 			throw new NullPointerException("SpotConfigurationVO");

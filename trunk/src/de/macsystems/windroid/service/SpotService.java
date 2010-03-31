@@ -91,9 +91,9 @@ public class SpotService extends Service
 		}
 
 		@Override
-		public void update(final int _id)
+		public void update(final int _selectedID)
 		{
-			final UpdateSpotsTask task = new UpdateSpotsTask(_id, SpotService.this);
+			final UpdateSpotsTask task = new UpdateSpotsTask(_selectedID, SpotService.this);
 			final ScheduledFuture<Forecast> future = threadPool.schedule(task, INITIAL_DELAY, TimeUnit.MILLISECONDS);
 		}
 	};

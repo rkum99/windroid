@@ -46,23 +46,23 @@ public class UpdateSpotsTask implements Callable<Forecast>
 
 	private final static String LOG_TAG = UpdateSpotsTask.class.getSimpleName();
 
-	final long primaryKey;
+	final int selectedID;
 
 	final private Context context;
 
 	/**
 	 * 
 	 * 
-	 * @param _primaryKey
+	 * @param _selectedID
 	 * @param _context
 	 */
-	public UpdateSpotsTask(final long _primaryKey, final Context _context) throws NullPointerException
+	public UpdateSpotsTask(final int _selectedID, final Context _context) throws NullPointerException
 	{
 		if (_context == null)
 		{
 			throw new NullPointerException("context");
 		}
-		primaryKey = _primaryKey;
+		selectedID = _selectedID;
 		context = _context;
 	}
 
@@ -70,7 +70,7 @@ public class UpdateSpotsTask implements Callable<Forecast>
 	public Forecast call() throws Exception
 	{
 		final ISelectedDAO dao = DAOFactory.getSelectedDAO(context);
-		final SpotConfigurationVO vo = dao.getSpotConfiguration(primaryKey);
+		final SpotConfigurationVO vo = dao.getSpotConfiguration(selectedID);
 
 		if (!vo.isActiv())
 		{
@@ -102,7 +102,7 @@ public class UpdateSpotsTask implements Callable<Forecast>
 			final Forecast forecast = task.execute(context);
 			// Update Forecast in DB
 			final IForecastDAO forecastDAO = DAOFactory.getForecast(context);
-			forecastDAO.setForecast(forecast);
+			forecastDAO.setForecast(forecast, selectedID);
 			//
 			return forecast;
 		}

@@ -62,6 +62,7 @@ public interface IForecastDAO extends IDAO
 	 * Inserts / Updates Forecast of a spot in database.
 	 * 
 	 * @param _forecast
+	 * @param _selectedID
 	 */
-	public void setForecast(final Forecast _forecast);
+	public void setForecast(final Forecast _forecast, final int _selectedID);
 }

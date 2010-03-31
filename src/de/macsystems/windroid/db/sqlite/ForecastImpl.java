@@ -27,6 +27,7 @@ import android.util.Log;
 import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.db.IForecastDAO;
 import de.macsystems.windroid.db.IForecastRelation;
+import de.macsystems.windroid.db.ISpotDAO;
 import de.macsystems.windroid.forecast.Forecast;
 import de.macsystems.windroid.forecast.ForecastDetail;
 import de.macsystems.windroid.identifyable.Cavok;
@@ -72,15 +73,16 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 	 * @see de.macsystems.windroid.db.IForecast#getForecast(int)
 	 */
 	@Override
-	public Forecast getForecast(final int _forecastID)
+	public Forecast getForecast(final int _selectedID)
 	{
 		final SQLiteDatabase db = getReadableDatabase();
 		Cursor cursor = null;
-		final Forecast forecast = new Forecast("test", 1, new Date());
 		try
 		{
+			final String spotName = getSpotName(_selectedID,db);
+			final Forecast forecast = new Forecast(spotName, 1, new Date());
 			cursor = db.query(RELATION_TABLE, null, "selectedid=?", new String[]
-			{ Integer.toString(_forecastID) }, null, null, null);
+			{ Integer.toString(_selectedID) }, null, null, null);
 			moveToFirstOrThrow(cursor);
 
 			do
@@ -90,13 +92,38 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 				forecast.add(detail);
 			}
 			while (cursor.moveToNext());
+			
+			//
+			return forecast;
 		}
 		finally
 		{
 			IOUtils.close(cursor);
 			IOUtils.close(db);
 		}
-		return forecast;
+	}
+
+	private String getSpotName(final int _selectedID, final SQLiteDatabase _db)
+	{
+		Cursor cursor = null;
+		try
+		{
+			cursor = _db.rawQuery("SELECT name FROM spot as a, selected as b WHERE a.spotid = b.spotid AND b._id=?",
+					new String[]
+					{ Integer.toString(_selectedID) });
+			moveToFirstOrThrow(cursor);
+
+			do
+			{
+				final String name = getString(cursor, ISpotDAO.COLUMN_NAME);
+				return name;
+			}
+			while (cursor.moveToNext());
+		}
+		finally
+		{
+			IOUtils.close(cursor);
+		}
 	}
 
 	private ForecastDetail getForecastDetail(final int _primaryKey)
@@ -171,7 +198,7 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 	}
 
 	@Override
-	public void setForecast(final Forecast forecast)
+	public void setForecast(final Forecast forecast,final int _selectedID)
 	{
 		if (forecast == null)
 		{
@@ -230,7 +257,7 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 				relationUpdateBuilder
 						.append("replace into forecast_releation (updatefailed,selectedid,forecastid) values (");
 				relationUpdateBuilder.append("1,");
-				relationUpdateBuilder.append("1,");
+				relationUpdateBuilder.append(_selectedID).append(",");
 				relationUpdateBuilder.append(rowID);
 				relationUpdateBuilder.append(")");
 				db.execSQL(relationUpdateBuilder.toString());

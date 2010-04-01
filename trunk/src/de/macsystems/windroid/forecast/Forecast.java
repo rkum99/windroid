@@ -38,14 +38,14 @@ public final class Forecast
 
 	private final int timezone;
 
-	private final Date timestamp;
+	private final long timestamp;
 
 	/**
 	 * @param _name
 	 * @param _timezone
 	 * @param _timestamp
 	 */
-	public Forecast(final String _name, final int _timezone, final Date _timestamp)
+	public Forecast(final String _name, final int _timezone, final long _timestamp)
 	{
 		forecasts = new ArrayList<ForecastDetail>();
 		name = _name;
@@ -95,7 +95,7 @@ public final class Forecast
 	/**
 	 * @return the timestamp
 	 */
-	public Date getTimestamp()
+	public long getTimestamp()
 	{
 		return timestamp;
 	}

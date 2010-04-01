@@ -17,7 +17,6 @@
  */
 package de.macsystems.windroid.db.sqlite;
 
-import java.util.Date;
 import java.util.Iterator;
 
 import android.content.ContentValues;
@@ -30,6 +29,7 @@ import de.macsystems.windroid.db.IForecastRelation;
 import de.macsystems.windroid.db.ISpotDAO;
 import de.macsystems.windroid.forecast.Forecast;
 import de.macsystems.windroid.forecast.ForecastDetail;
+import de.macsystems.windroid.identifyable.CardinalDirection;
 import de.macsystems.windroid.identifyable.Cavok;
 import de.macsystems.windroid.identifyable.IdentityUtil;
 import de.macsystems.windroid.identifyable.Precipitation;
@@ -37,7 +37,6 @@ import de.macsystems.windroid.identifyable.Pressure;
 import de.macsystems.windroid.identifyable.Temperature;
 import de.macsystems.windroid.identifyable.WaveHeight;
 import de.macsystems.windroid.identifyable.WavePeriod;
-import de.macsystems.windroid.identifyable.CardinalDirection;
 import de.macsystems.windroid.identifyable.WindSpeed;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.progress.IProgress;
@@ -79,8 +78,8 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 		Cursor cursor = null;
 		try
 		{
-			final String spotName = getSpotName(_selectedID,db);
-			final Forecast forecast = new Forecast(spotName, 1, new Date());
+			final String spotName = getSpotName(_selectedID, db);
+			final Forecast forecast = new Forecast(spotName, 1, 77889966L);
 			cursor = db.query(RELATION_TABLE, null, "selectedid=?", new String[]
 			{ Integer.toString(_selectedID) }, null, null, null);
 			moveToFirstOrThrow(cursor);
@@ -92,7 +91,7 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 				forecast.add(detail);
 			}
 			while (cursor.moveToNext());
-			
+
 			//
 			return forecast;
 		}
@@ -186,7 +185,7 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 			// TODO: time need to be long/integer in Database!
 			builder.setTime(Integer.valueOf(time));
 			// TODO: Date need to be long in Database!
-			builder.setDate(new Date());
+			builder.setDate(112233445566L);
 			//
 			return builder.build();
 		}
@@ -198,7 +197,7 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 	}
 
 	@Override
-	public void setForecast(final Forecast forecast,final int _selectedID)
+	public void setForecast(final Forecast forecast, final int _selectedID)
 	{
 		if (forecast == null)
 		{
@@ -227,7 +226,7 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 				//
 				values.put(COLUMN_CLOUDS, detail.getClouds().getId());
 				//
-				values.put(COLUMN_DATE, detail.getDate().toString());
+				values.put(COLUMN_DATE, detail.getDate());
 				values.put(COLUMN_TIME, detail.getTime());
 				//
 				values.put(COLUMN_PRECIPITATION, detail.getPrecipitation().getValue());

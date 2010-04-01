@@ -17,12 +17,6 @@
  */
 package de.macsystems.windroid.parser;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,10 +45,13 @@ import de.macsystems.windroid.identifyable.WindSpeed;
 public final class ForecastParser
 {
 
+
 	private final static String LOG_TAG = ForecastParser.class.getSimpleName();
 
-	private final static SimpleDateFormat yyyyMMddHHFormat = new SimpleDateFormat("yyyyMMddHH", Locale.getDefault());
-	private final static SimpleDateFormat yyyyMMddHHmmFormat = new SimpleDateFormat("yyyyMMddHHmm", Locale.getDefault());
+	// private final static SimpleDateFormat yyyyMMddHHFormat = new
+	// SimpleDateFormat("yyyyMMddHH", Locale.getDefault());
+	// private final static SimpleDateFormat yyyyMMddHHmmFormat = new
+	// SimpleDateFormat("yyyyMMddHHmm", Locale.getDefault());
 
 	private static final String WIND_DIRECTION = "wind_direction";
 	private static final String WAVE_DIRECTION = "wave_direction";
@@ -256,28 +253,30 @@ public final class ForecastParser
 		builder.setPrecipitation(precipitation);
 	}
 
-	/**
-	 * "timestamp":"20090722_1800"
-	 * 
-	 * @param _timestamp
-	 * @return
-	 */
-	private static Date parseTimezone(final String _timestamp) throws ParseException
-	{
-		final String str = _timestamp.replace("_", "");
-		return yyyyMMddHHmmFormat.parse(str);
-	}
+	// /**
+	// * "timestamp":"20090722_1800"
+	// *
+	// * @param _timestamp
+	// * @return
+	// */
+	// private static Date parseTimezone(final String _timestamp) throws
+	// ParseException
+	// {
+	// final String str = _timestamp.replace("_", "");
+	// return yyyyMMddHHmmFormat.parse(str);
+	// }
 
-	/**
-	 * "date": "20090722"
-	 * 
-	 * @param _date
-	 * @return
-	 */
-	private static Date parseForecastDate(final String _date) throws ParseException
-	{
-		return yyyyMMddHHFormat.parse(_date);
-	}
+	// /**
+	// * "date": "20090722"
+	// *
+	// * @param _date
+	// * @return
+	// */
+	// private static Date parseForecastDate(final String _date) throws
+	// ParseException
+	// {
+	// return yyyyMMddHHFormat.parse(_date);
+	// }
 
 	/**
 	 * "time": "020000"
@@ -300,7 +299,7 @@ public final class ForecastParser
 	 */
 	public static Forecast parse(final StringBuilder _forecast) throws JSONException
 	{
-		final Forecast forecast = new Forecast("dummy", 2, new Date());
+		final Forecast forecast = new Forecast("dummy", 2, 10009988L);
 		final JSONTokener tokener = new JSONTokener(_forecast.toString());
 		final JSONObject jsonRoot = new JSONObject(tokener);
 
@@ -379,14 +378,14 @@ public final class ForecastParser
 			throw new IllegalArgumentException("wrong format, expected length of 8.");
 		}
 
-		final int year = Integer.parseInt(dateString.substring(0, 4));
-		final int month = Integer.parseInt(dateString.substring(4, 6)) - 1;
-		final int day = Integer.parseInt(dateString.substring(6, 8));
+		final long year = Long.parseLong(dateString.substring(0, 4));
+		final long month = Long.parseLong(dateString.substring(4, 6)) - 1;
+		final long day = Long.parseLong(dateString.substring(6, 8));
 
-		final Calendar cal = Calendar.getInstance();
-		cal.set(Calendar.YEAR, year);
-		cal.set(Calendar.MONTH, month);
-		cal.set(Calendar.DAY_OF_MONTH, day);
+		// final Calendar cal = Calendar.getInstance();
+		// cal.set(Calendar.YEAR, year);
+		// cal.set(Calendar.MONTH, month);
+		// cal.set(Calendar.DAY_OF_MONTH, day);
 
 		Log.d(LOG_TAG, "year string is : " + dateString.substring(0, 4));
 		Log.d(LOG_TAG, "month string is : " + dateString.substring(4, 6));
@@ -397,10 +396,10 @@ public final class ForecastParser
 		// Log.d(LOG_TAG, "sec is : " + sec);
 		//
 		// Log.d(LOG_TAG, "TimeString is : " + timeString);
-		Log.d(LOG_TAG, "Time is : " + cal.getTime());
+		// Log.d(LOG_TAG, "Time is : " + cal.getTime());
 		// Log.d(LOG_TAG, "Time as Date is : " + new Date(time));
 
-		builder.setDate(cal.getTime());
+		builder.setDate(year + month + day);
 
 	}
 

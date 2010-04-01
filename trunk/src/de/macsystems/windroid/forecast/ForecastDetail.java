@@ -49,7 +49,7 @@ public final class ForecastDetail
 
 	private final String spotID;
 
-	private final Date date;
+	private final long date;
 
 	private final int time;
 
@@ -134,7 +134,7 @@ public final class ForecastDetail
 	/**
 	 * @return the date
 	 */
-	public Date getDate()
+	public long getDate()
 	{
 		return date;
 	}
@@ -245,7 +245,7 @@ public final class ForecastDetail
 	public static class Builder
 	{
 
-		private Date date;
+		private long date;
 
 		private final String spotID;
 
@@ -282,7 +282,7 @@ public final class ForecastDetail
 		 * @param _date
 		 *            the date to set
 		 */
-		public Builder setDate(final Date _date)
+		public Builder setDate(final long _date)
 		{
 			this.date = _date;
 			return this;

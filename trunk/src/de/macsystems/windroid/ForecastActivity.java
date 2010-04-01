@@ -255,7 +255,7 @@ public final class ForecastActivity extends Activity
 			if (iter.hasNext())
 			{
 				final ForecastDetail detail = iter.next();
-				tv.setText("" + detail.getDate().getDay());
+				tv.setText("" + detail.getDate());
 			}
 		}
 	}

@@ -19,7 +19,6 @@ package de.macsystems.windroid;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -171,7 +170,7 @@ public final class ScheduleActivity extends ChainSubActivity
 			{
 				final int timeViewResID = timeTextViewsMap.get(day);
 				final TextView timeView = (TextView) findViewById(timeViewResID);
-				final String time = dateFormat.format(new Date(repeat.getDayTime()));
+				final String time = dateFormat.format(repeat.getDayTime());
 				dayToDaytimeMap.put(day, repeat.getDayTime());
 				timeView.setText(time);
 				//
@@ -191,9 +190,7 @@ public final class ScheduleActivity extends ChainSubActivity
 	private void installListenerOnCheckBoxes(final Map<Integer, Integer> _checkBoxes,
 			final Map<Integer, Integer> _timeButtons)
 	{
-
 		final Iterator<Integer> iter = _checkBoxes.keySet().iterator();
-		Log.d(LOG_TAG, _checkBoxes.toString());
 		while (iter.hasNext())
 		{
 			final int day = iter.next();
@@ -243,7 +240,7 @@ public final class ScheduleActivity extends ChainSubActivity
 							final long dayTime = calcDayTime(_hourOfDay, _minute);
 							dayToDaytimeMap.put(day, dayTime);
 							final TextView timeView = (TextView) findViewById(_timeTextViews.get(day));
-							final String time = dateFormat.format(new Date(dayTime));
+							final String time = dateFormat.format(dayTime);
 							timeView.setText(time);
 						}
 					};

@@ -17,7 +17,9 @@
  */
 package de.macsystems.windroid.db.sqlite;
 
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -205,8 +207,17 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 		}
 
 		final SQLiteDatabase db = getWritableDatabase();
+		db.beginTransaction();
+
 		try
 		{
+			final Set<Integer> columnIdsToDelete = getRowsToDelete(db, _selectedID);
+
+			if (Logging.isLoggingEnabled())
+			{
+				Log.d(LOG_TAG, "Found Columns to delete:" + columnIdsToDelete.toString());
+			}
+
 			final StringBuilder relationUpdateBuilder = new StringBuilder(128);
 
 			final Iterator<ForecastDetail> iter = forecast.iterator();
@@ -264,10 +275,73 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 				// clear buffer
 				relationUpdateBuilder.setLength(0);
 			}
+			// remove old forecast_releation entries
+			{
+				final StringBuilder builder = new StringBuilder(64);
+				final Iterator<Integer> deleteIterator = columnIdsToDelete.iterator();
+				while (deleteIterator.hasNext())
+				{
+					builder.append("delete from forecast_releation where forecastid=");
+					builder.append(deleteIterator.next());
+					db.execSQL(builder.toString());
+					builder.setLength(0);
+				}
+			}
+			{
+				final StringBuilder builder = new StringBuilder(64);
+				final Iterator<Integer> deleteIterator = columnIdsToDelete.iterator();
+				while (deleteIterator.hasNext())
+				{
+					builder.append("delete from forecast where _id=");
+					builder.append(deleteIterator.next());
+					db.execSQL(builder.toString());
+					builder.setLength(0);
+				}
+
+			}
+
+			db.setTransactionSuccessful();
 		}
 		finally
 		{
+			db.endTransaction();
 			IOUtils.close(db);
 		}
+	}
+
+	/**
+	 * Returns integer set of all columns to delete as their became invalid due
+	 * to update. Returned Integers represent the 'forecastID'.
+	 * 
+	 * @param _db
+	 * @param _selectedID
+	 * @return a set with forecast IDs
+	 * @see IForecastRelation#COLUMN_FORECAST_ID
+	 */
+	private Set<Integer> getRowsToDelete(final SQLiteDatabase _db, final int _selectedID)
+	{
+		final Set<Integer> columns = new HashSet<Integer>();
+		Cursor c = null;
+		try
+		{
+
+			c = _db.query(RELATION_TABLE, new String[]
+			{ COLUMN_FORECAST_ID }, "selectedid=?", new String[]
+			{ Integer.toString(_selectedID) }, null, null, null);
+
+			if (c.moveToFirst())
+			{
+				do
+				{
+					columns.add(getInt(c, COLUMN_FORECAST_ID));
+				}
+				while (c.moveToNext());
+			}
+		}
+		finally
+		{
+			IOUtils.close(c);
+		}
+		return columns;
 	}
 }

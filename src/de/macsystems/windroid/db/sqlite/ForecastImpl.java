@@ -179,7 +179,6 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 			builder.setWindSpeed(windSpeed);
 			builder.setWavePeriod(wavePeriod);
 			builder.setWaveHeight(waveHeight);
-			// TODO Set Wave Direction
 			builder.setWaveDirection(waveDirection);
 			builder.setWinddirection(windDirection);
 

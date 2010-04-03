@@ -167,7 +167,11 @@ public final class SpotOverviewActivity extends ListActivity
 				Toast.makeText(SpotOverviewActivity.this, "User Clicked on Alert Dialog", Toast.LENGTH_LONG).show();
 				if (_which == DialogInterface.BUTTON_POSITIVE)
 				{
-					// delete Spot
+					// 
+					final ISelectedDAO dao = DAOFactory.getSelectedDAO(SpotOverviewActivity.this);
+					dao.delete(_id);
+					final Cursor c = dao.getConfiguredSpots();
+					setupMapping(c);
 				}
 				else
 				{

@@ -24,6 +24,7 @@ import java.util.List;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import de.macsystems.windroid.Logging;
@@ -126,13 +127,13 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 	 * 
 	 * @see de.macsystems.windroid.db.ISelectedDAO#setActiv(long, boolean)
 	 */
-	public void setActiv(final long _id, final boolean isActiv)
+	public void setActiv(final long _id, final boolean _isActiv)
 	{
 		final SQLiteDatabase db = getWritableDatabase();
 		try
 		{
 			final ContentValues values = new ContentValues();
-			values.put(COLUMN_ACTIV, isActiv);
+			values.put(COLUMN_ACTIV, _isActiv);
 
 			db.update(tableName, values, "_id=?", new String[]
 			{ Long.toString(_id) });
@@ -185,18 +186,18 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 
 		try
 		{
-			final String tempID = getSpotIdByID(_id, db);
+			final String spotID = getSpotIdByID(_id, db);
 
 			if (Logging.isLoggingEnabled())
 			{
-				Log.d("SelectedImpl", "Searched SpotID is :" + tempID);
+				Log.d("SelectedImpl", "Searched SpotID is :" + spotID);
 			}
 
 			c = db.rawQuery("SELECT A._id, B.name, B.spotid, B.keyword, B.report, B.superforecast,  "
 					+ "B.forecast, B.statistic, B.wavereport, B.waveforecast, A.activ, "
 					+ "A.usedirection, A.starting, A.till, A.windmeasure, A.minwind, A.maxwind "
 					+ "FROM selected AS A, spot AS B WHERE A._id=? AND B.spotid=?", new String[]
-			{ Long.toString(_id), tempID });
+			{ Long.toString(_id), spotID });
 
 			moveToFirstOrThrow(c);
 
@@ -337,7 +338,7 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 		final SQLiteDatabase db = getReadableDatabase();
 		return db
 				.rawQuery(
-						"SELECT DISTINCT selected._id as _id, spot.name as name, spot.keyword as keyword, selected.minwind as minwind, selected.maxwind as maxwind, selected.windmeasure as windmeasure, selected.starting as starting, selected.till as till, selected.activ as activ FROM selected, spot WHERE spot.spotid=selected.spotid;",
+						"SELECT DISTINCT selected._id  _id, spot.name  name, spot.keyword  keyword, selected.minwind  minwind, selected.maxwind  maxwind, selected.windmeasure AS windmeasure, selected.starting  starting, selected.till  till, selected.activ  activ FROM selected, spot WHERE spot.spotid=selected.spotid;",
 						null);
 	}
 
@@ -388,7 +389,7 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 				}
 				catch (final Exception e)
 				{
-					Log.e("ERROR", "Database Exception", e);
+					Log.e(LOG_TAG, "Database Exception", e);
 				}
 			}
 			while (c.moveToNext());
@@ -402,4 +403,34 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 		return spots;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.macsystems.windroid.db.ISelectedDAO#delete(int)
+	 */
+	@Override
+	public void delete(final int _id)
+	{
+		final SQLiteDatabase db = getWritableDatabase();
+		try
+		{
+			db.beginTransaction();
+			//
+			final StringBuilder builder = new StringBuilder(64);
+			builder.append("DELETE FROM selected WHERE _id=");
+			builder.append(Integer.toString(_id));
+			db.execSQL(builder.toString());
+			//
+			db.setTransactionSuccessful();
+		}
+		catch (final SQLException e)
+		{
+			Log.e(LOG_TAG, "Failed to delete selected spot with id:" + _id, e);
+		}
+		finally
+		{
+			db.endTransaction();
+			IOUtils.close(db);
+		}
+	}
 }

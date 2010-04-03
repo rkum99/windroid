@@ -86,6 +86,13 @@ public interface ISelectedDAO extends IDAO
 	public void update(final SpotConfigurationVO _vo);
 
 	/**
+	 * Deletes a spot from selected table using its primary key.
+	 * 
+	 * @param _id
+	 */
+	public void delete(final int _id);
+
+	/**
 	 * Returns a cursor with all spots configured.
 	 * 
 	 * @return

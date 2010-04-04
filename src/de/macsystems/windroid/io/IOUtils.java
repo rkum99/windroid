@@ -481,7 +481,7 @@ public class IOUtils
 		final List<String> list = new ArrayList<String>();
 		try
 		{
-			inStream = _context.getResources().openRawResource(R.raw.updatedatabase);
+			inStream = _context.getResources().openRawResource(_resourceId);
 			inReader = new InputStreamReader(inStream);
 			bufReader = new BufferedReader(inReader);
 

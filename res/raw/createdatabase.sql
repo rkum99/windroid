@@ -34,12 +34,18 @@ CREATE TABLE IF NOT EXISTS schedule_repeat_relation (_id INTEGER PRIMARY KEY AUT
 -- 
 -- Triggers
 -- 
--- CREATE TRIGGER IF NOT EXISTS repeat_insert_trigger AFTER  INSERT ON repeat            
---      BEGIN                                                                 
---                                                                           
---      INSERT  INTO schedule_repeat_relation (scheduleid, repeatid) values (new.scheduleid,new._id);
---      END
-
+-- Delete selected cacade trigger
+CREATE TRIGGER IF NOT EXISTS selected_cacade_delete AFTER  DELETE ON selected            
+    BEGIN                                                                 
+                                                                          
+    DELETE  FROM forecast_releation WHERE selectedid=old._id;
+    END
+-- Delete forecast casade trigger after delete on forecast_releation
+CREATE TRIGGER IF NOT EXISTS forecast_releation_cacade_delete AFTER  DELETE ON forecast_releation            
+     BEGIN                                                                 
+                                                                          
+     DELETE  FROM forecast WHERE _id=old.forecastid;
+     END
 -- Preferences
 CREATE TABLE IF NOT EXISTS preferences (_id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT UNIQUE NOT NULL, value TEXT);
 -- Pre selected Values

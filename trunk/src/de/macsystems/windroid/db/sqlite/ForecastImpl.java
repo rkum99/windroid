@@ -264,7 +264,7 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 				final long rowID = db.insert(tableName, null, values);
 				// Update Forecast
 				relationUpdateBuilder
-						.append("replace into forecast_releation (updatefailed,selectedid,forecastid) values (");
+						.append("REPLACE INTO forecast_releation (updatefailed,selectedid,forecastid) VALUES (");
 				relationUpdateBuilder.append("1,");
 				relationUpdateBuilder.append(_selectedID).append(",");
 				relationUpdateBuilder.append(rowID);
@@ -280,7 +280,7 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 				final Iterator<Integer> deleteIterator = columnIdsToDelete.iterator();
 				while (deleteIterator.hasNext())
 				{
-					builder.append("delete from forecast_releation where forecastid=");
+					builder.append("DELETE FROM forecast_releation WHERE forecastid=");
 					builder.append(deleteIterator.next());
 					db.execSQL(builder.toString());
 					builder.setLength(0);
@@ -291,12 +291,11 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 				final Iterator<Integer> deleteIterator = columnIdsToDelete.iterator();
 				while (deleteIterator.hasNext())
 				{
-					builder.append("delete from forecast where _id=");
+					builder.append("DELETE FROM forecast where _id=");
 					builder.append(deleteIterator.next());
 					db.execSQL(builder.toString());
 					builder.setLength(0);
 				}
-
 			}
 
 			db.setTransactionSuccessful();

@@ -18,7 +18,6 @@
 package de.macsystems.windroid.forecast;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -94,6 +93,7 @@ public final class Forecast
 
 	/**
 	 * @return the timestamp
+	 * @todo: Store in DB!
 	 */
 	public long getTimestamp()
 	{

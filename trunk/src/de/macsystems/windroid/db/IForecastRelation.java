@@ -17,6 +17,10 @@
  */
 package de.macsystems.windroid.db;
 
+import java.util.Set;
+
+import android.database.sqlite.SQLiteDatabase;
+
 /**
  * @author mac
  * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
@@ -27,4 +31,20 @@ public interface IForecastRelation extends IDAO
 	 * {@value #COLUMN_FORECAST_ID}
 	 */
 	public final static String COLUMN_FORECAST_ID = "forecastid";
+	/**
+	 * @value {@link #COLUMN_SELECTED_ID}
+	 */
+	public final static String COLUMN_SELECTED_ID = "selectedid";
+
+	/**
+	 * Returns integer set of all columns to delete as their became invalid due
+	 * to update. Returned Integers represent the 'forecastID'.
+	 * 
+	 * @param _db
+	 * @param _selectedID
+	 * @return a set with forecast IDs
+	 * @see IForecastRelation#COLUMN_FORECAST_ID
+	 */
+	Set<Integer> getRowsToDelete(final SQLiteDatabase _db, final int _selectedID);
+
 }

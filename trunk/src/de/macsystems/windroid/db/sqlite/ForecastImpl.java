@@ -164,8 +164,8 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 			final CardinalDirection waveDirection = CardinalDirection.getDirection(waveDirectionString);
 
 			//
-			final String time = getString(cursor, COLUMN_TIME);
-			final String date = getString(cursor, COLUMN_DATE);
+			final int time = getInt(cursor, COLUMN_TIME);
+			final long date = getLong(cursor, COLUMN_DATE);
 
 			final ForecastDetail.Builder builder = new ForecastDetail.Builder("1");
 			builder.setAirPressure(airPressure);
@@ -184,9 +184,9 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 
 			//
 			// TODO: time need to be long/integer in Database!
-			builder.setTime(Integer.valueOf(time));
+			builder.setTime(time);
 			// TODO: Date need to be long in Database!
-			builder.setDate(112233445566L);
+			builder.setDate(date);
 			//
 			return builder.build();
 		}
@@ -275,6 +275,7 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 				relationUpdateBuilder.setLength(0);
 			}
 			// remove old forecast_releation entries
+			// TODO: Check triggers !
 			{
 				final StringBuilder builder = new StringBuilder(64);
 				final Iterator<Integer> deleteIterator = columnIdsToDelete.iterator();
@@ -307,16 +308,14 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 		}
 	}
 
-	/**
-	 * Returns integer set of all columns to delete as their became invalid due
-	 * to update. Returned Integers represent the 'forecastID'.
+	/*
+	 * (non-Javadoc)
 	 * 
-	 * @param _db
-	 * @param _selectedID
-	 * @return a set with forecast IDs
-	 * @see IForecastRelation#COLUMN_FORECAST_ID
+	 * @see
+	 * de.macsystems.windroid.db.IForecastRelation#getRowsToDelete(android.database
+	 * .sqlite.SQLiteDatabase, int)
 	 */
-	private Set<Integer> getRowsToDelete(final SQLiteDatabase _db, final int _selectedID)
+	public Set<Integer> getRowsToDelete(final SQLiteDatabase _db, final int _selectedID)
 	{
 		final Set<Integer> columns = new HashSet<Integer>();
 		Cursor c = null;
@@ -326,7 +325,7 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 			c = _db.query(RELATION_TABLE, new String[]
 			{ COLUMN_FORECAST_ID }, "selectedid=?", new String[]
 			{ Integer.toString(_selectedID) }, null, null, null);
-
+			// If nothing found pass back an empty collection
 			if (c.moveToFirst())
 			{
 				do

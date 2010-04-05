@@ -44,8 +44,14 @@ public final class ForecastActivity extends Activity
 {
 
 	private final static String LOG_TAG = ForecastActivity.class.getSimpleName();
+	/**
+	 * Length of a string in format '2010'
+	 */
+	private final static int YEAR_CHARACTER_LENGTH = 4;
 
 	private final static SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+
+	private final static SimpleDateFormat forecastDateFormat = new SimpleDateFormat("dd:MM");
 
 	private final static DecimalFormat numberFormat = new DecimalFormat("##0.0");
 	/**
@@ -82,9 +88,6 @@ public final class ForecastActivity extends Activity
 		}
 
 		final int forecastID = getForecastID(intent);
-		Toast.makeText(this, "Showing Forecast for ID " + forecastID + " Lokale :" + Locale.getDefault(),
-				Toast.LENGTH_LONG).show();
-
 		final IForecastDAO dao = DAOFactory.getForecast(this);
 		final Forecast forecast = dao.getForecast(forecastID);
 
@@ -247,39 +250,20 @@ public final class ForecastActivity extends Activity
 		rowName.setText(text);
 
 		//
+		final StringBuilder builder = new StringBuilder(16);
 		final Iterator<ForecastDetail> iter = _forecast.iterator();
-
 		for (int i = 0; i < TEXT_ROW_IDS.length; i++)
 		{
 			final TextView tv = (TextView) _row.findViewById(TEXT_ROW_IDS[i]);
 			if (iter.hasNext())
 			{
 				final ForecastDetail detail = iter.next();
-				tv.setText("" + detail.getDate());
+				// Cut Year in front, just display Month and Day
+				builder.append(detail.getDate());
+				builder.delete(0, YEAR_CHARACTER_LENGTH);
+				tv.setText(builder.toString());
+				builder.setLength(0);
 			}
-		}
-	}
-
-	private final static void fillTextRow(final TableRow _row, final int _columNameResID)
-	{
-		if (_row == null)
-		{
-			throw new NullPointerException("row");
-		}
-		//
-		final TextView rowName = (TextView) _row.findViewById(R.id.forecast_text_column_name);
-		final String text = _row.getResources().getString(_columNameResID);
-		rowName.setText(text);
-
-		if (Logging.isLoggingEnabled())
-		{
-			Log.d(LOG_TAG, "rowName " + text);
-		}
-
-		for (int i = 0; i < TEXT_ROW_IDS.length; i++)
-		{
-			final TextView tv = (TextView) _row.findViewById(TEXT_ROW_IDS[i]);
-			tv.setText("a text");
 		}
 	}
 
@@ -500,7 +484,6 @@ public final class ForecastActivity extends Activity
 			if (iter.hasNext())
 			{
 				final ForecastDetail detail = iter.next();
-				Log.d(LOG_TAG, "Cavok " + detail.getClouds());
 				iv.setImageResource(detail.getClouds().getResId());
 			}
 			else

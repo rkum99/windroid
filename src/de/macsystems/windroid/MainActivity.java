@@ -41,7 +41,6 @@ import android.text.Html;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -197,27 +196,7 @@ public final class MainActivity extends Activity
 	{
 		super.onCreate(_savedInstanceState);
 
-		final DisplayMetrics metrics = new DisplayMetrics();
-		getWindowManager().getDefaultDisplay().getMetrics(metrics);
-		// Log Display Infos
-		if (Logging.isLoggingEnabled())
-		{
-			final StringBuilder metricsBuffer = new StringBuilder(128);
-			metricsBuffer.append("DisplayMetrics :");
-			metricsBuffer.append("widthPixels=");
-			metricsBuffer.append(metrics.widthPixels);
-			metricsBuffer.append(",heightPixels=");
-			metricsBuffer.append(metrics.heightPixels);
-			metricsBuffer.append(",xdpi=");
-			metricsBuffer.append(metrics.xdpi);
-			metricsBuffer.append(",ydpi=");
-			metricsBuffer.append(metrics.ydpi);
-			metricsBuffer.append(",scaledDensity=");
-			metricsBuffer.append(metrics.scaledDensity);
-			metricsBuffer.append(",density=");
-			metricsBuffer.append(metrics.density);
-			Log.d(LOG_TAG, metricsBuffer.toString());
-		}
+		Util.logDisplayMetrics(this);
 
 		showGPL();
 

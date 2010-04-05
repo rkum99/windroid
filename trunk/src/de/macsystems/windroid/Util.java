@@ -29,6 +29,7 @@ import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import de.macsystems.windroid.common.PrefConstants;
 import de.macsystems.windroid.identifyable.Continent;
@@ -41,6 +42,9 @@ import de.macsystems.windroid.identifyable.WindUnit;
  */
 public final class Util
 {
+
+	private final static String LOG_TAG = Util.class.getSimpleName();
+
 	private Util()
 	{
 	}
@@ -220,7 +224,7 @@ public final class Util
 		final String[] names = _cursor.getColumnNames();
 		for (int i = 0; i < names.length; i++)
 		{
-			Log.d("Debug", "Column at index :" + i + "=" + names[i]);
+			Log.d(LOG_TAG, "Column at index :" + i + "=" + names[i]);
 		}
 	}
 
@@ -294,6 +298,44 @@ public final class Util
 	public static boolean isValidDayOfWeek(final int _day)
 	{
 		return (_day >= Calendar.SUNDAY && _day <= Calendar.SATURDAY) ? true : false;
+	}
+
+	/**
+	 * Logs Display Metrics using Log if Logging is enabled.
+	 * 
+	 * @param _activity
+	 *            needed to read display settings from activity.
+	 * @throws NullPointerException
+	 * @see Logging#isLoggingEnabled()
+	 */
+	public static void logDisplayMetrics(final Activity _activity) throws NullPointerException
+	{
+		if (!Logging.isLoggingEnabled())
+		{
+			return;
+		}
+		if (_activity == null)
+		{
+			throw new NullPointerException("Activity");
+		}
+
+		final DisplayMetrics metrics = new DisplayMetrics();
+		_activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+		final StringBuilder metricsBuffer = new StringBuilder(128);
+		metricsBuffer.append("DisplayMetrics :");
+		metricsBuffer.append("widthPixels=");
+		metricsBuffer.append(metrics.widthPixels);
+		metricsBuffer.append(",heightPixels=");
+		metricsBuffer.append(metrics.heightPixels);
+		metricsBuffer.append(",xdpi=");
+		metricsBuffer.append(metrics.xdpi);
+		metricsBuffer.append(",ydpi=");
+		metricsBuffer.append(metrics.ydpi);
+		metricsBuffer.append(",scaledDensity=");
+		metricsBuffer.append(metrics.scaledDensity);
+		metricsBuffer.append(",density=");
+		metricsBuffer.append(metrics.density);
+		Log.d(LOG_TAG, metricsBuffer.toString());
 	}
 
 }

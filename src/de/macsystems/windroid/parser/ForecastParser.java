@@ -45,7 +45,6 @@ import de.macsystems.windroid.identifyable.WindSpeed;
 public final class ForecastParser
 {
 
-
 	private final static String LOG_TAG = ForecastParser.class.getSimpleName();
 
 	// private final static SimpleDateFormat yyyyMMddHHFormat = new
@@ -377,30 +376,7 @@ public final class ForecastParser
 		{
 			throw new IllegalArgumentException("wrong format, expected length of 8.");
 		}
-
-		final long year = Long.parseLong(dateString.substring(0, 4));
-		final long month = Long.parseLong(dateString.substring(4, 6)) - 1;
-		final long day = Long.parseLong(dateString.substring(6, 8));
-
-		// final Calendar cal = Calendar.getInstance();
-		// cal.set(Calendar.YEAR, year);
-		// cal.set(Calendar.MONTH, month);
-		// cal.set(Calendar.DAY_OF_MONTH, day);
-
-		Log.d(LOG_TAG, "year string is : " + dateString.substring(0, 4));
-		Log.d(LOG_TAG, "month string is : " + dateString.substring(4, 6));
-		Log.d(LOG_TAG, "day string is : " + dateString.substring(6, 8));
-		//
-		// Log.d(LOG_TAG, "hrs is : " + hrs);
-		// Log.d(LOG_TAG, "min is : " + min);
-		// Log.d(LOG_TAG, "sec is : " + sec);
-		//
-		// Log.d(LOG_TAG, "TimeString is : " + timeString);
-		// Log.d(LOG_TAG, "Time is : " + cal.getTime());
-		// Log.d(LOG_TAG, "Time as Date is : " + new Date(time));
-
-		builder.setDate(year + month + day);
-
+		builder.setDate(Long.parseLong(dateString));
 	}
 
 	/**

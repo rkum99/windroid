@@ -132,7 +132,10 @@ public final class ForecastDetail
 	}
 
 	/**
+	 * Date of this forecast as milliseconds since 1970
+	 * 
 	 * @return the date
+	 * @see #getTime()
 	 */
 	public long getDate()
 	{
@@ -140,7 +143,10 @@ public final class ForecastDetail
 	}
 
 	/**
+	 * Timestamp of this forecast
+	 * 
 	 * @return the time
+	 * @see #getDate()
 	 */
 	public int getTime()
 	{

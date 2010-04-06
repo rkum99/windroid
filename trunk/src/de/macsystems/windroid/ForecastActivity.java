@@ -43,11 +43,17 @@ public final class ForecastActivity extends Activity
 {
 
 	private final static String LOG_TAG = ForecastActivity.class.getSimpleName();
-
+	/**
+	 * Used to format Time
+	 */
 	private final static SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-
+	/**
+	 * Used to format Date
+	 */
 	private final static SimpleDateFormat dateFormat = new SimpleDateFormat("MM.dd");
-
+	/**
+	 * Used to format all decimals
+	 */
 	private final static DecimalFormat numberFormat = new DecimalFormat("##0.0");
 	/**
 	 * All res id used to set text on a table row
@@ -244,7 +250,6 @@ public final class ForecastActivity extends Activity
 		rowName.setText(text);
 
 		//
-		final StringBuilder builder = new StringBuilder(16);
 		final Iterator<ForecastDetail> iter = _forecast.iterator();
 		for (int i = 0; i < TEXT_ROW_IDS.length; i++)
 		{
@@ -253,18 +258,6 @@ public final class ForecastActivity extends Activity
 			{
 				final ForecastDetail detail = iter.next();
 				tv.setText(dateFormat.format(detail.getDate()));
-
-				// Cut Year in front, just display Month and Day
-				// final Calendar c = Calendar.getInstance();
-				// c.set(Calendar.YEAR, 2010);
-				// c.set(Calendar.MONTH, 2);
-				// c.set(Calendar.DAY_OF_MONTH, 5);
-
-				// builder.append(detail.getDate());
-				// builder.delete(0, YEAR_CHARACTER_LENGTH);
-				// builder.insert(2, ".");
-				// tv.setText(builder.toString());
-				// builder.setLength(0);
 			}
 		}
 	}

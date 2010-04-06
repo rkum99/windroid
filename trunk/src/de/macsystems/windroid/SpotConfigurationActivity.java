@@ -21,7 +21,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.util.Config;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -36,8 +35,8 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import de.macsystems.windroid.common.IntentConstants;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.custom.activity.ChainSubActivity;
-import de.macsystems.windroid.identifyable.IdentityUtil;
 import de.macsystems.windroid.identifyable.CardinalDirection;
+import de.macsystems.windroid.identifyable.IdentityUtil;
 import de.macsystems.windroid.identifyable.WindUnit;
 
 /**

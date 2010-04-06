@@ -20,9 +20,9 @@ package de.macsystems.windroid.common;
 
 import java.io.Serializable;
 
+import de.macsystems.windroid.identifyable.CardinalDirection;
 import de.macsystems.windroid.identifyable.Schedule;
 import de.macsystems.windroid.identifyable.Station;
-import de.macsystems.windroid.identifyable.CardinalDirection;
 import de.macsystems.windroid.identifyable.WindUnit;
 
 /**

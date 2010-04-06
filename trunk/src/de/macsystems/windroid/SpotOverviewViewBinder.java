@@ -22,8 +22,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
-import de.macsystems.windroid.identifyable.IdentityUtil;
 import de.macsystems.windroid.identifyable.CardinalDirection;
+import de.macsystems.windroid.identifyable.IdentityUtil;
 import de.macsystems.windroid.identifyable.WindUnit;
 
 /**

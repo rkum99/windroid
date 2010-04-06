@@ -17,12 +17,15 @@
  */
 package de.macsystems.windroid.parser;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import android.util.Log;
 import de.macsystems.windroid.forecast.Forecast;
 import de.macsystems.windroid.forecast.ForecastDetail;
 import de.macsystems.windroid.forecast.ForecastDetail.Builder;
@@ -376,7 +379,20 @@ public final class ForecastParser
 		{
 			throw new IllegalArgumentException("wrong format, expected length of 8.");
 		}
-		builder.setDate(Long.parseLong(dateString));
+
+		final DateFormat dfIN = new SimpleDateFormat("yyyyMMdd");
+		try
+		{
+			final long newTime = dfIN.parse(dateString).getTime();
+			builder.setDate(newTime);
+		}
+		catch (ParseException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// builder.setDate(Long.parseLong(dateString));
 	}
 
 	/**
@@ -414,7 +430,8 @@ public final class ForecastParser
 		// Log.d(LOG_TAG, "Time is : " + time);
 		// Log.d(LOG_TAG, "Time as Date is : " + new Date(time));
 
-		builder.setTime((int) time);
+		builder.setTime(time);
+
 	}
 
 }

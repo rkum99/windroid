@@ -17,8 +17,6 @@
  */
 package de.macsystems.windroid.forecast;
 
-import java.util.Date;
-
 import de.macsystems.windroid.identifyable.CardinalDirection;
 import de.macsystems.windroid.identifyable.Cavok;
 import de.macsystems.windroid.identifyable.Precipitation;
@@ -51,7 +49,7 @@ public final class ForecastDetail
 
 	private final long date;
 
-	private final int time;
+	private final long time;
 
 	private final Temperature airTemperature;
 
@@ -148,7 +146,7 @@ public final class ForecastDetail
 	 * @return the time
 	 * @see #getDate()
 	 */
-	public int getTime()
+	public long getTime()
 	{
 		return time;
 	}
@@ -255,7 +253,7 @@ public final class ForecastDetail
 
 		private final String spotID;
 
-		private int time;
+		private long time;
 
 		private Temperature airTemperature;
 
@@ -298,7 +296,7 @@ public final class ForecastDetail
 		 * @param time
 		 *            the time to set
 		 */
-		public Builder setTime(final int time)
+		public Builder setTime(final long time)
 		{
 			this.time = time;
 			return this;

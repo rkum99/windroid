@@ -26,6 +26,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import android.util.Log;
+
 import de.macsystems.windroid.forecast.Forecast;
 import de.macsystems.windroid.forecast.ForecastDetail;
 import de.macsystems.windroid.forecast.ForecastDetail.Builder;
@@ -49,6 +51,8 @@ public final class ForecastParser
 {
 
 	private final static String LOG_TAG = ForecastParser.class.getSimpleName();
+
+	private final static DateFormat jsonDateFormat = new SimpleDateFormat("yyyyMMdd");
 
 	// private final static SimpleDateFormat yyyyMMddHHFormat = new
 	// SimpleDateFormat("yyyyMMddHH", Locale.getDefault());
@@ -176,24 +180,6 @@ public final class ForecastParser
 	}
 
 	/**
-	 * Fail safe returns an String. null is interpreted as 'null'
-	 * 
-	 * @param _jsonObject
-	 * @param _key
-	 * @return
-	 * @throws JSONException
-	 */
-	private static String getString(final JSONObject _jsonObject, final String _key) throws JSONException
-	{
-		if (_jsonObject.isNull(_key))
-		{
-			return "null";
-		}
-
-		return _jsonObject.getString(_key);
-	}
-
-	/**
 	 * 
 	 * @param waterTemperatureMap
 	 * @param builder
@@ -279,19 +265,6 @@ public final class ForecastParser
 	// {
 	// return yyyyMMddHHFormat.parse(_date);
 	// }
-
-	/**
-	 * "time": "020000"
-	 * 
-	 * 
-	 * 
-	 * @param _time
-	 * @return time as hours
-	 */
-	private static int parseTime(final String _time)
-	{
-		return Integer.valueOf(_time.substring(2));
-	}
 
 	/**
 	 * 
@@ -380,19 +353,15 @@ public final class ForecastParser
 			throw new IllegalArgumentException("wrong format, expected length of 8.");
 		}
 
-		final DateFormat dfIN = new SimpleDateFormat("yyyyMMdd");
 		try
 		{
-			final long newTime = dfIN.parse(dateString).getTime();
+			final long newTime = jsonDateFormat.parse(dateString).getTime();
 			builder.setDate(newTime);
 		}
-		catch (ParseException e)
+		catch (final ParseException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.e(LOG_TAG, "Failed parsing json date", e);
 		}
-
-		// builder.setDate(Long.parseLong(dateString));
 	}
 
 	/**
@@ -417,18 +386,6 @@ public final class ForecastParser
 		final long min = Long.parseLong(timeString.substring(2, 4));
 		final long sec = Long.parseLong(timeString.substring(4, 6));
 		final long time = (hrs * 60L * 60L * 1000L) + (min * 60L * 1000L) + (sec * 1000L);
-
-		// Log.d(LOG_TAG, "hrs string is : " + timeString.substring(0, 2));
-		// Log.d(LOG_TAG, "min string is : " + timeString.substring(2, 4));
-		// Log.d(LOG_TAG, "sec string is : " + timeString.substring(4, 6));
-		//
-		// Log.d(LOG_TAG, "hrs is : " + hrs);
-		// Log.d(LOG_TAG, "min is : " + min);
-		// Log.d(LOG_TAG, "sec is : " + sec);
-		//
-		// Log.d(LOG_TAG, "TimeString is : " + timeString);
-		// Log.d(LOG_TAG, "Time is : " + time);
-		// Log.d(LOG_TAG, "Time as Date is : " + new Date(time));
 
 		builder.setTime(time);
 

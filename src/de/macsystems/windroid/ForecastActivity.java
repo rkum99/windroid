@@ -19,13 +19,12 @@ package de.macsystems.windroid;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
-import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -44,14 +43,10 @@ public final class ForecastActivity extends Activity
 {
 
 	private final static String LOG_TAG = ForecastActivity.class.getSimpleName();
-	/**
-	 * Length of a string in format '2010'
-	 */
-	private final static int YEAR_CHARACTER_LENGTH = 4;
 
 	private final static SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
-	private final static SimpleDateFormat forecastDateFormat = new SimpleDateFormat("dd:MM");
+	private final static SimpleDateFormat dateFormat = new SimpleDateFormat("MM.dd");
 
 	private final static DecimalFormat numberFormat = new DecimalFormat("##0.0");
 	/**
@@ -146,7 +141,6 @@ public final class ForecastActivity extends Activity
 			if (iter.hasNext())
 			{
 				final ForecastDetail detail = iter.next();
-				Log.d(LOG_TAG, "Winddirection " + detail.getWinddirection());
 				iv.setImageResource(detail.getWinddirection().getImage());
 			}
 			else
@@ -176,7 +170,6 @@ public final class ForecastActivity extends Activity
 			if (iter.hasNext())
 			{
 				final ForecastDetail detail = iter.next();
-				Log.d(LOG_TAG, "Wavedirection " + detail.getWaveDirection());
 				iv.setImageResource(detail.getWaveDirection().getImage());
 			}
 			else
@@ -205,7 +198,8 @@ public final class ForecastActivity extends Activity
 			if (iter.hasNext())
 			{
 				final ForecastDetail detail = iter.next();
-				tv.setText(timeFormat.format(detail.getTime()));
+				final Date date = new Date(detail.getTime());
+				tv.setText(timeFormat.format(date));
 			}
 		}
 	}
@@ -258,11 +252,19 @@ public final class ForecastActivity extends Activity
 			if (iter.hasNext())
 			{
 				final ForecastDetail detail = iter.next();
+				tv.setText(dateFormat.format(detail.getDate()));
+
 				// Cut Year in front, just display Month and Day
-				builder.append(detail.getDate());
-				builder.delete(0, YEAR_CHARACTER_LENGTH);
-				tv.setText(builder.toString());
-				builder.setLength(0);
+				// final Calendar c = Calendar.getInstance();
+				// c.set(Calendar.YEAR, 2010);
+				// c.set(Calendar.MONTH, 2);
+				// c.set(Calendar.DAY_OF_MONTH, 5);
+
+				// builder.append(detail.getDate());
+				// builder.delete(0, YEAR_CHARACTER_LENGTH);
+				// builder.insert(2, ".");
+				// tv.setText(builder.toString());
+				// builder.setLength(0);
 			}
 		}
 	}

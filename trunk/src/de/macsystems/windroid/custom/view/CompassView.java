@@ -38,6 +38,7 @@ import android.graphics.drawable.shapes.ArcShape;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ImageView;
+import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.identifyable.CardinalDirection;
 
 /**
@@ -103,8 +104,14 @@ public final class CompassView extends ImageView
 	 */
 	public void setFromDirection(final CardinalDirection _from)
 	{
+		if (_from == null)
+		{
+			throw new NullPointerException("from");
+		}
+
 		fromDirection = _from;
-		if (Log.isLoggable(LOG_TAG, Log.DEBUG))
+
+		if (Logging.isLoggingEnabled())
 		{
 			Log.d(LOG_TAG, "setFromDirection :" + fromDirection.name());
 		}
@@ -116,8 +123,14 @@ public final class CompassView extends ImageView
 	 */
 	public void setToDirection(final CardinalDirection _to)
 	{
+		if (_to == null)
+		{
+			throw new NullPointerException("to");
+		}
+
 		toDirection = _to;
-		if (Log.isLoggable(LOG_TAG, Log.DEBUG))
+
+		if (Logging.isLoggingEnabled())
 		{
 			Log.d(LOG_TAG, "setToDirection :" + toDirection.name());
 		}

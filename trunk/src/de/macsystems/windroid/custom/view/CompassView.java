@@ -47,7 +47,7 @@ import de.macsystems.windroid.identifyable.CardinalDirection;
  * @version $Id$
  * 
  */
-public class CompassView extends ImageView
+public final class CompassView extends ImageView
 {
 	private final static String LOG_TAG = CompassView.class.getSimpleName();
 	/**

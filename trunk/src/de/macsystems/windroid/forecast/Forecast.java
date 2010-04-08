@@ -31,6 +31,9 @@ import java.util.List;
  */
 public final class Forecast
 {
+
+	private final static int NR_OF_FORECAST = 16;
+
 	private final List<ForecastDetail> forecasts;
 
 	private final String name;
@@ -46,7 +49,7 @@ public final class Forecast
 	 */
 	public Forecast(final String _name, final int _timezone, final long _timestamp)
 	{
-		forecasts = new ArrayList<ForecastDetail>();
+		forecasts = new ArrayList<ForecastDetail>(NR_OF_FORECAST);
 		name = _name;
 		timezone = _timezone;
 		timestamp = _timestamp;

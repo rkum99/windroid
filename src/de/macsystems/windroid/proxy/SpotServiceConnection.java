@@ -50,7 +50,7 @@ public final class SpotServiceConnection implements ServiceConnection, ISpotServ
 	 */
 	private final View viewToEnable;
 
-	private AtomicReference<ISpotService> reference = new AtomicReference<ISpotService>();
+	private final AtomicReference<ISpotService> reference = new AtomicReference<ISpotService>();
 
 	/**
 	 * 

@@ -153,7 +153,7 @@ public final class Util
 	 * @param _context
 	 * @return
 	 */
-	public final static boolean isLicenceAccepted(Context _context)
+	public final static boolean isLicenceAccepted(final Context _context)
 	{
 		final SharedPreferences prefs = getSharedPreferences(_context);
 		return prefs.getBoolean(LICENCE_ACCEPTED, DEFAUL_LICENCE_ACCEPTED);
@@ -163,7 +163,7 @@ public final class Util
 	 * Sets the status of end user for licence.
 	 * 
 	 */
-	public synchronized final static void setLicenceAccepted(Context _context, boolean _accepted)
+	public synchronized final static void setLicenceAccepted(final Context _context, final boolean _accepted)
 	{
 		final SharedPreferences prefs = getSharedPreferences(_context);
 		final Editor editor = prefs.edit();

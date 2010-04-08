@@ -27,7 +27,6 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import android.util.Log;
-
 import de.macsystems.windroid.forecast.Forecast;
 import de.macsystems.windroid.forecast.ForecastDetail;
 import de.macsystems.windroid.forecast.ForecastDetail.Builder;

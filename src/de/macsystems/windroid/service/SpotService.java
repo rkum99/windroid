@@ -53,10 +53,6 @@ public class SpotService extends Service
 	 * The Threadpool used to schedule all kind of tasks.
 	 */
 	private ScheduledThreadPoolExecutor threadPool;
-	/**
-	 * Thread save integer which can be used to count alarm id.
-	 */
-	private final AtomicInteger notificationCounter = new AtomicInteger(1);
 
 	private final AtomicInteger alarmCounter = new AtomicInteger(1);
 

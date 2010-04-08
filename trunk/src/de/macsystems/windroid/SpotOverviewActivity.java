@@ -34,7 +34,6 @@ import android.view.WindowManager;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnCreateContextMenuListener;
 import android.widget.SimpleCursorAdapter;
-import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import de.macsystems.windroid.common.IntentConstants;
 import de.macsystems.windroid.common.SpotConfigurationVO;
@@ -164,7 +163,6 @@ public final class SpotOverviewActivity extends ListActivity
 			@Override
 			public final void onClick(final DialogInterface _dialog, final int _which)
 			{
-				Toast.makeText(SpotOverviewActivity.this, "User Clicked on Alert Dialog", Toast.LENGTH_LONG).show();
 				if (_which == DialogInterface.BUTTON_POSITIVE)
 				{
 					// 
@@ -177,7 +175,6 @@ public final class SpotOverviewActivity extends ListActivity
 				{
 					// do nothing
 				}
-
 			}
 		};
 

@@ -370,6 +370,7 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 		try
 		{
 			db = getReadableDatabase();
+			db.beginTransaction();
 
 			c = db.rawQuery(
 					"SELECT B._id, A.*, B.* FROM selected as B, spot as A WHERE A.spotid=B.spotid AND B.activ=?",
@@ -389,14 +390,15 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 				}
 				catch (final Exception e)
 				{
-					Log.e(LOG_TAG, "Database Exception", e);
+					Log.e(LOG_TAG, "failed to create SpotConfigurationVO", e);
 				}
 			}
 			while (c.moveToNext());
-
+			db.setTransactionSuccessful();
 		}
 		finally
 		{
+			db.endTransaction();
 			IOUtils.close(c);
 			IOUtils.close(db);
 		}

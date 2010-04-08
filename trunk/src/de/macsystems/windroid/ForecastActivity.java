@@ -50,7 +50,7 @@ public final class ForecastActivity extends Activity
 	/**
 	 * Used to format Date
 	 */
-	private final static SimpleDateFormat dateFormat = new SimpleDateFormat("MM.dd");
+	private final static SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM");
 	/**
 	 * Used to format all decimals
 	 */
@@ -454,7 +454,7 @@ public final class ForecastActivity extends Activity
 		}
 	}
 
-	private final static void fillCloudRow(final TableRow _row, int _columNameResID, final Forecast _forecast)
+	private final static void fillCloudRow(final TableRow _row, final int _columNameResID, final Forecast _forecast)
 	{
 		if (_row == null)
 		{

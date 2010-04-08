@@ -124,6 +124,7 @@ public final class ForecastDetail
 	 * @return the spotID
 	 * @deprecated
 	 */
+	@Deprecated
 	public String getSpotID()
 	{
 		return spotID;

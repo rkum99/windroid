@@ -65,8 +65,10 @@ public class IOUtils
 
 	/**
 	 * Complete Path to configuration file.
+	 * 
 	 * @deprecated used to store md5 which should be stored in Database
 	 */
+	@Deprecated
 	private final static String configFilePath = "windroid.config";
 
 	/**

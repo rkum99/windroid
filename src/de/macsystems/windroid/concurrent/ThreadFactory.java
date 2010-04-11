@@ -54,7 +54,7 @@ public final class ThreadFactory implements java.util.concurrent.ThreadFactory
 		thread.setName(threadName + counter);
 		if (Logging.isLoggingEnabled())
 		{
-			Log.d(LOG_TAG, "Created Thread :" + name);
+			Log.d(LOG_TAG, "Thread created :" + name);
 		}
 		return thread;
 	}

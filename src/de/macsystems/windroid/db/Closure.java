@@ -18,47 +18,35 @@
 package de.macsystems.windroid.db;
 
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import de.macsystems.windroid.io.IOUtils;
 
 /**
- * Defines Methods which can be executed with every DAO.
+ * A the mo. unused class, is more a remainder to me.
  * 
  * @author mac
- * @version $Id$
+ * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
  */
-public interface IDAO
+public final class Closure
 {
+	private final SQLiteDatabase db;
+	private Cursor cursor;
 
-	/**
-	 * Primary key {@value #COLUMN_ID}
-	 */
-	public final static String COLUMN_ID = "_id";
-	/**
-	 * Constant for MAX (_id). {@value #COLUMN_MAX_ID}
-	 */
-	public final static String COLUMN_MAX_ID = "MAX(" + COLUMN_ID + ")";
+	public Closure(final SQLiteDatabase _db, final Cursor _cursor)
+	{
+		db = _db;
+		cursor = _cursor;
+	}
 
-	/**
-	 * Returns size of table
-	 * 
-	 * @return
-	 */
-	public int getSize();
+	public void updateCursor(final Cursor _cursor)
+	{
+		IOUtils.close(cursor);
+		cursor = cursor;
+	}
 
-	/**
-	 * Returns all content of table like a SELECT * FROM table
-	 * 
-	 * @return
-	 */
-	public Cursor fetchAll();
-
-	/**
-	 * Must be called when Activity stop, it will release all resources.
-	 */
-	public void onStop();
-
-	/**
-	 * Must be called when Activity is created, it will setup the DAO.
-	 */
-	public void onCreate();
-
+	public void close()
+	{
+		IOUtils.close(cursor);
+		IOUtils.close(db);
+	}
 }

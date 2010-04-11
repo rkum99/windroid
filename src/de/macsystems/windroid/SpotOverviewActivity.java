@@ -19,7 +19,6 @@ package de.macsystems.windroid;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ListActivity;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -47,7 +46,7 @@ import de.macsystems.windroid.db.ISelectedDAO;
  * @version $Id$
  * 
  */
-public final class SpotOverviewActivity extends ListActivity
+public final class SpotOverviewActivity extends DBListActivity
 {
 
 	private final static int EDIT_SPOT_REQUEST_CODE = 400;
@@ -60,6 +59,11 @@ public final class SpotOverviewActivity extends ListActivity
 	private static final int DELETE_ITEM_ID = 4;
 
 	SimpleCursorAdapter shows = null;
+
+	ISelectedDAO dao = null;
+
+	private Cursor oldCursor = null;
+
 	/**
 	 * We cache the ID as when focus lost on context menu to use it.
 	 */
@@ -74,7 +78,7 @@ public final class SpotOverviewActivity extends ListActivity
 	protected void onResume()
 	{
 		super.onResume();
-		final ISelectedDAO dao = DAOFactory.getSelectedDAO(this);
+		// final ISelectedDAO dao = DAOFactory.getSelectedDAO(this);
 		final Cursor c = dao.getConfiguredSpots();
 		setupMapping(c);
 		//
@@ -119,6 +123,8 @@ public final class SpotOverviewActivity extends ListActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.spotoverview);
+		dao = DAOFactory.getSelectedDAO(this);
+		onCreateDAO(dao);
 	}
 
 	/*
@@ -166,7 +172,8 @@ public final class SpotOverviewActivity extends ListActivity
 				if (_which == DialogInterface.BUTTON_POSITIVE)
 				{
 					// 
-					final ISelectedDAO dao = DAOFactory.getSelectedDAO(SpotOverviewActivity.this);
+					// final ISelectedDAO dao =
+					// DAOFactory.getSelectedDAO(SpotOverviewActivity.this);
 					dao.delete(_id);
 					final Cursor c = dao.getConfiguredSpots();
 					setupMapping(c);
@@ -195,7 +202,7 @@ public final class SpotOverviewActivity extends ListActivity
 	 */
 	private void setActive(final boolean _state)
 	{
-		final ISelectedDAO dao = DAOFactory.getSelectedDAO(this);
+		// final ISelectedDAO dao = DAOFactory.getSelectedDAO(this);
 		dao.setActiv((selectedID), _state);
 		final Cursor c = dao.getConfiguredSpots();
 		setupMapping(c);
@@ -214,7 +221,14 @@ public final class SpotOverviewActivity extends ListActivity
 		{
 			throw new NullPointerException("Cursor");
 		}
+		// hack
+		if (oldCursor != null)
+		{
+			oldCursor.close();
+		}
+
 		startManagingCursor(_cursor);
+		oldCursor = _cursor;
 
 		final String[] from = new String[]
 		{ "name", "minwind", "maxwind", "windmeasure", "starting", "till", "activ" };
@@ -235,7 +249,7 @@ public final class SpotOverviewActivity extends ListActivity
 	 */
 	private void editSpot(final long _id)
 	{
-		final ISelectedDAO dao = DAOFactory.getSelectedDAO(this);
+		// final ISelectedDAO dao = DAOFactory.getSelectedDAO(this);
 		final SpotConfigurationVO vo = dao.getSpotConfiguration(_id);
 
 		final Intent intent = new Intent(SpotOverviewActivity.this, SpotConfigurationActivity.class);
@@ -304,7 +318,7 @@ public final class SpotOverviewActivity extends ListActivity
 			Log.d(LOG_TAG, "Updating Spot in Database");
 		}
 
-		final ISelectedDAO dao = DAOFactory.getSelectedDAO(this);
+		// final ISelectedDAO dao = DAOFactory.getSelectedDAO(this);
 		final SpotConfigurationVO vo = WindUtils.getConfigurationFromIntent(_intent);
 		dao.update(vo);
 	}

@@ -98,6 +98,8 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 			values.put(COLUMN_WINDMEASURE, _vo.getPreferredWindUnit().getId());
 			values.put(COLUMN_MINWIND, _vo.getWindspeedMin());
 			values.put(COLUMN_MAXWIND, _vo.getWindspeedMax());
+			values.put(COLUMN_LASTUPATE, -1L);
+			values.put(COLUMN_UPDATEFAILED, false);
 			//
 			final int selectedID = (int) db.insert(tableName, null, values);
 			_vo.setPrimaryKey(selectedID);
@@ -205,6 +207,7 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 		}
 		finally
 		{
+			IOUtils.close(c);
 			IOUtils.close(db);
 		}
 		return spotVO;
@@ -335,10 +338,9 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 	@Override
 	public Cursor getConfiguredSpots()
 	{
-		final SQLiteDatabase db = getReadableDatabase();
-		return db
+		return getReadableDatabase()
 				.rawQuery(
-						"SELECT DISTINCT selected._id  _id, spot.name  name, spot.keyword  keyword, selected.minwind  minwind, selected.maxwind  maxwind, selected.windmeasure AS windmeasure, selected.starting  starting, selected.till  till, selected.activ  activ FROM selected, spot WHERE spot.spotid=selected.spotid;",
+						"SELECT DISTINCT selected._id AS _id, spot.name AS name, spot.keyword AS keyword, selected.minwind AS minwind, selected.maxwind AS maxwind, selected.windmeasure AS windmeasure, selected.starting AS starting, selected.till AS till, selected.activ AS activ FROM selected, spot WHERE spot.spotid=selected.spotid",
 						null);
 	}
 
@@ -370,7 +372,7 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 		try
 		{
 			db = getReadableDatabase();
-			db.beginTransaction();
+			// db.beginTransaction();
 
 			c = db.rawQuery(
 					"SELECT B._id, A.*, B.* FROM selected as B, spot as A WHERE A.spotid=B.spotid AND B.activ=?",
@@ -394,11 +396,11 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 				}
 			}
 			while (c.moveToNext());
-			db.setTransactionSuccessful();
+			// db.setTransactionSuccessful();
 		}
 		finally
 		{
-			db.endTransaction();
+			// db.endTransaction();
 			IOUtils.close(c);
 			IOUtils.close(db);
 		}

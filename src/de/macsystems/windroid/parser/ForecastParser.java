@@ -50,13 +50,14 @@ public final class ForecastParser
 {
 
 	private final static String LOG_TAG = ForecastParser.class.getSimpleName();
-
+	/**
+	 * Dateformat
+	 */
 	private final static DateFormat jsonDateFormat = new SimpleDateFormat("yyyyMMdd");
-
-	// private final static SimpleDateFormat yyyyMMddHHFormat = new
-	// SimpleDateFormat("yyyyMMddHH", Locale.getDefault());
-	// private final static SimpleDateFormat yyyyMMddHHmmFormat = new
-	// SimpleDateFormat("yyyyMMddHHmm", Locale.getDefault());
+	/**
+	 * General Timestamp of forecast
+	 */
+	private final static DateFormat jsonForecastTimeStampDateFormat = new SimpleDateFormat("yyyyMMdd_hhmm");
 
 	private static final String WIND_DIRECTION = "wind_direction";
 	private static final String WAVE_DIRECTION = "wave_direction";
@@ -240,50 +241,36 @@ public final class ForecastParser
 		builder.setPrecipitation(precipitation);
 	}
 
-	// /**
-	// * "timestamp":"20090722_1800"
-	// *
-	// * @param _timestamp
-	// * @return
-	// */
-	// private static Date parseTimezone(final String _timestamp) throws
-	// ParseException
-	// {
-	// final String str = _timestamp.replace("_", "");
-	// return yyyyMMddHHmmFormat.parse(str);
-	// }
-
-	// /**
-	// * "date": "20090722"
-	// *
-	// * @param _date
-	// * @return
-	// */
-	// private static Date parseForecastDate(final String _date) throws
-	// ParseException
-	// {
-	// return yyyyMMddHHFormat.parse(_date);
-	// }
-
 	/**
+	 * Creates an Forecast from a JSON-String.<br>
+	 * Parsing ignores the time zone.
 	 * 
 	 * @param _forecast
-	 * @return
+	 * @return a Forecast
 	 * @throws JSONException
 	 */
 	public static Forecast parse(final StringBuilder _forecast) throws JSONException
 	{
-		final Forecast forecast = new Forecast("dummy", 2, 10009988L);
+		if (_forecast == null)
+		{
+			throw new NullPointerException("StringBuilder");
+		}
+
 		final JSONTokener tokener = new JSONTokener(_forecast.toString());
 		final JSONObject jsonRoot = new JSONObject(tokener);
 
 		final JSONArray stations = jsonRoot.getJSONArray("stations");
+
+		final long timeStamp = parseForecastTimestamp(jsonRoot.getString("timestamp"));
+
 		final JSONObject forecasts = stations.getJSONObject(0);
+		final String name = forecasts.getString("name");
 		final JSONArray forecastArray = forecasts.getJSONArray("forecasts");
 
+		final Forecast forecast = new Forecast(name, timeStamp);
 		for (int i = 0; i < forecastArray.length(); i++)
 		{
-			final Builder builder = new ForecastDetail.Builder("dummy id");
+			final Builder builder = new ForecastDetail.Builder();
 
 			final JSONObject forecastDetailMap = forecastArray.getJSONObject(i);
 			//
@@ -293,9 +280,6 @@ public final class ForecastParser
 			parseWavePeriod(wavePeriodMap, builder);
 			final JSONObject waveHeightMap = forecastDetailMap.getJSONObject("wave_height");
 			parseWaveHeight(waveHeightMap, builder);
-
-			// final JSONObject waveDirectionMap =
-			// forecastDetailMap.getJSONObject("wave_direction");
 			parseWaveDirection(forecastDetailMap, builder);
 			parseWindDirection(forecastDetailMap, builder);
 			parseTime(forecastDetailMap, builder);
@@ -359,7 +343,7 @@ public final class ForecastParser
 		}
 		catch (final ParseException e)
 		{
-			Log.e(LOG_TAG, "Failed parsing json date", e);
+			Log.e(LOG_TAG, "Failed parsing json date :" + dateString, e);
 		}
 	}
 
@@ -388,6 +372,26 @@ public final class ForecastParser
 
 		builder.setTime(time);
 
+	}
+
+	/**
+	 * Parses the forecast timestamp. Returns <code>-1L</code> if parsing
+	 * failed.
+	 * 
+	 * @param _timeStamp
+	 * @return
+	 */
+	private final static long parseForecastTimestamp(final String _timeStamp)
+	{
+		try
+		{
+			return jsonForecastTimeStampDateFormat.parse(_timeStamp).getTime();
+		}
+		catch (final ParseException e)
+		{
+			Log.e(LOG_TAG, "Failed to parse forecast timestamp :" + _timeStamp, e);
+		}
+		return -1L;
 	}
 
 }

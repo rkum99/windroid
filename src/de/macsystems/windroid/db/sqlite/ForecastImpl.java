@@ -28,6 +28,7 @@ import android.util.Log;
 import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.db.IForecastDAO;
 import de.macsystems.windroid.db.IForecastRelation;
+import de.macsystems.windroid.db.ISelectedDAO;
 import de.macsystems.windroid.db.ISpotDAO;
 import de.macsystems.windroid.forecast.Forecast;
 import de.macsystems.windroid.forecast.ForecastDetail;
@@ -81,7 +82,10 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 		try
 		{
 			final String spotName = getSpotName(_selectedID, db);
-			final Forecast forecast = new Forecast(spotName, 1, 77889966L);
+
+			// TODO: Use Server Timestamp there
+
+			final Forecast forecast = new Forecast(spotName, 77889966L);
 			cursor = db.query(RELATION_TABLE, null, "selectedid=?", new String[]
 			{ Integer.toString(_selectedID) }, null, null, null);
 			moveToFirstOrThrow(cursor);
@@ -89,6 +93,7 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 			do
 			{
 				final int forcastID = getInt(cursor, COLUMN_FORECAST_ID);
+				// TODO: Use pass SQLDatabase to method
 				final ForecastDetail detail = getForecastDetail(forcastID);
 				forecast.add(detail);
 			}
@@ -109,7 +114,7 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 		Cursor cursor = null;
 		try
 		{
-			cursor = _db.rawQuery("SELECT name FROM spot as a, selected as b WHERE a.spotid = b.spotid AND b._id=?",
+			cursor = _db.rawQuery("SELECT name FROM spot AS a, selected AS b WHERE a.spotid = b.spotid AND b._id=?",
 					new String[]
 					{ Integer.toString(_selectedID) });
 			moveToFirstOrThrow(cursor);
@@ -167,7 +172,7 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 			final int time = getInt(cursor, COLUMN_TIME);
 			final long date = getLong(cursor, COLUMN_DATE);
 
-			final ForecastDetail.Builder builder = new ForecastDetail.Builder("1");
+			final ForecastDetail.Builder builder = new ForecastDetail.Builder();
 			builder.setAirPressure(airPressure);
 			builder.setAirTemperature(airTemperature);
 			final String cavokName = getString(cursor, COLUMN_CLOUDS);
@@ -263,12 +268,9 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 				//
 				final long rowID = db.insert(tableName, null, values);
 				// Update Forecast
-				relationUpdateBuilder
-						.append("REPLACE INTO forecast_releation (updatefailed,selectedid,forecastid) VALUES (");
-				relationUpdateBuilder.append("1,");
+				relationUpdateBuilder.append("REPLACE INTO forecast_releation (selectedid,forecastid) VALUES (");
 				relationUpdateBuilder.append(_selectedID).append(",");
-				relationUpdateBuilder.append(rowID);
-				relationUpdateBuilder.append(")");
+				relationUpdateBuilder.append(rowID).append(")");
 				db.execSQL(relationUpdateBuilder.toString());
 
 				// clear buffer
@@ -288,15 +290,23 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 				}
 			}
 			{
-				final StringBuilder builder = new StringBuilder(64);
+				final StringBuilder builder = new StringBuilder(48);
 				final Iterator<Integer> deleteIterator = columnIdsToDelete.iterator();
 				while (deleteIterator.hasNext())
 				{
-					builder.append("DELETE FROM forecast where _id=");
+					builder.append("DELETE FROM forecast WHERE _id=");
 					builder.append(deleteIterator.next());
 					db.execSQL(builder.toString());
 					builder.setLength(0);
 				}
+			}
+			{
+				// Update last update Flag, mark spot as update not failed
+				final ContentValues values = new ContentValues();
+				values.put(ISelectedDAO.COLUMN_LASTUPATE, forecast.getTimestamp());
+				values.put(ISelectedDAO.COLUMN_UPDATEFAILED, false);
+				db.update("selected", values, "_id=?", new String[]
+				{ Integer.toString(_selectedID) });
 			}
 
 			db.setTransactionSuccessful();

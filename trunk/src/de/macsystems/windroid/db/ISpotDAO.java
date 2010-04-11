@@ -28,25 +28,63 @@ import de.macsystems.windroid.identifyable.World;
  */
 public interface ISpotDAO extends IDAO
 {
-	// TODO : Add report COLUMN
+	/**
+	 * {@value #COLUMN_KEYWORD}
+	 */
 	public final static String COLUMN_KEYWORD = "keyword";
+	/**
+	 * {@value #COLUMN_SPOTID}
+	 */
 	public final static String COLUMN_SPOTID = "spotid";
+	/**
+	 * {@value #COLUMN_CONTINENTID}
+	 */
 	public final static String COLUMN_CONTINENTID = "continentid";
+	/**
+	 * {@value #COLUMN_COUNTRYID}
+	 */
 	public final static String COLUMN_COUNTRYID = "countryid";
+	/**
+	 * {@value #COLUMN_REGIONID}
+	 */
 	public final static String COLUMN_REGIONID = "regionid";
+	/**
+	 * {@value #COLUMN_SUPERFORECAST}
+	 */
 	public final static String COLUMN_SUPERFORECAST = "superforecast";
+	/**
+	 * {@value #COLUMN_FORECAST}
+	 */
 	public final static String COLUMN_FORECAST = "forecast";
+	/**
+	 * {@value #COLUMN_REPORT}
+	 */
 	public final static String COLUMN_REPORT = "report";
+	/**
+	 * {@value #COLUMN_WAVEREPORT}
+	 */
 	public final static String COLUMN_WAVEREPORT = "wavereport";
+	/**
+	 * {@value #COLUMN_WAVEFORECAST}
+	 */
 	public final static String COLUMN_WAVEFORECAST = "waveforecast";
+	/**
+	 * {@value #COLUMN_NAME}
+	 */
 	public final static String COLUMN_NAME = "name";
+	/**
+	 * {@value #COLUMN_STATISTIC}
+	 */
 	public final static String COLUMN_STATISTIC = "statistic";
+	/**
+	 * {@value #COLUMN_GMT}
+	 */
+	public final static String COLUMN_GMT = "gmt";
 
 	/**
 	 * @param world
-	 * 
 	 */
-	public void insertSpots(World world);
+	public void insertSpots(final World world);
 
 	/**
 	 * Returns true if spots available
@@ -55,6 +93,14 @@ public interface ISpotDAO extends IDAO
 	 */
 	public boolean hasSpots();
 
+	/**
+	 * Returns spots of given continent->country->region
+	 * 
+	 * @param continentid
+	 * @param countryid
+	 * @param regionid
+	 * @return
+	 */
 	public Cursor fetchBy(final String continentid, final String countryid, final String regionid);
 
 	/**

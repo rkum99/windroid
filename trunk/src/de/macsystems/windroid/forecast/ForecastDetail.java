@@ -45,8 +45,6 @@ import de.macsystems.windroid.identifyable.WindSpeed;
 public final class ForecastDetail
 {
 
-	private final String spotID;
-
 	private final long date;
 
 	private final long time;
@@ -81,7 +79,6 @@ public final class ForecastDetail
 	 */
 	private ForecastDetail(final Builder _builder) throws NullPointerException
 	{
-		this.spotID = _builder.spotID;
 		this.date = _builder.date;
 		this.time = _builder.time;
 		this.airTemperature = _builder.airTemperature;
@@ -96,7 +93,6 @@ public final class ForecastDetail
 		this.waveDirection = _builder.waveDirection;
 		this.airPressure = _builder.airPressure;
 
-		nullCheck(spotID, "spotID");
 		nullCheck(date, "date");
 		nullCheck(time, "time");
 		nullCheck(airTemperature, "airTemperature");
@@ -118,16 +114,6 @@ public final class ForecastDetail
 	public Pressure getAirPressure()
 	{
 		return airPressure;
-	}
-
-	/**
-	 * @return the spotID
-	 * @deprecated
-	 */
-	@Deprecated
-	public String getSpotID()
-	{
-		return spotID;
 	}
 
 	/**
@@ -241,18 +227,16 @@ public final class ForecastDetail
 	public String toString()
 	{
 		return "ForecastDetail [airPressure=" + airPressure + ", airTemperature=" + airTemperature + ", clouds="
-				+ clouds + ", date=" + date + ", precipitation=" + precipitation + ", spotID=" + spotID + ", time="
-				+ time + ", waterTemperature=" + waterTemperature + ", waveDirection=" + waveDirection
-				+ ", waveHeight=" + waveHeight + ", wavePeriod=" + wavePeriod + ", windGusts=" + windGusts
-				+ ", windSpeed=" + windSpeed + ", winddirection=" + winddirection + "]";
+				+ clouds + ", date=" + date + ", precipitation=" + precipitation + ", time=" + time
+				+ ", waterTemperature=" + waterTemperature + ", waveDirection=" + waveDirection + ", waveHeight="
+				+ waveHeight + ", wavePeriod=" + wavePeriod + ", windGusts=" + windGusts + ", windSpeed=" + windSpeed
+				+ ", winddirection=" + winddirection + "]";
 	}
 
 	public static class Builder
 	{
 
 		private long date;
-
-		private final String spotID;
 
 		private long time;
 
@@ -278,9 +262,8 @@ public final class ForecastDetail
 
 		private Pressure airPressure;
 
-		public Builder(final String _id)
+		public Builder()
 		{
-			spotID = _id;
 		}
 
 		/**

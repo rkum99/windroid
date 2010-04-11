@@ -22,8 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * "timestamp":"20090722_1800","stations":[{ "id": "nl48", "name":
- * "Wijk aan Zee", "timezone": 2, "forecasts":
+ * Parses the JSON result into a forecast object containing details.
  * 
  * @author Jens Hohl
  * @version $Id$
@@ -32,26 +31,22 @@ import java.util.List;
 public final class Forecast
 {
 
-	private final static int NR_OF_FORECAST = 16;
+	private final static int INITIAL_CAPACITY = 16;
 
 	private final List<ForecastDetail> forecasts;
 
 	private final String name;
 
-	private final int timezone;
-
 	private final long timestamp;
 
 	/**
 	 * @param _name
-	 * @param _timezone
 	 * @param _timestamp
 	 */
-	public Forecast(final String _name, final int _timezone, final long _timestamp)
+	public Forecast(final String _name, final long _timestamp)
 	{
-		forecasts = new ArrayList<ForecastDetail>(NR_OF_FORECAST);
+		forecasts = new ArrayList<ForecastDetail>(INITIAL_CAPACITY);
 		name = _name;
-		timezone = _timezone;
 		timestamp = _timestamp;
 	}
 
@@ -87,20 +82,22 @@ public final class Forecast
 	}
 
 	/**
-	 * @return the timezone
-	 */
-	public int getTimezone()
-	{
-		return timezone;
-	}
-
-	/**
 	 * @return the timestamp
-	 * @todo: Store in DB!
 	 */
 	public long getTimestamp()
 	{
 		return timestamp;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString()
+	{
+		return "Forecast [name=" + name + ", timestamp=" + timestamp + "]";
 	}
 
 }

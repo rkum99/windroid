@@ -36,6 +36,8 @@ import de.macsystems.windroid.progress.NullProgressAdapter;
 public class BaseImpl implements IDAO
 {
 	private static final String LOG_TAG = BaseImpl.class.getSimpleName();
+
+	public final static int INITIAL_COLLECTION_CAPACITY = 16;
 	/**
 	 * 
 	 */
@@ -48,6 +50,8 @@ public class BaseImpl implements IDAO
 	 * Table name which this DAO is for
 	 */
 	protected final String tableName;
+
+	private SQLiteDatabase cachedDB = null;
 
 	/**
 	 * 
@@ -110,7 +114,12 @@ public class BaseImpl implements IDAO
 	 */
 	protected SQLiteDatabase getReadableDatabase()
 	{
-		return getDatabase().getReadableDatabase();
+		// return getDatabase().getReadableDatabase();
+		if (cachedDB == null || !cachedDB.isOpen())
+		{
+			cachedDB = getDatabase().getReadableDatabase();
+		}
+		return cachedDB;
 	}
 
 	/**
@@ -386,5 +395,25 @@ public class BaseImpl implements IDAO
 		{
 			IOUtils.close(c);
 		}
+	}
+
+	@Override
+	public void onCreate()
+	{
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "onCreate");
+		}
+	}
+
+	@Override
+	public void onStop()
+	{
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "onStop");
+		}
+		IOUtils.close(cachedDB);
+
 	}
 }

@@ -52,6 +52,10 @@ public final class ForecastActivity extends Activity
 	 */
 	private final static SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM");
 	/**
+	 * Used in window title
+	 */
+	private final static SimpleDateFormat titleDateFormat = new SimpleDateFormat("dd.MM.yy");
+	/**
 	 * Used to format all decimals
 	 */
 	private final static DecimalFormat numberFormat = new DecimalFormat("##0.0");
@@ -81,6 +85,13 @@ public final class ForecastActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.forecast);
 
+//		final ViewFlipper flipper = (ViewFlipper) findViewById(R.id.flipper);
+//		flipper.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_in));
+//		flipper.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_out));
+////		flipper.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_right));
+//		flipper.startFlipping();
+		
+
 		final Intent intent = getIntent();
 		if (!isForecastID(intent))
 		{
@@ -92,7 +103,8 @@ public final class ForecastActivity extends Activity
 		final IForecastDAO dao = DAOFactory.getForecast(this);
 		final Forecast forecast = dao.getForecast(forecastID);
 
-		setTitle(forecast.getName());
+		final String serverTime = titleDateFormat.format(forecast.getTimestamp());
+		setTitle(forecast.getName() + " update " + serverTime);
 
 		/**
 		 * For each row in table we set the values

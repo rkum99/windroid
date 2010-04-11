@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS spot (_id INTEGER PRIMARY KEY AUTOINCREMENT, spotid T
 CREATE TABLE IF NOT EXISTS continent (_id INTEGER PRIMARY KEY AUTOINCREMENT ,id INTEGER, name TEXT);
 CREATE TABLE IF NOT EXISTS country (_id INTEGER PRIMARY KEY AUTOINCREMENT,id INTEGER, name TEXT NOT NULL, continentid TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS region (_id INTEGER PRIMARY KEY AUTOINCREMENT,id INTEGER, name TEXT NOT NULL, countryid TEXT NOT NULL);
-CREATE TABLE IF NOT EXISTS forecast_releation (_id INTEGER PRIMARY KEY AUTOINCREMENT, updatefailed BOOLEAN, selectedid INTEGER, forecastid INTEGER UNIQUE);
+CREATE TABLE IF NOT EXISTS forecast_releation (_id INTEGER PRIMARY KEY AUTOINCREMENT, selectedid INTEGER, forecastid INTEGER UNIQUE);
 CREATE TABLE IF NOT EXISTS forecast (_id INTEGER PRIMARY KEY AUTOINCREMENT, date LONG, time INTEGER,  wave_period FLOAT,wave_period_unit TEXT,  wind_direction TEXT, wave_direction TEXT, precipitation FLOAT, precipitation_unit TEXT, air_pressure FLOAT, air_pressure_unit TEXT, wind_gusts FLOAT, wind_gusts_unit TEXT, water_temperature FLOAT,water_temperature_unit TEXT, air_temperature FLOAT, air_temperature_unit TEXT, wave_height FLOAT, wave_height_unit TEXT, clouds TEXT, wind_speed FLOAT,wind_speed_unit TEXT);
 
 CREATE INDEX spotindex ON spot (spotid);
@@ -22,7 +22,7 @@ CREATE INDEX conid ON continent (id);
 CREATE INDEX regid ON region (id); 
 CREATE INDEX coid ON country (id); 
 --  selected
-CREATE TABLE IF NOT EXISTS selected (_id INTEGER PRIMARY KEY AUTOINCREMENT, spotid text NOT NULL, activ BOOLEAN, usedirection BOOLEAN, starting TEXT, till TEXT, windmeasure TEXT NOT NULL, minwind INTEGER, maxwind INTEGER); 
+CREATE TABLE IF NOT EXISTS selected (_id INTEGER PRIMARY KEY AUTOINCREMENT, spotid text NOT NULL, activ BOOLEAN, lastupdate LONG, updatefailed BOOLEAN , usedirection BOOLEAN, starting TEXT, till TEXT, windmeasure TEXT NOT NULL, minwind INTEGER, maxwind INTEGER); 
 CREATE INDEX IF NOT EXISTS selectedid ON selected (spotid); 
 -- schedule 
 -- CREATE TABLE IF NOT EXISTS schedule (_id INTEGER PRIMARY KEY AUTOINCREMENT, selectedid INTEGER);

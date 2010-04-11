@@ -23,6 +23,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
+import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.db.ISpotDAO;
 import de.macsystems.windroid.identifyable.Continent;
@@ -80,7 +81,10 @@ public final class SpotImpl extends BaseImpl implements ISpotDAO
 	 */
 	public void insertSpots(final World _world)
 	{
-		Log.d(LOG_TAG, "executeInsert");
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "executeInsert");
+		}
 
 		if (_world == null)
 		{
@@ -140,8 +144,11 @@ public final class SpotImpl extends BaseImpl implements ISpotDAO
 			IOUtils.close(insertRegionStatement);
 			IOUtils.close(insertContinentStatement);
 			IOUtils.close(db);
-			final long time = System.currentTimeMillis() - start;
-			Log.d(LOG_TAG, "Insert finished. Time " + time + " ms");
+			if (Logging.isLoggingEnabled())
+			{
+				final long time = System.currentTimeMillis() - start;
+				Log.d(LOG_TAG, "Insert finished. Time " + time + " ms");
+			}
 		}
 
 	}
@@ -239,10 +246,11 @@ public final class SpotImpl extends BaseImpl implements ISpotDAO
 	@Override
 	public Cursor fetchBy(final String continentid, final String countryid, final String regionid)
 	{
-
-		Log
-				.d("SpotDAO", "Looking for -> Continent: " + continentid + " Country: " + countryid + " Region: "
-						+ regionid);
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d("SpotDAO", "Looking for -> Continent: " + continentid + " Country: " + countryid + " Region: "
+					+ regionid);
+		}
 
 		final SQLiteDatabase db = getReadableDatabase();
 

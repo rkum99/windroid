@@ -52,6 +52,8 @@ public final class SpotConfigurationVO implements Serializable
 
 	private boolean active = true;
 
+	private long lastupdate = -1L;
+
 	private int primaryKey = -1;
 
 	/**
@@ -227,6 +229,24 @@ public final class SpotConfigurationVO implements Serializable
 	public void setSchedule(final Schedule schedule)
 	{
 		this.schedule = schedule;
+	}
+
+	/**
+	 * 
+	 * @param _time
+	 */
+	public void setLastUpdate(final long _time)
+	{
+		lastupdate = _time;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public long getLastUpdate()
+	{
+		return lastupdate;
 	}
 
 }

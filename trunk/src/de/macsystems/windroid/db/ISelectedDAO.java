@@ -28,24 +28,51 @@ import de.macsystems.windroid.common.SpotConfigurationVO;
  */
 public interface ISelectedDAO extends IDAO
 {
+	/**
+	 * {@value #COLUMN_ACTIV}
+	 */
 	public final static String COLUMN_ACTIV = "activ";
-
+	/**
+	 * {@value #COLUMN_UPDATEFAILED}
+	 */
+	public final static String COLUMN_UPDATEFAILED = "updatefailed";
+	/**
+	 * {@value #COLUMN_LASTUPATE}
+	 */
+	public final static String COLUMN_LASTUPATE = "lastupdate";
+	/**
+	 * {@value #COLUMN_SPOTID}
+	 */
 	public final static String COLUMN_SPOTID = "spotid";
-
+	/**
+	 * {@value #COLUMN_NAME}
+	 */
 	public final static String COLUMN_NAME = "name";
-
+	/**
+	 * {@value #COLUMN_USEDIRECTION}
+	 */
 	public final static String COLUMN_USEDIRECTION = "usedirection";
-
+	/**
+	 * {@value #COLUMN_STARTING}
+	 */
 	public final static String COLUMN_STARTING = "starting";
-
+	/**
+	 * {@value #COLUMN_TILL}
+	 */
 	public final static String COLUMN_TILL = "till";
-
+	/**
+	 * {@value #COLUMN_WINDMEASURE}
+	 */
 	public final static String COLUMN_WINDMEASURE = "windmeasure";
-
+	/**
+	 * {@value #COLUMN_MINWIND}
+	 */
 	public final static String COLUMN_MINWIND = "minwind";
-
+	/**
+	 * {@value #COLUMN_MAXWIND}
+	 */
 	public final static String COLUMN_MAXWIND = "maxwind";
-
+	
 	/**
 	 * Adds a Spot
 	 * 

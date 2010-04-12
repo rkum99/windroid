@@ -43,7 +43,7 @@ import de.macsystems.windroid.io.IOUtils;
  * @author Jens Hohl
  * @version $Id$
  */
-public final class SpotSelectionActivity extends DBActivity
+public final class SpotSelectionActivity extends DBChainSubActivity
 {
 
 	private final static String LOG_TAG = SpotSelectionActivity.class.getSimpleName();
@@ -72,10 +72,10 @@ public final class SpotSelectionActivity extends DBActivity
 		countryDAO = DAOFactory.getCountryDAO(SpotSelectionActivity.this);
 		regionDAO = DAOFactory.getRegionDAO(SpotSelectionActivity.this);
 
-		addDAO(spotDAO);
-		addDAO(continentDAO);
-		addDAO(countryDAO);
-		addDAO(regionDAO);
+		daoManager.addDAO(spotDAO);
+		daoManager.addDAO(continentDAO);
+		daoManager.addDAO(countryDAO);
+		daoManager.addDAO(regionDAO);
 
 		final Button selectButton = (Button) findViewById(R.id.stationSelect);
 		selectButton.setOnClickListener(new View.OnClickListener()

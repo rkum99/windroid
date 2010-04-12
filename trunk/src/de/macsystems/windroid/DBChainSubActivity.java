@@ -17,19 +17,16 @@
  */
 package de.macsystems.windroid;
 
-import android.app.Activity;
+import de.macsystems.windroid.custom.activity.ChainSubActivity;
 
 /**
- * A activity which also provides DAO management features
+ * A Sub activity which also provides DAO management features
  * 
  * @author mac
  * @version $Id$
  */
-public abstract class DBActivity extends Activity
+public abstract class DBChainSubActivity extends ChainSubActivity
 {
-
-	private final static String LOG_TAG = DBActivity.class.getSimpleName();
-
 	protected final DAOManger daoManager = new DAOManger();
 
 	/*
@@ -43,4 +40,5 @@ public abstract class DBActivity extends Activity
 		daoManager.onStop();
 		super.onStop();
 	}
+
 }

@@ -70,7 +70,7 @@ import de.macsystems.windroid.receiver.EnableViewConnectionBroadcastReciever;
  * @version $Id$
  * 
  */
-public final class MainActivity extends Activity
+public final class MainActivity extends DBActivity
 {
 
 	private final static int ABOUT_MENU_ID = 777;
@@ -82,6 +82,8 @@ public final class MainActivity extends Activity
 	private final static String LOG_TAG = MainActivity.class.getSimpleName();
 
 	private EnableViewConnectionBroadcastReciever broadcastReceiver;
+
+	private ISpotDAO spotDAO = null;
 
 	/*
 	 * (non-Javadoc)
@@ -165,9 +167,11 @@ public final class MainActivity extends Activity
 		// Show actual database size.
 		//
 		final TextView footer = (TextView) findViewById(R.id.main_footer_database_size);
-		final ISpotDAO dao = DAOFactory.getSpotDAO(this);
+
+		spotDAO = DAOFactory.getSpotDAO(this);
+		daoManager.addDAO(spotDAO);
 		final DecimalFormat df = new DecimalFormat(",##0");
-		final String nrSpot = df.format(dao.getSize());
+		final String nrSpot = df.format(spotDAO.getSize());
 
 		final String orgString = getString(R.string.welcome_database_size);
 		final String dbSizeString = orgString.replace("$1", nrSpot);
@@ -541,6 +545,8 @@ public final class MainActivity extends Activity
 	 */
 	private void launchSetupOrSpotSelectionActivity()
 	{
+
+		@Deprecated
 		final ISpotDAO dao = DAOFactory.getSpotDAO(MainActivity.this);
 		final boolean spotsfound = dao.hasSpots();
 

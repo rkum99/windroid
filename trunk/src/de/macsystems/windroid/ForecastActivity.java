@@ -22,7 +22,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -39,7 +38,7 @@ import de.macsystems.windroid.forecast.ForecastDetail;
  * @author mac
  * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
  */
-public final class ForecastActivity extends Activity
+public final class ForecastActivity extends DBActivity
 {
 
 	private final static String LOG_TAG = ForecastActivity.class.getSimpleName();
@@ -74,6 +73,8 @@ public final class ForecastActivity extends Activity
 			R.id.forecast_image_column_4, R.id.forecast_image_column_5, R.id.forecast_image_column_6,
 			R.id.forecast_image_column_7 };
 
+	private IForecastDAO forecastDAO = null;
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -85,12 +86,14 @@ public final class ForecastActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.forecast);
 
-//		final ViewFlipper flipper = (ViewFlipper) findViewById(R.id.flipper);
-//		flipper.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_in));
-//		flipper.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_out));
-////		flipper.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.slide_right));
-//		flipper.startFlipping();
-		
+		// final ViewFlipper flipper = (ViewFlipper) findViewById(R.id.flipper);
+		// flipper.setInAnimation(AnimationUtils.loadAnimation(this,
+		// R.anim.scale_in));
+		// flipper.setOutAnimation(AnimationUtils.loadAnimation(this,
+		// R.anim.scale_out));
+		// // flipper.setOutAnimation(AnimationUtils.loadAnimation(this,
+		// R.anim.slide_right));
+		// flipper.startFlipping();
 
 		final Intent intent = getIntent();
 		if (!isForecastID(intent))
@@ -100,8 +103,9 @@ public final class ForecastActivity extends Activity
 		}
 
 		final int forecastID = getForecastID(intent);
-		final IForecastDAO dao = DAOFactory.getForecast(this);
-		final Forecast forecast = dao.getForecast(forecastID);
+		forecastDAO = DAOFactory.getForecast(this);
+		daoManager.addDAO(forecastDAO);
+		final Forecast forecast = forecastDAO.getForecast(forecastID);
 
 		final String serverTime = titleDateFormat.format(forecast.getTimestamp());
 		setTitle(forecast.getName() + " update " + serverTime);

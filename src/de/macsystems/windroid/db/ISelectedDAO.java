@@ -72,7 +72,7 @@ public interface ISelectedDAO extends IDAO
 	 * {@value #COLUMN_MAXWIND}
 	 */
 	public final static String COLUMN_MAXWIND = "maxwind";
-	
+
 	/**
 	 * Adds a Spot
 	 * 

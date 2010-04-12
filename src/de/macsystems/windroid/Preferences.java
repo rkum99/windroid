@@ -38,6 +38,10 @@ public final class Preferences extends PreferenceActivity
 {
 	private final static String LOG_TAG = Preferences.class.getSimpleName();
 
+	private final DAOManger daoManager = new DAOManger();
+
+	private IPreferencesDAO prefDAO = null;
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -46,11 +50,10 @@ public final class Preferences extends PreferenceActivity
 	@Override
 	protected void onPause()
 	{
-		super.onPause();
 		// Commit changes to Database
-		final IPreferencesDAO dao = DAOFactory.getPreferencesDAO(this);
 		final Map<String, ?> prefs = Util.getSharedPreferences(this).getAll();
-		dao.update(prefs);
+		prefDAO.update(prefs);
+		super.onPause();
 	}
 
 	/*
@@ -62,6 +65,8 @@ public final class Preferences extends PreferenceActivity
 	protected void onCreate(final Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		prefDAO = DAOFactory.getPreferencesDAO(this);
+		daoManager.addDAO(prefDAO);
 		logSharedPreferences();
 		addPreferencesFromResource(R.xml.preferencesdescription);
 	}

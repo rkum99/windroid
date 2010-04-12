@@ -18,11 +18,10 @@
 package de.macsystems.windroid;
 
 import android.app.ListActivity;
-import android.util.Log;
-import de.macsystems.windroid.db.IDAO;
-import de.macsystems.windroid.db.ISelectedDAO;
 
 /**
+ * A List activity which also provides DAO management features
+ * 
  * @author mac
  * @version $Id$
  */
@@ -31,24 +30,7 @@ public class DBListActivity extends ListActivity
 
 	private final static String LOG_TAG = DBListActivity.class.getSimpleName();
 
-	private IDAO dao = null;
-
-	/**
-	 * 
-	 * @param _dao
-	 */
-	public void onCreateDAO(final ISelectedDAO _dao)
-	{
-		if (_dao == null)
-		{
-			throw new NullPointerException("dao");
-		}
-		if (Logging.isLoggingEnabled())
-		{
-			Log.d(LOG_TAG, "DAO setted.");
-		}
-		dao = _dao;
-	}
+	protected final DAOManger daoManager = new DAOManger();
 
 	/*
 	 * (non-Javadoc)
@@ -58,11 +40,7 @@ public class DBListActivity extends ListActivity
 	@Override
 	protected void onStop()
 	{
+		daoManager.onStop();
 		super.onStop();
-		if (dao == null)
-		{
-			throw new IllegalStateException("dao is null, do you called onCreateDAO ?");
-		}
-		dao.onStop();
 	}
 }

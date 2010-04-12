@@ -171,7 +171,6 @@ public final class PreferenceImpl extends BaseImpl implements IPreferencesDAO
 					builder.append("')");
 
 					db.execSQL(builder.toString());
-					// TODO: uncomment logging for production version
 					if (Logging.isLoggingEnabled())
 					{
 						Log.d(LOG_TAG, "Execute SQL : " + builder.toString());

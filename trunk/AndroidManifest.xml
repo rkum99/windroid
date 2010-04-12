@@ -22,7 +22,10 @@
 	-->
 
 	<application
-		android:allowClearUserData="true">
+	android:debuggable="true"
+	android:label="@string/mainfest_label"
+	android:description="@string/mainfest_description"
+	android:allowClearUserData="true">
 		<activity
 			android:name="de.macsystems.windroid.MainActivity"
 			android:label="@string/app_name"

@@ -25,12 +25,11 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.util.AndroidRuntimeException;
 import android.util.Log;
 import android.view.View;
 import de.macsystems.windroid.Logging;
-import de.macsystems.windroid.common.IntentConstants;
 import de.macsystems.windroid.service.ISpotService;
+import de.macsystems.windroid.service.SpotService;
 
 /**
  * Proxy Class with implements the ISpotService Interface to control the
@@ -72,12 +71,15 @@ public final class SpotServiceConnection implements ServiceConnection, ISpotServ
 
 		viewToEnable = _viewToEnable;
 
-		final boolean success = _context.bindService(new Intent(
-				IntentConstants.DE_MACSYSTEMS_WINDROID_START_SPOT_SERVICE_ACTION), this, Context.BIND_AUTO_CREATE);
-		if (!success)
-		{
-			throw new AndroidRuntimeException("Failed to bind Service.");
-		}
+		_context.startService(new Intent(_context, SpotService.class));
+
+		// final boolean success = _context.bindService(new Intent(
+		// IntentConstants.DE_MACSYSTEMS_WINDROID_START_SPOT_SERVICE_ACTION),
+		// this, Context.BIND_AUTO_CREATE);
+		// if (!success)
+		// {
+		// throw new AndroidRuntimeException("Failed to bind Service.");
+		// }
 	}
 
 	/*

@@ -62,6 +62,7 @@ import de.macsystems.windroid.db.ISpotDAO;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.proxy.SpotServiceConnection;
 import de.macsystems.windroid.receiver.EnableViewConnectionBroadcastReciever;
+import de.macsystems.windroid.service.SpotService;
 
 /**
  * This is the Entry Point when the Application will be launched.
@@ -84,6 +85,8 @@ public final class MainActivity extends DBActivity
 	private EnableViewConnectionBroadcastReciever broadcastReceiver;
 
 	private ISpotDAO spotDAO = null;
+
+	private SpotServiceConnection serviceConnection;
 
 	/*
 	 * (non-Javadoc)
@@ -193,6 +196,19 @@ public final class MainActivity extends DBActivity
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see android.app.Activity#onStop()
+	 */
+	@Override
+	protected void onDestroy()
+	{
+		final Intent stopIntent = new Intent(this, SpotService.class);
+		stopService(stopIntent);
+		super.onDestroy();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override
@@ -260,7 +276,8 @@ public final class MainActivity extends DBActivity
 		});
 
 		final CompoundButton toogleServiceButton = (CompoundButton) findViewById(R.id.button_toogle_service);
-		final SpotServiceConnection serviceConnection = new SpotServiceConnection(toogleServiceButton, this);
+		serviceConnection = new SpotServiceConnection(toogleServiceButton, this);
+
 		toogleServiceButton.setOnCheckedChangeListener(createServiceToogleListener(serviceConnection));
 
 		setupNotificationTest();

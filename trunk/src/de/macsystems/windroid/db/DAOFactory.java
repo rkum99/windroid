@@ -17,6 +17,8 @@
  */
 package de.macsystems.windroid.db;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 import android.content.Context;
 import de.macsystems.windroid.db.sqlite.ContinentImpl;
 import de.macsystems.windroid.db.sqlite.CountryImpl;
@@ -35,63 +37,90 @@ import de.macsystems.windroid.progress.NullProgressAdapter;
  */
 public final class DAOFactory
 {
+
+	private final static AtomicReference<Database> dbReference = new AtomicReference<Database>();
+
 	private DAOFactory()
 	{
 	}
 
+	private static synchronized Database createDatabase(final Context _context)
+	{
+		Database database = dbReference.get();
+		if (database == null)
+		{
+			database = new Database(_context);
+			dbReference.set(database);
+		}
+		return database;
+	}
+
 	public final static IForecastDAO getForecast(final Context _context)
 	{
-		return new ForecastImpl(new Database(_context), NullProgressAdapter.INSTANCE);
+		return new ForecastImpl(createDatabase(_context), NullProgressAdapter.INSTANCE);
 	}
 
 	public final static ISpotDAO getSpotDAO(final Context _context)
 	{
-		return new SpotImpl(new Database(_context), NullProgressAdapter.INSTANCE);
+		return new SpotImpl(createDatabase(_context), NullProgressAdapter.INSTANCE);
+		// return new SpotImpl(new Database(_context),
+		// NullProgressAdapter.INSTANCE);
 	}
 
 	public final static ISpotDAO getSpotDAO(final Context _context, final IProgress _progress)
 	{
-		return new SpotImpl(new Database(_context), _progress);
+		return new SpotImpl(createDatabase(_context), _progress);
+		// return new SpotImpl(new Database(_context), _progress);
 	}
 
 	public final static IContinentDAO getContinentDAO(final Context _context)
 	{
-		return new ContinentImpl(new Database(_context), NullProgressAdapter.INSTANCE);
+		return new ContinentImpl(createDatabase(_context), NullProgressAdapter.INSTANCE);
+		// return new ContinentImpl(new Database(_context),
+		// NullProgressAdapter.INSTANCE);
 	}
 
 	public final static IContinentDAO getContinentDAO(final Context _context, final IProgress _progress)
 	{
-		return new ContinentImpl(new Database(_context), _progress);
+		return new ContinentImpl(createDatabase(_context), _progress);
+		// return new ContinentImpl(new Database(_context), _progress);
 	}
 
 	public final static ISelectedDAO getSelectedDAO(final Context _context)
 	{
-		return new SelectedImpl(new Database(_context));
+
+		return new SelectedImpl(createDatabase(_context));
+		// return new SelectedImpl(new Database(_context));
 	}
 
 	public final static ISelectedDAO getSelectedDAO(final Context _context, final IProgress _progress)
 	{
-		return new SelectedImpl(new Database(_context), _progress);
+		return new SelectedImpl(createDatabase(_context), _progress);
+		// return new SelectedImpl(new Database(_context), _progress);
 	}
 
 	public static ICountryDAO getCountryDAO(final Context _context)
 	{
-		return new CountryImpl(new Database(_context));
+		return new CountryImpl(createDatabase(_context));
+		// return new CountryImpl(new Database(_context));
 	}
 
 	public final static IRegionDAO getRegionDAO(final Context _context, final IProgress _progress)
 	{
-		return new RegionImpl(new Database(_context), _progress);
+		return new RegionImpl(createDatabase(_context), _progress);
+		// return new RegionImpl(new Database(_context), _progress);
 	}
 
 	public final static IRegionDAO getRegionDAO(final Context _context)
 	{
-		return new RegionImpl(new Database(_context));
+		return new RegionImpl(createDatabase(_context));
+		// return new RegionImpl(new Database(_context));
 	}
 
 	public final static IPreferencesDAO getPreferencesDAO(final Context _context)
 	{
-		return new PreferenceImpl(new Database(_context));
+		return new PreferenceImpl(createDatabase(_context));
+		// return new PreferenceImpl(new Database(_context));
 	}
 
 }

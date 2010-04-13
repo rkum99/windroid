@@ -213,4 +213,31 @@ public class SpotService extends Service
 			threadPool = new ScheduledThreadPoolExecutor(poolSize, new ThreadFactory());
 		}
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Service#onDestroy()
+	 */
+	@Override
+	public void onDestroy()
+	{
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "Service#onDestroy");
+		}
+		try
+		{
+			if (threadPool != null)
+			{
+				threadPool.shutdown();
+			}
+		}
+		catch (final SecurityException e)
+		{
+			Log.e(LOG_TAG, "shutdown failed", e);
+		}
+		super.onDestroy();
+	}
+
 }

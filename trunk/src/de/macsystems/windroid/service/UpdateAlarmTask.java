@@ -21,14 +21,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import de.macsystems.windroid.Logging;
-import de.macsystems.windroid.OngoingUpdateActivity;
 import de.macsystems.windroid.R;
 import de.macsystems.windroid.alarm.AlarmUtil;
 import de.macsystems.windroid.common.SpotConfigurationVO;
@@ -39,7 +34,8 @@ import de.macsystems.windroid.db.ISelectedDAO;
  * @author mac
  * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
  */
-public final class UpdateAlarmTask implements Runnable
+public final class UpdateAlarmTask extends AbstractNotificationTask implements Runnable
+
 {
 	private final static String LOG_TAG = UpdateAlarmTask.class.getSimpleName();
 
@@ -48,15 +44,14 @@ public final class UpdateAlarmTask implements Runnable
 	 */
 	private final static AtomicInteger notificationCounter = new AtomicInteger(1);
 
-	private final Context context;
-
-	public UpdateAlarmTask(final Context _context)
+	/**
+	 * 
+	 * @param _context
+	 * @throws NullPointerException
+	 */
+	public UpdateAlarmTask(final Context _context) throws NullPointerException
 	{
-		if (_context == null)
-		{
-			throw new NullPointerException("context");
-		}
-		context = _context;
+		super(_context);
 	}
 
 	/*
@@ -67,13 +62,12 @@ public final class UpdateAlarmTask implements Runnable
 	@Override
 	public void run()
 	{
-		final int alarmID = showStatus(context, (NotificationManager) context
-				.getSystemService(Context.NOTIFICATION_SERVICE), context.getString(R.string.ongoing_update_title),
-				context.getString(R.string.ongoing_update_text));
+		showStatus(getContext().getString(R.string.ongoing_update_title), getContext().getString(
+				R.string.ongoing_update_text));
 
 		try
 		{
-			final ISelectedDAO dao = DAOFactory.getSelectedDAO(context);
+			final ISelectedDAO dao = DAOFactory.getSelectedDAO(getContext());
 
 			if (!dao.isSpotActiv())
 			{
@@ -90,45 +84,12 @@ public final class UpdateAlarmTask implements Runnable
 			while (iter.hasNext())
 			{
 				final SpotConfigurationVO spot = iter.next();
-				AlarmUtil.createAlarmsForSpot(spot.getPrimaryKey(), context);
+				AlarmUtil.createAlarmsForSpot(spot.getPrimaryKey(), getContext());
 			}
-
 		}
 		finally
 		{
-			removeUpdateOnStatusBar((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE),
-					alarmID);
+			clearNotification();
 		}
-
 	}
-
-	/**
-	 * 
-	 * @param _notificationManager
-	 * @param _intentID
-	 */
-	private static void removeUpdateOnStatusBar(final NotificationManager _notificationManager,
-			final int _cancelIntentID)
-	{
-		_notificationManager.cancel(_cancelIntentID);
-	}
-
-	private int showStatus(final Context context, final NotificationManager notificationManager,
-			final String notificationTitle, final String notificationDetails)
-	{
-
-		final int notificationID = notificationCounter.incrementAndGet();
-
-		final long when = System.currentTimeMillis(); // notification time
-		final Intent notificationIntent = new Intent(context, OngoingUpdateActivity.class);
-		final PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
-
-		final Notification notification = new Notification(R.drawable.icon_update, notificationTitle, when);
-		notification.flags |= Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
-		notification.setLatestEventInfo(context, notificationTitle, notificationDetails, contentIntent);
-
-		notificationManager.notify(notificationID, notification);
-		return notificationID;
-	}
-
 }

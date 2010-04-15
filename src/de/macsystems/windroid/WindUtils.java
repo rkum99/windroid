@@ -210,6 +210,7 @@ public class WindUtils
 
 			md5 = latestMD5;
 			config.put(STATION_MD5, md5);
+			// TODO: Use PreferenceDAO instead
 			IOUtils.writeConfiguration(_context, config);
 			if (Logging.isLoggingEnabled())
 			{

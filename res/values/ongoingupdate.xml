@@ -9,4 +9,7 @@
 	<string
 		name="ongoing_update_title">Update</string>
 
+	<string
+		name="recieve_forecast_update_title">Update :</string>
+
 </resources>

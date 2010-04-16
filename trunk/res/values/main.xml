@@ -22,7 +22,7 @@
 	<string
 		name="button_show_spot_overview">Overview</string>
 	<string
-		name="button_simulate_wind_alert_button">Test: Simulate Alert</string>
+		name="button_simulate_wind_alert_button">Test: Cancel Alarms</string>
 
 	<string
 		name="button_toogle_service_selected">Stop monitoring</string>

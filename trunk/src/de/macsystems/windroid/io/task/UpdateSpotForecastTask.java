@@ -26,6 +26,7 @@ import android.util.Log;
 import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.R;
 import de.macsystems.windroid.WindUtils;
+import de.macsystems.windroid.alarm.AlarmUtil;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.db.DAOFactory;
 import de.macsystems.windroid.db.IForecastDAO;
@@ -40,7 +41,8 @@ import de.macsystems.windroid.service.AbstractNotificationTask;
  * Database.
  * 
  * @author Jens Hohl
- * @version $Id$
+ * @version $Id: UpdateSpotForecastTask.java 314 2010-04-15 11:50:03Z jens.hohl
+ *          $
  * 
  */
 public class UpdateSpotForecastTask extends AbstractNotificationTask implements Callable<Void>
@@ -84,11 +86,13 @@ public class UpdateSpotForecastTask extends AbstractNotificationTask implements 
 			final boolean available = IOUtils.isNetworkReachable(getContext());
 			if (!available)
 			{
+				AlarmUtil.createRetryAlarm(selectedID, getContext());
 				if (Logging.isLoggingEnabled())
 				{
 					Log.d(LOG_TAG, "Cancel update as network not reachable.");
 				}
-				// createRetryAlarm(primaryKey);
+				// return Void
+				return null;
 			}
 			if (Logging.isLoggingEnabled())
 			{
@@ -108,12 +112,14 @@ public class UpdateSpotForecastTask extends AbstractNotificationTask implements 
 			catch (final IOException e)
 			{
 				Log.e(LOG_TAG, "Failed to create uri", e);
+				AlarmUtil.createRetryAlarm(selectedID, getContext());
 			}
 			catch (final RetryLaterException e)
 			{
 				Log.e(LOG_TAG, "", e);
+				AlarmUtil.createRetryAlarm(selectedID, getContext());
 			}
-			catch (final Exception e)
+			catch (final Throwable e)
 			{
 				Log.e(LOG_TAG, "", e);
 			}

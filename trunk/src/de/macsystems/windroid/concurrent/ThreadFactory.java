@@ -34,7 +34,7 @@ public final class ThreadFactory implements java.util.concurrent.ThreadFactory
 
 	private final static String LOG_TAG = ThreadFactory.class.getSimpleName();
 
-	private final static String threadName = "SpotService-";
+	private final static String THREADNAME = "SpotService-";
 	/**
 	 * Reference Counter
 	 */
@@ -49,9 +49,11 @@ public final class ThreadFactory implements java.util.concurrent.ThreadFactory
 	public Thread newThread(final Runnable r)
 	{
 		final Thread thread = new Thread(r);
+		thread.setPriority(Thread.NORM_PRIORITY);
+		thread.setUncaughtExceptionHandler(new ThreadLogger());
 		final int counter = count.getAndIncrement();
-		final String name = threadName + counter;
-		thread.setName(threadName + counter);
+		final String name = THREADNAME + counter;
+		thread.setName(THREADNAME + counter);
 		if (Logging.isLoggingEnabled())
 		{
 			Log.d(LOG_TAG, "Thread created :" + name);

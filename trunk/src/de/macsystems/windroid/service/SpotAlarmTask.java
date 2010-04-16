@@ -33,7 +33,7 @@ import de.macsystems.windroid.db.ISelectedDAO;
  * 
  * @author mac
  * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
- * @see AlarmUtil#createAlarmsForSpot(int, Context)
+ * @see AlarmUtil#createAlarmForSpot(int, Context)
  */
 public class SpotAlarmTask implements Runnable
 {
@@ -78,7 +78,7 @@ public class SpotAlarmTask implements Runnable
 		while (iter.hasNext())
 		{
 			final SpotConfigurationVO spot = iter.next();
-			AlarmUtil.createAlarmsForSpot(spot.getPrimaryKey(), context);
+			AlarmUtil.createAlarmForSpot(spot.getPrimaryKey(), context);
 		}
 	}
 }

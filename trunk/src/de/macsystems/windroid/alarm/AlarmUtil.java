@@ -39,7 +39,13 @@ public final class AlarmUtil
 
 	private static final long INITIAL_DELAY = 100L;
 
+	private final static int REQUEST_ID = 0;
+
 	private final static AtomicInteger alarmCounter = new AtomicInteger(1);
+
+	private AlarmUtil()
+	{
+	}
 
 	/**
 	 * Creates an Alarm by using the <code>AlarmService</code>. Each Alarm will
@@ -51,7 +57,7 @@ public final class AlarmUtil
 	 * @see IntentConstants#SELECTED_PRIMARY_KEY can be used to lookup primary
 	 *      key of spot to monitor
 	 */
-	public static void createAlarmsForSpot(final int _id, final Context _context)
+	public static void createAlarmForSpot(final int _id, final Context _context)
 	{
 		if (_context == null)
 		{
@@ -66,11 +72,57 @@ public final class AlarmUtil
 		//
 		final Intent intent = new Intent(_context, AlarmBroadcastReciever.class);
 		intent.putExtra(IntentConstants.SELECTED_PRIMARY_KEY, _id);
-		final int requestID = alarmCounter.incrementAndGet();
-		final PendingIntent pendingIntent = PendingIntent.getBroadcast(_context, requestID, intent, 0);
+		final PendingIntent pendingIntent = PendingIntent.getBroadcast(_context, REQUEST_ID, intent,
+				PendingIntent.FLAG_ONE_SHOT);
 		final AlarmManager alarmManager = (AlarmManager) _context.getSystemService(Context.ALARM_SERVICE);
-		alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, now + INITIAL_DELAY, AlarmManager.INTERVAL_DAY,
-				pendingIntent);
+		// TODO Fix initial delay
+		alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, now + INITIAL_DELAY, (10L * 1000L), pendingIntent);
+
+		// alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, now +
+		// INITIAL_DELAY, AlarmManager.INTERVAL_DAY,
+		// pendingIntent);
+	}
+
+	/**
+	 * 
+	 * @param _selectedID
+	 * @param _context
+	 */
+	public static void createRetryAlarm(final int _selectedID, final Context _context)
+	{
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "Creating retry alarm for selected with id :" + _selectedID);
+		}
+		final long now = System.currentTimeMillis();
+		//
+		final Intent intent = new Intent(_context, AlarmBroadcastReciever.class);
+		intent.putExtra(IntentConstants.SELECTED_PRIMARY_KEY, _selectedID);
+		final PendingIntent pendingIntent = PendingIntent.getBroadcast(_context, REQUEST_ID, intent,
+				PendingIntent.FLAG_ONE_SHOT);
+		final AlarmManager alarmManager = (AlarmManager) _context.getSystemService(Context.ALARM_SERVICE);
+		alarmManager.set(AlarmManager.RTC_WAKEUP, now + (15L * 1000L), pendingIntent);
+	}
+
+	/**
+	 * 
+	 * @param _selectedID
+	 * @param _context
+	 */
+	public static void cancelAlarm(final int _selectedID, final Context _context)
+	{
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "Canceling Alarm for selected with id :" + _selectedID);
+		}
+		//
+
+		final Intent intent = new Intent(_context, AlarmBroadcastReciever.class);
+		intent.putExtra(IntentConstants.SELECTED_PRIMARY_KEY, _selectedID);
+		final PendingIntent pendingIntent = PendingIntent.getBroadcast(_context, REQUEST_ID, intent,
+				PendingIntent.FLAG_ONE_SHOT);
+		final AlarmManager alarmManager = (AlarmManager) _context.getSystemService(Context.ALARM_SERVICE);
+		alarmManager.cancel(pendingIntent);
 	}
 
 }

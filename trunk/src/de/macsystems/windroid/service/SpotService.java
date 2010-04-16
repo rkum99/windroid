@@ -17,13 +17,11 @@
  */
 package de.macsystems.windroid.service;
 
-import java.util.concurrent.ScheduledFuture;
+import java.util.List;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
@@ -33,9 +31,7 @@ import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.R;
 import de.macsystems.windroid.common.IntentConstants;
 import de.macsystems.windroid.concurrent.ThreadFactory;
-import de.macsystems.windroid.forecast.Forecast;
-import de.macsystems.windroid.io.task.UpdateSpotsTask;
-import de.macsystems.windroid.receiver.AlarmBroadcastReciever;
+import de.macsystems.windroid.io.task.UpdateSpotForecastTask;
 
 /**
  * @author Jens Hohl
@@ -53,8 +49,6 @@ public class SpotService extends Service
 	 * The Threadpool used to schedule all kind of tasks.
 	 */
 	private ScheduledThreadPoolExecutor threadPool;
-
-	private final AtomicInteger alarmCounter = new AtomicInteger(1);
 
 	private final ISpotService serviceBinder = new ISpotService.Stub()
 	{
@@ -82,8 +76,12 @@ public class SpotService extends Service
 		@Override
 		public void update(final int _selectedID)
 		{
-			final UpdateSpotsTask task = new UpdateSpotsTask(_selectedID, SpotService.this);
-			final ScheduledFuture<Forecast> future = threadPool.schedule(task, INITIAL_DELAY, TimeUnit.MILLISECONDS);
+			if (Logging.isLoggingEnabled())
+			{
+				Log.d(LOG_TAG, "Insert Task to update spot with selectedID:" + _selectedID + " into scheduler");
+			}
+			final UpdateSpotForecastTask task = new UpdateSpotForecastTask(_selectedID, SpotService.this);
+			threadPool.schedule(task, INITIAL_DELAY, TimeUnit.MILLISECONDS);
 		}
 	};
 
@@ -123,7 +121,7 @@ public class SpotService extends Service
 		createThreadPool();
 		if (Logging.isLoggingEnabled())
 		{
-			Log.i(LOG_TAG, "Service started ");
+			Log.i(LOG_TAG, "onStart");
 		}
 		final boolean found = isSelectedID(_intent);
 		if (!found)
@@ -179,30 +177,6 @@ public class SpotService extends Service
 	}
 
 	/**
-	 * Creates an Alarm which should be executed whenever the network is not
-	 * reachable
-	 * 
-	 * @param _id
-	 *            TODO : Alarms that fail cause of not reachable network, should
-	 *            run again.
-	 */
-	private void createRetryAlarm(final long _id)
-	{
-		if (Logging.isLoggingEnabled())
-		{
-			Log.d(LOG_TAG, "Creating retry alarm for selected with id :" + _id);
-		}
-		final long now = System.currentTimeMillis();
-
-		final Intent intent = new Intent(this, AlarmBroadcastReciever.class);
-		intent.putExtra(IntentConstants.SELECTED_PRIMARY_KEY, _id);
-		final int requestID = alarmCounter.incrementAndGet();
-		final PendingIntent pendingIntent = PendingIntent.getBroadcast(this, requestID, intent, 0);
-		final AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-		alarmManager.set(AlarmManager.RTC_WAKEUP, now + (AlarmManager.INTERVAL_HALF_HOUR), pendingIntent);
-	}
-
-	/**
 	 * Checks if ThreadPool already created, if not it creates it
 	 */
 	private synchronized void createThreadPool()
@@ -222,22 +196,61 @@ public class SpotService extends Service
 	@Override
 	public void onDestroy()
 	{
-		if (Logging.isLoggingEnabled())
-		{
-			Log.d(LOG_TAG, "Service#onDestroy");
-		}
 		try
 		{
+			if (Logging.isLoggingEnabled())
+			{
+				Log.d(LOG_TAG, "Service#onDestroy");
+			}
+			//
 			if (threadPool != null)
 			{
+				// First we try a 'soft' shutdown
 				threadPool.shutdown();
+				// waiting for termination.
+				final boolean isTerminated = threadPool.awaitTermination(4L, TimeUnit.SECONDS);
+				if (!isTerminated)
+				{
+					Log.d(LOG_TAG, "soft shutdown failed, trying hard shutdown.");
+					// Do a hard termination.
+					final List<Runnable> uncompletedTasks = threadPool.shutdownNow();
+					logUncompletedTask(uncompletedTasks);
+				}
+				Log.d(LOG_TAG, "shutdown completed.");
 			}
 		}
 		catch (final SecurityException e)
 		{
 			Log.e(LOG_TAG, "shutdown failed", e);
 		}
-		super.onDestroy();
+		catch (final InterruptedException e)
+		{
+			Log.e(LOG_TAG, "Failed to shutdown threadpool");
+		}
+		finally
+		{
+			super.onDestroy();
+		}
 	}
 
+	/**
+	 * Lists all uncompleted task.<br>
+	 * Method is more a debug method than very useful yet.
+	 * 
+	 * @param tasks
+	 */
+	private void logUncompletedTask(final List<Runnable> tasks)
+	{
+		if (tasks == null)
+		{
+			return;
+		}
+		if (Logging.isLoggingEnabled())
+		{
+			for (final Runnable task : tasks)
+			{
+				Log.d(LOG_TAG, " Task not completed: " + task.toString());
+			}
+		}
+	}
 }

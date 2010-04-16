@@ -84,7 +84,7 @@ public final class UpdateAlarmTask extends AbstractNotificationTask implements R
 			while (iter.hasNext())
 			{
 				final SpotConfigurationVO spot = iter.next();
-				AlarmUtil.createAlarmsForSpot(spot.getPrimaryKey(), getContext());
+				AlarmUtil.createAlarmForSpot(spot.getPrimaryKey(), getContext());
 			}
 		}
 		finally

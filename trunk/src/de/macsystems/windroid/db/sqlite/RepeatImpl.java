@@ -67,7 +67,7 @@ public final class RepeatImpl extends BaseImpl implements IRepeatDAO
 		Cursor c = null;
 		try
 		{
-			c = db.rawQuery("select * from " + tableName + " where _id=?", new String[]
+			c = db.rawQuery("select * FROM " + tableName + " WHERE _id=?", new String[]
 			{ Integer.toString(_id) });
 
 			moveToFirstOrThrow(c);

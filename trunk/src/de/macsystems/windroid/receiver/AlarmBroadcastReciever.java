@@ -37,6 +37,8 @@ public class AlarmBroadcastReciever extends BroadcastReceiver
 {
 	private final static String LOG_TAG = AlarmBroadcastReciever.class.getSimpleName();
 
+	private final int ILLEGAL_VALUE = -1;
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -46,8 +48,8 @@ public class AlarmBroadcastReciever extends BroadcastReceiver
 	@Override
 	public void onReceive(final Context context, final Intent intent)
 	{
-		final int id = intent.getIntExtra(IntentConstants.SELECTED_PRIMARY_KEY, -1);
-		if (id == -1)
+		final int id = intent.getIntExtra(IntentConstants.SELECTED_PRIMARY_KEY, ILLEGAL_VALUE);
+		if (id == ILLEGAL_VALUE)
 		{
 			throw new IllegalArgumentException("missing id");
 		}
@@ -55,6 +57,7 @@ public class AlarmBroadcastReciever extends BroadcastReceiver
 		{
 			Log.d(LOG_TAG, "Alarm for Station " + id + " triggered.");
 		}
+		// Start the SpotService
 		final Intent startServiceIntent = new Intent();
 		startServiceIntent.putExtra(IntentConstants.SELECTED_PRIMARY_KEY, id);
 		startServiceIntent.setAction(IntentConstants.DE_MACSYSTEMS_WINDROID_START_SPOT_SERVICE_ACTION);

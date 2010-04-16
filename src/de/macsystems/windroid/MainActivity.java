@@ -23,6 +23,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -54,6 +55,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import de.macsystems.windroid.alarm.AlarmDetail;
+import de.macsystems.windroid.alarm.AlarmUtil;
 import de.macsystems.windroid.common.IntentConstants;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.db.DAOFactory;
@@ -119,18 +121,21 @@ public final class MainActivity extends DBActivity
 					final ISelectedDAO dao = DAOFactory.getSelectedDAO(this);
 					dao.insertSpot(spot);
 
-					final StringBuilder builder = new StringBuilder(256).append("\n");
-					builder.append("Folgender Spot wurde Angelegt:\n").append("\n\n");
-					builder.append("Name: ").append(spot.getStation().getName()).append("\n");
-					builder.append("ID: ").append(spot.getStation().getId()).append("\n");
-					builder.append("Keyword: ").append(spot.getStation().getKeyword()).append("\n");
-					builder.append("hasStatistic: ").append(spot.getStation().hasStatistic()).append("\n");
-					builder.append("hasSuperForcast: ").append(spot.getStation().hasSuperforecast()).append("\n");
-					builder.append("PreferedWindUnit: ").append(spot.getPreferredWindUnit()).append("\n");
-					builder.append("Wind From: ").append(spot.getFromDirection()).append("\n");
-					builder.append("Wind To: ").append(spot.getToDirection()).append("\n");
-					builder.append("Take care of Windirection: ").append(spot.isUseWindirection()).append("\n");
-					Toast.makeText(MainActivity.this, builder.toString(), Toast.LENGTH_LONG).show();
+					if (Logging.isLoggingEnabled())
+					{
+						final StringBuilder builder = new StringBuilder(256).append("\n");
+						builder.append("Folgender Spot wurde Angelegt:\n").append("\n\n");
+						builder.append("Name: ").append(spot.getStation().getName()).append("\n");
+						builder.append("ID: ").append(spot.getStation().getId()).append("\n");
+						builder.append("Keyword: ").append(spot.getStation().getKeyword()).append("\n");
+						builder.append("hasStatistic: ").append(spot.getStation().hasStatistic()).append("\n");
+						builder.append("hasSuperForcast: ").append(spot.getStation().hasSuperforecast()).append("\n");
+						builder.append("PreferedWindUnit: ").append(spot.getPreferredWindUnit()).append("\n");
+						builder.append("Wind From: ").append(spot.getFromDirection()).append("\n");
+						builder.append("Wind To: ").append(spot.getToDirection()).append("\n");
+						builder.append("Take care of Windirection: ").append(spot.isUseWindirection()).append("\n");
+						Toast.makeText(MainActivity.this, builder.toString(), Toast.LENGTH_LONG).show();
+					}
 				}
 
 			}
@@ -201,6 +206,9 @@ public final class MainActivity extends DBActivity
 	@Override
 	protected void onDestroy()
 	{
+		/**
+		 * Destroy the Service. As we not using it any more.
+		 */
 		final Intent stopIntent = new Intent(this, SpotService.class);
 		stopService(stopIntent);
 		super.onDestroy();
@@ -280,7 +288,13 @@ public final class MainActivity extends DBActivity
 
 		toogleServiceButton.setOnCheckedChangeListener(createServiceToogleListener(serviceConnection));
 
-		setupNotificationTest();
+		setupCancelAlarmTest();
+
+		// create alarms for selected IDs // testing
+		for (int i = 0; i < 2; i++)
+		{
+			AlarmUtil.createAlarmForSpot(1, this);
+		}
 
 	}
 
@@ -443,7 +457,7 @@ public final class MainActivity extends DBActivity
 	 * Test Code
 	 */
 	@Deprecated
-	private final void setupNotificationTest()
+	private final void setupCancelAlarmTest()
 	{
 
 		final Button button = (Button) findViewById(R.id.button_simulate_wind_alert);
@@ -454,9 +468,8 @@ public final class MainActivity extends DBActivity
 			@Override
 			public final void onClick(final View v)
 			{
-				final NotificationManager mManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-				showNotification(MainActivity.this, mManager, 999, "Windalarm",
-						"Alarm für Station XYZ wurde ausgelöst.");
+				AlarmUtil.cancelAlarm(1, MainActivity.this);
+
 			}
 		};
 		button.setOnClickListener(listener);

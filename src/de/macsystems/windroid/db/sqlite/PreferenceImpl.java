@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import de.macsystems.windroid.Logging;
@@ -44,32 +45,6 @@ public final class PreferenceImpl extends BaseImpl implements IPreferencesDAO
 	public PreferenceImpl(final Database database)
 	{
 		super(database, "preferences");
-	}
-
-	@Override
-	public String fetchBy(final String _key)
-	{
-		String result = null;
-		final SQLiteDatabase db = getReadableDatabase();
-		Cursor cursor = null;
-		try
-		{
-			cursor = fetchBy("key", _key);
-			moveToFirstOrThrow(cursor);
-			final int index = cursor.getColumnIndexOrThrow("value");
-			result = cursor.getString(index);
-		}
-		catch (final Exception e)
-		{
-			Log.e(LOG_TAG, "failed to fetch \"" + _key + "\".", e);
-		}
-		finally
-		{
-			IOUtils.close(cursor);
-			IOUtils.close(db);
-		}
-		return result;
-
 	}
 
 	protected static boolean isKeyAvailable(final String _key, final SQLiteDatabase _db)
@@ -192,5 +167,35 @@ public final class PreferenceImpl extends BaseImpl implements IPreferencesDAO
 		{
 			IOUtils.close(db);
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.macsystems.windroid.db.IPreferencesDAO#useNetworkWhileRoaming()
+	 */
+	@Override
+	public boolean useNetworkWhileRoaming()
+	{
+		boolean result = false;
+		final SQLiteDatabase db = getReadableDatabase();
+		Cursor cursor = null;
+		try
+		{
+			cursor = db.rawQuery("SELECT * FROM PREFERENCES WHERE key=?", new String[]
+			{ "update_while_roaming" });
+
+			moveToFirstOrThrow(cursor);
+			result = getBoolean(cursor, COLUMN_VALUE);
+		}
+		catch (final SQLException e)
+		{
+			Log.e(LOG_TAG, "failed to query roaming:", e);
+		}
+		finally
+		{
+			IOUtils.close(cursor);
+		}
+		return result;
 	}
 }

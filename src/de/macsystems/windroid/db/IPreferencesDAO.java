@@ -28,6 +28,15 @@ import java.util.Map;
 public interface IPreferencesDAO extends IDAO
 {
 	/**
+	 * {@value #COLUMN_KEY}
+	 */
+	public final static String COLUMN_KEY = "key";
+	/**
+	 * {@value #COLUMN_VALUE}
+	 */
+	public final static String COLUMN_VALUE = "value";
+
+	/**
 	 * Updates a preference
 	 * 
 	 * @param _key
@@ -36,19 +45,19 @@ public interface IPreferencesDAO extends IDAO
 	public void update(final String _key, String _value);
 
 	/**
-	 * Returns a preference by given key, if not found <code>null</code> will be
-	 * returned.
-	 * 
-	 * @param _key
-	 * @return
-	 */
-	public String fetchBy(final String _key);
-
-	/**
 	 * 
 	 * persists all entry's into database.
 	 * 
 	 * @param
 	 */
 	public void update(final Map<?, ?> sharedPreferences);
+
+	/**
+	 * Returns <code>true</code> if network can access the network while
+	 * roaming.
+	 * 
+	 * @return
+	 */
+	public boolean useNetworkWhileRoaming();
+
 }

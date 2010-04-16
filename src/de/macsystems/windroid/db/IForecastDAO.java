@@ -64,5 +64,5 @@ public interface IForecastDAO extends IDAO
 	 * @param _forecast
 	 * @param _selectedID
 	 */
-	public void setForecast(final Forecast _forecast, final int _selectedID);
+	public void updateForecast(final Forecast _forecast, final int _selectedID);
 }

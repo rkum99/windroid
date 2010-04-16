@@ -41,6 +41,8 @@ import android.net.Uri;
 import android.net.NetworkInfo.State;
 import android.util.Log;
 import de.macsystems.windroid.Logging;
+import de.macsystems.windroid.db.DAOFactory;
+import de.macsystems.windroid.db.IPreferencesDAO;
 import de.macsystems.windroid.io.task.StationXMLUpdateTask;
 import de.macsystems.windroid.progress.IProgress;
 
@@ -93,11 +95,28 @@ public class IOUtils
 		 */
 		if (systemService.getActiveNetworkInfo() == null)
 		{
+			Log.i(LOG_TAG, "Network not reachable");
 			return false;
 		}
 
 		final State networkState = systemService.getActiveNetworkInfo().getState();
-		return State.CONNECTED == networkState ? true : false;
+		final boolean isRoamingNow = systemService.getActiveNetworkInfo().isRoaming();
+		// Query User Configuration
+		final IPreferencesDAO dao = DAOFactory.getPreferencesDAO(_context);
+		final boolean userWantIOWhileRoaming = dao.useNetworkWhileRoaming();
+
+		if (State.CONNECTED == networkState)
+		{
+			if (userWantIOWhileRoaming)
+			{
+				return true;
+			}
+			else
+			{
+				return isRoamingNow ? false : true;
+			}
+		}
+		return false;
 	}
 
 	/**

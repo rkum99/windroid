@@ -200,10 +200,10 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 			IOUtils.close(cursor);
 			IOUtils.close(db);
 		}
-	}
+	}	
 
 	@Override
-	public void setForecast(final Forecast forecast, final int _selectedID)
+	public void updateForecast(final Forecast forecast, final int _selectedID)
 	{
 		if (forecast == null)
 		{
@@ -276,25 +276,14 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 				// clear buffer
 				relationUpdateBuilder.setLength(0);
 			}
-			// remove old forecast_releation entries
-			// TODO: Check triggers !
+			// remove old forecast_releation entries, the trigger will do the
+			// rest!
 			{
 				final StringBuilder builder = new StringBuilder(64);
 				final Iterator<Integer> deleteIterator = columnIdsToDelete.iterator();
 				while (deleteIterator.hasNext())
 				{
 					builder.append("DELETE FROM forecast_releation WHERE forecastid=");
-					builder.append(deleteIterator.next());
-					db.execSQL(builder.toString());
-					builder.setLength(0);
-				}
-			}
-			{
-				final StringBuilder builder = new StringBuilder(48);
-				final Iterator<Integer> deleteIterator = columnIdsToDelete.iterator();
-				while (deleteIterator.hasNext())
-				{
-					builder.append("DELETE FROM forecast WHERE _id=");
 					builder.append(deleteIterator.next());
 					db.execSQL(builder.toString());
 					builder.setLength(0);

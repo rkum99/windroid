@@ -26,6 +26,7 @@ import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.alarm.AlarmUtil;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.db.DAOFactory;
+import de.macsystems.windroid.db.DBException;
 import de.macsystems.windroid.db.ISelectedDAO;
 
 /**
@@ -68,17 +69,25 @@ public class SpotAlarmTask implements Runnable
 			}
 			return;
 		}
-		final Collection<SpotConfigurationVO> spots = dao.getActivSpots();
-		if (Logging.isLoggingEnabled())
+		try
 		{
-			Log.i(LOG_TAG, "Found " + spots.size() + " spot(s) to install alarm trigger(s).");
-		}
+			final Collection<SpotConfigurationVO> spots = dao.getActivSpots();
+			if (Logging.isLoggingEnabled())
+			{
+				Log.i(LOG_TAG, "Found " + spots.size() + " spot(s) to install alarm trigger(s).");
+			}
 
-		final Iterator<SpotConfigurationVO> iter = spots.iterator();
-		while (iter.hasNext())
+			final Iterator<SpotConfigurationVO> iter = spots.iterator();
+			while (iter.hasNext())
+			{
+				final SpotConfigurationVO spot = iter.next();
+				AlarmUtil.createAlarmForSpot(spot.getPrimaryKey(), context);
+			}
+
+		}
+		catch (final DBException e)
 		{
-			final SpotConfigurationVO spot = iter.next();
-			AlarmUtil.createAlarmForSpot(spot.getPrimaryKey(), context);
+			Log.e(LOG_TAG, "Failed to get activ spots", e);
 		}
 	}
 }

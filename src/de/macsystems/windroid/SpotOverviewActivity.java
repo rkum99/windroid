@@ -33,10 +33,12 @@ import android.view.WindowManager;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnCreateContextMenuListener;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import de.macsystems.windroid.common.IntentConstants;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.db.DAOFactory;
+import de.macsystems.windroid.db.DBException;
 import de.macsystems.windroid.db.ISelectedDAO;
 
 /**
@@ -97,18 +99,25 @@ public final class SpotOverviewActivity extends DBListActivity
 					Log.d(LOG_TAG, "Selected item for Context :" + ((AdapterContextMenuInfo) menuInfo).id);
 				}
 
-				final boolean isActiv = dao.isActiv(selectedID);
-				menu.add(0, EDIT_ITEM_ID, 0, R.string.spot_overview_spot_edit);
-				if (isActiv)
+				try
 				{
-					menu.add(0, FORECAST_ITEM_ID, 0, R.string.spot_overview_spot_forecast);
-					menu.add(0, DISABLE_ITEM_ID, 0, R.string.spot_overview_spot_monitoring_disable);
+					boolean isActiv = dao.isActiv(selectedID);
+					menu.add(0, EDIT_ITEM_ID, 0, R.string.spot_overview_spot_edit);
+					if (isActiv)
+					{
+						menu.add(0, FORECAST_ITEM_ID, 0, R.string.spot_overview_spot_forecast);
+						menu.add(0, DISABLE_ITEM_ID, 0, R.string.spot_overview_spot_monitoring_disable);
+					}
+					else
+					{
+						menu.add(0, ENABLE_ITEM_ID, 0, R.string.spot_overview_spot_monitoring_enable);
+					}
+					menu.add(0, DELETE_ITEM_ID, 0, R.string.spot_overview_spot_delete);
 				}
-				else
+				catch (final DBException e)
 				{
-					menu.add(0, ENABLE_ITEM_ID, 0, R.string.spot_overview_spot_monitoring_enable);
+					Log.e(LOG_TAG, "Cant determine if Spot is activ, selected id:"+selectedID, e);
 				}
-				menu.add(0, DELETE_ITEM_ID, 0, R.string.spot_overview_spot_delete);
 			}
 		});
 	}
@@ -249,12 +258,18 @@ public final class SpotOverviewActivity extends DBListActivity
 	 */
 	private void editSpot(final long _id)
 	{
-		// final ISelectedDAO dao = DAOFactory.getSelectedDAO(this);
-		final SpotConfigurationVO vo = dao.getSpotConfiguration(_id);
+		try
+		{
+			final SpotConfigurationVO vo = dao.getSpotConfiguration(_id);
+			final Intent intent = new Intent(SpotOverviewActivity.this, SpotConfigurationActivity.class);
+			intent.putExtra(IntentConstants.SPOT_TO_CONFIGURE, vo);
+			startActivityForResult(intent, EDIT_SPOT_REQUEST_CODE);
+		}
+		catch (final DBException e)
+		{
+			Log.e(LOG_TAG, "Failed to get configuration for " + _id, e);
+		}
 
-		final Intent intent = new Intent(SpotOverviewActivity.this, SpotConfigurationActivity.class);
-		intent.putExtra(IntentConstants.SPOT_TO_CONFIGURE, vo);
-		startActivityForResult(intent, EDIT_SPOT_REQUEST_CODE);
 	}
 
 	/*

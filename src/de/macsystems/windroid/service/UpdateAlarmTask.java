@@ -28,6 +28,7 @@ import de.macsystems.windroid.R;
 import de.macsystems.windroid.alarm.AlarmUtil;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.db.DAOFactory;
+import de.macsystems.windroid.db.DBException;
 import de.macsystems.windroid.db.ISelectedDAO;
 
 /**
@@ -74,17 +75,26 @@ public final class UpdateAlarmTask extends AbstractNotificationTask implements R
 				Log.i(LOG_TAG, "No active spot configured.");
 				return;
 			}
-			final Collection<SpotConfigurationVO> spots = dao.getActivSpots();
-			if (Logging.isLoggingEnabled())
+			try
 			{
-				Log.i(LOG_TAG, "Found " + spots.size() + " Spots to update.");
-			}
+				final Collection<SpotConfigurationVO> spots = dao.getActivSpots();
+				if (Logging.isLoggingEnabled())
+				{
+					Log.i(LOG_TAG, "Found " + spots.size() + " Spots to update.");
+				}
 
-			final Iterator<SpotConfigurationVO> iter = spots.iterator();
-			while (iter.hasNext())
+				final Iterator<SpotConfigurationVO> iter = spots.iterator();
+				while (iter.hasNext())
+				{
+					final SpotConfigurationVO spot = iter.next();
+					AlarmUtil.createAlarmForSpot(spot.getPrimaryKey(), getContext());
+				}
+
+			}
+			catch (final DBException e)
 			{
-				final SpotConfigurationVO spot = iter.next();
-				AlarmUtil.createAlarmForSpot(spot.getPrimaryKey(), getContext());
+				// TODO Auto-generated catch block
+				Log.e(LOG_TAG, "", e);
 			}
 		}
 		finally

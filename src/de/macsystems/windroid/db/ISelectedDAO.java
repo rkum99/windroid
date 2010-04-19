@@ -93,8 +93,9 @@ public interface ISelectedDAO extends IDAO
 	 * 
 	 * @param _id
 	 * @return
+	 * @throws DBException
 	 */
-	public boolean isActiv(final long _id);
+	public boolean isActiv(final long _id) throws DBException;
 
 	/**
 	 * Returns an Configuration Object
@@ -102,8 +103,9 @@ public interface ISelectedDAO extends IDAO
 	 * @param _id
 	 *            primary key
 	 * @return
+	 * @throws DBException
 	 */
-	public SpotConfigurationVO getSpotConfiguration(final long _id);
+	public SpotConfigurationVO getSpotConfiguration(final long _id) throws DBException;
 
 	/**
 	 * Updates an Spot by using given {@link SpotConfigurationVO}
@@ -137,7 +139,8 @@ public interface ISelectedDAO extends IDAO
 	 * Returns a Collection of Spots which are active.
 	 * 
 	 * @return
+	 * @throws DBException
 	 */
-	public Collection<SpotConfigurationVO> getActivSpots();
+	public Collection<SpotConfigurationVO> getActivSpots() throws DBException;
 
 }

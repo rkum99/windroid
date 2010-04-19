@@ -42,6 +42,7 @@ import android.net.NetworkInfo.State;
 import android.util.Log;
 import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.db.DAOFactory;
+import de.macsystems.windroid.db.DBException;
 import de.macsystems.windroid.db.IPreferencesDAO;
 import de.macsystems.windroid.io.task.StationXMLUpdateTask;
 import de.macsystems.windroid.progress.IProgress;
@@ -103,7 +104,15 @@ public class IOUtils
 		final boolean isRoamingNow = systemService.getActiveNetworkInfo().isRoaming();
 		// Query User Configuration
 		final IPreferencesDAO dao = DAOFactory.getPreferencesDAO(_context);
-		final boolean userWantIOWhileRoaming = dao.useNetworkWhileRoaming();
+		boolean userWantIOWhileRoaming = false;
+		try
+		{
+			userWantIOWhileRoaming = dao.useNetworkWhileRoaming();
+		}
+		catch (final DBException e)
+		{
+			Log.e(LOG_TAG, "Failed to Query DB", e);
+		}
 
 		if (State.CONNECTED == networkState)
 		{

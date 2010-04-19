@@ -37,8 +37,9 @@ public interface IRepeatDAO extends IDAO
 	 * 
 	 * @param _id
 	 * @return
+	 * @throws DBException
 	 */
-	public Repeat getRepeat(final int _id);
+	public Repeat getRepeat(final int _id) throws DBException;
 
 	/**
 	 * Updates a repeat

@@ -108,6 +108,7 @@ public interface ISpotDAO extends IDAO
 	 * 
 	 * @param stationid
 	 * @return
+	 * @throws DBException
 	 */
-	public SpotConfigurationVO fetchBy(final String stationid);
+	public SpotConfigurationVO fetchBy(final String stationid) throws DBException;
 }

@@ -22,6 +22,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -31,6 +32,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import de.macsystems.windroid.common.IntentConstants;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.db.DAOFactory;
+import de.macsystems.windroid.db.DBException;
 import de.macsystems.windroid.db.IContinentDAO;
 import de.macsystems.windroid.db.ICountryDAO;
 import de.macsystems.windroid.db.IRegionDAO;
@@ -102,12 +104,18 @@ public final class SpotSelectionActivity extends DBChainSubActivity
 					final int index = cursor.getColumnIndexOrThrow("spotid");
 					final String spotId = cursor.getString(index);
 
-					// final ISpotDAO dao =
-					// DAOFactory.getSpotDAO(SpotSelectionActivity.this);
-					final SpotConfigurationVO info = spotDAO.fetchBy(spotId);
+					try
+					{
+						final SpotConfigurationVO info = spotDAO.fetchBy(spotId);
+						intent.putExtra(IntentConstants.SPOT_TO_CONFIGURE, info);
+						SpotSelectionActivity.this.startActivityForResult(intent,
+								MainActivity.CONFIGURATION_REQUEST_CODE);
+					}
+					catch (final DBException e)
+					{
+						Log.e(LOG_TAG, "failed to fetch Configuration.", e);
+					}
 
-					intent.putExtra(IntentConstants.SPOT_TO_CONFIGURE, info);
-					SpotSelectionActivity.this.startActivityForResult(intent, MainActivity.CONFIGURATION_REQUEST_CODE);
 				}
 				finally
 				{
@@ -128,25 +136,29 @@ public final class SpotSelectionActivity extends DBChainSubActivity
 					final SharedPreferences pref = Util.getSharedPreferences(SpotSelectionActivity.this);
 					final String continentID = Util.getSelectedContinentID(pref);
 
-					// final IContinentDAO continentDAO =
-					// DAOFactory.getContinentDAO(SpotSelectionActivity.this);
+					try
+					{
+						final int selectionIndex = continentDAO.getIndexByID(continentID);
+						final Cursor c = continentDAO.fetchAll();
+						startManagingCursor(c);
+						final String[] from = new String[]
+						{ "id", "name" };
+						final int[] to = new int[]
+						{ android.R.id.text1, android.R.id.text2 };
+						final SimpleCursorAdapter shows = new SimpleCursorAdapter(SpotSelectionActivity.this,
+								android.R.layout.simple_spinner_item, c, from, to);
 
-					final int selectionIndex = continentDAO.getIndexByID(continentID);
+						final Spinner continentSpinner = (Spinner) findViewById(R.id.continentSpinner);
+						shows.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+						continentSpinner.setAdapter(shows);
+						continentSpinner.setSelection(selectionIndex);
+						continentSpinner.setOnItemSelectedListener(createContinentListener());
+					}
+					catch (final DBException e)
+					{
+						Log.e(LOG_TAG, "failed to get index for :" + continentID, e);
+					}
 
-					final Cursor c = continentDAO.fetchAll();
-					startManagingCursor(c);
-					final String[] from = new String[]
-					{ "id", "name" };
-					final int[] to = new int[]
-					{ android.R.id.text1, android.R.id.text2 };
-					final SimpleCursorAdapter shows = new SimpleCursorAdapter(SpotSelectionActivity.this,
-							android.R.layout.simple_spinner_item, c, from, to);
-
-					final Spinner continentSpinner = (Spinner) findViewById(R.id.continentSpinner);
-					shows.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-					continentSpinner.setAdapter(shows);
-					continentSpinner.setSelection(selectionIndex);
-					continentSpinner.setOnItemSelectedListener(createContinentListener());
 				}
 				// Country
 				{

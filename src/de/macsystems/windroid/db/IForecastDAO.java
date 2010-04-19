@@ -55,8 +55,9 @@ public interface IForecastDAO extends IDAO
 	 * 
 	 * @param _forecastID
 	 * @return
+	 * @throws DBException
 	 */
-	public Forecast getForecast(final int _forecastID);
+	public Forecast getForecast(final int _forecastID) throws DBException;
 
 	/**
 	 * Inserts / Updates Forecast of a spot in database.

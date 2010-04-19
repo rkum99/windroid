@@ -36,7 +36,7 @@ public interface IScheduleDAO extends IDAO
 
 	public Schedule getSchedule(final int _id);
 
-	public Schedule getScheduleByScheduleID(final int _selectedID);
+	public Schedule getScheduleByScheduleID(final int _selectedID) throws DBException;
 
 	public long getTime(final int _id);
 

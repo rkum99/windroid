@@ -20,7 +20,6 @@ package de.macsystems.windroid.service;
 import java.util.List;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import android.app.Service;
 import android.content.Intent;

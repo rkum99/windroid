@@ -29,6 +29,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.common.SpotConfigurationVO;
+import de.macsystems.windroid.db.DBException;
 import de.macsystems.windroid.db.IRepeatDAO;
 import de.macsystems.windroid.db.IScheduleDAO;
 import de.macsystems.windroid.db.ISelectedDAO;
@@ -152,7 +153,7 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 	 * @see de.macsystems.windroid.db.ISelectedDAO#isActiv(long)
 	 */
 	@Override
-	public boolean isActiv(final long _id)
+	public boolean isActiv(final long _id) throws DBException
 	{
 		final SQLiteDatabase db = getReadableDatabase();
 		Cursor c = null;
@@ -179,7 +180,7 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 	 * @see de.macsystems.windroid.db.ISelectedDAO#getSpotConfiguration(int)
 	 */
 	@Override
-	public SpotConfigurationVO getSpotConfiguration(final long _id)
+	public SpotConfigurationVO getSpotConfiguration(final long _id) throws DBException
 	{
 		final SQLiteDatabase db = getReadableDatabase();
 		Cursor c = null;
@@ -216,12 +217,9 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 	/**
 	 * @param c
 	 * @return
-	 * @throws IllegalArgumentException
-	 * @throws NullPointerException
+	 * @throws DBException
 	 */
-	private SpotConfigurationVO createSpotConfigurationVO(final Cursor c)
-			throws IllegalArgumentException,
-			NullPointerException
+	private SpotConfigurationVO createSpotConfigurationVO(final Cursor c) throws DBException
 	{
 
 		final int _id = getInt(c, COLUMN_ID);
@@ -271,7 +269,7 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 	 * @param _db
 	 * @return
 	 */
-	protected final String getSpotIdByID(final long _id, final SQLiteDatabase _db)
+	protected final String getSpotIdByID(final long _id, final SQLiteDatabase _db) throws DBException
 	{
 		Cursor c = null;
 		String spotid = null;
@@ -364,7 +362,7 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 	}
 
 	@Override
-	public Collection<SpotConfigurationVO> getActivSpots()
+	public Collection<SpotConfigurationVO> getActivSpots() throws DBException
 	{
 		final List<SpotConfigurationVO> spots = new ArrayList<SpotConfigurationVO>();
 		SQLiteDatabase db = null;

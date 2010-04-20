@@ -22,6 +22,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import de.macsystems.windroid.Logging;
+import de.macsystems.windroid.db.DBException;
 import de.macsystems.windroid.db.IRepeatDAO;
 import de.macsystems.windroid.identifyable.Repeat;
 import de.macsystems.windroid.io.IOUtils;
@@ -60,7 +61,7 @@ public final class RepeatImpl extends BaseImpl implements IRepeatDAO
 	 * @see de.macsystems.windroid.db.sqlite.IRepeatDAO#getRepeat(int)
 	 */
 	@Override
-	public Repeat getRepeat(final int _id)
+	public Repeat getRepeat(final int _id) throws DBException
 	{
 		final SQLiteDatabase db = getReadableDatabase();
 		final Repeat r;

@@ -20,11 +20,13 @@ package de.macsystems.windroid.db.sqlite;
 import java.util.Iterator;
 
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.common.SpotConfigurationVO;
+import de.macsystems.windroid.db.DBException;
 import de.macsystems.windroid.db.ISpotDAO;
 import de.macsystems.windroid.identifyable.Continent;
 import de.macsystems.windroid.identifyable.Country;
@@ -135,6 +137,11 @@ public final class SpotImpl extends BaseImpl implements ISpotDAO
 				}
 			}
 			db.setTransactionSuccessful();
+		}
+		catch (final SQLException e)
+		{
+			Log.e(LOG_TAG, "Failed to insert Spots", e);
+			throw e;
 		}
 		finally
 		{
@@ -265,7 +272,7 @@ public final class SpotImpl extends BaseImpl implements ISpotDAO
 	 * @see de.macsystems.windroid.db.ISpotDAO#fetchBy(java.lang.String)
 	 */
 	@Override
-	public SpotConfigurationVO fetchBy(final String _stationid)
+	public SpotConfigurationVO fetchBy(final String _stationid) throws DBException
 	{
 		final SpotConfigurationVO vo = new SpotConfigurationVO();
 		final SQLiteDatabase db = getReadableDatabase();

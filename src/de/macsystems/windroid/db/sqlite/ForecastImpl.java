@@ -26,6 +26,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import de.macsystems.windroid.Logging;
+import de.macsystems.windroid.db.DBException;
 import de.macsystems.windroid.db.IForecastDAO;
 import de.macsystems.windroid.db.IForecastRelation;
 import de.macsystems.windroid.db.ISelectedDAO;
@@ -75,17 +76,29 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 	 * @see de.macsystems.windroid.db.IForecast#getForecast(int)
 	 */
 	@Override
-	public Forecast getForecast(final int _selectedID)
+	public Forecast getForecast(final int _selectedID) throws DBException
 	{
 		final SQLiteDatabase db = getReadableDatabase();
 		Cursor cursor = null;
 		try
 		{
 			final String spotName = getSpotName(_selectedID, db);
-
 			// TODO: Use Server Timestamp there
+			long timeStamp = -1L;
+			try
+			{
+				cursor = db.query("selected", new String[]
+				{ ISelectedDAO.COLUMN_LASTUPATE }, "_id=?", new String[]
+				{ Integer.toString(_selectedID) }, null, null, null);
+				moveToFirstOrThrow(cursor);
+				timeStamp = getLong(cursor, ISelectedDAO.COLUMN_LASTUPATE);
+			}
+			finally
+			{
+				IOUtils.close(cursor);
+			}
+			final Forecast forecast = new Forecast(spotName, timeStamp);
 
-			final Forecast forecast = new Forecast(spotName, 77889966L);
 			cursor = db.query(RELATION_TABLE, null, "selectedid=?", new String[]
 			{ Integer.toString(_selectedID) }, null, null, null);
 			moveToFirstOrThrow(cursor);
@@ -93,8 +106,7 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 			do
 			{
 				final int forcastID = getInt(cursor, COLUMN_FORECAST_ID);
-				// TODO: Use pass SQLDatabase to method
-				final ForecastDetail detail = getForecastDetail(forcastID);
+				final ForecastDetail detail = getForecastDetail(forcastID, db);
 				forecast.add(detail);
 			}
 			while (cursor.moveToNext());
@@ -109,7 +121,13 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 		}
 	}
 
-	private String getSpotName(final int _selectedID, final SQLiteDatabase _db)
+	/**
+	 * 
+	 * @param _selectedID
+	 * @param _db
+	 * @return
+	 */
+	private String getSpotName(final int _selectedID, final SQLiteDatabase _db) throws DBException
 	{
 		Cursor cursor = null;
 		try
@@ -132,16 +150,18 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 		}
 	}
 
-	private ForecastDetail getForecastDetail(final int _primaryKey)
+	private ForecastDetail getForecastDetail(final int _primaryKey, final SQLiteDatabase _db) throws DBException
 	{
-		SQLiteDatabase db = null;
-		Cursor cursor = null;
 
+		if (_db == null)
+		{
+			throw new NullPointerException("SQLiteDatabase");
+		}
+		Cursor cursor = null;
 		try
 		{
-			db = getReadableDatabase();
 
-			cursor = db.query(tableName, null, "_id=?", new String[]
+			cursor = _db.query(tableName, null, "_id=?", new String[]
 			{ Integer.toString(_primaryKey) }, null, null, null);
 
 			moveToFirstOrThrow(cursor);
@@ -198,9 +218,8 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 		finally
 		{
 			IOUtils.close(cursor);
-			IOUtils.close(db);
 		}
-	}	
+	}
 
 	@Override
 	public void updateForecast(final Forecast forecast, final int _selectedID)

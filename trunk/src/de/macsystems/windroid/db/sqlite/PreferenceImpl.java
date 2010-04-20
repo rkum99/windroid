@@ -26,6 +26,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import de.macsystems.windroid.Logging;
+import de.macsystems.windroid.db.DBException;
 import de.macsystems.windroid.db.IPreferencesDAO;
 import de.macsystems.windroid.io.IOUtils;
 
@@ -176,6 +177,7 @@ public final class PreferenceImpl extends BaseImpl implements IPreferencesDAO
 	 */
 	@Override
 	public boolean useNetworkWhileRoaming()
+	throws DBException
 	{
 		boolean result = false;
 		final SQLiteDatabase db = getReadableDatabase();

@@ -22,6 +22,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import de.macsystems.windroid.Logging;
+import de.macsystems.windroid.db.DBException;
+import de.macsystems.windroid.db.EmptyCursorException;
 import de.macsystems.windroid.db.IDAO;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.progress.IProgress;
@@ -360,15 +362,15 @@ public class BaseImpl implements IDAO
 
 	/**
 	 * Moves Cursor to first position or if cursor is empty it throws an
-	 * {@link IllegalStateException}
+	 * {@link EmptyCursorException}
 	 * 
 	 * @param _c
 	 */
-	public static final void moveToFirstOrThrow(final Cursor _c) throws IllegalStateException
+	public static final void moveToFirstOrThrow(final Cursor _c) throws EmptyCursorException
 	{
 		if (!_c.moveToFirst())
 		{
-			throw new IllegalStateException("Cursor ist empty.");
+			throw new EmptyCursorException("Cursor ist empty, check you query.");
 		}
 
 	}
@@ -382,7 +384,7 @@ public class BaseImpl implements IDAO
 	 * @param _db
 	 * @return
 	 */
-	public final int getPrimaryKey(final SQLiteDatabase _db)
+	public final int getPrimaryKey(final SQLiteDatabase _db) throws DBException
 	{
 		Cursor c = null;
 		try

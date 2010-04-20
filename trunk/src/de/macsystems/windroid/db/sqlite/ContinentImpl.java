@@ -19,6 +19,7 @@ package de.macsystems.windroid.db.sqlite;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import de.macsystems.windroid.db.DBException;
 import de.macsystems.windroid.db.IContinentDAO;
 import de.macsystems.windroid.identifyable.Continent;
 import de.macsystems.windroid.progress.IProgress;
@@ -70,6 +71,7 @@ public final class ContinentImpl extends BaseImpl implements IContinentDAO
 	 */
 	@Override
 	public int getIndexByID(final String _id)
+	throws DBException
 	{
 		int result = -1;
 		final SQLiteDatabase db = getReadableDatabase();

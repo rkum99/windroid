@@ -24,6 +24,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import de.macsystems.windroid.Logging;
+import de.macsystems.windroid.db.DBException;
 import de.macsystems.windroid.db.IRepeatDAO;
 import de.macsystems.windroid.db.IScheduleDAO;
 import de.macsystems.windroid.identifyable.Repeat;
@@ -75,6 +76,7 @@ public final class ScheduleImpl extends BaseImpl implements IScheduleDAO
 	 */
 	@Override
 	public Schedule getScheduleByScheduleID(final int _selectedID)
+	throws DBException
 	{
 		if (Logging.isLoggingEnabled())
 		{

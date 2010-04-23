@@ -17,7 +17,6 @@
  */
 package de.macsystems.windroid.db;
 
-import android.database.CursorIndexOutOfBoundsException;
 import de.macsystems.windroid.identifyable.Continent;
 
 /**
@@ -41,7 +40,7 @@ public interface IContinentDAO extends IDAO
 	 * Returns index of continent by its continent id
 	 * 
 	 * @param _id
-	 * @throws CursorIndexOutOfBoundsException
+	 * @throws DBException
 	 * @return
 	 */
 	public int getIndexByID(final String _id) throws DBException;

@@ -290,7 +290,7 @@ public final class MainActivity extends DBActivity
 		setupCancelAlarmTest();
 
 		// create alarms for selected IDs // testing
-		for (int i = 0; i < 2; i++)
+		for (int i = 0; i < 5; i++)
 		{
 			AlarmUtil.createAlarmForSpot(1, this);
 		}
@@ -467,7 +467,8 @@ public final class MainActivity extends DBActivity
 			@Override
 			public final void onClick(final View v)
 			{
-				AlarmUtil.cancelAlarm(1, MainActivity.this);
+				// TODO FIX requestID
+				AlarmUtil.cancelAlarm(1, 1,MainActivity.this);
 
 			}
 		};

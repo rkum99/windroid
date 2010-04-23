@@ -39,9 +39,7 @@ public final class AlarmUtil
 
 	private static final long INITIAL_DELAY = 100L;
 
-	private final static int REQUEST_ID = 0;
-
-	private final static AtomicInteger alarmCounter = new AtomicInteger(1);
+	private final static AtomicInteger REQUEST_COUNTER = new AtomicInteger(1);
 
 	private AlarmUtil()
 	{
@@ -72,7 +70,10 @@ public final class AlarmUtil
 		//
 		final Intent intent = new Intent(_context, AlarmBroadcastReciever.class);
 		intent.putExtra(IntentConstants.SELECTED_PRIMARY_KEY, _id);
-		final PendingIntent pendingIntent = PendingIntent.getBroadcast(_context, REQUEST_ID, intent,
+
+		final int requestID = REQUEST_COUNTER.incrementAndGet();
+
+		final PendingIntent pendingIntent = PendingIntent.getBroadcast(_context, requestID, intent,
 				PendingIntent.FLAG_ONE_SHOT);
 		final AlarmManager alarmManager = (AlarmManager) _context.getSystemService(Context.ALARM_SERVICE);
 		// TODO Fix initial delay
@@ -98,7 +99,8 @@ public final class AlarmUtil
 		//
 		final Intent intent = new Intent(_context, AlarmBroadcastReciever.class);
 		intent.putExtra(IntentConstants.SELECTED_PRIMARY_KEY, _selectedID);
-		final PendingIntent pendingIntent = PendingIntent.getBroadcast(_context, REQUEST_ID, intent,
+		final int requestID = REQUEST_COUNTER.incrementAndGet();
+		final PendingIntent pendingIntent = PendingIntent.getBroadcast(_context, requestID, intent,
 				PendingIntent.FLAG_ONE_SHOT);
 		final AlarmManager alarmManager = (AlarmManager) _context.getSystemService(Context.ALARM_SERVICE);
 		alarmManager.set(AlarmManager.RTC_WAKEUP, now + (15L * 1000L), pendingIntent);
@@ -107,9 +109,10 @@ public final class AlarmUtil
 	/**
 	 * 
 	 * @param _selectedID
+	 * @param _requestID
 	 * @param _context
 	 */
-	public static void cancelAlarm(final int _selectedID, final Context _context)
+	public static void cancelAlarm(final int _selectedID, final int _requestID, final Context _context)
 	{
 		if (Logging.isLoggingEnabled())
 		{
@@ -119,7 +122,7 @@ public final class AlarmUtil
 
 		final Intent intent = new Intent(_context, AlarmBroadcastReciever.class);
 		intent.putExtra(IntentConstants.SELECTED_PRIMARY_KEY, _selectedID);
-		final PendingIntent pendingIntent = PendingIntent.getBroadcast(_context, REQUEST_ID, intent,
+		final PendingIntent pendingIntent = PendingIntent.getBroadcast(_context, _requestID, intent,
 				PendingIntent.FLAG_ONE_SHOT);
 		final AlarmManager alarmManager = (AlarmManager) _context.getSystemService(Context.ALARM_SERVICE);
 		alarmManager.cancel(pendingIntent);

@@ -29,12 +29,14 @@ import de.macsystems.windroid.WindUtils;
 import de.macsystems.windroid.alarm.AlarmUtil;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.db.DAOFactory;
+import de.macsystems.windroid.db.DBException;
 import de.macsystems.windroid.db.IForecastDAO;
 import de.macsystems.windroid.db.ISelectedDAO;
 import de.macsystems.windroid.forecast.Forecast;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.io.RetryLaterException;
 import de.macsystems.windroid.service.AbstractNotificationTask;
+import de.macsystems.windroid.service.PRIORITY;
 
 /**
  * Callable which will update the current forecast of a spot and updates the
@@ -45,8 +47,7 @@ import de.macsystems.windroid.service.AbstractNotificationTask;
  *          $
  * 
  */
-public class UpdateSpotForecastTask extends AbstractNotificationTask implements Callable<Void>
-
+public class UpdateSpotForecastTask extends AbstractNotificationTask implements Runnable
 {
 
 	private final static String LOG_TAG = UpdateSpotForecastTask.class.getSimpleName();
@@ -61,12 +62,25 @@ public class UpdateSpotForecastTask extends AbstractNotificationTask implements 
 	 */
 	public UpdateSpotForecastTask(final int _selectedID, final Context _context) throws NullPointerException
 	{
-		super(_context);
+		this(_selectedID, _context, PRIORITY.NORMAL);
+	}
+
+	/**
+	 * 
+	 * @param _selectedID
+	 * @param _context
+	 * @param _prio
+	 * @throws NullPointerException
+	 */
+	public UpdateSpotForecastTask(final int _selectedID, final Context _context, PRIORITY _prio)
+			throws NullPointerException
+	{
+		super(_context, _prio);
 		selectedID = _selectedID;
 	}
 
 	@Override
-	public Void call() throws Exception
+	public void run()
 	{
 
 		try
@@ -91,8 +105,7 @@ public class UpdateSpotForecastTask extends AbstractNotificationTask implements 
 				{
 					Log.d(LOG_TAG, "Cancel update as network not reachable.");
 				}
-				// return Void
-				return null;
+				return;
 			}
 			if (Logging.isLoggingEnabled())
 			{
@@ -125,11 +138,14 @@ public class UpdateSpotForecastTask extends AbstractNotificationTask implements 
 			}
 
 		}
+		catch (DBException e)
+		{
+			Log.e(LOG_TAG, "", e);
+		}
 		finally
 		{
 			clearNotification();
 		}
-		// Void
-		return null;
+
 	}
 }

@@ -15,9 +15,10 @@ import de.macsystems.windroid.R;
  * statusbar.
  * 
  * @author mac
- * @version $Id$
+ * @version $Id: AbstractNotificationTask.java 314 2010-04-15 11:50:03Z
+ *          jens.hohl $
  */
-public abstract class AbstractNotificationTask
+public abstract class AbstractNotificationTask implements ITaskPriority
 {
 	/**
 	 * Thread save integer which can be used to count alarm id.
@@ -27,20 +28,35 @@ public abstract class AbstractNotificationTask
 	private int statusID = -1;
 
 	private final Context context;
+	/**
+	 * Default Priority {@value #AbstractNotificationTask#prio}
+	 */
+	private final PRIORITY prio;
 
 	/**
 	 * 
 	 * @param _context
+	 * @param _prio
 	 * @throws NullPointerException
 	 */
-	public AbstractNotificationTask(final Context _context) throws NullPointerException
+	public AbstractNotificationTask(final Context _context, final PRIORITY _prio) throws NullPointerException
 	{
 		if (_context == null)
 		{
 			throw new NullPointerException("context");
 		}
 		context = _context;
+		prio = _prio;
+	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.macsystems.windroid.service.ITaskPriority#getPriority()
+	 */
+	public final PRIORITY getPriority()
+	{
+		return prio;
 	}
 
 	/**

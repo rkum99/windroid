@@ -17,21 +17,39 @@
  */
 package de.macsystems.windroid.service;
 
+import java.util.Comparator;
+
 /**
  * Define Priority
  * 
  * @author mac
  * @version $Id$
  */
-public enum PRIORITY
+public enum PRIORITY implements Comparator<PRIORITY>
 {
 	NORMAL(100), USER_REQUEST(1000);
 
-	final int prio;
+	private final int prio;
 
 	private PRIORITY(final int _prio)
 	{
 		prio = _prio;
+	}
+
+	@Override
+	public int compare(PRIORITY p1, PRIORITY p2)
+	{
+		System.out.println("comparing");
+		if (p1.prio == p2.prio)
+		{
+			return 0;
+		}
+		else if (p1.prio > p2.prio)
+		{
+			return -1;
+		}
+		return +1;
+
 	}
 
 }

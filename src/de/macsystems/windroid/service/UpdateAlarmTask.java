@@ -52,7 +52,7 @@ public final class UpdateAlarmTask extends AbstractNotificationTask implements R
 	 */
 	public UpdateAlarmTask(final Context _context) throws NullPointerException
 	{
-		super(_context);
+		super(_context,PRIORITY.NORMAL);
 	}
 
 	/*
@@ -93,7 +93,6 @@ public final class UpdateAlarmTask extends AbstractNotificationTask implements R
 			}
 			catch (final DBException e)
 			{
-				// TODO Auto-generated catch block
 				Log.e(LOG_TAG, "", e);
 			}
 		}

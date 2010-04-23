@@ -19,28 +19,34 @@ package de.macsystems.windroid.service;
 
 import java.util.Comparator;
 
+import android.util.Log;
+
 /**
  * Compares Priority's
  * 
  * @author mac
  * @version $Id$
  */
-public final class PrioComparator implements Comparator<PRIORITY>
+public final class PrioComparator implements Comparator<ITaskPriority>
 {
 
-	@Override
-	public int compare(final PRIORITY p1, final PRIORITY p2)
-	{
-		if (p1.prio == p2.prio)
-		{
-			return 0;
-		}
-		else if (p1.prio > p2.prio)
-		{
-			return -1;
-		}
-		return +1;
+	private final static String LOG_TAG = PrioComparator.class.getSimpleName();
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+	 */
+	@Override
+	public int compare(final ITaskPriority p1, final ITaskPriority p2)
+	{
+		Log.d(LOG_TAG, "compare");
+		return p1.getPriority().compareTo(p2.getPriority());
 	}
 
+	@Override
+	public boolean equals(final Object obj)
+	{
+		return false;
+	}
 }

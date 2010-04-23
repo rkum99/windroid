@@ -18,6 +18,8 @@
 package de.macsystems.windroid.service;
 
 /**
+ * Allows to prioritise tasks.
+ * 
  * @author mac
  * @version $Id$
  */

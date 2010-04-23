@@ -18,7 +18,10 @@
 package de.macsystems.windroid.service;
 
 import java.util.List;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import android.app.Service;
@@ -29,7 +32,6 @@ import android.util.Log;
 import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.R;
 import de.macsystems.windroid.common.IntentConstants;
-import de.macsystems.windroid.concurrent.ThreadFactory;
 import de.macsystems.windroid.io.task.UpdateSpotForecastTask;
 
 /**
@@ -42,25 +44,23 @@ public class SpotService extends Service
 
 	private final static String LOG_TAG = SpotService.class.getSimpleName();
 
-	private static final long INITIAL_DELAY = 100L;
-
 	/**
 	 * The Threadpool used to schedule all kind of tasks.
 	 */
-	private ScheduledThreadPoolExecutor threadPool;
+	private ExecutorService threadPool;
 
 	private final ISpotService serviceBinder = new ISpotService.Stub()
 	{
 		@Override
 		public void initAlarms() throws RemoteException
 		{
-			threadPool.schedule(new SpotAlarmTask(SpotService.this), INITIAL_DELAY, TimeUnit.MILLISECONDS);
+			threadPool.submit(new SpotAlarmTask(SpotService.this));
 		}
 
 		@Override
 		public void updateAll() throws RemoteException
 		{
-			threadPool.schedule(new UpdateAlarmTask(SpotService.this), INITIAL_DELAY, TimeUnit.MILLISECONDS);
+			threadPool.submit(new UpdateAlarmTask(SpotService.this));
 		}
 
 		@Override
@@ -80,7 +80,7 @@ public class SpotService extends Service
 				Log.d(LOG_TAG, "Insert Task to update spot with selectedID:" + _selectedID + " into scheduler");
 			}
 			final UpdateSpotForecastTask task = new UpdateSpotForecastTask(_selectedID, SpotService.this);
-			threadPool.schedule(task, INITIAL_DELAY, TimeUnit.MILLISECONDS);
+			threadPool.execute(task);
 		}
 	};
 
@@ -183,7 +183,9 @@ public class SpotService extends Service
 		if (threadPool == null)
 		{
 			final int poolSize = getResources().getInteger(R.integer.schedule_threadpool_size);
-			threadPool = new ScheduledThreadPoolExecutor(poolSize, new ThreadFactory());
+			final BlockingQueue<? extends Runnable> queue = new PriorityBlockingQueue(poolSize, new PrioComparator());
+			threadPool = new ThreadPoolExecutor(1, 1, 1L, TimeUnit.SECONDS, (BlockingQueue<Runnable>) queue);
+
 		}
 	}
 

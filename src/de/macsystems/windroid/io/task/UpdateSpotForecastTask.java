@@ -47,7 +47,7 @@ import de.macsystems.windroid.service.PRIORITY;
  *          $
  * 
  */
-public class UpdateSpotForecastTask extends AbstractNotificationTask implements Runnable
+public class UpdateSpotForecastTask extends AbstractNotificationTask implements Callable<Void>
 {
 
 	private final static String LOG_TAG = UpdateSpotForecastTask.class.getSimpleName();
@@ -62,25 +62,12 @@ public class UpdateSpotForecastTask extends AbstractNotificationTask implements 
 	 */
 	public UpdateSpotForecastTask(final int _selectedID, final Context _context) throws NullPointerException
 	{
-		this(_selectedID, _context, PRIORITY.NORMAL);
-	}
-
-	/**
-	 * 
-	 * @param _selectedID
-	 * @param _context
-	 * @param _prio
-	 * @throws NullPointerException
-	 */
-	public UpdateSpotForecastTask(final int _selectedID, final Context _context, PRIORITY _prio)
-			throws NullPointerException
-	{
-		super(_context, _prio);
+		super(_context);
 		selectedID = _selectedID;
 	}
 
 	@Override
-	public void run()
+	public Void call()
 	{
 
 		try
@@ -105,7 +92,7 @@ public class UpdateSpotForecastTask extends AbstractNotificationTask implements 
 				{
 					Log.d(LOG_TAG, "Cancel update as network not reachable.");
 				}
-				return;
+				return null;
 			}
 			if (Logging.isLoggingEnabled())
 			{
@@ -138,7 +125,7 @@ public class UpdateSpotForecastTask extends AbstractNotificationTask implements 
 			}
 
 		}
-		catch (DBException e)
+		catch (final DBException e)
 		{
 			Log.e(LOG_TAG, "", e);
 		}
@@ -146,6 +133,7 @@ public class UpdateSpotForecastTask extends AbstractNotificationTask implements 
 		{
 			clearNotification();
 		}
+		return null;
 
 	}
 }

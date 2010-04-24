@@ -52,6 +52,8 @@ public final class DownloadActivity extends ChainSubActivity
 
 	private final Handler handler = new Handler();
 
+	private Thread downloadThread = null;
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -68,6 +70,7 @@ public final class DownloadActivity extends ChainSubActivity
 
 		final Button cancelButton = (Button) findViewById(R.id.download_cancel_button);
 		cancelButton.setOnClickListener(getCancelListener());
+		// FIXME: if user rotates device we create another thread!
 		startDownload(downloadProgressBar, databaseProgressBar);
 	}
 
@@ -80,6 +83,7 @@ public final class DownloadActivity extends ChainSubActivity
 	private void startDownload(final ProgressBar _downloadProgress, final ProgressBar _databaseProgress)
 			throws NullPointerException
 	{
+
 		if (_downloadProgress == null || _databaseProgress == null)
 		{
 			throw new NullPointerException();
@@ -87,50 +91,78 @@ public final class DownloadActivity extends ChainSubActivity
 		final IProgress downloadProgress = new ProgressBarAdapter(_downloadProgress);
 		final IProgress databaseProgress = new ProgressBarAdapter(_databaseProgress);
 
-		final Thread parseThread = new Thread("Parse XML")
+		if (downloadThread == null)
 		{
-			@Override
-			public final void run()
+			downloadThread = new Thread("Parse XML")
 			{
-				if (Logging.isLoggingEnabled())
-				{
-					Log.d(LOG_TAG, "Parsing Thread started.");
-				}
-				try
-				{
-					downloadProgress.setMax(100);
-					// 
-					if (WindUtils.isStationListUpdateAvailable(DownloadActivity.this))
-					{
-						WindUtils.updateStationList(DownloadActivity.this, downloadProgress);
-					}
-					downloadProgress.incrementBy(50);
-					final XMLParseTask task = new XMLParseTask(new URI(IOUtils.stationsXMLFilePath), databaseProgress);
-					final int stationsFound = task.execute(DownloadActivity.this);
-					downloadProgress.incrementBy(50);
-					//
-					final World world = task.getWorld();
-					databaseProgress.setMax(stationsFound);
-					//
-					final ISpotDAO updater = DAOFactory.getSpotDAO(DownloadActivity.this, databaseProgress);
-					updater.insertSpots(world);
-					showInstallSucceed();
-				}
-				catch (final Exception e)
-				{
-					Log.e(LOG_TAG, "Failed to parse xml.", e);
-					showInstallationFailed(e);
-				}
-				finally
+				@Override
+				public final void run()
 				{
 					if (Logging.isLoggingEnabled())
 					{
-						Log.d(LOG_TAG, "Parsing Thread ended.");
+						Log.d(LOG_TAG, "Parsing Thread started.");
+					}
+					try
+					{
+						downloadProgress.setMax(100);
+						// 
+						if (WindUtils.isStationListUpdateAvailable(DownloadActivity.this))
+						{
+							WindUtils.updateStationList(DownloadActivity.this, downloadProgress);
+						}
+						downloadProgress.incrementBy(50);
+						final XMLParseTask task = new XMLParseTask(new URI(IOUtils.stationsXMLFilePath),
+								databaseProgress);
+						if (Thread.currentThread().isInterrupted())
+						{
+							Log.d(LOG_TAG, "Thread interrupted.");
+							return;
+						}
+						else
+						{
+							Log.d(LOG_TAG, "Thread " + Thread.currentThread().getName() + " not interrupted.");
+						}
+
+						final int stationsFound = task.execute(DownloadActivity.this);
+						downloadProgress.incrementBy(50);
+						if (Thread.currentThread().isInterrupted())
+						{
+							Log.d(LOG_TAG, "Thread interrupted after parse.");
+							return;
+						}
+						else
+						{
+							Log.d(LOG_TAG, "Thread " + Thread.currentThread().getName() + " not interrupted.");
+						}
+
+						//
+						final World world = task.getWorld();
+						databaseProgress.setMax(stationsFound);
+						//
+						final ISpotDAO updater = DAOFactory.getSpotDAO(DownloadActivity.this, databaseProgress);
+						updater.insertSpots(world);
+						showInstallSucceed();
+					}
+					catch (final InterruptedException e)
+					{
+						Log.e(LOG_TAG, "Thread Interrupted - by user ?", e);
+					}
+					catch (final Exception e)
+					{
+						Log.e(LOG_TAG, "Failed to parse xml.", e);
+						// showInstallationFailed(e);
+					}
+					finally
+					{
+						if (Logging.isLoggingEnabled())
+						{
+							Log.d(LOG_TAG, "Parsing Thread ended.");
+						}
 					}
 				}
-			}
-		};
-		parseThread.start();
+			};
+		}
+		downloadThread.start();
 	}
 
 	private void showInstallationFailed(final Throwable _throwable)
@@ -181,7 +213,7 @@ public final class DownloadActivity extends ChainSubActivity
 		final DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener()
 		{
 			@Override
-			public final void onClick(final DialogInterface dialog, final int which)
+			public final void onClick(final DialogInterface _dialog, final int _which)
 			{
 				final Intent nextActivitiyIntent = new Intent(DownloadActivity.this, _nextActivity);
 				startActivityForResult(nextActivitiyIntent, MainActivity.CONFIGURATION_REQUEST_CODE);
@@ -198,10 +230,25 @@ public final class DownloadActivity extends ChainSubActivity
 		final OnClickListener listener = new OnClickListener()
 		{
 			@Override
-			public final void onClick(final View v)
+			public final void onClick(final View _v)
 			{
-				setResult(Activity.RESULT_CANCELED);
-				finish();
+				try
+				{
+					if (Logging.isLoggingEnabled())
+					{
+						Log.d(LOG_TAG, "Interrupting thread");
+					}
+					downloadThread.interrupt();
+				}
+				catch (Exception e)
+				{
+					Log.e(LOG_TAG, "Failed to interrupt thread", e);
+				}
+				finally
+				{
+					setResult(Activity.RESULT_CANCELED);
+					finish();
+				}
 			}
 		};
 		return listener;

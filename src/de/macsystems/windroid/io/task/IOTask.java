@@ -91,7 +91,7 @@ public abstract class IOTask<V, I> implements Task<V, I>
 	 * 
 	 * @see de.macsystems.windroid.io.task.Task#execute(android.content.Context)
 	 */
-	public V execute(final Context _context) throws RetryLaterException, IOException
+	public V execute(final Context _context) throws RetryLaterException, IOException, InterruptedException
 	{
 		if (!IOUtils.isNetworkReachable(_context))
 		{
@@ -110,6 +110,11 @@ public abstract class IOTask<V, I> implements Task<V, I>
 		httpGet.addHeader("User-Agent", MOZILLA_5_0);
 
 		final HttpResponse response = getHTTPClient().execute(httpGet);
+		if (Logging.isLoggingEnabled())
+		{
+			final StatusLine status = response.getStatusLine();
+			Log.d(LOG_TAG, "Response Code was : " + status.getStatusCode() + " - " + status.getReasonPhrase());
+		}
 
 		if (HttpStatus.SC_OK != response.getStatusLine().getStatusCode())
 		{

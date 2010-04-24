@@ -133,6 +133,11 @@ public class StationHandler extends DefaultHandler
 	public void startElement(final String uri, final String localName, final String name, final Attributes attributes)
 			throws SAXException
 	{
+		if (Thread.currentThread().isInterrupted())
+		{
+			throw new SAXException("Parsing Thread interrupted");
+		}
+
 		if (CONTINENT.equals(localName))
 		{
 			handleContinent(attributes);

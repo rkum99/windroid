@@ -178,10 +178,12 @@ public class WindUtils
 	 * @param _downloadProgress
 	 * @throws RetryLaterException
 	 * @throws IOException
+	 * @throws InterruptedException
 	 */
 	public final static void updateStationList(final Context _context, final IProgress _downloadProgress)
 			throws RetryLaterException,
-			IOException
+			IOException,
+			InterruptedException
 
 	{
 		if (Logging.isLoggingEnabled())
@@ -250,6 +252,12 @@ public class WindUtils
 		try
 		{
 			return task.execute(_context);
+		}
+		catch (InterruptedException e)
+		{
+			final IOException exe = new IOException("Interrupted");
+			exe.initCause(e);
+			throw exe;
 		}
 		catch (final RetryLaterException e)
 		{

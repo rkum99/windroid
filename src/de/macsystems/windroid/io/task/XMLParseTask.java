@@ -62,7 +62,7 @@ public class XMLParseTask extends IOTask<Integer, InputStream>
 	 * de.macsystems.windroid.io.task.IOTask#execute(android.content.Context)
 	 */
 	@Override
-	public Integer execute(final Context _context) throws RetryLaterException, IOException
+	public Integer execute(final Context _context) throws RetryLaterException, IOException, InterruptedException
 	{
 		final InputStream inStream = _context.openFileInput(getURI().toString());
 		/**

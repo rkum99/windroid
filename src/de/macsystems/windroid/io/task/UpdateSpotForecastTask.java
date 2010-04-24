@@ -36,7 +36,6 @@ import de.macsystems.windroid.forecast.Forecast;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.io.RetryLaterException;
 import de.macsystems.windroid.service.AbstractNotificationTask;
-import de.macsystems.windroid.service.PRIORITY;
 
 /**
  * Callable which will update the current forecast of a spot and updates the

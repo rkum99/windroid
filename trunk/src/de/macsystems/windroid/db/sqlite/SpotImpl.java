@@ -118,6 +118,11 @@ public final class SpotImpl extends BaseImpl implements ISpotDAO
 					updateCountryTable(insertCountryStatement, country, continent);
 					insertCountryStatement.executeInsert();
 
+					if (Thread.currentThread().isInterrupted())
+					{
+						throw new RuntimeException("Thread interrupted while insert.");
+					}
+
 					for (final Region region : country)
 					{
 						updateRegionTable(insertRegionStatement, region, country);

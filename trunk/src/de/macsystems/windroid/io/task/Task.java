@@ -37,7 +37,7 @@ public interface Task<V, I>
 	 * @throws RetryLaterException
 	 * @throws IOException
 	 */
-	public V execute(final Context _context) throws RetryLaterException, IOException;
+	public V execute(final Context _context) throws RetryLaterException, IOException, InterruptedException;
 
 	/**
 	 * 

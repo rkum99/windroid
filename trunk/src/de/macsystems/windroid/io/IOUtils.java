@@ -189,7 +189,7 @@ public class IOUtils
 	 * @param _progress
 	 * @throws RetryLaterException
 	 * @throws IOException
-	 * @throws InterruptedException 
+	 * @throws InterruptedException
 	 */
 	public static void updateCachedStationXML(final Context _context, final URL _stationXMLURL,
 			final IProgress _progress) throws RetryLaterException, IOException, InterruptedException

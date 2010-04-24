@@ -33,7 +33,6 @@ import android.view.WindowManager;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnCreateContextMenuListener;
 import android.widget.SimpleCursorAdapter;
-import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import de.macsystems.windroid.common.IntentConstants;
 import de.macsystems.windroid.common.SpotConfigurationVO;
@@ -101,7 +100,7 @@ public final class SpotOverviewActivity extends DBListActivity
 
 				try
 				{
-					boolean isActiv = dao.isActiv(selectedID);
+					final boolean isActiv = dao.isActiv(selectedID);
 					menu.add(0, EDIT_ITEM_ID, 0, R.string.spot_overview_spot_edit);
 					if (isActiv)
 					{
@@ -116,7 +115,7 @@ public final class SpotOverviewActivity extends DBListActivity
 				}
 				catch (final DBException e)
 				{
-					Log.e(LOG_TAG, "Cant determine if Spot is activ, selected id:"+selectedID, e);
+					Log.e(LOG_TAG, "Cant determine if Spot is activ, selected id:" + selectedID, e);
 				}
 			}
 		});

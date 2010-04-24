@@ -468,7 +468,7 @@ public final class MainActivity extends DBActivity
 			public final void onClick(final View v)
 			{
 				// TODO FIX requestID
-				AlarmUtil.cancelAlarm(1, 1,MainActivity.this);
+				AlarmUtil.cancelAlarm(1, 1, MainActivity.this);
 
 			}
 		};

@@ -148,10 +148,9 @@ public final class ForecastActivity extends DBActivity
 		{
 			Log.e(LOG_TAG, "Could not get Forecast for Spot with selected id:" + selectedID, e);
 			Toast.makeText(this, "Forecast not in Database yet", Toast.LENGTH_LONG).show();
-//			UpdateSpotForecastTask task = new UpdateSpotForecastTask(selectedID,this);
-			
-			
-			
+			// UpdateSpotForecastTask task = new
+			// UpdateSpotForecastTask(selectedID,this);
+
 		}
 
 	}

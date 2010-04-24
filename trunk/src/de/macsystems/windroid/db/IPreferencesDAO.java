@@ -59,7 +59,6 @@ public interface IPreferencesDAO extends IDAO
 	 * @return
 	 * @throws DBException
 	 */
-	public boolean useNetworkWhileRoaming()
-	throws DBException;
+	public boolean useNetworkWhileRoaming() throws DBException;
 
 }

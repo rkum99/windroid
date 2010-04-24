@@ -253,7 +253,7 @@ public class WindUtils
 		{
 			return task.execute(_context);
 		}
-		catch (InterruptedException e)
+		catch (final InterruptedException e)
 		{
 			final IOException exe = new IOException("Interrupted");
 			exe.initCause(e);

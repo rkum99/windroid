@@ -8,10 +8,15 @@ public class EmptyCursorException extends DBException
 {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
 	 * @param detailMessage
 	 * @param throwable
 	 */
-	public EmptyCursorException(String detailMessage, Throwable throwable)
+	public EmptyCursorException(final String detailMessage, final Throwable throwable)
 	{
 		super(detailMessage, throwable);
 		// TODO Auto-generated constructor stub
@@ -20,7 +25,7 @@ public class EmptyCursorException extends DBException
 	/**
 	 * @param detailMessage
 	 */
-	public EmptyCursorException(String detailMessage)
+	public EmptyCursorException(final String detailMessage)
 	{
 		super(detailMessage);
 		// TODO Auto-generated constructor stub
@@ -29,7 +34,7 @@ public class EmptyCursorException extends DBException
 	/**
 	 * @param throwable
 	 */
-	public EmptyCursorException(Throwable throwable)
+	public EmptyCursorException(final Throwable throwable)
 	{
 		super(throwable);
 		// TODO Auto-generated constructor stub

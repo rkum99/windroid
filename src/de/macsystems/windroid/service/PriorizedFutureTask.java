@@ -30,7 +30,7 @@ final class PriorizedFutureTask extends FutureTask<Void>
 {
 
 	@Override
-	protected void set(Void v)
+	protected void set(final Void v)
 	{
 		super.set(v);
 

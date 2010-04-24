@@ -240,7 +240,7 @@ public final class DownloadActivity extends ChainSubActivity
 					}
 					downloadThread.interrupt();
 				}
-				catch (Exception e)
+				catch (final Exception e)
 				{
 					Log.e(LOG_TAG, "Failed to interrupt thread", e);
 				}

@@ -42,7 +42,7 @@ public enum PRIORITY implements Comparator<PRIORITY>
 	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 	 */
 	@Override
-	public int compare(PRIORITY p1, PRIORITY p2)
+	public int compare(final PRIORITY p1, final PRIORITY p2)
 	{
 		System.out.println("comparing");
 		if (p1.prio == p2.prio)

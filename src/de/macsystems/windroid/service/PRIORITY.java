@@ -36,6 +36,11 @@ public enum PRIORITY implements Comparator<PRIORITY>
 		prio = _prio;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+	 */
 	@Override
 	public int compare(PRIORITY p1, PRIORITY p2)
 	{

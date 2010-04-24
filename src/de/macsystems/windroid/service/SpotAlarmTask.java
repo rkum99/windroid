@@ -19,6 +19,7 @@ package de.macsystems.windroid.service;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.concurrent.Callable;
 
 import android.content.Context;
 import android.util.Log;
@@ -36,7 +37,7 @@ import de.macsystems.windroid.db.ISelectedDAO;
  * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
  * @see AlarmUtil#createAlarmForSpot(int, Context)
  */
-public class SpotAlarmTask implements Runnable
+public class SpotAlarmTask implements Callable<Void>
 {
 
 	private final static String LOG_TAG = SpotAlarmTask.class.getSimpleName();
@@ -57,7 +58,7 @@ public class SpotAlarmTask implements Runnable
 	}
 
 	@Override
-	public void run()
+	public Void call()
 	{
 		final ISelectedDAO dao = DAOFactory.getSelectedDAO(context);
 
@@ -67,7 +68,7 @@ public class SpotAlarmTask implements Runnable
 			{
 				Log.i(LOG_TAG, "No active spot configured.");
 			}
-			return;
+			return null;
 		}
 		try
 		{
@@ -89,5 +90,6 @@ public class SpotAlarmTask implements Runnable
 		{
 			Log.e(LOG_TAG, "Failed to get activ spots", e);
 		}
+		return null;
 	}
 }

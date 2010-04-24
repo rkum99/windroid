@@ -19,6 +19,7 @@ package de.macsystems.windroid.service;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import android.content.Context;
@@ -35,7 +36,7 @@ import de.macsystems.windroid.db.ISelectedDAO;
  * @author mac
  * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
  */
-public final class UpdateAlarmTask extends AbstractNotificationTask implements Runnable
+public final class UpdateAlarmTask extends AbstractNotificationTask implements Callable<Void>
 
 {
 	private final static String LOG_TAG = UpdateAlarmTask.class.getSimpleName();
@@ -52,16 +53,16 @@ public final class UpdateAlarmTask extends AbstractNotificationTask implements R
 	 */
 	public UpdateAlarmTask(final Context _context) throws NullPointerException
 	{
-		super(_context,PRIORITY.NORMAL);
+		super(_context);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see java.lang.Runnable#run()
+	 * @see java.util.concurrent.Callable#call()
 	 */
 	@Override
-	public void run()
+	public Void call()
 	{
 		showStatus(getContext().getString(R.string.ongoing_update_title), getContext().getString(
 				R.string.ongoing_update_text));
@@ -69,11 +70,10 @@ public final class UpdateAlarmTask extends AbstractNotificationTask implements R
 		try
 		{
 			final ISelectedDAO dao = DAOFactory.getSelectedDAO(getContext());
-
 			if (!dao.isSpotActiv())
 			{
 				Log.i(LOG_TAG, "No active spot configured.");
-				return;
+				return null;
 			}
 			try
 			{
@@ -89,7 +89,6 @@ public final class UpdateAlarmTask extends AbstractNotificationTask implements R
 					final SpotConfigurationVO spot = iter.next();
 					AlarmUtil.createAlarmForSpot(spot.getPrimaryKey(), getContext());
 				}
-
 			}
 			catch (final DBException e)
 			{
@@ -100,5 +99,6 @@ public final class UpdateAlarmTask extends AbstractNotificationTask implements R
 		{
 			clearNotification();
 		}
+		return null;
 	}
 }

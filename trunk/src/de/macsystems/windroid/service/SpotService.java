@@ -19,7 +19,9 @@ package de.macsystems.windroid.service;
 
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.FutureTask;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -54,13 +56,13 @@ public class SpotService extends Service
 		@Override
 		public void initAlarms() throws RemoteException
 		{
-			threadPool.submit(new SpotAlarmTask(SpotService.this));
+			addTask(new SpotAlarmTask(SpotService.this));
 		}
 
 		@Override
 		public void updateAll() throws RemoteException
 		{
-			threadPool.submit(new UpdateAlarmTask(SpotService.this));
+			addTask(new UpdateAlarmTask(SpotService.this));
 		}
 
 		@Override
@@ -80,7 +82,7 @@ public class SpotService extends Service
 				Log.d(LOG_TAG, "Insert Task to update spot with selectedID:" + _selectedID + " into scheduler");
 			}
 			final UpdateSpotForecastTask task = new UpdateSpotForecastTask(_selectedID, SpotService.this);
-			threadPool.execute(task);
+			addTask(task);
 		}
 	};
 
@@ -183,9 +185,10 @@ public class SpotService extends Service
 		if (threadPool == null)
 		{
 			final int poolSize = getResources().getInteger(R.integer.schedule_threadpool_size);
-			final BlockingQueue<? extends Runnable> queue = new PriorityBlockingQueue(poolSize, new PrioComparator());
-			threadPool = new ThreadPoolExecutor(1, 1, 1L, TimeUnit.SECONDS, (BlockingQueue<Runnable>) queue);
 
+			final BlockingQueue<? super Runnable> queue = new PriorityBlockingQueue(poolSize,
+					new PriorizedFutureTaskComparator());
+			threadPool = new ThreadPoolExecutor(1, 1, 1L, TimeUnit.SECONDS, (BlockingQueue<Runnable>) queue);
 		}
 	}
 
@@ -231,6 +234,23 @@ public class SpotService extends Service
 		finally
 		{
 			super.onDestroy();
+		}
+	}
+
+	/**
+	 * 
+	 * @param _task
+	 */
+	private void addTask(final Callable<Void> _task)
+	{
+		try
+		{
+			final PriorizedFutureTask task = new PriorizedFutureTask(PRIORITY.NORMAL, _task);
+			threadPool.execute(task);
+		}
+		catch (final Throwable e)
+		{
+			Log.e(LOG_TAG, "Failed to queue task", e);
 		}
 	}
 

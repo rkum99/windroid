@@ -75,8 +75,7 @@ public final class ScheduleImpl extends BaseImpl implements IScheduleDAO
 	 * @see de.macsystems.windroid.db.IScheduleDAO#getScheduleByScheduleID(int)
 	 */
 	@Override
-	public Schedule getScheduleByScheduleID(final int _selectedID)
-	throws DBException
+	public Schedule getScheduleByScheduleID(final int _selectedID) throws DBException
 	{
 		if (Logging.isLoggingEnabled())
 		{

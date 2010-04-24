@@ -176,8 +176,7 @@ public final class PreferenceImpl extends BaseImpl implements IPreferencesDAO
 	 * @see de.macsystems.windroid.db.IPreferencesDAO#useNetworkWhileRoaming()
 	 */
 	@Override
-	public boolean useNetworkWhileRoaming()
-	throws DBException
+	public boolean useNetworkWhileRoaming() throws DBException
 	{
 		boolean result = false;
 		final SQLiteDatabase db = getReadableDatabase();

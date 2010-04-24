@@ -70,8 +70,7 @@ public final class ContinentImpl extends BaseImpl implements IContinentDAO
 	 * de.macsystems.windroid.db.IContinentDAO#getIndexByID(java.lang.String)
 	 */
 	@Override
-	public int getIndexByID(final String _id)
-	throws DBException
+	public int getIndexByID(final String _id) throws DBException
 	{
 		int result = -1;
 		final SQLiteDatabase db = getReadableDatabase();

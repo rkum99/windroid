@@ -23,12 +23,13 @@ import java.util.Set;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.db.DBException;
 import de.macsystems.windroid.db.IForecastDAO;
-import de.macsystems.windroid.db.IForecastRelation;
+import de.macsystems.windroid.db.IForecastRelationDAO;
 import de.macsystems.windroid.db.ISelectedDAO;
 import de.macsystems.windroid.db.ISpotDAO;
 import de.macsystems.windroid.forecast.Forecast;
@@ -52,7 +53,7 @@ import de.macsystems.windroid.progress.IProgress;
  * @author mac
  * @version $Id$
  */
-public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRelation
+public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRelationDAO
 {
 
 	private final static String LOG_TAG = ForecastImpl.class.getSimpleName();
@@ -68,6 +69,35 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 	public ForecastImpl(final Database _database, final IProgress _progress)
 	{
 		super(_database, "forecast", _progress);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.macsystems.windroid.db.IForecastRelation#isForecastAvailable(int)
+	 */
+	public boolean isForecastAvailable(final int _selectedID) throws DBException
+	{
+		boolean result = false;
+		final SQLiteDatabase db = getReadableDatabase();
+		Cursor cursor = null;
+		try
+		{
+			cursor = db.query(RELATION_TABLE, new String[]
+			{ IForecastRelationDAO.COLUMN_SELECTED_ID }, "selectedid=?", new String[]
+			{ Integer.toString(_selectedID) }, null, null, null);
+			result = cursor.moveToFirst();
+		}
+		catch (final SQLException e)
+		{
+			throw new DBException(e);
+		}
+		finally
+		{
+			IOUtils.close(cursor);
+			IOUtils.close(db);
+		}
+		return result;
 	}
 
 	/*

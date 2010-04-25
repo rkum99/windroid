@@ -19,8 +19,6 @@ package de.macsystems.windroid.service;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.concurrent.Callable;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import android.content.Context;
 import android.util.Log;
@@ -36,15 +34,10 @@ import de.macsystems.windroid.db.ISelectedDAO;
  * @author mac
  * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
  */
-public final class UpdateAlarmTask extends AbstractNotificationTask implements Callable<Void>
+public final class UpdateAlarmTask extends AbstractNotificationTask
 
 {
 	private final static String LOG_TAG = UpdateAlarmTask.class.getSimpleName();
-
-	/**
-	 * Thread save integer which can be used to count alarm id.
-	 */
-	private final static AtomicInteger notificationCounter = new AtomicInteger(1);
 
 	/**
 	 * 
@@ -62,7 +55,7 @@ public final class UpdateAlarmTask extends AbstractNotificationTask implements C
 	 * @see java.util.concurrent.Callable#call()
 	 */
 	@Override
-	public Void call()
+	public void execute()
 	{
 		showStatus(getContext().getString(R.string.ongoing_update_title), getContext().getString(
 				R.string.ongoing_update_text));
@@ -73,7 +66,7 @@ public final class UpdateAlarmTask extends AbstractNotificationTask implements C
 			if (!dao.isSpotActiv())
 			{
 				Log.i(LOG_TAG, "No active spot configured.");
-				return null;
+				return;
 			}
 			try
 			{
@@ -99,6 +92,5 @@ public final class UpdateAlarmTask extends AbstractNotificationTask implements C
 		{
 			clearNotification();
 		}
-		return null;
 	}
 }

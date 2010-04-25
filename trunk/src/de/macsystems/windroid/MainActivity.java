@@ -391,7 +391,7 @@ public final class MainActivity extends DBActivity
 					}
 					else
 					{
-						_connection.stop();
+						// _connection.stop();
 					}
 				}
 				catch (final RemoteException e)

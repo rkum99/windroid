@@ -46,7 +46,7 @@ import de.macsystems.windroid.service.AbstractNotificationTask;
  *          $
  * 
  */
-public class UpdateSpotForecastTask extends AbstractNotificationTask implements Callable<Void>
+public class UpdateSpotForecastTask extends AbstractNotificationTask
 {
 
 	private final static String LOG_TAG = UpdateSpotForecastTask.class.getSimpleName();
@@ -66,9 +66,8 @@ public class UpdateSpotForecastTask extends AbstractNotificationTask implements 
 	}
 
 	@Override
-	public Void call()
+	public void execute()
 	{
-
 		try
 		{
 			final ISelectedDAO dao = DAOFactory.getSelectedDAO(getContext());
@@ -91,7 +90,7 @@ public class UpdateSpotForecastTask extends AbstractNotificationTask implements 
 				{
 					Log.d(LOG_TAG, "Cancel update as network not reachable.");
 				}
-				return null;
+				return;
 			}
 			if (Logging.isLoggingEnabled())
 			{
@@ -132,7 +131,6 @@ public class UpdateSpotForecastTask extends AbstractNotificationTask implements 
 		{
 			clearNotification();
 		}
-		return null;
 
 	}
 }

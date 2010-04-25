@@ -17,31 +17,11 @@
  */
 package de.macsystems.windroid.service;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.FutureTask;
-
-/**
- * @author mac
- * @version $Id$
- */
-final class PriorizedFutureTask extends FutureTask<Void>
+oneway interface IServiceCallbackListener
 {
-	final PRIORITY prio;
-
-	/**
-	 * 
-	 * @param _prio
-	 * @param _task
-	 * @throws NullPointerException
-	 * 
-	 */
-	PriorizedFutureTask(final PRIORITY _prio, final Callable<Void> _task) throws NullPointerException
-	{
-		super(_task);
-		if (_prio == null)
-		{
-			throw new NullPointerException("prio");
-		}
-		prio = _prio;
-	}
+    void onTaskStatusChange(int currentValue,int maxValue);
+    
+    void onTaskComplete();
+    
+    void onTaskFailed();
 }

@@ -25,7 +25,7 @@ import de.macsystems.windroid.forecast.Forecast;
  * @author mac
  * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
  */
-public interface IForecastDAO extends IDAO
+public interface IForecastDAO extends IDAO, IForecastRelationDAO
 {
 
 	public final static String COLUMN_DATE = "date";

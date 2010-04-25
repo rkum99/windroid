@@ -25,7 +25,7 @@ import android.database.sqlite.SQLiteDatabase;
  * @author mac
  * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
  */
-public interface IForecastRelation extends IDAO
+public interface IForecastRelationDAO extends IDAO
 {
 	/**
 	 * {@value #COLUMN_FORECAST_ID}
@@ -43,8 +43,18 @@ public interface IForecastRelation extends IDAO
 	 * @param _db
 	 * @param _selectedID
 	 * @return a set with forecast IDs
-	 * @see IForecastRelation#COLUMN_FORECAST_ID
+	 * @see IForecastRelationDAO#COLUMN_FORECAST_ID
 	 */
 	Set<Integer> getRowsToDelete(final SQLiteDatabase _db, final int _selectedID);
+
+	/**
+	 * Returns <code>true</code> if any relation is found pointing to a Spot
+	 * which has a forecast
+	 * 
+	 * @param _selectedID
+	 * @return
+	 * @throws DBException
+	 */
+	public boolean isForecastAvailable(final int _selectedID) throws DBException;
 
 }

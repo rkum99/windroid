@@ -105,54 +105,64 @@ public final class ForecastActivity extends DBActivity
 		}
 
 		final int selectedID = getForecastID(intent);
+
 		forecastDAO = DAOFactory.getForecast(this);
 		daoManager.addDAO(forecastDAO);
 
 		try
 		{
-			final Forecast forecast = forecastDAO.getForecast(selectedID);
-			final String serverTime = titleDateFormat.format(forecast.getTimestamp());
-			setTitle(forecast.getName() + " update " + serverTime);
-			/**
-			 * For each row in table we set the values
-			 */
-			final TableRow rowWindSpeed = (TableRow) findViewById(R.id.forecast_row_wind_speed);
-			fillWindSpeedRow(rowWindSpeed, R.string.wind_speed, forecast);
-			final TableRow rowDate = (TableRow) findViewById(R.id.forecast_row_date);
-			fillDateRow(rowDate, R.string.date, forecast);
-			final TableRow rowTime = (TableRow) findViewById(R.id.forecast_row_time);
-			fillTimeRow(rowTime, R.string.time, forecast);
-			final TableRow rowAirPressure = (TableRow) findViewById(R.id.forecast_row_air_pressure);
-			fillAirPressureRow(rowAirPressure, R.string.air_pressure, forecast);
-			final TableRow rowAirTemp = (TableRow) findViewById(R.id.forecast_row_air_temperature);
-			fillAirTempRow(rowAirTemp, R.string.air_temperature, forecast);
-			final TableRow rowWaterTemp = (TableRow) findViewById(R.id.forecast_row_water_temperature);
-			fillWaterTempRow(rowWaterTemp, R.string.water_temperature, forecast);
-			final TableRow rowWaveHeight = (TableRow) findViewById(R.id.forecast_row_wave_height);
-			fillWaveHeightRow(rowWaveHeight, R.string.wave_height, forecast);
-			final TableRow rowWavePeriod = (TableRow) findViewById(R.id.forecast_row_wave_period);
-			fillWavePeriodRow(rowWavePeriod, R.string.wave_period, forecast);
-			final TableRow rowWindGust = (TableRow) findViewById(R.id.forecast_row_windgust);
-			fillWindGustRow(rowWindGust, R.string.windgust, forecast);
-			final TableRow rowClouds = (TableRow) findViewById(R.id.forecast_row_clouds);
-			fillCloudRow(rowClouds, R.string.clouds, forecast);
-			final TableRow rowWindDirection = (TableRow) findViewById(R.id.forecast_row_wind_direction);
-			fillWindDirectionRow(rowWindDirection, R.string.wind_direction, forecast);
-			final TableRow rowWaveDirection = (TableRow) findViewById(R.id.forecast_row_wave_direction);
-			fillWaveDirectionRow(rowWaveDirection, R.string.wave_direction, forecast);
-
-			final TableRow rowPrecipitationDirection = (TableRow) findViewById(R.id.forecast_row_precipitation);
-			fillPrecipitationRow(rowPrecipitationDirection, R.string.precipitation, forecast);
+			if (forecastDAO.isForecastAvailable(selectedID))
+			{
+				fillTable(selectedID);
+			}
+			else
+			{
+				Toast.makeText(this, "Forecast not in Database yet", Toast.LENGTH_LONG).show();
+				// showProgressAndUpdateDB(selectedID);
+			}
 		}
 		catch (final DBException e)
 		{
-			Log.e(LOG_TAG, "Could not get Forecast for Spot with selected id:" + selectedID, e);
-			Toast.makeText(this, "Forecast not in Database yet", Toast.LENGTH_LONG).show();
-			// UpdateSpotForecastTask task = new
-			// UpdateSpotForecastTask(selectedID,this);
-
+			Log.e(LOG_TAG, "Failed to determine forecast status for selectedid: " + selectedID, e);
 		}
 
+	}
+
+	private void fillTable(final int selectedID) throws DBException
+	{
+		final Forecast forecast = forecastDAO.getForecast(selectedID);
+		final String serverTime = titleDateFormat.format(forecast.getTimestamp());
+		setTitle(forecast.getName() + " update " + serverTime);
+		/**
+		 * For each row in table we set the values
+		 */
+		final TableRow rowWindSpeed = (TableRow) findViewById(R.id.forecast_row_wind_speed);
+		fillWindSpeedRow(rowWindSpeed, R.string.wind_speed, forecast);
+		final TableRow rowDate = (TableRow) findViewById(R.id.forecast_row_date);
+		fillDateRow(rowDate, R.string.date, forecast);
+		final TableRow rowTime = (TableRow) findViewById(R.id.forecast_row_time);
+		fillTimeRow(rowTime, R.string.time, forecast);
+		final TableRow rowAirPressure = (TableRow) findViewById(R.id.forecast_row_air_pressure);
+		fillAirPressureRow(rowAirPressure, R.string.air_pressure, forecast);
+		final TableRow rowAirTemp = (TableRow) findViewById(R.id.forecast_row_air_temperature);
+		fillAirTempRow(rowAirTemp, R.string.air_temperature, forecast);
+		final TableRow rowWaterTemp = (TableRow) findViewById(R.id.forecast_row_water_temperature);
+		fillWaterTempRow(rowWaterTemp, R.string.water_temperature, forecast);
+		final TableRow rowWaveHeight = (TableRow) findViewById(R.id.forecast_row_wave_height);
+		fillWaveHeightRow(rowWaveHeight, R.string.wave_height, forecast);
+		final TableRow rowWavePeriod = (TableRow) findViewById(R.id.forecast_row_wave_period);
+		fillWavePeriodRow(rowWavePeriod, R.string.wave_period, forecast);
+		final TableRow rowWindGust = (TableRow) findViewById(R.id.forecast_row_windgust);
+		fillWindGustRow(rowWindGust, R.string.windgust, forecast);
+		final TableRow rowClouds = (TableRow) findViewById(R.id.forecast_row_clouds);
+		fillCloudRow(rowClouds, R.string.clouds, forecast);
+		final TableRow rowWindDirection = (TableRow) findViewById(R.id.forecast_row_wind_direction);
+		fillWindDirectionRow(rowWindDirection, R.string.wind_direction, forecast);
+		final TableRow rowWaveDirection = (TableRow) findViewById(R.id.forecast_row_wave_direction);
+		fillWaveDirectionRow(rowWaveDirection, R.string.wave_direction, forecast);
+
+		final TableRow rowPrecipitationDirection = (TableRow) findViewById(R.id.forecast_row_precipitation);
+		fillPrecipitationRow(rowPrecipitationDirection, R.string.precipitation, forecast);
 	}
 
 	private void fillWindDirectionRow(final TableRow _rowWind, final int _columNameResID, final Forecast _forecast)

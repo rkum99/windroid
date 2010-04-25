@@ -17,15 +17,14 @@
  */
 package de.macsystems.windroid.service;
 
+import de.macsystems.windroid.service.IServiceCallbackListener;
+
 interface ISpotService
 {
-
 	 void initAlarms();
 
 	 void updateAll();
 	 
-	 void update(int _id);
-
-	 void stop();
+	 void update(int _id, IServiceCallbackListener listener);
 
 }

@@ -17,6 +17,7 @@
  */
 package de.macsystems.windroid.service;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import android.app.Notification;
@@ -24,6 +25,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import de.macsystems.windroid.OngoingUpdateActivity;
 import de.macsystems.windroid.R;
 
@@ -35,8 +37,10 @@ import de.macsystems.windroid.R;
  * @version $Id: AbstractNotificationTask.java 314 2010-04-15 11:50:03Z
  *          jens.hohl $
  */
-public abstract class AbstractNotificationTask
+public abstract class AbstractNotificationTask implements Callable<Void>
 {
+
+	private final String LOG_TAG = AbstractNotificationTask.class.getSimpleName();
 	/**
 	 * Thread save integer which can be used to count alarm id.
 	 */
@@ -67,6 +71,30 @@ public abstract class AbstractNotificationTask
 	protected Context getContext()
 	{
 		return context;
+	}
+
+	/**
+	 * Implement your Task there
+	 */
+	public abstract void execute() throws Exception;
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.util.concurrent.Callable#call()
+	 */
+	@Override
+	public final Void call()
+	{
+		try
+		{
+			execute();
+		}
+		catch (Exception e)
+		{
+			Log.e(LOG_TAG, "Failed to execute", e);
+		}
+		return null;
 	}
 
 	/**

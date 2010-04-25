@@ -20,6 +20,7 @@ package de.macsystems.windroid.service;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -50,6 +51,8 @@ public class SpotService extends Service
 	 */
 	private ExecutorService threadPool;
 
+	private List<IServiceCallbackListener> callbackListener;
+
 	private final ISpotService serviceBinder = new ISpotService.Stub()
 	{
 		@Override
@@ -65,16 +68,7 @@ public class SpotService extends Service
 		}
 
 		@Override
-		public void stop() throws RemoteException
-		{
-			if (Logging.isLoggingEnabled())
-			{
-				Log.d(LOG_TAG, "ISpotService#stop called");
-			}
-		}
-
-		@Override
-		public void update(final int _selectedID)
+		public void update(final int _selectedID, final IServiceCallbackListener _listener)
 		{
 			if (Logging.isLoggingEnabled())
 			{
@@ -136,7 +130,7 @@ public class SpotService extends Service
 		final int selectedID = getSelectedID(_intent);
 		try
 		{
-			serviceBinder.update(selectedID);
+			serviceBinder.update(selectedID, NullServiceCallbackListener.INSTANCE);
 		}
 		catch (final RemoteException e)
 		{
@@ -184,10 +178,13 @@ public class SpotService extends Service
 		if (threadPool == null)
 		{
 			final int poolSize = getResources().getInteger(R.integer.schedule_threadpool_size);
-
 			final BlockingQueue<? super Runnable> queue = new PriorityBlockingQueue(poolSize,
 					new PriorizedFutureTaskComparator());
 			threadPool = new ThreadPoolExecutor(1, 1, 1L, TimeUnit.SECONDS, (BlockingQueue<Runnable>) queue);
+		}
+		if (callbackListener == null)
+		{
+			callbackListener = new CopyOnWriteArrayList<IServiceCallbackListener>();
 		}
 	}
 

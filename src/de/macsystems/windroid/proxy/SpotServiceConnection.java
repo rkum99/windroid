@@ -28,6 +28,7 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.view.View;
 import de.macsystems.windroid.Logging;
+import de.macsystems.windroid.service.IServiceCallbackListener;
 import de.macsystems.windroid.service.ISpotService;
 import de.macsystems.windroid.service.SpotService;
 
@@ -140,21 +141,6 @@ public final class SpotServiceConnection implements ServiceConnection, ISpotServ
 		}
 	}
 
-	@Override
-	public void update(final int _id)
-	{
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public void stop() throws RemoteException
-	{
-		final ISpotService temp = reference.get();
-		{
-			temp.stop();
-		}
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -164,6 +150,13 @@ public final class SpotServiceConnection implements ServiceConnection, ISpotServ
 	public IBinder asBinder()
 	{
 		return reference.get().asBinder();
+	}
+
+	@Override
+	public void update(int id, IServiceCallbackListener listener) throws RemoteException
+	{
+		throw new UnsupportedOperationException();
+
 	}
 
 }

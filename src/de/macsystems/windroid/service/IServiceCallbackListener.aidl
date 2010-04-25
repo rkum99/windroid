@@ -16,7 +16,10 @@
 
  */
 package de.macsystems.windroid.service;
-
+/**
+ * @author mac
+ * @version $Id$
+ */
 oneway interface IServiceCallbackListener
 {
     void onTaskStatusChange(int currentValue,int maxValue);

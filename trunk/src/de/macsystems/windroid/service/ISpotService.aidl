@@ -16,7 +16,10 @@
 
  */
 package de.macsystems.windroid.service;
-
+/**
+ * @author mac
+ * @version $Id$
+ */
 import de.macsystems.windroid.service.IServiceCallbackListener;
 
 interface ISpotService

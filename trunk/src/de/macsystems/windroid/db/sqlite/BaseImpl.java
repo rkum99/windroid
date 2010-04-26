@@ -116,7 +116,6 @@ public class BaseImpl implements IDAO
 	 */
 	protected SQLiteDatabase getReadableDatabase()
 	{
-		// return getDatabase().getReadableDatabase();
 		if (cachedDB == null || !cachedDB.isOpen())
 		{
 			cachedDB = getDatabase().getReadableDatabase();
@@ -131,6 +130,7 @@ public class BaseImpl implements IDAO
 	 */
 	protected SQLiteDatabase getWritableDatabase()
 	{
+		// TODO: return cachedDB there!
 		return getDatabase().getWritableDatabase();
 	}
 

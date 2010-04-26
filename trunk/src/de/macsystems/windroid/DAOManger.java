@@ -60,20 +60,8 @@ public final class DAOManger
 	}
 
 	/**
-	 * removes all registered DAOs
-	 */
-	public void removeAll()
-	{
-		daos.clear();
-		if (Logging.isLoggingEnabled())
-		{
-			Log.d(LOG_TAG, "all DAOs removed.");
-		}
-
-	}
-
-	/**
-	 * Call this method if your activity is going to stop.
+	 * Call this method if your activity is going to stop.<br>
+	 * It stops each <code>IDAO</code> and removes all references.
 	 */
 	protected void onStop()
 	{

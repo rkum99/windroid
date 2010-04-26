@@ -54,6 +54,10 @@ public class BaseImpl implements IDAO
 	protected final String tableName;
 
 	private SQLiteDatabase cachedDB = null;
+	/**
+	 * Lock
+	 */
+	private Object lock = new Object();
 
 	/**
 	 * 
@@ -116,9 +120,12 @@ public class BaseImpl implements IDAO
 	 */
 	protected SQLiteDatabase getReadableDatabase()
 	{
-		if (cachedDB == null || !cachedDB.isOpen())
+		synchronized (lock)
 		{
-			cachedDB = getDatabase().getReadableDatabase();
+			if (cachedDB == null || !cachedDB.isOpen())
+			{
+				cachedDB = getDatabase().getReadableDatabase();
+			}
 		}
 		return cachedDB;
 	}

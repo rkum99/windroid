@@ -57,7 +57,7 @@ public class BaseImpl implements IDAO
 	/**
 	 * Lock
 	 */
-	private Object lock = new Object();
+	private final static Object LOCK = new Object();
 
 	/**
 	 * 
@@ -120,7 +120,7 @@ public class BaseImpl implements IDAO
 	 */
 	protected SQLiteDatabase getReadableDatabase()
 	{
-		synchronized (lock)
+		synchronized (LOCK)
 		{
 			if (cachedDB == null || !cachedDB.isOpen())
 			{
@@ -137,8 +137,14 @@ public class BaseImpl implements IDAO
 	 */
 	protected SQLiteDatabase getWritableDatabase()
 	{
-		// TODO: return cachedDB there!
-		return getDatabase().getWritableDatabase();
+		synchronized (LOCK)
+		{
+			if (cachedDB == null || !cachedDB.isOpen())
+			{
+				cachedDB = getDatabase().getReadableDatabase();
+			}
+		}
+		return cachedDB;
 	}
 
 	/**

@@ -171,7 +171,7 @@ public class BaseImpl implements IDAO
 			throw new IllegalArgumentException("invalid table name");
 		}
 		int result = 0;
-		final SQLiteDatabase db = getDatabase().getReadableDatabase();
+		final SQLiteDatabase db = getReadableDatabase();
 		Cursor c = null;
 		try
 		{

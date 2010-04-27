@@ -290,7 +290,7 @@ public final class MainActivity extends DBActivity
 		setupCancelAlarmTest();
 
 		// create alarms for selected IDs // testing
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < 1; i++)
 		{
 			AlarmUtil.createAlarmForSpot(1, this);
 		}

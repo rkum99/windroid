@@ -20,6 +20,9 @@ package de.macsystems.windroid.service;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 
+import android.os.RemoteException;
+import android.util.Log;
+
 /**
  * @author mac
  * @version $Id$
@@ -27,6 +30,8 @@ import java.util.concurrent.FutureTask;
 final class PriorizedFutureTask extends FutureTask<Void>
 {
 	final PRIORITY prio;
+
+	private final IServiceCallbackListener listener;
 
 	/**
 	 * 
@@ -37,11 +42,55 @@ final class PriorizedFutureTask extends FutureTask<Void>
 	 */
 	PriorizedFutureTask(final PRIORITY _prio, final Callable<Void> _task) throws NullPointerException
 	{
+		this(_prio, _task, null);
+	}
+
+	/**
+	 * 
+	 * @param _prio
+	 * @param _task
+	 * @throws NullPointerException
+	 * 
+	 */
+	PriorizedFutureTask(final PRIORITY _prio, final Callable<Void> _task, IServiceCallbackListener _listener)
+			throws NullPointerException
+	{
 		super(_task);
 		if (_prio == null)
 		{
 			throw new NullPointerException("prio");
 		}
 		prio = _prio;
+		listener = _listener;
+		if (listener == null)
+		{
+			Log.d("PriorizedFutureTask", "callbackListener is null.");
+		}
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.util.concurrent.FutureTask#done()
+	 */
+	@Override
+	protected void done()
+	{
+		Log.d("PriorizedFutureTask", "protected void done()");
+		if (listener != null)
+		{
+			try
+			{
+				listener.onTaskComplete();
+			}
+			catch (RemoteException e)
+			{
+				Log.e("PriorizedFutureTask", "failed to call CallbackListener", e);
+			}
+		}
+		Log.d("PriorizedFutureTask", "protected void done() finished");
+		super.done();
+
+	}
+
 }

@@ -22,8 +22,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TableRow;
@@ -35,10 +39,17 @@ import de.macsystems.windroid.db.DBException;
 import de.macsystems.windroid.db.IForecastDAO;
 import de.macsystems.windroid.forecast.Forecast;
 import de.macsystems.windroid.forecast.ForecastDetail;
+import de.macsystems.windroid.proxy.SpotServiceConnection;
+import de.macsystems.windroid.proxy.UpdateConnection;
+import de.macsystems.windroid.service.IServiceCallbackListener;
 
 /**
  * @author mac
  * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
+ * 
+ * @TODO: 
+ *        http://android-developers.blogspot.com/2009/02/faster-screen-orientation
+ *        -change.html
  */
 public final class ForecastActivity extends DBActivity
 {
@@ -76,6 +87,16 @@ public final class ForecastActivity extends DBActivity
 			R.id.forecast_image_column_7 };
 
 	private IForecastDAO forecastDAO = null;
+	/**
+	 * 
+	 */
+	private final static int UPDATE_SPOT_DIALOG = 500;
+
+	private ProgressDialog updateDialog = null;
+
+	UpdateConnection connection = null;
+
+	private final static String IS_PROGRESS_DIALOG_SHOWN = "show_update_dialog";
 
 	/*
 	 * (non-Javadoc)
@@ -88,15 +109,6 @@ public final class ForecastActivity extends DBActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.forecast);
 
-		// final ViewFlipper flipper = (ViewFlipper) findViewById(R.id.flipper);
-		// flipper.setInAnimation(AnimationUtils.loadAnimation(this,
-		// R.anim.scale_in));
-		// flipper.setOutAnimation(AnimationUtils.loadAnimation(this,
-		// R.anim.scale_out));
-		// // flipper.setOutAnimation(AnimationUtils.loadAnimation(this,
-		// R.anim.slide_right));
-		// flipper.startFlipping();
-
 		final Intent intent = getIntent();
 		if (!isForecastID(intent))
 		{
@@ -104,9 +116,13 @@ public final class ForecastActivity extends DBActivity
 			return;
 		}
 
-		final int selectedID = getForecastID(intent);
+		if (connection == null)
+		{
+			connection = new UpdateConnection(getApplicationContext());
+		}
 
-		forecastDAO = DAOFactory.getForecast(this);
+		final int selectedID = getForecastID(intent);
+		forecastDAO = DAOFactory.getForecast(getApplicationContext());
 		daoManager.addDAO(forecastDAO);
 
 		try
@@ -117,15 +133,112 @@ public final class ForecastActivity extends DBActivity
 			}
 			else
 			{
-				Toast.makeText(this, "Forecast not in Database yet", Toast.LENGTH_LONG).show();
-				// showProgressAndUpdateDB(selectedID);
+				/**
+				 * First time the activity gets called the savedInstanceState is
+				 * null!
+				 */
+				if (savedInstanceState != null)
+				{
+					Log.d(LOG_TAG, IS_PROGRESS_DIALOG_SHOWN + " : "
+							+ savedInstanceState.getBoolean(IS_PROGRESS_DIALOG_SHOWN));
+				}
+				showDialog(UPDATE_SPOT_DIALOG);
+//				try
+//				{
+//					connection.update(selectedID);
+//				}
+//				catch (RemoteException e)
+//				{
+//					Log.e(LOG_TAG, "Failed to call service", e);
+//
+//				}
 			}
 		}
 		catch (final DBException e)
 		{
 			Log.e(LOG_TAG, "Failed to determine forecast status for selectedid: " + selectedID, e);
 		}
+	}
 
+	@Override
+	protected void onStop()
+	{
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "onStop");
+		}
+
+		super.onStop();
+	}
+
+	@Override
+	protected void onPause()
+	{
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "onPause");
+		}
+
+		super.onPause();
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState)
+	{
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "onSaveInstanceState");
+		}
+		//
+		if (updateDialog != null)
+		{
+			final boolean isShowing = updateDialog.isShowing();
+			outState.putBoolean(IS_PROGRESS_DIALOG_SHOWN, isShowing);
+			removeDialog(UPDATE_SPOT_DIALOG);
+		}
+
+		outState.putString("ID", "1234567890");
+		super.onSaveInstanceState(outState);
+	}
+
+	private Dialog createUpdateProgressDialog()
+	{
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "createUpdateProgressDialog");
+		}
+		updateDialog = new ProgressDialog(this);
+		updateDialog.setTitle("Indeterminate");
+		updateDialog.setMessage("Please wait while loading...");
+		updateDialog.setIndeterminate(true);
+		updateDialog.setCancelable(true);
+		return updateDialog;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onCreateDialog(int)
+	 */
+	@Override
+	protected Dialog onCreateDialog(int _id)
+	{
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "onCreateDialog :" + _id);
+		}
+		Dialog dialog;
+		switch (_id)
+		{
+			case (UPDATE_SPOT_DIALOG):
+				dialog = createUpdateProgressDialog();
+				break;
+			default:
+				dialog = null;
+				break;
+		}
+
+		return dialog;
 	}
 
 	private void fillTable(final int selectedID) throws DBException
@@ -557,4 +670,5 @@ public final class ForecastActivity extends DBActivity
 		}
 		return _intent.getIntExtra(IntentConstants.STORED_FORECAST_KEY, INVALID_VALUE);
 	}
+
 }

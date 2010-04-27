@@ -14,6 +14,8 @@ public final class NullServiceCallbackListener implements IServiceCallbackListen
 	 */
 	public final static NullServiceCallbackListener INSTANCE = new NullServiceCallbackListener();
 
+	private IBinder binder = null;
+
 	private NullServiceCallbackListener()
 	{
 	}
@@ -53,15 +55,11 @@ public final class NullServiceCallbackListener implements IServiceCallbackListen
 	{
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.os.IInterface#asBinder()
-	 */
 	@Override
 	public IBinder asBinder()
 	{
-		throw new UnsupportedOperationException("Null Object called");
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

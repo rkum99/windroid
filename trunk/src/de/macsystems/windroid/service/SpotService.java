@@ -20,7 +20,6 @@ package de.macsystems.windroid.service;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -28,7 +27,10 @@ import java.util.concurrent.TimeUnit;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
+import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 import android.util.Log;
 import de.macsystems.windroid.Logging;
@@ -46,12 +48,19 @@ public class SpotService extends Service
 
 	private final static String LOG_TAG = SpotService.class.getSimpleName();
 
+	protected static final int REPORT_MSG = 0;
+
 	/**
 	 * The Threadpool used to schedule all kind of tasks.
 	 */
 	private ExecutorService threadPool;
 
-	private List<IServiceCallbackListener> callbackListener;
+	/**
+	 * This is a list of callbacks that have been registered with the service.
+	 * Note that this is package scoped (instead of private) so that it can be
+	 * accessed more efficiently from inner classes.
+	 */
+	final RemoteCallbackList<IServiceCallbackListener> mCallbacks = new RemoteCallbackList<IServiceCallbackListener>();
 
 	private final ISpotService serviceBinder = new ISpotService.Stub()
 	{
@@ -75,7 +84,8 @@ public class SpotService extends Service
 				Log.d(LOG_TAG, "Insert Task to update spot with selectedID:" + _selectedID + " into scheduler");
 			}
 			final UpdateSpotForecastTask task = new UpdateSpotForecastTask(_selectedID, SpotService.this);
-			addTask(task);
+			addTask(task, _listener);
+			mCallbacks.register(_listener);
 		}
 	};
 
@@ -130,7 +140,29 @@ public class SpotService extends Service
 		final int selectedID = getSelectedID(_intent);
 		try
 		{
-			serviceBinder.update(selectedID, NullServiceCallbackListener.INSTANCE);
+			serviceBinder.update(selectedID, new IServiceCallbackListener.Stub()
+			{
+
+				@Override
+				public void onTaskStatusChange(int currentValue, int maxValue) throws RemoteException
+				{
+					Log.d(LOG_TAG, "onTaskStatusChange");
+				}
+
+				@Override
+				public void onTaskFailed() throws RemoteException
+				{
+					Log.d(LOG_TAG, "onTaskFailed");
+				}
+
+				@Override
+				public void onTaskComplete() throws RemoteException
+				{
+					Log.d(LOG_TAG, "onTaskComplete");
+				}
+
+			});
+
 		}
 		catch (final RemoteException e)
 		{
@@ -181,10 +213,6 @@ public class SpotService extends Service
 			final BlockingQueue<? super Runnable> queue = new PriorityBlockingQueue(poolSize,
 					new PriorizedFutureTaskComparator());
 			threadPool = new ThreadPoolExecutor(1, 1, 1L, TimeUnit.SECONDS, (BlockingQueue<Runnable>) queue);
-		}
-		if (callbackListener == null)
-		{
-			callbackListener = new CopyOnWriteArrayList<IServiceCallbackListener>();
 		}
 	}
 
@@ -251,6 +279,23 @@ public class SpotService extends Service
 	}
 
 	/**
+	 * 
+	 * @param _task
+	 */
+	private void addTask(final Callable<Void> _task, final IServiceCallbackListener _listener)
+	{
+		try
+		{
+			final PriorizedFutureTask task = new PriorizedFutureTask(PRIORITY.NORMAL, _task, _listener);
+			threadPool.execute(task);
+		}
+		catch (final Throwable e)
+		{
+			Log.e(LOG_TAG, "Failed to queue task", e);
+		}
+	}
+
+	/**
 	 * Lists all uncompleted task.<br>
 	 * Method is more a debug method than very useful yet.
 	 * 
@@ -270,4 +315,50 @@ public class SpotService extends Service
 			}
 		}
 	}
+
+	/**
+	 * Our Handler used to execute operations on the main thread. This is used
+	 * to schedule increments of our value.
+	 */
+	private final Handler mHandler = new Handler()
+	{
+		private int mValue;
+
+		@Override
+		public void handleMessage(Message msg)
+		{
+			switch (msg.what)
+			{
+
+				// It is time to bump the value!
+				case REPORT_MSG:
+				{
+					// Up it goes.
+					int value = ++mValue;
+
+					// Broadcast to all clients the new value.
+					final int N = mCallbacks.beginBroadcast();
+					for (int i = 0; i < N; i++)
+					{
+						try
+						{
+							mCallbacks.getBroadcastItem(i).onTaskComplete();
+						}
+						catch (RemoteException e)
+						{
+							// The RemoteCallbackList will take care of removing
+							// the dead object for us.
+						}
+					}
+					mCallbacks.finishBroadcast();
+
+					// Repeat every 1 second.
+					sendMessageDelayed(obtainMessage(REPORT_MSG), 1 * 1000);
+				}
+					break;
+				default:
+					super.handleMessage(msg);
+			}
+		}
+	};
 }

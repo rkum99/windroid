@@ -27,9 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 import android.app.Service;
 import android.content.Intent;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 import android.util.Log;
@@ -315,50 +313,4 @@ public class SpotService extends Service
 			}
 		}
 	}
-
-	/**
-	 * Our Handler used to execute operations on the main thread. This is used
-	 * to schedule increments of our value.
-	 */
-	private final Handler mHandler = new Handler()
-	{
-		private int mValue;
-
-		@Override
-		public void handleMessage(Message msg)
-		{
-			switch (msg.what)
-			{
-
-				// It is time to bump the value!
-				case REPORT_MSG:
-				{
-					// Up it goes.
-					int value = ++mValue;
-
-					// Broadcast to all clients the new value.
-					final int N = mCallbacks.beginBroadcast();
-					for (int i = 0; i < N; i++)
-					{
-						try
-						{
-							mCallbacks.getBroadcastItem(i).onTaskComplete();
-						}
-						catch (RemoteException e)
-						{
-							// The RemoteCallbackList will take care of removing
-							// the dead object for us.
-						}
-					}
-					mCallbacks.finishBroadcast();
-
-					// Repeat every 1 second.
-					sendMessageDelayed(obtainMessage(REPORT_MSG), 1 * 1000);
-				}
-					break;
-				default:
-					super.handleMessage(msg);
-			}
-		}
-	};
 }

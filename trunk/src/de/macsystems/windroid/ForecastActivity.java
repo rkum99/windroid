@@ -233,7 +233,7 @@ public final class ForecastActivity extends DBActivity
 	}
 
 	@Override
-	public void onSaveInstanceState(Bundle outState)
+	public void onSaveInstanceState(final Bundle outState)
 	{
 		if (Logging.isLoggingEnabled())
 		{
@@ -273,7 +273,7 @@ public final class ForecastActivity extends DBActivity
 	 * @see android.app.Activity#onCreateDialog(int)
 	 */
 	@Override
-	protected Dialog onCreateDialog(int _id)
+	protected Dialog onCreateDialog(final int _id)
 	{
 		if (Logging.isLoggingEnabled())
 		{

@@ -146,24 +146,24 @@ public final class SpotOverviewActivity extends DBListActivity
 
 		switch (_item.getItemId())
 		{
-		case DISABLE_ITEM_ID:
-			setActive(false);
-			break;
-		case ENABLE_ITEM_ID:
-			setActive(true);
-			break;
-		case EDIT_ITEM_ID:
-			editSpot(selectedID);
-			break;
-		case FORECAST_ITEM_ID:
-			showForcastForSpot(selectedID);
-			break;
-		case DELETE_ITEM_ID:
-			deleteSpot(selectedID);
-			break;
+			case DISABLE_ITEM_ID:
+				setActive(false);
+				break;
+			case ENABLE_ITEM_ID:
+				setActive(true);
+				break;
+			case EDIT_ITEM_ID:
+				editSpot(selectedID);
+				break;
+			case FORECAST_ITEM_ID:
+				showForcastForSpot(selectedID);
+				break;
+			case DELETE_ITEM_ID:
+				deleteSpot(selectedID);
+				break;
 
-		default:
-			throw new IllegalArgumentException("Unknown Item ID " + _item.getItemId());
+			default:
+				throw new IllegalArgumentException("Unknown Item ID " + _item.getItemId());
 		}
 
 		return true;

@@ -23,7 +23,8 @@ import java.util.Comparator;
  * Compares {@link PRIORITY}
  * 
  * @author mac
- * @version $Id$
+ * @version $Id: PriorizedFutureTaskComparator.java 330 2010-04-24 14:23:11Z
+ *          jens.hohl $
  * @see PRIORITY#compareTo(PRIORITY)
  */
 final class PriorizedFutureTaskComparator implements Comparator<PriorizedFutureTask>

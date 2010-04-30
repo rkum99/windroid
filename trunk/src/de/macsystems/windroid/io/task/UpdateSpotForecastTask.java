@@ -19,7 +19,6 @@ package de.macsystems.windroid.io.task;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.concurrent.Callable;
 
 import android.content.Context;
 import android.util.Log;

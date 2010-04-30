@@ -503,8 +503,7 @@ public class IOUtils
 	 * @throws IOException
 	 */
 	public static List<String> readTextfile(final Context _context, final int _resourceId)
-			throws Resources.NotFoundException,
-			IOException
+			throws Resources.NotFoundException, IOException
 	{
 		BufferedReader bufReader = null;
 		InputStream inStream = null;

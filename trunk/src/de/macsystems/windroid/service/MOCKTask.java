@@ -15,7 +15,7 @@ public final class MOCKTask extends AbstractNotificationTask
 	 * @param context
 	 * @throws NullPointerException
 	 */
-	public MOCKTask(Context context) throws NullPointerException
+	public MOCKTask(final Context context) throws NullPointerException
 	{
 		super(context);
 	}

@@ -27,7 +27,9 @@ import java.util.concurrent.TimeUnit;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 import android.util.Log;
@@ -81,9 +83,11 @@ public class SpotService extends Service
 			{
 				Log.d(LOG_TAG, "Insert Task to update spot with selectedID:" + _selectedID + " into scheduler");
 			}
+
 			final UpdateSpotForecastTask task = new UpdateSpotForecastTask(_selectedID, SpotService.this);
+
 			addTask(task, _listener);
-			mCallbacks.register(_listener);
+			// mCallbacks.register(_listener);
 		}
 	};
 
@@ -117,6 +121,7 @@ public class SpotService extends Service
 	 * @see android.app.Service#onStart(android.content.Intent, int)
 	 */
 	@Override
+	// TODO Deprecated from Android >= 2.0
 	public void onStart(final Intent _intent, final int _startId)
 	{
 		super.onStart(_intent, _startId);
@@ -136,36 +141,7 @@ public class SpotService extends Service
 		}
 		//
 		final int selectedID = getSelectedID(_intent);
-		try
-		{
-			serviceBinder.update(selectedID, new IServiceCallbackListener.Stub()
-			{
-
-				@Override
-				public void onTaskStatusChange(int currentValue, int maxValue) throws RemoteException
-				{
-					Log.d(LOG_TAG, "onTaskStatusChange");
-				}
-
-				@Override
-				public void onTaskFailed() throws RemoteException
-				{
-					Log.d(LOG_TAG, "onTaskFailed");
-				}
-
-				@Override
-				public void onTaskComplete() throws RemoteException
-				{
-					Log.d(LOG_TAG, "onTaskComplete");
-				}
-
-			});
-
-		}
-		catch (final RemoteException e)
-		{
-			Log.e(LOG_TAG, "Failed to call Service Stub", e);
-		}
+		Log.i(LOG_TAG, "Found spot with selectedID " + selectedID);
 	}
 
 	/**

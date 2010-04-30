@@ -559,7 +559,7 @@ public final class MainActivity extends DBActivity
 	}
 
 	/**
-	 * Opens Browser by using ACTION_VIEW
+	 * Opens Browser by using @ {@link ACTION_VIEW}
 	 */
 	private void showHelpPage()
 	{

@@ -25,10 +25,13 @@ import java.util.Iterator;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.RemoteException;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -39,9 +42,7 @@ import de.macsystems.windroid.db.DBException;
 import de.macsystems.windroid.db.IForecastDAO;
 import de.macsystems.windroid.forecast.Forecast;
 import de.macsystems.windroid.forecast.ForecastDetail;
-import de.macsystems.windroid.proxy.SpotServiceConnection;
 import de.macsystems.windroid.proxy.UpdateConnection;
-import de.macsystems.windroid.service.IServiceCallbackListener;
 
 /**
  * @author mac
@@ -94,9 +95,32 @@ public final class ForecastActivity extends DBActivity
 
 	private ProgressDialog updateDialog = null;
 
-	UpdateConnection connection = null;
+	private static UpdateConnection connection = null;
 
 	private final static String IS_PROGRESS_DIALOG_SHOWN = "show_update_dialog";
+	private static final int MENU_REFRESH_ID = 1000;
+
+	private int selectedID = -1;
+
+	private Forecast forecast = null;
+
+	private final Handler handler = new Handler()
+	{
+		@Override
+		public void handleMessage(final Message msg)
+		{
+			Log.d(LOG_TAG, "Recieved Message :" + msg);
+			try
+			{
+				forecast = forecastDAO.getForecast(selectedID);
+				fillTable(forecast);
+			}
+			catch (final DBException e)
+			{
+				Log.e(LOG_TAG, "Failed to fetch Forecast.", e);
+			}
+		}
+	};
 
 	/*
 	 * (non-Javadoc)
@@ -109,55 +133,81 @@ public final class ForecastActivity extends DBActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.forecast);
 
+		forecastDAO = DAOFactory.getForecast(getApplicationContext());
+		daoManager.addDAO(forecastDAO);
+
 		final Intent intent = getIntent();
 		if (!isForecastID(intent))
 		{
 			Toast.makeText(this, "Missing Forecast ID", Toast.LENGTH_LONG).show();
 			return;
 		}
-
-		if (connection == null)
-		{
-			connection = new UpdateConnection(getApplicationContext());
-		}
-
-		final int selectedID = getForecastID(intent);
-		forecastDAO = DAOFactory.getForecast(getApplicationContext());
-		daoManager.addDAO(forecastDAO);
-
+		// cache selected id
+		selectedID = getForecastID(intent);
 		try
 		{
-			if (forecastDAO.isForecastAvailable(selectedID))
-			{
-				fillTable(selectedID);
-			}
-			else
-			{
-				/**
-				 * First time the activity gets called the savedInstanceState is
-				 * null!
-				 */
-				if (savedInstanceState != null)
-				{
-					Log.d(LOG_TAG, IS_PROGRESS_DIALOG_SHOWN + " : "
-							+ savedInstanceState.getBoolean(IS_PROGRESS_DIALOG_SHOWN));
-				}
-				showDialog(UPDATE_SPOT_DIALOG);
-//				try
-//				{
-//					connection.update(selectedID);
-//				}
-//				catch (RemoteException e)
-//				{
-//					Log.e(LOG_TAG, "Failed to call service", e);
-//
-//				}
-			}
+			loadForecast(selectedID, savedInstanceState);
 		}
 		catch (final DBException e)
 		{
-			Log.e(LOG_TAG, "Failed to determine forecast status for selectedid: " + selectedID, e);
+			Log.e(LOG_TAG, "", e);
 		}
+	}
+
+	private void loadForecast(final int _selectedID, final Bundle _savedInstanceState) throws DBException
+	{
+		final Object obj = getLastNonConfigurationInstance();
+		if (obj != null)
+		{
+			if (Logging.isLoggingEnabled())
+			{
+				Log.d(LOG_TAG, "Using cached forecast");
+			}
+			forecast = (Forecast) obj;
+			fillTable(forecast);
+		}
+		//
+		if (forecastDAO.isForecastAvailable(selectedID))
+		{
+			forecast = forecastDAO.getForecast(_selectedID);
+			fillTable(forecast);
+		}
+		else
+		{
+			if (connection == null)
+			{
+				connection = new UpdateConnection(getApplicationContext(), handler, selectedID);
+			}
+
+			if (_savedInstanceState != null)
+			{
+				final boolean isShown = _savedInstanceState.getBoolean(IS_PROGRESS_DIALOG_SHOWN);
+				if (Logging.isLoggingEnabled())
+				{
+					Log.d(LOG_TAG, IS_PROGRESS_DIALOG_SHOWN + " : "
+							+ _savedInstanceState.getBoolean(IS_PROGRESS_DIALOG_SHOWN));
+				}
+				if (isShown)
+				{
+					showDialog(UPDATE_SPOT_DIALOG);
+				}
+			}
+			else
+			{
+				showDialog(UPDATE_SPOT_DIALOG);
+			}
+		}
+	}
+
+	@Override
+	public Object onRetainNonConfigurationInstance()
+	{
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "Saving cached forecast.");
+		}
+
+		return forecast;
 	}
 
 	@Override
@@ -196,8 +246,6 @@ public final class ForecastActivity extends DBActivity
 			outState.putBoolean(IS_PROGRESS_DIALOG_SHOWN, isShowing);
 			removeDialog(UPDATE_SPOT_DIALOG);
 		}
-
-		outState.putString("ID", "1234567890");
 		super.onSaveInstanceState(outState);
 	}
 
@@ -208,10 +256,14 @@ public final class ForecastActivity extends DBActivity
 			Log.d(LOG_TAG, "createUpdateProgressDialog");
 		}
 		updateDialog = new ProgressDialog(this);
-		updateDialog.setTitle("Indeterminate");
+		updateDialog.setTitle("Updating");
 		updateDialog.setMessage("Please wait while loading...");
 		updateDialog.setIndeterminate(true);
 		updateDialog.setCancelable(true);
+		if (connection != null)
+		{
+			connection.setDialog(updateDialog);
+		}
 		return updateDialog;
 	}
 
@@ -241,41 +293,83 @@ public final class ForecastActivity extends DBActivity
 		return dialog;
 	}
 
-	private void fillTable(final int selectedID) throws DBException
+	@Override
+	public boolean onCreateOptionsMenu(final Menu menu)
 	{
-		final Forecast forecast = forecastDAO.getForecast(selectedID);
-		final String serverTime = titleDateFormat.format(forecast.getTimestamp());
-		setTitle(forecast.getName() + " update " + serverTime);
+		super.onCreateOptionsMenu(menu);
+		final MenuItem about = menu.add(Menu.NONE, MENU_REFRESH_ID, Menu.NONE, R.string.forecast_refresh);
+		about.setIcon(R.drawable.refresh);
+		return true;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+	 */
+	@Override
+	public boolean onOptionsItemSelected(final MenuItem item)
+	{
+		super.onOptionsItemSelected(item);
+
+		boolean result = false;
+		if (item.getItemId() == MENU_REFRESH_ID)
+		{
+			if (connection == null)
+			{
+				connection = new UpdateConnection(this, handler, selectedID);
+			}
+			else
+			{
+				try
+				{
+					showDialog(UPDATE_SPOT_DIALOG);
+					connection.update(selectedID);
+				}
+				catch (final RemoteException e)
+				{
+					Log.e(LOG_TAG, "failed to update by user request", e);
+				}
+			}
+			result = true;
+		}
+		return result;
+	}
+
+	private void fillTable(final Forecast _forecast)
+	{
+		final String serverTime = titleDateFormat.format(_forecast.getTimestamp());
+		setTitle(_forecast.getName() + " update " + serverTime);
 		/**
 		 * For each row in table we set the values
 		 */
 		final TableRow rowWindSpeed = (TableRow) findViewById(R.id.forecast_row_wind_speed);
-		fillWindSpeedRow(rowWindSpeed, R.string.wind_speed, forecast);
+		fillWindSpeedRow(rowWindSpeed, R.string.wind_speed, _forecast);
 		final TableRow rowDate = (TableRow) findViewById(R.id.forecast_row_date);
-		fillDateRow(rowDate, R.string.date, forecast);
+		fillDateRow(rowDate, R.string.date, _forecast);
 		final TableRow rowTime = (TableRow) findViewById(R.id.forecast_row_time);
-		fillTimeRow(rowTime, R.string.time, forecast);
+		fillTimeRow(rowTime, R.string.time, _forecast);
 		final TableRow rowAirPressure = (TableRow) findViewById(R.id.forecast_row_air_pressure);
-		fillAirPressureRow(rowAirPressure, R.string.air_pressure, forecast);
+		fillAirPressureRow(rowAirPressure, R.string.air_pressure, _forecast);
 		final TableRow rowAirTemp = (TableRow) findViewById(R.id.forecast_row_air_temperature);
-		fillAirTempRow(rowAirTemp, R.string.air_temperature, forecast);
+		fillAirTempRow(rowAirTemp, R.string.air_temperature, _forecast);
 		final TableRow rowWaterTemp = (TableRow) findViewById(R.id.forecast_row_water_temperature);
-		fillWaterTempRow(rowWaterTemp, R.string.water_temperature, forecast);
+		fillWaterTempRow(rowWaterTemp, R.string.water_temperature, _forecast);
 		final TableRow rowWaveHeight = (TableRow) findViewById(R.id.forecast_row_wave_height);
-		fillWaveHeightRow(rowWaveHeight, R.string.wave_height, forecast);
+		fillWaveHeightRow(rowWaveHeight, R.string.wave_height, _forecast);
 		final TableRow rowWavePeriod = (TableRow) findViewById(R.id.forecast_row_wave_period);
-		fillWavePeriodRow(rowWavePeriod, R.string.wave_period, forecast);
+		fillWavePeriodRow(rowWavePeriod, R.string.wave_period, _forecast);
 		final TableRow rowWindGust = (TableRow) findViewById(R.id.forecast_row_windgust);
-		fillWindGustRow(rowWindGust, R.string.windgust, forecast);
+		fillWindGustRow(rowWindGust, R.string.windgust, _forecast);
 		final TableRow rowClouds = (TableRow) findViewById(R.id.forecast_row_clouds);
-		fillCloudRow(rowClouds, R.string.clouds, forecast);
+		fillCloudRow(rowClouds, R.string.clouds, _forecast);
 		final TableRow rowWindDirection = (TableRow) findViewById(R.id.forecast_row_wind_direction);
-		fillWindDirectionRow(rowWindDirection, R.string.wind_direction, forecast);
+		fillWindDirectionRow(rowWindDirection, R.string.wind_direction, _forecast);
 		final TableRow rowWaveDirection = (TableRow) findViewById(R.id.forecast_row_wave_direction);
-		fillWaveDirectionRow(rowWaveDirection, R.string.wave_direction, forecast);
+		fillWaveDirectionRow(rowWaveDirection, R.string.wave_direction, _forecast);
 
 		final TableRow rowPrecipitationDirection = (TableRow) findViewById(R.id.forecast_row_precipitation);
-		fillPrecipitationRow(rowPrecipitationDirection, R.string.precipitation, forecast);
+		fillPrecipitationRow(rowPrecipitationDirection, R.string.precipitation, _forecast);
 	}
 
 	private void fillWindDirectionRow(final TableRow _rowWind, final int _columNameResID, final Forecast _forecast)

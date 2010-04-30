@@ -18,8 +18,12 @@
 package de.macsystems.windroid.service;
 
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
+import android.os.Handler;
+import android.os.Message;
+import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 import android.util.Log;
 
@@ -29,9 +33,16 @@ import android.util.Log;
  */
 final class PriorizedFutureTask extends FutureTask<Void>
 {
+
+	private final static String LOG_TAG = PriorizedFutureTask.class.getSimpleName();
+
 	final PRIORITY prio;
 
-	private final IServiceCallbackListener listener;
+	private final int TASK_FAILED = 10;
+	private final int TASK_COMPLETED = 20;
+	private final int TASK_CANCELLED = 30;
+
+	private final RemoteCallbackList<IServiceCallbackListener> callbackListener = new RemoteCallbackList<IServiceCallbackListener>();
 
 	/**
 	 * 
@@ -61,10 +72,10 @@ final class PriorizedFutureTask extends FutureTask<Void>
 			throw new NullPointerException("prio");
 		}
 		prio = _prio;
-		listener = _listener;
-		if (listener == null)
+		Log.d(LOG_TAG, "listener :" + _listener);
+		if (_listener != null)
 		{
-			Log.d("PriorizedFutureTask", "callbackListener is null.");
+			callbackListener.register(_listener);
 		}
 	}
 
@@ -76,21 +87,72 @@ final class PriorizedFutureTask extends FutureTask<Void>
 	@Override
 	protected void done()
 	{
-		Log.d("PriorizedFutureTask", "protected void done()");
-		if (listener != null)
-		{
-			try
-			{
-				listener.onTaskComplete();
-			}
-			catch (RemoteException e)
-			{
-				Log.e("PriorizedFutureTask", "failed to call CallbackListener", e);
-			}
-		}
-		Log.d("PriorizedFutureTask", "protected void done() finished");
-		super.done();
+		Log.d(LOG_TAG, "protected void done()");
 
+		// Dispatch Message
+		final Message message = new Message();
+		try
+		{
+			get();
+			message.what = isCancelled() ? TASK_CANCELLED : TASK_COMPLETED;
+		}
+		catch (InterruptedException e)
+		{
+			message.what = TASK_FAILED;
+		}
+		catch (ExecutionException e)
+		{
+			message.what = TASK_FAILED;
+		}
+
+		mHandler.sendMessage(message);
+		super.done();
 	}
+
+	/**
+	 * Our Handler used to execute operations on the main thread. This is used
+	 * to schedule increments of our value.<br>
+	 */
+	// TODO: create handler only if any listener exists!
+	private final Handler mHandler = new Handler()
+	{
+		@Override
+		public void handleMessage(Message msg)
+		{
+			// Broadcast to all clients the new value.
+			final int N = callbackListener.beginBroadcast();
+			final int what = msg.what;
+
+			Log.d(LOG_TAG, "broadcast " + what + " to " + N + " callback listeners");
+			for (int i = 0; i < N; i++)
+			{
+				try
+				{
+					if (what == TASK_COMPLETED)
+					{
+						callbackListener.getBroadcastItem(i).onTaskComplete();
+					}
+					else if (what == TASK_CANCELLED)
+					{
+						callbackListener.getBroadcastItem(i).onTaskFailed();
+					}
+					else
+					{
+						callbackListener.getBroadcastItem(i).onTaskFailed();
+					}
+
+				}
+				catch (final RemoteException e)
+				{
+					// The RemoteCallbackList will take care of
+					// removing
+					// the dead object for us.
+				}
+			}
+			callbackListener.finishBroadcast();
+			callbackListener.kill();
+		}
+
+	};
 
 }

@@ -112,7 +112,7 @@ public final class UpdateConnection implements ServiceConnection
 		{
 			update(selectedID);
 		}
-		catch (RemoteException e)
+		catch (final RemoteException e)
 		{
 			Log.e(LOG_TAG, "failed to update spot with selectedid : " + selectedID, e);
 		}
@@ -150,7 +150,7 @@ public final class UpdateConnection implements ServiceConnection
 		service = null;
 	}
 
-	private IServiceCallbackListener listener = new IServiceCallbackListener.Stub()
+	private final IServiceCallbackListener listener = new IServiceCallbackListener.Stub()
 	{
 
 		@Override
@@ -176,7 +176,7 @@ public final class UpdateConnection implements ServiceConnection
 		}
 
 		@Override
-		public void onTaskStatusChange(int currentValue, int maxValue) throws RemoteException
+		public void onTaskStatusChange(final int currentValue, final int maxValue) throws RemoteException
 		{
 			if (Logging.isLoggingEnabled())
 			{

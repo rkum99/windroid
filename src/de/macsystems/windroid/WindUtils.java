@@ -181,9 +181,7 @@ public class WindUtils
 	 * @throws InterruptedException
 	 */
 	public final static void updateStationList(final Context _context, final IProgress _downloadProgress)
-			throws RetryLaterException,
-			IOException,
-			InterruptedException
+			throws RetryLaterException, IOException, InterruptedException
 
 	{
 		if (Logging.isLoggingEnabled())

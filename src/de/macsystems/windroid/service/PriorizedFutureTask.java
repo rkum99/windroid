@@ -63,7 +63,7 @@ final class PriorizedFutureTask extends FutureTask<Void>
 	 * @throws NullPointerException
 	 * 
 	 */
-	PriorizedFutureTask(final PRIORITY _prio, final Callable<Void> _task, IServiceCallbackListener _listener)
+	PriorizedFutureTask(final PRIORITY _prio, final Callable<Void> _task, final IServiceCallbackListener _listener)
 			throws NullPointerException
 	{
 		super(_task);
@@ -96,11 +96,11 @@ final class PriorizedFutureTask extends FutureTask<Void>
 			get();
 			message.what = isCancelled() ? TASK_CANCELLED : TASK_COMPLETED;
 		}
-		catch (InterruptedException e)
+		catch (final InterruptedException e)
 		{
 			message.what = TASK_FAILED;
 		}
-		catch (ExecutionException e)
+		catch (final ExecutionException e)
 		{
 			message.what = TASK_FAILED;
 		}
@@ -117,7 +117,7 @@ final class PriorizedFutureTask extends FutureTask<Void>
 	private final Handler mHandler = new Handler()
 	{
 		@Override
-		public void handleMessage(Message msg)
+		public void handleMessage(final Message msg)
 		{
 			// Broadcast to all clients the new value.
 			final int N = callbackListener.beginBroadcast();

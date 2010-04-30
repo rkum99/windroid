@@ -90,7 +90,7 @@ public abstract class AbstractNotificationTask implements Callable<Void>
 		{
 			execute();
 		}
-		catch (Exception e)
+		catch (final Exception e)
 		{
 			Log.e(LOG_TAG, "Failed to execute", e);
 		}

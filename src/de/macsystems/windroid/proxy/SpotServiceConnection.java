@@ -153,7 +153,7 @@ public final class SpotServiceConnection implements ServiceConnection, ISpotServ
 	}
 
 	@Override
-	public void update(int id, IServiceCallbackListener listener) throws RemoteException
+	public void update(final int id, final IServiceCallbackListener listener) throws RemoteException
 	{
 		throw new UnsupportedOperationException();
 

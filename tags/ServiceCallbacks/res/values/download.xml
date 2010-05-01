@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string
+		name="download_loading_spot_description">Downloading spots.</string>
+	<string
+		name="download_create_database_progress">Creating database</string>
+	<string
+		name="download_title">Installation</string>
+	<string
+		name="download_cancel_button_text">Cancel</string>
+	<string
+		name="download_description_text">Downloading Data. Depending on your mobile connection this may
+		take
+		some time.
+		After download an internal database will be created. On
+		failure please
+		check your connection settings.</string>
+	<string
+		name="download_failure_header">Failure</string>
+	<string
+		name="download_success_header">Success</string>
+	<string
+		name="download_failure_text">Failed to install.\n\nDetails:\n</string>
+	<string
+		name="download_success_text">Install succeed. Windroid is ready to use.\nHave fun!</string>
+</resources>

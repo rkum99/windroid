@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<!--  
+    		@version $Id$
+	 -->
+
+<resources>
+	<string
+		name="application_title">Windroid</string>
+	<string
+		name="welcome_message">Willkommen bei Windroid</string>
+	<string
+		name="description">Bitte suchen Sie eine Station aus und geben
+		die Windstärke an
+		ab der ein Windalarm ausgelöst werden soll.</string>
+
+	<string
+		name="button_show_station_selection">Spot hinzufügen</string>
+	<string
+		name="button_show_station_preferences">Einstellungen ändern</string>
+	<string
+		name="button_show_station_help">Hilfe</string>
+
+	<string
+		name="button_show_spot_overview">Übersicht</string>
+	<string
+		name="button_simulate_wind_alert_button">Test: Entferne Alarme</string>
+
+	<string
+		name="button_toogle_service_selected">Service Stoppen</string>
+	<string
+		name="button_toogle_service_unselected">Service Starten</string>
+<string name="welcome_database_size">Die Datenbank enthält $1 Einträge.</string>
+</resources>

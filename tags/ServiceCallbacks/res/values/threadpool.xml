@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  
+   		@version $Id$
+ -->
+
+<resources>
+	<item
+		name="schedule_threadpool_size"
+		type="integer">1</item>
+</resources>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<!--
+		@version $Id$
+	-->
+<resources>
+	<string
+		name="weekday_monday">Montag</string>
+	<string
+		name="weekday_tuesday">Dienstag</string>
+	<string
+		name="weekday_wednesday">Mittwoch</string>
+	<string
+		name="weekday_thursday">Donnerstag</string>
+	<string
+		name="weekday_friday">Freitag</string>
+	<string
+		name="weekday_saturday">Samstag</string>
+	<string
+		name="weekday_sunday">Sonntag</string>
+
+	<string
+		name="weekday_monday_short">Mo</string>
+	<string
+		name="weekday_tuesday_short">Di</string>
+	<string
+		name="weekday_wednesday_short">Mi</string>
+	<string
+		name="weekday_thursday_short">Do</string>
+	<string
+		name="weekday_friday_short">Fr</string>
+	<string
+		name="weekday_saturday_short">Sa</string>
+	<string
+		name="weekday_sunday_short">So</string>
+
+</resources>

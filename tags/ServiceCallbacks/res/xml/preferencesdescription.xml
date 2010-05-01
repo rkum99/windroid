@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<!--
+		It seems Android dont wants dialog:title there, when we use it all
+		ListPreferences are empty.
+	-->
+<PreferenceScreen
+	xmlns:android="http://schemas.android.com/apk/res/android">
+	<PreferenceCategory
+		android:title="@string/preferences_preferred_setting_title">
+		<ListPreference
+			android:entries="@array/unit_names"
+			android:entryValues="@array/unit_ids"
+			android:key="preferred_unit"
+			android:title="@string/preferences_preferred_units_title"
+			android:summary="@string/preferences_preferred_units_summary" />
+		<ListPreference
+			android:entries="@array/continent_names"
+			android:entryValues="@array/continent_ids"
+			android:key="preferred_continent"
+			android:title="Kontinent"
+			android:summary="@string/preferences_preferred_continent_summary" />
+	</PreferenceCategory>
+	<PreferenceCategory
+		android:title="@string/preferences_miscellaneous_title">
+		<CheckBoxPreference
+			android:key="launch_on_boot"
+			android:summary="@string/preferences_miscellaneous_launch_on_boot_summary"
+			android:title="@string/preferences_miscellaneous_launch_on_boot_title"
+			android:defaultValue="true" />
+		<CheckBoxPreference
+			android:key="update_while_roaming"
+			android:summary="@string/preferences_miscellaneous_update_while_roaming_summary"
+			android:title="@string/preferences_miscellaneous_update_while_roaming_title"
+			android:defaultValue="false" />
+
+		<CheckBoxPreference
+			android:key="vibrate_on_alarm"
+			android:summary="@string/preferences_miscellaneous_vibrate_on_alarm_summary"
+			android:title="@string/preferences_miscellaneous_vibrate_on_alarm_title"
+			android:defaultValue="false" />
+
+		<CheckBoxPreference
+			android:key="music_on_alarm"
+			android:summary="@string/preferences_miscellaneous_music_on_alarm_summary"
+			android:title="@string/preferences_miscellaneous_music_on_alarm_title"
+			android:defaultValue="false" />
+
+		<RingtonePreference
+			android:key="alarmtone"
+			android:title="@string/preferences_miscellaneous_alarmtone_title"
+			android:showDefault="true"
+			android:showSilent="false"
+			android:summary="@string/preferences_miscellaneous_alarmtone_summary" />
+
+		<CheckBoxPreference
+			android:key="warn_when_update_failed"
+			android:summary="@string/preferences_miscellaneous_warn_when_update_failed_summary"
+			android:title="@string/preferences_miscellaneous_warn_when_update_failed_title"
+			android:defaultValue="false" />
+	</PreferenceCategory>
+</PreferenceScreen>

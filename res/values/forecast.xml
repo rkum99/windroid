@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="forecast_contextdialog_refresh">Update</string>
+	<string name="forecast_progressdialog_title">Update</string>
+	<string name="forecast_progressdialog_message">Update</string>
+
+	<string name="forecast_title_layout"> updated </string>
+	<string name="forecast_failed_to_load_forecast">Failed to load forecast</string>
+</resources>

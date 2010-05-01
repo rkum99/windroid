@@ -175,17 +175,6 @@ public final class UpdateConnection implements ServiceConnection
 			handler.sendEmptyMessage(FAILED);
 		}
 
-		@Override
-		public void onTaskStatusChange(final int currentValue, final int maxValue) throws RemoteException
-		{
-			if (Logging.isLoggingEnabled())
-			{
-				Log.d(LOG_TAG, "onTaskStatusChange");
-			}
-			dialog.dismiss();
-			handler.sendEmptyMessage(FAILED);
-		}
-
 	};
 
 }

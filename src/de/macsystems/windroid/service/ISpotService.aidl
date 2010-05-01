@@ -28,6 +28,8 @@ interface ISpotService
 
 	 void updateAll();
 	 
+	 void updateActiveReports(IServiceCallbackListener listener);
+	 
 	 void update(int _id, IServiceCallbackListener listener);
 
 }

@@ -435,4 +435,41 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 			IOUtils.close(db);
 		}
 	}
+
+	@Override
+	public int[] getActivSpotIDs() throws DBException
+	{
+		final List<Integer> spots = new ArrayList<Integer>();
+		SQLiteDatabase db = null;
+		Cursor c = null;
+		try
+		{
+			db = getReadableDatabase();
+			db.beginTransaction();
+
+			c = db.rawQuery("SELECT _id FROM selected where activ=?", new String[]
+			{ "1" });
+			moveToFirstOrThrow(c);
+			do
+			{
+				spots.add(getInt(c, ISelectedDAO.COLUMN_ID));
+			}
+			while (c.moveToNext());
+			db.setTransactionSuccessful();
+		}
+		finally
+		{
+			db.endTransaction();
+			IOUtils.close(c);
+			IOUtils.close(db);
+		}
+		final int N = spots.size();
+		final int[] array = new int[N];
+		for (int i = 0; i < N; i++)
+		{
+			array[i] = spots.get(i);
+		}
+		return array;
+
+	}
 }

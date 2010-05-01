@@ -118,15 +118,12 @@ public final class ForecastActivity extends DBActivity
 			try
 			{
 				showDialog(UPDATE_SPOT_DIALOG);
+				// createUpdateProgressDialog().show();
 				service.update(_msg.what, callbackListener);
 			}
 			catch (final RemoteException e)
 			{
 				Log.e(LOG_TAG, "failed to call service", e);
-			}
-			finally
-			{
-				removeDialog(UPDATE_SPOT_DIALOG);
 			}
 		}
 	};
@@ -154,7 +151,9 @@ public final class ForecastActivity extends DBActivity
 			service = ISpotService.Stub.asInterface(_service);
 		}
 	};
-
+	/**
+	 * Callback Listener for the Activity
+	 */
 	private final IServiceCallbackListener.Stub callbackListener = new IServiceCallbackListener.Stub()
 	{
 
@@ -171,14 +170,19 @@ public final class ForecastActivity extends DBActivity
 			{
 				Log.e(LOG_TAG, "failed to getForecast", e);
 			}
+			finally
+			{
+				removeDialog(UPDATE_SPOT_DIALOG);
+			}
 		}
 
 		@Override
 		public void onTaskFailed() throws RemoteException
 		{
 			removeDialog(UPDATE_SPOT_DIALOG);
-			Toast.makeText(ForecastActivity.this, ForecastActivity.this
-					.getString(R.string.forecast_failed_to_load_forecast), Toast.LENGTH_LONG);
+			Toast.makeText(ForecastActivity.this,
+					ForecastActivity.this.getString(R.string.forecast_failed_to_load_forecast), Toast.LENGTH_LONG)
+					.show();
 		}
 	};
 
@@ -349,6 +353,7 @@ public final class ForecastActivity extends DBActivity
 	@Override
 	protected Dialog onCreateDialog(final int _id)
 	{
+		// super.onCreateDialog(_id);
 		if (Logging.isLoggingEnabled())
 		{
 			Log.d(LOG_TAG, "onCreateDialog :" + _id);
@@ -539,7 +544,6 @@ public final class ForecastActivity extends DBActivity
 					final String text = _row.getResources().getString(_columNameResID);
 					rowName.setText(text + " (" + detail.getPrecipitation().getMeasure().getShortDisplayName() + ")");
 				}
-
 			}
 		}
 	}

@@ -143,4 +143,12 @@ public interface ISelectedDAO extends IDAO
 	 */
 	public Collection<SpotConfigurationVO> getActivSpots() throws DBException;
 
+	/**
+	 * Returns selectedid array of active spots
+	 * 
+	 * @return
+	 * @throws DBException
+	 */
+	public int[] getActivSpotIDs() throws DBException;
+
 }

@@ -176,6 +176,7 @@ public final class ForecastActivity extends DBActivity
 		{
 			if (connection == null)
 			{
+				// TODO: On second call the selectedID is cached which is wrong and nothing get loaded!
 				connection = new UpdateConnection(getApplicationContext(), handler, selectedID);
 			}
 

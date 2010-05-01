@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+	<!--
+		@version $Id$
+	-->
+
+
 <resources>
 	<string
 		name="download_loading_spot_description">Downloading spots.</string>

@@ -24,11 +24,16 @@ import java.util.Iterator;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteException;
+import android.util.AndroidRuntimeException;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -42,15 +47,14 @@ import de.macsystems.windroid.db.DBException;
 import de.macsystems.windroid.db.IForecastDAO;
 import de.macsystems.windroid.forecast.Forecast;
 import de.macsystems.windroid.forecast.ForecastDetail;
-import de.macsystems.windroid.proxy.UpdateConnection;
+import de.macsystems.windroid.service.IServiceCallbackListener;
+import de.macsystems.windroid.service.ISpotService;
 
 /**
+ * Displays a Forecast
+ * 
  * @author mac
  * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
- * 
- * @TODO: 
- *        http://android-developers.blogspot.com/2009/02/faster-screen-orientation
- *        -change.html
  */
 public final class ForecastActivity extends DBActivity
 {
@@ -89,36 +93,92 @@ public final class ForecastActivity extends DBActivity
 
 	private IForecastDAO forecastDAO = null;
 	/**
-	 * 
+	 * Constant for DIALOG
 	 */
 	private final static int UPDATE_SPOT_DIALOG = 500;
-
-	private ProgressDialog updateDialog = null;
-
-	private static UpdateConnection connection = null;
-
-	private final static String IS_PROGRESS_DIALOG_SHOWN = "show_update_dialog";
-	private static final int MENU_REFRESH_ID = 1000;
+	/**
+	 * Constant used by Context Menu
+	 */
+	private final static int CONTEXT_MENU_REFRESH_ID = 1000;
 
 	private int selectedID = -1;
-
+	/**
+	 * This Object is cached to be cached using
+	 * {@link #onRetainNonConfigurationInstance()}
+	 */
 	private Forecast forecast = null;
+
+	private ISpotService service = null;
 
 	private final Handler handler = new Handler()
 	{
 		@Override
-		public void handleMessage(final Message msg)
+		public void handleMessage(final Message _msg)
 		{
-			Log.d(LOG_TAG, "Recieved Message :" + msg);
 			try
 			{
-				forecast = forecastDAO.getForecast(selectedID);
-				fillTable(forecast);
+				showDialog(UPDATE_SPOT_DIALOG);
+				service.update(_msg.what, callbackListener);
+			}
+			catch (final RemoteException e)
+			{
+				Log.e(LOG_TAG, "failed to call service", e);
+			}
+			finally
+			{
+				removeDialog(UPDATE_SPOT_DIALOG);
+			}
+		}
+	};
+
+	private final ServiceConnection connection = new ServiceConnection()
+	{
+
+		@Override
+		public void onServiceDisconnected(final ComponentName _name)
+		{
+			if (Logging.isLoggingEnabled())
+			{
+				Log.d(LOG_TAG, "onServiceConnected");
+			}
+			service = null;
+		}
+
+		@Override
+		public void onServiceConnected(final ComponentName _name, final IBinder _service)
+		{
+			if (Logging.isLoggingEnabled())
+			{
+				Log.d(LOG_TAG, "onServiceConnected");
+			}
+			service = ISpotService.Stub.asInterface(_service);
+		}
+	};
+
+	private final IServiceCallbackListener.Stub callbackListener = new IServiceCallbackListener.Stub()
+	{
+
+		@Override
+		public void onTaskComplete() throws RemoteException
+		{
+			Forecast aforecast;
+			try
+			{
+				aforecast = forecastDAO.getForecast(selectedID);
+				fillTable(aforecast);
 			}
 			catch (final DBException e)
 			{
-				Log.e(LOG_TAG, "Failed to fetch Forecast.", e);
+				Log.e(LOG_TAG, "failed to getForecast", e);
 			}
+		}
+
+		@Override
+		public void onTaskFailed() throws RemoteException
+		{
+			removeDialog(UPDATE_SPOT_DIALOG);
+			Toast.makeText(ForecastActivity.this, ForecastActivity.this
+					.getString(R.string.forecast_failed_to_load_forecast), Toast.LENGTH_LONG);
 		}
 	};
 
@@ -146,15 +206,53 @@ public final class ForecastActivity extends DBActivity
 		selectedID = getForecastID(intent);
 		try
 		{
-			loadForecast(selectedID, savedInstanceState);
+			loadForecast(selectedID);
 		}
 		catch (final DBException e)
 		{
-			Log.e(LOG_TAG, "", e);
+			Log.e(LOG_TAG, "Failed to fetch forecast", e);
 		}
 	}
 
-	private void loadForecast(final int _selectedID, final Bundle _savedInstanceState) throws DBException
+	@Override
+	protected void onResume()
+	{
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "onResume");
+		}
+		final boolean isBound = bindService(
+				new Intent(IntentConstants.DE_MACSYSTEMS_WINDROID_START_SPOT_SERVICE_ACTION), connection,
+				Context.BIND_AUTO_CREATE);
+
+		if (!isBound)
+		{
+			throw new AndroidRuntimeException("Failed to bind service");
+		}
+
+		super.onResume();
+	}
+
+	@Override
+	protected void onStart()
+	{
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "onStart");
+		}
+
+		super.onStart();
+	}
+
+	/**
+	 * Checks if Forecast is already loaded by using
+	 * {@link #getLastNonConfigurationInstance()} if not we check the Database
+	 * and if there is nothing found we insert a message in the handler.
+	 * 
+	 * @param _selectedID
+	 * @throws DBException
+	 */
+	private void loadForecast(final int _selectedID) throws DBException
 	{
 		final Object obj = getLastNonConfigurationInstance();
 		if (obj != null)
@@ -174,32 +272,15 @@ public final class ForecastActivity extends DBActivity
 		}
 		else
 		{
-			if (connection == null)
-			{
-				// TODO: On second call the selectedID is cached which is wrong and nothing get loaded!
-				connection = new UpdateConnection(getApplicationContext(), handler, selectedID);
-			}
-
-			if (_savedInstanceState != null)
-			{
-				final boolean isShown = _savedInstanceState.getBoolean(IS_PROGRESS_DIALOG_SHOWN);
-				if (Logging.isLoggingEnabled())
-				{
-					Log.d(LOG_TAG, IS_PROGRESS_DIALOG_SHOWN + " : "
-							+ _savedInstanceState.getBoolean(IS_PROGRESS_DIALOG_SHOWN));
-				}
-				if (isShown)
-				{
-					showDialog(UPDATE_SPOT_DIALOG);
-				}
-			}
-			else
-			{
-				showDialog(UPDATE_SPOT_DIALOG);
-			}
+			handler.sendEmptyMessageDelayed(selectedID, 1000L);
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onRetainNonConfigurationInstance()
+	 */
 	@Override
 	public Object onRetainNonConfigurationInstance()
 	{
@@ -211,6 +292,11 @@ public final class ForecastActivity extends DBActivity
 		return forecast;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.macsystems.windroid.DBActivity#onStop()
+	 */
 	@Override
 	protected void onStop()
 	{
@@ -218,10 +304,14 @@ public final class ForecastActivity extends DBActivity
 		{
 			Log.d(LOG_TAG, "onStop");
 		}
-
 		super.onStop();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onPause()
+	 */
 	@Override
 	protected void onPause()
 	{
@@ -229,42 +319,25 @@ public final class ForecastActivity extends DBActivity
 		{
 			Log.d(LOG_TAG, "onPause");
 		}
-
+		unbindService(connection);
 		super.onPause();
 	}
 
-	@Override
-	public void onSaveInstanceState(final Bundle outState)
-	{
-		if (Logging.isLoggingEnabled())
-		{
-			Log.d(LOG_TAG, "onSaveInstanceState");
-		}
-		//
-		if (updateDialog != null)
-		{
-			final boolean isShowing = updateDialog.isShowing();
-			outState.putBoolean(IS_PROGRESS_DIALOG_SHOWN, isShowing);
-			removeDialog(UPDATE_SPOT_DIALOG);
-		}
-		super.onSaveInstanceState(outState);
-	}
-
+	/**
+	 * 
+	 * @return
+	 */
 	private Dialog createUpdateProgressDialog()
 	{
 		if (Logging.isLoggingEnabled())
 		{
 			Log.d(LOG_TAG, "createUpdateProgressDialog");
 		}
-		updateDialog = new ProgressDialog(this);
-		updateDialog.setTitle("Updating");
-		updateDialog.setMessage("Please wait while loading...");
+		final ProgressDialog updateDialog = new ProgressDialog(this);
+		updateDialog.setTitle(getString(R.string.forecast_progressdialog_title));
+		updateDialog.setMessage(getString(R.string.forecast_progressdialog_message));
 		updateDialog.setIndeterminate(true);
 		updateDialog.setCancelable(true);
-		if (connection != null)
-		{
-			connection.setDialog(updateDialog);
-		}
 		return updateDialog;
 	}
 
@@ -298,7 +371,8 @@ public final class ForecastActivity extends DBActivity
 	public boolean onCreateOptionsMenu(final Menu menu)
 	{
 		super.onCreateOptionsMenu(menu);
-		final MenuItem about = menu.add(Menu.NONE, MENU_REFRESH_ID, Menu.NONE, R.string.forecast_refresh);
+		final MenuItem about = menu.add(Menu.NONE, CONTEXT_MENU_REFRESH_ID, Menu.NONE,
+				R.string.forecast_contextdialog_refresh);
 		about.setIcon(R.drawable.refresh);
 		return true;
 	}
@@ -314,24 +388,9 @@ public final class ForecastActivity extends DBActivity
 		super.onOptionsItemSelected(item);
 
 		boolean result = false;
-		if (item.getItemId() == MENU_REFRESH_ID)
+		if (item.getItemId() == CONTEXT_MENU_REFRESH_ID)
 		{
-			if (connection == null)
-			{
-				connection = new UpdateConnection(this, handler, selectedID);
-			}
-			else
-			{
-				try
-				{
-					showDialog(UPDATE_SPOT_DIALOG);
-					connection.update(selectedID);
-				}
-				catch (final RemoteException e)
-				{
-					Log.e(LOG_TAG, "failed to update by user request", e);
-				}
-			}
+			handler.sendEmptyMessageDelayed(selectedID, 100L);
 			result = true;
 		}
 		return result;
@@ -340,7 +399,7 @@ public final class ForecastActivity extends DBActivity
 	private void fillTable(final Forecast _forecast)
 	{
 		final String serverTime = titleDateFormat.format(_forecast.getTimestamp());
-		setTitle(_forecast.getName() + " update " + serverTime);
+		setTitle(_forecast.getName() + getString(R.string.forecast_title_layout) + serverTime);
 		/**
 		 * For each row in table we set the values
 		 */

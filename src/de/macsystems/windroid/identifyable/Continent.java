@@ -27,7 +27,7 @@ import java.util.TreeSet;
  * A Continent has country's and a display name id is DB id not primary key..
  * 
  * @author mac
- * @version $Id: Continent.java 172 2010-01-27 02:09:20Z jens.hohl $
+ * @version $Id$
  */
 public class Continent implements IdentifyAble, Node<Country>
 {

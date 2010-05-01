@@ -13,37 +13,30 @@
 		android:layout_height="fill_parent" />
 	<ImageView
 		android:id="@+id/forecast_image_column_1"
-		android:src="@drawable/icon"
 		android:gravity="center"
 		android:layout_margin="1dip" />
 	<ImageView
 		android:id="@+id/forecast_image_column_2"
-		android:src="@drawable/icon"
 		android:gravity="center"
 		android:layout_margin="1dip" />
 	<ImageView
 		android:id="@+id/forecast_image_column_3"
-		android:src="@drawable/icon"
 		android:gravity="center"
 		android:layout_margin="1dip" />
 	<ImageView
 		android:id="@+id/forecast_image_column_4"
-		android:src="@drawable/icon"
 		android:gravity="center"
 		android:layout_margin="1dip" />
 	<ImageView
 		android:id="@+id/forecast_image_column_5"
-		android:src="@drawable/icon"
 		android:gravity="center"
 		android:layout_margin="1dip" />
 	<ImageView
 		android:id="@+id/forecast_image_column_6"
-		android:src="@drawable/icon"
 		android:gravity="center"
 		android:layout_margin="1dip" />
 	<ImageView
 		android:id="@+id/forecast_image_column_7"
-		android:src="@drawable/icon"
 		android:gravity="center"
 		android:layout_margin="1dip" />
 </TableRow>

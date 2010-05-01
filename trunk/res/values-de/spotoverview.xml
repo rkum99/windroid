@@ -4,15 +4,14 @@
 	-->
 
 <resources>
-	<string
-		name="no_entrys">Keine Einträge vorhanden.</string>
-	<string
-		name="spot_overview_title">Übersicht</string>
-	<string
-		name="spot_overview_spot_monitoring_enable">Überwachen</string>
-	<string
-		name="spot_overview_spot_monitoring_disable">Nicht mehr Überwachen</string>
-	<string
-		name="spot_overview_spot_edit">Bearbeiten</string>
-
+	<string name="no_entrys">Keine Einträge vorhanden!</string>
+	<string name="spot_overview_title">Übersicht</string>
+	<string name="spot_overview_spot_monitoring_enable">Überwachen</string>
+	<string name="spot_overview_spot_monitoring_disable">Nicht überwachen</string>
+	<string name="spot_overview_spot_edit">Bearbeiten</string>
+	<string name="spot_overview_spot_delete">Löschen</string>
+	<string name="spot_overview_spot_forecast">Letzte Voraussage zeigen</string>
+	<string name="spot_overview_spot_delete_dialog_title">Löschen</string>
+	<string name="spot_overview_spot_delete_dialog_message">Sind Sie sicher ?</string>
+	<string name="spot_overview_option_update_all_spots">Alle Voraussagen updaten</string>
 </resources>

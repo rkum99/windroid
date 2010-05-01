@@ -34,6 +34,7 @@ import android.util.Log;
 import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.R;
 import de.macsystems.windroid.common.IntentConstants;
+import de.macsystems.windroid.io.task.UpdateAllActiveSpotReports;
 import de.macsystems.windroid.io.task.UpdateSpotForecastTask;
 
 /**
@@ -87,6 +88,14 @@ public class SpotService extends Service
 			addTask(task, _listener);
 			// mCallbacks.register(_listener);
 		}
+
+		@Override
+		public void updateActiveReports(final IServiceCallbackListener listener) throws RemoteException
+		{
+			final UpdateAllActiveSpotReports task = new UpdateAllActiveSpotReports(SpotService.this);
+			addTask(task, listener);
+		}
+
 	};
 
 	/*

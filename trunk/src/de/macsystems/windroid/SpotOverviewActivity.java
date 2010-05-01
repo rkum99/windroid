@@ -19,14 +19,25 @@ package de.macsystems.windroid;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.app.AlertDialog.Builder;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.DialogInterface.OnClickListener;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.RemoteException;
+import android.util.AndroidRuntimeException;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -39,6 +50,8 @@ import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.db.DAOFactory;
 import de.macsystems.windroid.db.DBException;
 import de.macsystems.windroid.db.ISelectedDAO;
+import de.macsystems.windroid.service.IServiceCallbackListener;
+import de.macsystems.windroid.service.ISpotService;
 
 /**
  * Shows list of spots configured.
@@ -53,11 +66,18 @@ public final class SpotOverviewActivity extends DBListActivity
 	private final static int EDIT_SPOT_REQUEST_CODE = 400;
 
 	private final static String LOG_TAG = SpotOverviewActivity.class.getSimpleName();
-	private static final int ENABLE_ITEM_ID = 0;
-	private static final int DISABLE_ITEM_ID = 1;
-	private static final int EDIT_ITEM_ID = 2;
-	private static final int FORECAST_ITEM_ID = 3;
-	private static final int DELETE_ITEM_ID = 4;
+	/**
+	 * 
+	 */
+	private static final int CONTEXT_ENABLE_ITEM_ID = 0;
+	private static final int CONTEXT_DISABLE_ITEM_ID = 1;
+	private static final int CONTEXT_EDIT_ITEM_ID = 2;
+	private static final int CONTEXT_FORECAST_ITEM_ID = 3;
+	private static final int CONTEXT_DELETE_ITEM_ID = 4;
+	/**
+	 * Option Menu Items
+	 */
+	private final static int OPTION_MENU_REFRESH_ID = 500;
 
 	SimpleCursorAdapter shows = null;
 
@@ -70,6 +90,77 @@ public final class SpotOverviewActivity extends DBListActivity
 	 */
 	private int selectedID = -1;
 
+	private ISpotService service = null;
+	/**
+	 * Constant used to display Progress Dialog
+	 */
+	private final static int UPDATE_SPOT_DIALOG = 1000;
+
+	private final Handler handler = new Handler()
+	{
+		@Override
+		public void handleMessage(final Message _msg)
+		{
+			try
+			{
+				showDialog(UPDATE_SPOT_DIALOG);
+				// createUpdateProgressDialog().show();
+				service.updateActiveReports(callbackListener);
+			}
+			catch (final RemoteException e)
+			{
+				Log.e(LOG_TAG, "failed to call service", e);
+			}
+		}
+	};
+
+	private final ServiceConnection connection = new ServiceConnection()
+	{
+
+		@Override
+		public void onServiceDisconnected(final ComponentName _name)
+		{
+			if (Logging.isLoggingEnabled())
+			{
+				Log.d(LOG_TAG, "onServiceConnected");
+			}
+			service = null;
+		}
+
+		@Override
+		public void onServiceConnected(final ComponentName _name, final IBinder _service)
+		{
+			if (Logging.isLoggingEnabled())
+			{
+				Log.d(LOG_TAG, "onServiceConnected");
+			}
+			service = ISpotService.Stub.asInterface(_service);
+		}
+	};
+
+	/**
+	 * Callback Listener for the Activity
+	 */
+	private final IServiceCallbackListener.Stub callbackListener = new IServiceCallbackListener.Stub()
+	{
+
+		@Override
+		public void onTaskComplete() throws RemoteException
+		{
+			removeDialog(UPDATE_SPOT_DIALOG);
+		}
+
+		@Override
+		public void onTaskFailed() throws RemoteException
+		{
+			removeDialog(UPDATE_SPOT_DIALOG);
+			// Toast.makeText(SpotOverviewActivity.this,
+			// SpotOverviewActivity.this.getString(R.string.forecast_failed_to_load_forecast),
+			// Toast.LENGTH_LONG)
+			// .show();
+		}
+	};
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -78,8 +169,16 @@ public final class SpotOverviewActivity extends DBListActivity
 	@Override
 	protected void onResume()
 	{
-		super.onResume();
-		// final ISelectedDAO dao = DAOFactory.getSelectedDAO(this);
+
+		final boolean isBound = bindService(
+				new Intent(IntentConstants.DE_MACSYSTEMS_WINDROID_START_SPOT_SERVICE_ACTION), connection,
+				Context.BIND_AUTO_CREATE);
+
+		if (!isBound)
+		{
+			throw new AndroidRuntimeException("Failed to bind service");
+		}
+
 		final Cursor c = dao.getConfiguredSpots();
 		setupMapping(c);
 		//
@@ -101,17 +200,17 @@ public final class SpotOverviewActivity extends DBListActivity
 				try
 				{
 					final boolean isActiv = dao.isActiv(selectedID);
-					menu.add(0, EDIT_ITEM_ID, 0, R.string.spot_overview_spot_edit);
+					menu.add(0, CONTEXT_EDIT_ITEM_ID, 0, R.string.spot_overview_spot_edit);
 					if (isActiv)
 					{
-						menu.add(0, FORECAST_ITEM_ID, 0, R.string.spot_overview_spot_forecast);
-						menu.add(0, DISABLE_ITEM_ID, 0, R.string.spot_overview_spot_monitoring_disable);
+						menu.add(0, CONTEXT_FORECAST_ITEM_ID, 0, R.string.spot_overview_spot_forecast);
+						menu.add(0, CONTEXT_DISABLE_ITEM_ID, 0, R.string.spot_overview_spot_monitoring_disable);
 					}
 					else
 					{
-						menu.add(0, ENABLE_ITEM_ID, 0, R.string.spot_overview_spot_monitoring_enable);
+						menu.add(0, CONTEXT_ENABLE_ITEM_ID, 0, R.string.spot_overview_spot_monitoring_enable);
 					}
-					menu.add(0, DELETE_ITEM_ID, 0, R.string.spot_overview_spot_delete);
+					menu.add(0, CONTEXT_DELETE_ITEM_ID, 0, R.string.spot_overview_spot_delete);
 				}
 				catch (final DBException e)
 				{
@@ -119,6 +218,7 @@ public final class SpotOverviewActivity extends DBListActivity
 				}
 			}
 		});
+		super.onResume();
 	}
 
 	/*
@@ -138,6 +238,79 @@ public final class SpotOverviewActivity extends DBListActivity
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see android.app.Activity#onPause()
+	 */
+	@Override
+	protected void onPause()
+	{
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "onPause");
+		}
+		unbindService(connection);
+		super.onPause();
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	private Dialog createUpdateProgressDialog()
+	{
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "createUpdateProgressDialog");
+		}
+		final ProgressDialog updateDialog = new ProgressDialog(this);
+		updateDialog.setTitle(getString(R.string.forecast_progressdialog_title));
+		updateDialog.setMessage(getString(R.string.forecast_progressdialog_message));
+		updateDialog.setIndeterminate(true);
+		updateDialog.setCancelable(true);
+		return updateDialog;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onCreateDialog(int)
+	 */
+	@Override
+	protected Dialog onCreateDialog(final int _id)
+	{
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "onCreateDialog :" + _id);
+		}
+		Dialog dialog;
+		switch (_id)
+		{
+			case (UPDATE_SPOT_DIALOG):
+				dialog = createUpdateProgressDialog();
+				break;
+			default:
+				dialog = null;
+				break;
+		}
+
+		return dialog;
+	}
+
+	/**
+	 * 
+	 */
+	@Override
+	public boolean onCreateOptionsMenu(final Menu menu)
+	{
+		super.onCreateOptionsMenu(menu);
+		final MenuItem about = menu.add(Menu.NONE, OPTION_MENU_REFRESH_ID, Menu.NONE,
+				R.string.forecast_contextdialog_refresh);
+		about.setIcon(R.drawable.refresh);
+		return true;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.app.Activity#onContextItemSelected(android.view.MenuItem)
 	 */
 	@Override
@@ -146,19 +319,19 @@ public final class SpotOverviewActivity extends DBListActivity
 
 		switch (_item.getItemId())
 		{
-			case DISABLE_ITEM_ID:
+			case CONTEXT_DISABLE_ITEM_ID:
 				setActive(false);
 				break;
-			case ENABLE_ITEM_ID:
+			case CONTEXT_ENABLE_ITEM_ID:
 				setActive(true);
 				break;
-			case EDIT_ITEM_ID:
+			case CONTEXT_EDIT_ITEM_ID:
 				editSpot(selectedID);
 				break;
-			case FORECAST_ITEM_ID:
+			case CONTEXT_FORECAST_ITEM_ID:
 				showForcastForSpot(selectedID);
 				break;
-			case DELETE_ITEM_ID:
+			case CONTEXT_DELETE_ITEM_ID:
 				deleteSpot(selectedID);
 				break;
 
@@ -167,6 +340,25 @@ public final class SpotOverviewActivity extends DBListActivity
 		}
 
 		return true;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+	 */
+	@Override
+	public boolean onOptionsItemSelected(final MenuItem item)
+	{
+		super.onOptionsItemSelected(item);
+
+		boolean result = false;
+		if (item.getItemId() == OPTION_MENU_REFRESH_ID)
+		{
+			handler.sendEmptyMessageDelayed(selectedID, 100L);
+			result = true;
+		}
+		return result;
 	}
 
 	private void deleteSpot(final int _id)
@@ -347,7 +539,6 @@ public final class SpotOverviewActivity extends DBListActivity
 		final Intent intent = new Intent(SpotOverviewActivity.this, ForecastActivity.class);
 		intent.putExtra(IntentConstants.STORED_FORECAST_KEY, _id);
 		startActivity(intent);
-
 	}
 
 }

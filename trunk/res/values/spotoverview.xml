@@ -4,23 +4,14 @@
 	-->
 
 <resources>
-	<string
-		name="no_entrys">No Entrys.</string>
-	<string
-		name="spot_overview_title">Overview</string>
-	<string
-		name="spot_overview_spot_monitoring_enable">Enable</string>
-	<string
-		name="spot_overview_spot_monitoring_disable">Disable</string>
-	<string
-		name="spot_overview_spot_edit">Edit</string>
-	<string
-		name="spot_overview_spot_delete">Delete</string>
-	<string
-		name="spot_overview_spot_forecast">Latest forecast</string>
-	<string
-		name="spot_overview_spot_delete_dialog_title">Delete</string>
-	<string
-		name="spot_overview_spot_delete_dialog_message">Are you sure ?</string>
-
+	<string name="no_entrys">No Entrys.</string>
+	<string name="spot_overview_title">Overview</string>
+	<string name="spot_overview_spot_monitoring_enable">Enable</string>
+	<string name="spot_overview_spot_monitoring_disable">Disable</string>
+	<string name="spot_overview_spot_edit">Edit</string>
+	<string name="spot_overview_spot_delete">Delete</string>
+	<string name="spot_overview_spot_forecast">Latest forecast</string>
+	<string name="spot_overview_spot_delete_dialog_title">Delete</string>
+	<string name="spot_overview_spot_delete_dialog_message">Are you sure ?</string>
+	<string name="spot_overview_option_update_all_spots">Update all</string>
 </resources>

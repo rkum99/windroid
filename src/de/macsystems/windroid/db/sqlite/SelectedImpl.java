@@ -28,6 +28,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import de.macsystems.windroid.Logging;
+import de.macsystems.windroid.Util;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.db.DBException;
 import de.macsystems.windroid.db.IRepeatDAO;
@@ -470,6 +471,39 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 			array[i] = spots.get(i);
 		}
 		return array;
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.macsystems.windroid.db.ISelectedDAO#setAllActiv(boolean)
+	 */
+	@Override
+	public void setAllActiv(final boolean _active)
+	{
+		final int nowValue = asInt(_active);
+		final int newValue = asInt(!_active);
+		final SQLiteDatabase db = getWritableDatabase();
+		try
+		{
+			db.beginTransaction();
+			//
+			final StringBuilder builder = new StringBuilder(64);
+			builder.append("UPDATE selected SET activ=").append(nowValue).append(" WHERE activ=").append(newValue);
+			db.execSQL(builder.toString());
+			//
+			db.setTransactionSuccessful();
+		}
+		catch (final SQLException e)
+		{
+			Log.e(LOG_TAG, "Failed to update active status :" + _active, e);
+		}
+		finally
+		{
+			db.endTransaction();
+			IOUtils.close(db);
+		}
 
 	}
 }

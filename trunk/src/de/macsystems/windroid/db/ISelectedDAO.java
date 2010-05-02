@@ -122,6 +122,13 @@ public interface ISelectedDAO extends IDAO
 	public void delete(final int _id);
 
 	/**
+	 * Enables / Disables all Spots
+	 * 
+	 * @param active
+	 */
+	public void setAllActiv(final boolean active);
+
+	/**
 	 * Returns a cursor with all spots configured.
 	 * 
 	 * @return

@@ -14,4 +14,6 @@
 	<string name="spot_overview_spot_delete_dialog_title">Delete</string>
 	<string name="spot_overview_spot_delete_dialog_message">Are you sure ?</string>
 	<string name="spot_overview_option_update_all_spots">Update all</string>
+	<string name="spot_overview_option_disable_all_spots">Disable all</string>
+	<string name="spot_overview_option_enable_all_spots">Enable all</string>
 </resources>

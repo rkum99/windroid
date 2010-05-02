@@ -44,6 +44,7 @@ import android.view.WindowManager;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnCreateContextMenuListener;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import de.macsystems.windroid.common.IntentConstants;
 import de.macsystems.windroid.common.SpotConfigurationVO;
@@ -78,6 +79,8 @@ public final class SpotOverviewActivity extends DBListActivity
 	 * Option Menu Items
 	 */
 	private final static int OPTION_MENU_REFRESH_ID = 500;
+	private final static int OPTION_MENU_DISABLE_ALL = 510;
+	private final static int OPTION_MENU_ENABLE_ALL = 520;
 
 	SimpleCursorAdapter shows = null;
 
@@ -104,7 +107,6 @@ public final class SpotOverviewActivity extends DBListActivity
 			try
 			{
 				showDialog(UPDATE_SPOT_DIALOG);
-				// createUpdateProgressDialog().show();
 				service.updateActiveReports(callbackListener);
 			}
 			catch (final RemoteException e)
@@ -169,7 +171,7 @@ public final class SpotOverviewActivity extends DBListActivity
 	@Override
 	protected void onResume()
 	{
-
+		super.onResume();
 		final boolean isBound = bindService(
 				new Intent(IntentConstants.DE_MACSYSTEMS_WINDROID_START_SPOT_SERVICE_ACTION), connection,
 				Context.BIND_AUTO_CREATE);
@@ -218,7 +220,6 @@ public final class SpotOverviewActivity extends DBListActivity
 				}
 			}
 		});
-		super.onResume();
 	}
 
 	/*
@@ -303,8 +304,17 @@ public final class SpotOverviewActivity extends DBListActivity
 	{
 		super.onCreateOptionsMenu(menu);
 		final MenuItem about = menu.add(Menu.NONE, OPTION_MENU_REFRESH_ID, Menu.NONE,
-				R.string.forecast_contextdialog_refresh);
+				R.string.spot_overview_option_update_all_spots);
 		about.setIcon(R.drawable.refresh);
+
+		final MenuItem disableAll = menu.add(Menu.NONE, OPTION_MENU_DISABLE_ALL, Menu.NONE,
+				R.string.spot_overview_option_disable_all_spots);
+		disableAll.setIcon(R.drawable.disable_all);
+
+		final MenuItem enableAll = menu.add(Menu.NONE, OPTION_MENU_ENABLE_ALL, Menu.NONE,
+				R.string.spot_overview_option_enable_all_spots);
+		enableAll.setIcon(R.drawable.enable_all);
+
 		return true;
 	}
 
@@ -358,6 +368,21 @@ public final class SpotOverviewActivity extends DBListActivity
 			handler.sendEmptyMessageDelayed(selectedID, 100L);
 			result = true;
 		}
+		else if (item.getItemId() == OPTION_MENU_DISABLE_ALL)
+		{
+			dao.setAllActiv(false);
+			final Cursor c = dao.getConfiguredSpots();
+			setupMapping(c);
+			result = true;
+		}
+		else if (item.getItemId() == OPTION_MENU_ENABLE_ALL)
+		{
+			dao.setAllActiv(true);
+			final Cursor c = dao.getConfiguredSpots();
+			setupMapping(c);
+			result = true;
+		}
+
 		return result;
 	}
 
@@ -523,8 +548,7 @@ public final class SpotOverviewActivity extends DBListActivity
 		{
 			Log.d(LOG_TAG, "Updating Spot in Database");
 		}
-
-		// final ISelectedDAO dao = DAOFactory.getSelectedDAO(this);
+		// If Edit Spot was chosen we update the Database.
 		final SpotConfigurationVO vo = WindUtils.getConfigurationFromIntent(_intent);
 		dao.update(vo);
 	}

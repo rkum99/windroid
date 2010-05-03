@@ -563,7 +563,8 @@ public final class MainActivity extends DBActivity
 	 */
 	private void showHelpPage()
 	{
-		final Uri uri = Uri.parse("http://windfinder.com");
+		final String url = getString(R.string.main_help_url);
+		final Uri uri = Uri.parse(url);
 		final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 		startActivity(intent);
 	}

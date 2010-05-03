@@ -17,6 +17,7 @@
  */
 package de.macsystems.windroid;
 
+import java.io.IOException;
 import java.net.URI;
 
 import android.app.Activity;
@@ -147,10 +148,15 @@ public final class DownloadActivity extends ChainSubActivity
 					{
 						Log.e(LOG_TAG, "Thread Interrupted - by user ?", e);
 					}
+					catch (IOException e)
+					{
+						Log.e(LOG_TAG, "IO Failure.", e);
+						showInstallationFailed(e);
+					}
 					catch (final Exception e)
 					{
 						Log.e(LOG_TAG, "Failed to parse xml.", e);
-						// showInstallationFailed(e);
+						showInstallationFailed(e);
 					}
 					finally
 					{

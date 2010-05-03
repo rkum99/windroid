@@ -82,6 +82,15 @@ public interface ISpotDAO extends IDAO
 	public final static String COLUMN_GMT = "gmt";
 
 	/**
+	 * {@value #COLUMN_LONGITUDE}
+	 */
+	public final static String COLUMN_LONGITUDE = "longitude";
+	/**
+	 * {@value #COLUMN_LATITUDE}
+	 */
+	public final static String COLUMN_LATITUDE = "latitude";
+
+	/**
 	 * @param world
 	 */
 	public void insertSpots(final World world);

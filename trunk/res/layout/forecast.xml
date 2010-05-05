@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ViewFlipper
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/flipper"
+	android:id="@+id/forecast_flipper"
 	android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
+	android:layout_height="fill_parent" 
+	android:inAnimation="@anim/slide_left_in"
+	android:outAnimation="@anim/slide_right_out"
+	
+	>
 	<LinearLayout
 		xmlns:android="http://schemas.android.com/apk/res/android"
 		android:orientation="vertical"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent">
 		<ScrollView
-			android:id="@+id/forecast_scrollview"
+			android:id="@+id/forecast_flipper_page_one"
 			android:layout_height="fill_parent"
 			android:layout_width="fill_parent">
 
@@ -66,28 +70,34 @@
 	</LinearLayout>
 	<LinearLayout
 		xmlns:android="http://schemas.android.com/apk/res/android"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
 		android:orientation="vertical"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:id="@+id/flipper_page_two">
+		<ScrollView
+			android:id="@+id/forecast_flipper_page_two"
+			android:layout_height="fill_parent"
+			android:layout_width="fill_parent">
+			<LinearLayout
+				xmlns:android="http://schemas.android.com/apk/res/android"
+				android:orientation="vertical"
+				android:layout_width="fill_parent"
+				android:layout_height="fill_parent">
 
-		android:padding="20dip"
-		android:layout_gravity="top"
-		android:layout_marginTop="50dip">
-
-		<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="TEST"
-			android:layout_gravity="center"
-			android:padding="15dip"
-			android:textSize="22dip" />
-
-		<Button
-			android:text="Go Back"
-			android:id="@+id/back_btn"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content" />
-
-
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="TEST"
+					android:layout_gravity="center"
+					android:padding="15dip"
+					android:textSize="22dip" />
+		
+				<Button
+					android:text="Go Back"
+					android:id="@+id/back_btn"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content" />
+			</LinearLayout>
+		</ScrollView>
 	</LinearLayout>
 </ViewFlipper>

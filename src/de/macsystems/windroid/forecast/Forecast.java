@@ -74,6 +74,25 @@ public final class Forecast
 	}
 
 	/**
+	 * 
+	 * @return
+	 */
+	public int getSize()
+	{
+		return forecasts.size();
+	}
+
+	/**
+	 * 
+	 * @param _index
+	 * @return
+	 */
+	public ForecastDetail get(final int _index)
+	{
+		return forecasts.get(_index);
+	}
+
+	/**
 	 * @return the name
 	 */
 	public String getName()

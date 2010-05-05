@@ -20,7 +20,6 @@ package de.macsystems.windroid;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Iterator;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -35,12 +34,20 @@ import android.os.Message;
 import android.os.RemoteException;
 import android.util.AndroidRuntimeException;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.View.OnTouchListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 import de.macsystems.windroid.common.IntentConstants;
 import de.macsystems.windroid.db.DAOFactory;
 import de.macsystems.windroid.db.DBException;
@@ -97,9 +104,14 @@ public final class ForecastActivity extends DBActivity
 	 */
 	private final static int UPDATE_SPOT_DIALOG = 500;
 	/**
-	 * Constant used by Context Menu
+	 * Constant used by Option Menu
 	 */
-	private final static int CONTEXT_MENU_REFRESH_ID = 1000;
+	private final static int OPTION_REFRESH = 1000;
+	private final static int OPTION_NEXT = 1100;
+	private final static int OPTION_PREVIOUS = 1200;
+
+	private final static int OFFSET_DAY_ONE = 0;
+	private final static int OFFSET_DAY_TWO = 7;
 
 	private int selectedID = -1;
 	/**
@@ -109,6 +121,13 @@ public final class ForecastActivity extends DBActivity
 	private Forecast forecast = null;
 
 	private ISpotService service = null;
+
+	private ViewFlipper flipper = null;
+
+	private Animation slideLeftIn;
+	private Animation slideLeftOut;
+	private Animation slideRightIn;
+	private Animation slideRightOut;
 
 	private final Handler handler = new Handler()
 	{
@@ -186,6 +205,74 @@ public final class ForecastActivity extends DBActivity
 		}
 	};
 
+	final SimpleOnGestureListener flingDetector = new GestureDetector.SimpleOnGestureListener()
+	{
+		private static final int SWIPE_MIN_DISTANCE = 120;
+		private static final int SWIPE_MAX_OFF_PATH = 250;
+		private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+
+		@Override
+		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
+		{
+			try
+			{
+				if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
+					return false;
+				// right to left swipe
+				if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY)
+				{
+					flipper.setInAnimation(slideLeftIn);
+					flipper.setOutAnimation(slideLeftOut);
+					flipper.showNext();
+				}
+				else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY)
+				{
+					flipper.setInAnimation(slideRightIn);
+					flipper.setOutAnimation(slideRightOut);
+					flipper.showPrevious();
+				}
+			}
+			catch (Exception e)
+			{
+				// nothing
+			}
+			return false;
+		}
+
+		// @Override
+		// public boolean onFling(MotionEvent e1, MotionEvent e2, float
+		// velocityX, float velocityY)
+		// {
+		// Log.d(LOG_TAG, " velocityX " + velocityX);
+		// Log.d(LOG_TAG, " velocityY " + velocityY);
+		//			
+		//			
+		//
+		// if (velocityX > 0)
+		// {
+		// if (Math.abs(velocityX) > 250.0f)
+		// {
+		//					
+		// flipper.showNext();
+		// }
+		// }
+		// else
+		// {
+		// if (Math.abs(velocityX) < 250.0f)
+		// {
+		// flipper.showPrevious();
+		// }
+		// }
+		//
+		// return super.onFling(e1, e2, velocityX, velocityY);
+		// }
+
+	};
+	/**
+	 * Detector we use to detect fling events
+	 */
+	private GestureDetector detector = null;
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -196,6 +283,42 @@ public final class ForecastActivity extends DBActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.forecast);
+
+		slideLeftIn = AnimationUtils.loadAnimation(this, R.anim.slide_left_in);
+		slideLeftOut = AnimationUtils.loadAnimation(this, R.anim.slide_left_out);
+		slideRightIn = AnimationUtils.loadAnimation(this, R.anim.slide_right_in);
+		slideRightOut = AnimationUtils.loadAnimation(this, R.anim.slide_right_out);
+
+		detector = new GestureDetector(this, flingDetector);
+		flipper = (ViewFlipper) findViewById(R.id.forecast_flipper);
+		final View page1 = findViewById(R.id.forecast_flipper_page_one);
+		final View page2 = findViewById(R.id.forecast_flipper_page_two);
+		page2.setOnTouchListener(new OnTouchListener()
+		{
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event)
+			{
+				if (detector != null)
+				{
+					return detector.onTouchEvent(event);
+				}
+				return false;
+			}
+		});
+		page1.setOnTouchListener(new OnTouchListener()
+		{
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event)
+			{
+				if (detector != null)
+				{
+					return detector.onTouchEvent(event);
+				}
+				return false;
+			}
+		});
 
 		forecastDAO = DAOFactory.getForecast(getApplicationContext());
 		daoManager.addDAO(forecastDAO);
@@ -353,7 +476,6 @@ public final class ForecastActivity extends DBActivity
 	@Override
 	protected Dialog onCreateDialog(final int _id)
 	{
-		// super.onCreateDialog(_id);
 		if (Logging.isLoggingEnabled())
 		{
 			Log.d(LOG_TAG, "onCreateDialog :" + _id);
@@ -376,9 +498,15 @@ public final class ForecastActivity extends DBActivity
 	public boolean onCreateOptionsMenu(final Menu menu)
 	{
 		super.onCreateOptionsMenu(menu);
-		final MenuItem about = menu.add(Menu.NONE, CONTEXT_MENU_REFRESH_ID, Menu.NONE,
-				R.string.forecast_contextdialog_refresh);
+		final MenuItem about = menu.add(Menu.NONE, OPTION_REFRESH, Menu.NONE, R.string.forecast_options_refresh);
 		about.setIcon(R.drawable.refresh);
+		//
+		final MenuItem previous = menu.add(Menu.NONE, OPTION_PREVIOUS, Menu.NONE, R.string.forecast_options_previous);
+		previous.setIcon(R.drawable.swipe_back);
+		//
+		final MenuItem next = menu.add(Menu.NONE, OPTION_NEXT, Menu.NONE, R.string.forecast_options_next);
+		next.setIcon(R.drawable.swipe_next);
+
 		return true;
 	}
 
@@ -393,51 +521,111 @@ public final class ForecastActivity extends DBActivity
 		super.onOptionsItemSelected(item);
 
 		boolean result = false;
-		if (item.getItemId() == CONTEXT_MENU_REFRESH_ID)
+		if (item.getItemId() == OPTION_REFRESH)
 		{
 			handler.sendEmptyMessageDelayed(selectedID, 100L);
 			result = true;
 		}
+		else if (item.getItemId() == OPTION_NEXT)
+		{
+			flipper.showNext();
+			result = true;
+		}
+		else if (item.getItemId() == OPTION_PREVIOUS)
+		{
+			flipper.showPrevious();
+			result = true;
+		}
+
 		return result;
+	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event)
+	{
+		if (detector.onTouchEvent(event))
+			return true;
+		else
+			return false;
 	}
 
 	private void fillTable(final Forecast _forecast)
 	{
 		final String serverTime = titleDateFormat.format(_forecast.getTimestamp());
+
 		setTitle(_forecast.getName() + getString(R.string.forecast_title_layout) + serverTime);
 		/**
 		 * For each row in table we set the values
 		 */
 		final TableRow rowWindSpeed = (TableRow) findViewById(R.id.forecast_row_wind_speed);
-		fillWindSpeedRow(rowWindSpeed, R.string.wind_speed, _forecast);
+		fillWindSpeedRow(rowWindSpeed, R.string.wind_speed, _forecast, TEXT_ROW_IDS, OFFSET_DAY_ONE);
+		final TableRow rowWindSpeed2 = (TableRow) findViewById(R.id.forecast_page_two_row_wind_speed);
+		fillWindSpeedRow(rowWindSpeed2, R.string.wind_speed, _forecast, TEXT_ROW_IDS, OFFSET_DAY_TWO);
+		//
 		final TableRow rowDate = (TableRow) findViewById(R.id.forecast_row_date);
-		fillDateRow(rowDate, R.string.date, _forecast);
+		fillDateRow(rowDate, R.string.date, _forecast, TEXT_ROW_IDS, OFFSET_DAY_ONE);
+		final TableRow rowDate2 = (TableRow) findViewById(R.id.forecast_page_two_row_date);
+		fillDateRow(rowDate2, R.string.date, _forecast, TEXT_ROW_IDS, OFFSET_DAY_TWO);
+		//
 		final TableRow rowTime = (TableRow) findViewById(R.id.forecast_row_time);
-		fillTimeRow(rowTime, R.string.time, _forecast);
+		fillTimeRow(rowTime, R.string.time, _forecast, TEXT_ROW_IDS, OFFSET_DAY_ONE);
+		final TableRow rowTime2 = (TableRow) findViewById(R.id.forecast_page_two_row_time);
+		fillTimeRow(rowTime2, R.string.time, _forecast, TEXT_ROW_IDS, OFFSET_DAY_TWO);
+		//
 		final TableRow rowAirPressure = (TableRow) findViewById(R.id.forecast_row_air_pressure);
-		fillAirPressureRow(rowAirPressure, R.string.air_pressure, _forecast);
+		fillAirPressureRow(rowAirPressure, R.string.air_pressure, _forecast, TEXT_ROW_IDS, OFFSET_DAY_ONE);
+		final TableRow rowAirPressure2 = (TableRow) findViewById(R.id.forecast_page_two_row_air_pressure);
+		fillAirPressureRow(rowAirPressure2, R.string.air_pressure, _forecast, TEXT_ROW_IDS, OFFSET_DAY_TWO);
+		//
 		final TableRow rowAirTemp = (TableRow) findViewById(R.id.forecast_row_air_temperature);
-		fillAirTempRow(rowAirTemp, R.string.air_temperature, _forecast);
+		fillAirTempRow(rowAirTemp, R.string.air_temperature, _forecast, TEXT_ROW_IDS, OFFSET_DAY_ONE);
+		final TableRow rowAirTemp2 = (TableRow) findViewById(R.id.forecast_row_page_two_air_temperature);
+		fillAirTempRow(rowAirTemp2, R.string.air_temperature, _forecast, TEXT_ROW_IDS, OFFSET_DAY_TWO);
+		//
 		final TableRow rowWaterTemp = (TableRow) findViewById(R.id.forecast_row_water_temperature);
-		fillWaterTempRow(rowWaterTemp, R.string.water_temperature, _forecast);
+		fillWaterTempRow(rowWaterTemp, R.string.water_temperature, _forecast, TEXT_ROW_IDS, OFFSET_DAY_ONE);
+		final TableRow rowWaterTemp2 = (TableRow) findViewById(R.id.forecast_row_page_two_air_temperature);
+		fillWaterTempRow(rowWaterTemp2, R.string.water_temperature, _forecast, TEXT_ROW_IDS, OFFSET_DAY_TWO);
+		//
 		final TableRow rowWaveHeight = (TableRow) findViewById(R.id.forecast_row_wave_height);
-		fillWaveHeightRow(rowWaveHeight, R.string.wave_height, _forecast);
+		fillWaveHeightRow(rowWaveHeight, R.string.wave_height, _forecast, TEXT_ROW_IDS, OFFSET_DAY_ONE);
+		final TableRow rowWaveHeight2 = (TableRow) findViewById(R.id.forecast_page_two_row_wave_height);
+		fillWaveHeightRow(rowWaveHeight2, R.string.wave_height, _forecast, TEXT_ROW_IDS, OFFSET_DAY_TWO);
+		//
 		final TableRow rowWavePeriod = (TableRow) findViewById(R.id.forecast_row_wave_period);
-		fillWavePeriodRow(rowWavePeriod, R.string.wave_period, _forecast);
+		fillWavePeriodRow(rowWavePeriod, R.string.wave_period, _forecast, TEXT_ROW_IDS, OFFSET_DAY_ONE);
+		final TableRow rowWavePeriod2 = (TableRow) findViewById(R.id.forecast_page_two_row_wave_period);
+		fillWavePeriodRow(rowWavePeriod2, R.string.wave_period, _forecast, TEXT_ROW_IDS, OFFSET_DAY_TWO);
+		//
 		final TableRow rowWindGust = (TableRow) findViewById(R.id.forecast_row_windgust);
-		fillWindGustRow(rowWindGust, R.string.windgust, _forecast);
+		fillWindGustRow(rowWindGust, R.string.windgust, _forecast, TEXT_ROW_IDS, OFFSET_DAY_ONE);
+		final TableRow rowWindGust2 = (TableRow) findViewById(R.id.forecast_page_two_row_windgust);
+		fillWindGustRow(rowWindGust2, R.string.windgust, _forecast, TEXT_ROW_IDS, OFFSET_DAY_TWO);
+		//
 		final TableRow rowClouds = (TableRow) findViewById(R.id.forecast_row_clouds);
-		fillCloudRow(rowClouds, R.string.clouds, _forecast);
+		fillCloudRow(rowClouds, R.string.clouds, _forecast, IMAGE_ROW_IDS, OFFSET_DAY_ONE);
+		final TableRow rowClouds2 = (TableRow) findViewById(R.id.forecast_page_two_row_clouds);
+		fillCloudRow(rowClouds2, R.string.clouds, _forecast, IMAGE_ROW_IDS, OFFSET_DAY_TWO);
+		//
 		final TableRow rowWindDirection = (TableRow) findViewById(R.id.forecast_row_wind_direction);
-		fillWindDirectionRow(rowWindDirection, R.string.wind_direction, _forecast);
+		fillWindDirectionRow(rowWindDirection, R.string.wind_direction, _forecast, IMAGE_ROW_IDS, OFFSET_DAY_ONE);
+		final TableRow rowWindDirection2 = (TableRow) findViewById(R.id.forecast_page_two_row_wind_direction);
+		fillWindDirectionRow(rowWindDirection2, R.string.wind_direction, _forecast, IMAGE_ROW_IDS, OFFSET_DAY_TWO);
+		//
 		final TableRow rowWaveDirection = (TableRow) findViewById(R.id.forecast_row_wave_direction);
-		fillWaveDirectionRow(rowWaveDirection, R.string.wave_direction, _forecast);
-
+		fillWaveDirectionRow(rowWaveDirection, R.string.wave_direction, _forecast, IMAGE_ROW_IDS, OFFSET_DAY_ONE);
+		final TableRow rowWaveDirection2 = (TableRow) findViewById(R.id.forecast_page_two_row_wave_direction);
+		fillWaveDirectionRow(rowWaveDirection2, R.string.wave_direction, _forecast, IMAGE_ROW_IDS, OFFSET_DAY_TWO);
+		//
 		final TableRow rowPrecipitationDirection = (TableRow) findViewById(R.id.forecast_row_precipitation);
-		fillPrecipitationRow(rowPrecipitationDirection, R.string.precipitation, _forecast);
+		fillPrecipitationRow(rowPrecipitationDirection, R.string.precipitation, _forecast,TEXT_ROW_IDS,OFFSET_DAY_ONE);
+		final TableRow rowPrecipitationDirection2 = (TableRow) findViewById(R.id.forecast_page_two_row_precipitation);
+		fillPrecipitationRow(rowPrecipitationDirection2, R.string.precipitation, _forecast,TEXT_ROW_IDS,OFFSET_DAY_TWO);
+		
 	}
 
-	private void fillWindDirectionRow(final TableRow _rowWind, final int _columNameResID, final Forecast _forecast)
+	private void fillWindDirectionRow(final TableRow _rowWind, final int _columNameResID, final Forecast _forecast,
+			final int[] _rowIDs, final int _offset)
 	{
 		if (_rowWind == null)
 		{
@@ -448,25 +636,16 @@ public final class ForecastActivity extends DBActivity
 		final String text = _rowWind.getResources().getString(_columNameResID);
 		rowName.setText(text);
 		//
-		final Iterator<ForecastDetail> iter = _forecast.iterator();
-
-		for (int i = 0; i < IMAGE_ROW_IDS.length; i++)
+		for (int i = 0; i < _rowIDs.length; i++)
 		{
 			final ImageView iv = (ImageView) _rowWind.findViewById(IMAGE_ROW_IDS[i]);
-
-			if (iter.hasNext())
-			{
-				final ForecastDetail detail = iter.next();
-				iv.setImageResource(detail.getWinddirection().getImage());
-			}
-			else
-			{
-				iv.setImageDrawable(null);
-			}
+			final ForecastDetail detail = _forecast.get(_offset + i);
+			iv.setImageResource(detail.getWinddirection().getImage());
 		}
 	}
 
-	private void fillWaveDirectionRow(final TableRow _rowWave, final int _columNameResID, final Forecast _forecast)
+	private void fillWaveDirectionRow(final TableRow _rowWave, final int _columNameResID, final Forecast _forecast,
+			final int[] _rowIDs, final int _offset)
 	{
 		if (_rowWave == null)
 		{
@@ -477,25 +656,18 @@ public final class ForecastActivity extends DBActivity
 		final String text = _rowWave.getResources().getString(_columNameResID);
 		rowName.setText(text);
 		//
-		final Iterator<ForecastDetail> iter = _forecast.iterator();
 
-		for (int i = 0; i < IMAGE_ROW_IDS.length; i++)
+		for (int i = 0; i < _rowIDs.length; i++)
 		{
-			final ImageView iv = (ImageView) _rowWave.findViewById(IMAGE_ROW_IDS[i]);
+			final ImageView iv = (ImageView) _rowWave.findViewById(_rowIDs[i]);
 
-			if (iter.hasNext())
-			{
-				final ForecastDetail detail = iter.next();
-				iv.setImageResource(detail.getWaveDirection().getImage());
-			}
-			else
-			{
-				iv.setImageDrawable(null);
-			}
+			final ForecastDetail detail = _forecast.get(_offset + i);
+			iv.setImageResource(detail.getWaveDirection().getImage());
 		}
 	}
 
-	private final static void fillTimeRow(final TableRow _row, final int _columNameResID, final Forecast _forecast)
+	private final static void fillTimeRow(final TableRow _row, final int _columNameResID, final Forecast _forecast,
+			final int[] _rowIDs, final int _offset)
 	{
 		if (_row == null)
 		{
@@ -506,14 +678,12 @@ public final class ForecastActivity extends DBActivity
 		rowName.setText(text);
 
 		//
-		final Iterator<ForecastDetail> iter = _forecast.iterator();
 
-		for (int i = 0; i < TEXT_ROW_IDS.length; i++)
+		for (int i = 0; i < _rowIDs.length; i++)
 		{
-			final TextView tv = (TextView) _row.findViewById(TEXT_ROW_IDS[i]);
-			if (iter.hasNext())
+			final TextView tv = (TextView) _row.findViewById(_rowIDs[i]);
 			{
-				final ForecastDetail detail = iter.next();
+				final ForecastDetail detail = _forecast.get(_offset + i);
 				final Date date = new Date(detail.getTime());
 				tv.setText(timeFormat.format(date));
 			}
@@ -521,34 +691,28 @@ public final class ForecastActivity extends DBActivity
 	}
 
 	private final static void fillPrecipitationRow(final TableRow _row, final int _columNameResID,
-			final Forecast _forecast)
+			final Forecast _forecast, final int[] _rowIDs, final int _offset)
 	{
 		if (_row == null)
 		{
 			throw new NullPointerException("row");
 		}
 		//
-		final Iterator<ForecastDetail> iter = _forecast.iterator();
+		final TextView rowName = (TextView) _row.findViewById(R.id.forecast_text_column_name);
+		final String text = _row.getResources().getString(_columNameResID);
+		rowName.setText(text + " (" + _forecast.get(0).getPrecipitation().getMeasure().getShortDisplayName() + ")");
 
-		for (int i = 0; i < TEXT_ROW_IDS.length; i++)
+		for (int i = 0; i < _rowIDs.length; i++)
 		{
-			final TextView tv = (TextView) _row.findViewById(TEXT_ROW_IDS[i]);
-			if (iter.hasNext())
-			{
-				final ForecastDetail detail = iter.next();
-				tv.setText(numberFormat.format(detail.getPrecipitation().getValue()));
+			final TextView tv = (TextView) _row.findViewById(_rowIDs[i]);
 
-				if (i == 1)
-				{
-					final TextView rowName = (TextView) _row.findViewById(R.id.forecast_text_column_name);
-					final String text = _row.getResources().getString(_columNameResID);
-					rowName.setText(text + " (" + detail.getPrecipitation().getMeasure().getShortDisplayName() + ")");
-				}
-			}
+			final ForecastDetail detail = _forecast.get(_offset + i);
+			tv.setText(numberFormat.format(detail.getPrecipitation().getValue()));
 		}
 	}
 
-	private final static void fillDateRow(final TableRow _row, final int _columNameResID, final Forecast _forecast)
+	private final static void fillDateRow(final TableRow _row, final int _columNameResID, final Forecast _forecast,
+			final int[] rowIDs, final int _offset)
 	{
 		if (_row == null)
 		{
@@ -559,74 +723,61 @@ public final class ForecastActivity extends DBActivity
 		rowName.setText(text);
 
 		//
-		final Iterator<ForecastDetail> iter = _forecast.iterator();
-		for (int i = 0; i < TEXT_ROW_IDS.length; i++)
+		// final Iterator<ForecastDetail> iter = _forecast.iterator();
+
+		for (int i = 0; i < rowIDs.length; i++)
 		{
-			final TextView tv = (TextView) _row.findViewById(TEXT_ROW_IDS[i]);
-			if (iter.hasNext())
+			final TextView tv = (TextView) _row.findViewById(rowIDs[i]);
 			{
-				final ForecastDetail detail = iter.next();
+				final ForecastDetail detail = _forecast.get(_offset + i);
 				tv.setText(dateFormat.format(detail.getDate()));
 			}
 		}
 	}
 
-	private final static void fillWaveHeightRow(final TableRow _row, final int _columNameResID, final Forecast _forecast)
+	private final static void fillWaveHeightRow(final TableRow _row, final int _columNameResID,
+			final Forecast _forecast, final int[] _rowIDs, final int _offset)
 	{
 		if (_row == null)
 		{
 			throw new NullPointerException("row");
 		}
 
-		//
-		final Iterator<ForecastDetail> iter = _forecast.iterator();
+		final TextView rowName = (TextView) _row.findViewById(R.id.forecast_text_column_name);
+		final String text = _row.getResources().getString(_columNameResID);
+		rowName.setText(text + " (" + _forecast.get(0).getWaveHeight().getMeasure().getShortDisplayName() + ")");
 
-		for (int i = 0; i < TEXT_ROW_IDS.length; i++)
+		//
+		for (int i = 0; i < _rowIDs.length; i++)
 		{
-			final TextView tv = (TextView) _row.findViewById(TEXT_ROW_IDS[i]);
-			if (iter.hasNext())
-			{
-				final ForecastDetail detail = iter.next();
-				tv.setText(numberFormat.format(detail.getWaveHeight().getValue()));
-				if (i == 1)
-				{
-					final TextView rowName = (TextView) _row.findViewById(R.id.forecast_text_column_name);
-					final String text = _row.getResources().getString(_columNameResID);
-					rowName.setText(text + " (" + detail.getWaveHeight().getMeasure().getShortDisplayName() + ")");
-				}
-			}
+			final TextView tv = (TextView) _row.findViewById(_rowIDs[i]);
+			final ForecastDetail detail = _forecast.get(_offset + i);
+			tv.setText(numberFormat.format(detail.getWaveHeight().getValue()));
 		}
 	}
 
 	private final static void fillAirPressureRow(final TableRow _row, final int _columNameResID,
-			final Forecast _forecast)
+			final Forecast _forecast, final int[] _rowIDs, final int _offset)
 	{
 		if (_row == null)
 		{
 			throw new NullPointerException("row");
 		}
 
+		final TextView rowName = (TextView) _row.findViewById(R.id.forecast_text_column_name);
+		final String text = _row.getResources().getString(_columNameResID);
+		rowName.setText(text + " (" + _forecast.get(0).getAirPressure().getMeasure().getShortDisplayName() + ")");
 		//
-		final Iterator<ForecastDetail> iter = _forecast.iterator();
-
-		for (int i = 0; i < TEXT_ROW_IDS.length; i++)
+		for (int i = 0; i < _rowIDs.length; i++)
 		{
-			final TextView tv = (TextView) _row.findViewById(TEXT_ROW_IDS[i]);
-			if (iter.hasNext())
-			{
-				final ForecastDetail detail = iter.next();
-				tv.setText(numberFormat.format(detail.getAirPressure().getValue()));
-				if (i == 1)
-				{
-					final TextView rowName = (TextView) _row.findViewById(R.id.forecast_text_column_name);
-					final String text = _row.getResources().getString(_columNameResID);
-					rowName.setText(text + " (" + detail.getAirPressure().getMeasure().getShortDisplayName() + ")");
-				}
-			}
+			final TextView tv = (TextView) _row.findViewById(_rowIDs[i]);
+			final ForecastDetail detail = _forecast.get(_offset + i);
+			tv.setText(numberFormat.format(detail.getAirPressure().getValue()));
 		}
 	}
 
-	private final static void fillWavePeriodRow(final TableRow _row, final int _columNameResID, final Forecast _forecast)
+	private final static void fillWavePeriodRow(final TableRow _row, final int _columNameResID,
+			final Forecast _forecast, final int[] _rowIDs, final int _offset)
 	{
 		if (_row == null)
 		{
@@ -634,53 +785,46 @@ public final class ForecastActivity extends DBActivity
 		}
 
 		//
-		final Iterator<ForecastDetail> iter = _forecast.iterator();
+		final TextView rowName = (TextView) _row.findViewById(R.id.forecast_text_column_name);
+		final String text = _row.getResources().getString(_columNameResID);
+		rowName.setText(text + " (" + _forecast.get(0).getWavePeriod().getMeasure().getShortDisplayName() + ")");
 
-		for (int i = 0; i < TEXT_ROW_IDS.length; i++)
+		for (int i = 0; i < _rowIDs.length; i++)
 		{
-			final TextView tv = (TextView) _row.findViewById(TEXT_ROW_IDS[i]);
-			if (iter.hasNext())
-			{
-				final ForecastDetail detail = iter.next();
-				tv.setText(numberFormat.format(detail.getWavePeriod().getValue()));
-				if (i == 1)
-				{
-					final TextView rowName = (TextView) _row.findViewById(R.id.forecast_text_column_name);
-					final String text = _row.getResources().getString(_columNameResID);
-					rowName.setText(text + " (" + detail.getWavePeriod().getMeasure().getShortDisplayName() + ")");
-				}
-			}
+			final TextView tv = (TextView) _row.findViewById(_rowIDs[i]);
+			final ForecastDetail detail = _forecast.get(_offset + i);
+			tv.setText(numberFormat.format(detail.getWavePeriod().getValue()));
 		}
 	}
 
-	private final static void fillWindSpeedRow(final TableRow _row, final int _columNameResID, final Forecast _forecast)
+	private final static void fillWindSpeedRow(final TableRow _row, final int _columNameResID,
+			final Forecast _forecast, final int[] _rowIDs, final int offset)
 	{
 		if (_row == null)
 		{
 			throw new NullPointerException("row");
 		}
 
-		//
-		final Iterator<ForecastDetail> iter = _forecast.iterator();
+		final TextView rowName = (TextView) _row.findViewById(R.id.forecast_text_column_name);
+		final String text = _row.getResources().getString(_columNameResID);
+		rowName.setText(text + " (" + _forecast.get(0).getWindSpeed().getUnit().getShortDisplayName() + ")");
 
-		for (int i = 0; i < TEXT_ROW_IDS.length; i++)
+		//
+		// final Iterator<ForecastDetail> iter = _forecast.iterator();
+
+		for (int i = 0; i < _rowIDs.length; i++)
 		{
-			final TextView tv = (TextView) _row.findViewById(TEXT_ROW_IDS[i]);
-			if (iter.hasNext())
+			final TextView tv = (TextView) _row.findViewById(_rowIDs[i]);
+
+			final ForecastDetail detail = _forecast.get(offset + i);
 			{
-				final ForecastDetail detail = iter.next();
 				tv.setText(numberFormat.format(detail.getWindSpeed().getValue()));
-				if (i == 1)
-				{
-					final TextView rowName = (TextView) _row.findViewById(R.id.forecast_text_column_name);
-					final String text = _row.getResources().getString(_columNameResID);
-					rowName.setText(text + " (" + detail.getWindSpeed().getUnit().getShortDisplayName() + ")");
-				}
 			}
 		}
 	}
 
-	private final static void fillWindGustRow(final TableRow _row, final int _columNameResID, final Forecast _forecast)
+	private final static void fillWindGustRow(final TableRow _row, final int _columNameResID, final Forecast _forecast,
+			final int[] _rowIDs, final int _offset)
 	{
 		if (_row == null)
 		{
@@ -688,82 +832,63 @@ public final class ForecastActivity extends DBActivity
 		}
 
 		//
-		final Iterator<ForecastDetail> iter = _forecast.iterator();
+		final TextView rowName = (TextView) _row.findViewById(R.id.forecast_text_column_name);
+		final String text = _row.getResources().getString(_columNameResID);
+		rowName.setText(text + " (" + _forecast.get(0).getWindGusts().getUnit().getShortDisplayName() + ")");
 
-		for (int i = 0; i < TEXT_ROW_IDS.length; i++)
+		for (int i = 0; i < _rowIDs.length; i++)
 		{
-			final TextView tv = (TextView) _row.findViewById(TEXT_ROW_IDS[i]);
-			if (iter.hasNext())
-			{
-				final ForecastDetail detail = iter.next();
-				tv.setText(numberFormat.format(detail.getWindGusts().getValue()));
-				if (i == 1)
-				{
-					final TextView rowName = (TextView) _row.findViewById(R.id.forecast_text_column_name);
-					final String text = _row.getResources().getString(_columNameResID);
-					rowName.setText(text + " (" + detail.getWindGusts().getUnit().getShortDisplayName() + ")");
-				}
-			}
+			final TextView tv = (TextView) _row.findViewById(_rowIDs[i]);
+			final ForecastDetail detail = _forecast.get(_offset + i);
+			tv.setText(numberFormat.format(detail.getWindGusts().getValue()));
 		}
 	}
 
-	private final static void fillAirTempRow(final TableRow _row, final int _columNameResID, final Forecast _forecast)
+	private final static void fillAirTempRow(final TableRow _row, final int _columNameResID, final Forecast _forecast,
+			final int[] _rowIDs, final int _offset)
 	{
 		if (_row == null)
 		{
 			throw new NullPointerException("row");
 		}
 
+		final TextView rowName = (TextView) _row.findViewById(R.id.forecast_text_column_name);
+		final String text = _row.getResources().getString(_columNameResID);
+		rowName.setText(text + " (" + _forecast.get(0).getAirTemperature().getMeasure().getShortDisplayName() + ")");
 		//
-		final Iterator<ForecastDetail> iter = _forecast.iterator();
-
-		for (int i = 0; i < TEXT_ROW_IDS.length; i++)
+		for (int i = 0; i < _rowIDs.length; i++)
 		{
-			final TextView tv = (TextView) _row.findViewById(TEXT_ROW_IDS[i]);
-			if (iter.hasNext())
-			{
-				final ForecastDetail detail = iter.next();
-				tv.setText(numberFormat.format(detail.getAirTemperature().getValue()));
-				if (i == 1)
-				{
-					final TextView rowName = (TextView) _row.findViewById(R.id.forecast_text_column_name);
-					final String text = _row.getResources().getString(_columNameResID);
-					rowName.setText(text + " (" + detail.getAirTemperature().getMeasure().getShortDisplayName() + ")");
-				}
-			}
+			final TextView tv = (TextView) _row.findViewById(_rowIDs[i]);
+			final ForecastDetail detail = _forecast.get(_offset + i);
+			tv.setText(numberFormat.format(detail.getAirTemperature().getValue()));
+
 		}
 	}
 
-	private final static void fillWaterTempRow(final TableRow _row, final int _columNameResID, final Forecast _forecast)
+	private final static void fillWaterTempRow(final TableRow _row, final int _columNameResID,
+			final Forecast _forecast, final int[] _rowIDs, final int _offset)
 	{
 		if (_row == null)
 		{
 			throw new NullPointerException("row");
 		}
 
-		//
-		final Iterator<ForecastDetail> iter = _forecast.iterator();
+		final TextView rowName = (TextView) _row.findViewById(R.id.forecast_text_column_name);
+		final String text = _row.getResources().getString(_columNameResID);
+		rowName.setText(text + " (" + _forecast.get(0).getWaterTemperature().getMeasure().getShortDisplayName() + ")");
 
-		for (int i = 0; i < TEXT_ROW_IDS.length; i++)
+		//
+
+		for (int i = 0; i < _rowIDs.length; i++)
 		{
-			final TextView tv = (TextView) _row.findViewById(TEXT_ROW_IDS[i]);
-			if (iter.hasNext())
-			{
-				final ForecastDetail detail = iter.next();
-				tv.setText(numberFormat.format(detail.getWaterTemperature().getValue()));
-				if (i == 1)
-				{
-					final TextView rowName = (TextView) _row.findViewById(R.id.forecast_text_column_name);
-					final String text = _row.getResources().getString(_columNameResID);
-					rowName
-							.setText(text + " (" + detail.getWaterTemperature().getMeasure().getShortDisplayName()
-									+ ")");
-				}
-			}
+			final TextView tv = (TextView) _row.findViewById(_rowIDs[i]);
+			final ForecastDetail detail = _forecast.get(_offset + i);
+			tv.setText(numberFormat.format(detail.getWaterTemperature().getValue()));
 		}
 	}
 
-	private final static void fillCloudRow(final TableRow _row, final int _columNameResID, final Forecast _forecast)
+	private final static void fillCloudRow(final TableRow _row, final int _columNameResID, final Forecast _forecast,
+			final int[] _rowIDs, final int _offset)
 	{
 		if (_row == null)
 		{
@@ -779,21 +904,11 @@ public final class ForecastActivity extends DBActivity
 		final String text = _row.getResources().getString(_columNameResID);
 		rowName.setText(text);
 
-		final Iterator<ForecastDetail> iter = _forecast.iterator();
-
-		for (int i = 0; i < IMAGE_ROW_IDS.length; i++)
+		for (int i = 0; i < _rowIDs.length; i++)
 		{
-			final ImageView iv = (ImageView) _row.findViewById(IMAGE_ROW_IDS[i]);
-
-			if (iter.hasNext())
-			{
-				final ForecastDetail detail = iter.next();
-				iv.setImageResource(detail.getClouds().getResId());
-			}
-			else
-			{
-				iv.setImageDrawable(null);
-			}
+			final ImageView iv = (ImageView) _row.findViewById(_rowIDs[i]);
+			final ForecastDetail detail = _forecast.get(_offset + i);
+			iv.setImageResource(detail.getClouds().getResId());
 		}
 	}
 
@@ -828,5 +943,4 @@ public final class ForecastActivity extends DBActivity
 		}
 		return _intent.getIntExtra(IntentConstants.STORED_FORECAST_KEY, INVALID_VALUE);
 	}
-
 }

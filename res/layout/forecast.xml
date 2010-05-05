@@ -68,6 +68,7 @@
 			</TableLayout>
 		</ScrollView>
 	</LinearLayout>
+	<!--  Page two -->
 	<LinearLayout
 		xmlns:android="http://schemas.android.com/apk/res/android"
 		android:orientation="vertical"
@@ -78,26 +79,54 @@
 			android:id="@+id/forecast_flipper_page_two"
 			android:layout_height="fill_parent"
 			android:layout_width="fill_parent">
-			<LinearLayout
+			<TableLayout
 				xmlns:android="http://schemas.android.com/apk/res/android"
-				android:orientation="vertical"
 				android:layout_width="fill_parent"
-				android:layout_height="fill_parent">
+				android:layout_height="fill_parent"
+				android:stretchColumns="*"
+				android:background="@drawable/gradientbackground"
+				android:layout_margin="1dip">
+				<include
+					android:id="@+id/forecast_page_two_row_date"
+					layout="@layout/forecast_text_row" />
+				<include
+					android:id="@+id/forecast_page_two_row_time"
+					layout="@layout/forecast_text_row" />
+				<include
+					android:id="@+id/forecast_page_two_row_clouds"
+					layout="@layout/forecast_image_row" />
+				<include
+					android:id="@+id/forecast_row_page_two_air_temperature"
+					layout="@layout/forecast_text_row" />
+				<include
+					android:id="@+id/forecast_page_two_row_water_temperature"
+					layout="@layout/forecast_text_row" />
+				<include
+					android:id="@+id/forecast_page_two_row_wind_direction"
+					layout="@layout/forecast_image_row" />
+				<include
+					android:id="@+id/forecast_page_two_row_precipitation"
+					layout="@layout/forecast_text_row" />
+				<include
+					android:id="@+id/forecast_page_two_row_wind_speed"
+					layout="@layout/forecast_text_row" />
+				<include
+					android:id="@+id/forecast_page_two_row_windgust"
+					layout="@layout/forecast_text_row" />
+				<include
+					android:id="@+id/forecast_page_two_row_wave_height"
+					layout="@layout/forecast_text_row" />
+				<include
+					android:id="@+id/forecast_page_two_row_wave_direction"
+					layout="@layout/forecast_image_row" />
+				<include
+					android:id="@+id/forecast_page_two_row_wave_period"
+					layout="@layout/forecast_text_row" />
+				<include
+					android:id="@+id/forecast_page_two_row_air_pressure"
+					layout="@layout/forecast_text_row" />
 
-				<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="TEST"
-					android:layout_gravity="center"
-					android:padding="15dip"
-					android:textSize="22dip" />
-		
-				<Button
-					android:text="Go Back"
-					android:id="@+id/back_btn"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content" />
-			</LinearLayout>
+			</TableLayout>
 		</ScrollView>
 	</LinearLayout>
 </ViewFlipper>

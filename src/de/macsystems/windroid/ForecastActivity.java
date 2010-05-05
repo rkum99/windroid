@@ -212,12 +212,14 @@ public final class ForecastActivity extends DBActivity
 		private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 
 		@Override
-		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
+		public boolean onFling(final MotionEvent e1, final MotionEvent e2, final float velocityX, final float velocityY)
 		{
 			try
 			{
 				if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
+				{
 					return false;
+				}
 				// right to left swipe
 				if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY)
 				{
@@ -232,7 +234,7 @@ public final class ForecastActivity extends DBActivity
 					flipper.showPrevious();
 				}
 			}
-			catch (Exception e)
+			catch (final Exception e)
 			{
 				// nothing
 			}
@@ -291,17 +293,17 @@ public final class ForecastActivity extends DBActivity
 
 		detector = new GestureDetector(this, flingDetector);
 		flipper = (ViewFlipper) findViewById(R.id.forecast_flipper);
+
 		final View page1 = findViewById(R.id.forecast_flipper_page_one);
 		final View page2 = findViewById(R.id.forecast_flipper_page_two);
 		page2.setOnTouchListener(new OnTouchListener()
 		{
-
 			@Override
-			public boolean onTouch(View v, MotionEvent event)
+			public boolean onTouch(final View v, final MotionEvent _event)
 			{
 				if (detector != null)
 				{
-					return detector.onTouchEvent(event);
+					return detector.onTouchEvent(_event);
 				}
 				return false;
 			}
@@ -310,11 +312,11 @@ public final class ForecastActivity extends DBActivity
 		{
 
 			@Override
-			public boolean onTouch(View v, MotionEvent event)
+			public boolean onTouch(final View v, final MotionEvent _event)
 			{
 				if (detector != null)
 				{
-					return detector.onTouchEvent(event);
+					return detector.onTouchEvent(_event);
 				}
 				return false;
 			}
@@ -528,11 +530,15 @@ public final class ForecastActivity extends DBActivity
 		}
 		else if (item.getItemId() == OPTION_NEXT)
 		{
+			flipper.setInAnimation(slideLeftIn);
+			flipper.setOutAnimation(slideLeftOut);
 			flipper.showNext();
 			result = true;
 		}
 		else if (item.getItemId() == OPTION_PREVIOUS)
 		{
+			flipper.setInAnimation(slideRightIn);
+			flipper.setOutAnimation(slideRightOut);
 			flipper.showPrevious();
 			result = true;
 		}
@@ -541,12 +547,16 @@ public final class ForecastActivity extends DBActivity
 	}
 
 	@Override
-	public boolean onTouchEvent(MotionEvent event)
+	public boolean onTouchEvent(final MotionEvent event)
 	{
 		if (detector.onTouchEvent(event))
+		{
 			return true;
+		}
 		else
+		{
 			return false;
+		}
 	}
 
 	private void fillTable(final Forecast _forecast)
@@ -618,10 +628,11 @@ public final class ForecastActivity extends DBActivity
 		fillWaveDirectionRow(rowWaveDirection2, R.string.wave_direction, _forecast, IMAGE_ROW_IDS, OFFSET_DAY_TWO);
 		//
 		final TableRow rowPrecipitationDirection = (TableRow) findViewById(R.id.forecast_row_precipitation);
-		fillPrecipitationRow(rowPrecipitationDirection, R.string.precipitation, _forecast,TEXT_ROW_IDS,OFFSET_DAY_ONE);
+		fillPrecipitationRow(rowPrecipitationDirection, R.string.precipitation, _forecast, TEXT_ROW_IDS, OFFSET_DAY_ONE);
 		final TableRow rowPrecipitationDirection2 = (TableRow) findViewById(R.id.forecast_page_two_row_precipitation);
-		fillPrecipitationRow(rowPrecipitationDirection2, R.string.precipitation, _forecast,TEXT_ROW_IDS,OFFSET_DAY_TWO);
-		
+		fillPrecipitationRow(rowPrecipitationDirection2, R.string.precipitation, _forecast, TEXT_ROW_IDS,
+				OFFSET_DAY_TWO);
+
 	}
 
 	private void fillWindDirectionRow(final TableRow _rowWind, final int _columNameResID, final Forecast _forecast,

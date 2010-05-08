@@ -90,7 +90,7 @@ final class PriorizedFutureTask extends FutureTask<Void>
 		Log.d(LOG_TAG, "protected void done()");
 
 		// Dispatch Message
-		final Message message = new Message();
+		final Message message = Message.obtain();
 		try
 		{
 			get();

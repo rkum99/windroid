@@ -14,12 +14,13 @@ import de.macsystems.windroid.db.DBException;
 import de.macsystems.windroid.db.IForecastDAO;
 import de.macsystems.windroid.db.ISelectedDAO;
 import de.macsystems.windroid.forecast.Forecast;
-import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.io.RetryLaterException;
 import de.macsystems.windroid.service.AbstractNotificationTask;
 import de.macsystems.windroid.service.UpdateAlarmTask;
 
 /**
+ * A Task which updates all Active Spots
+ * 
  * @author mac
  * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
  */
@@ -93,7 +94,7 @@ public class UpdateAllActiveSpotReports extends AbstractNotificationTask
 			throw new DBException("Spot is not activ!");
 		}
 
-		final boolean available = IOUtils.isNetworkReachable(getContext());
+		final boolean available = isNetworkReachable();
 		if (!available)
 		{
 			if (Logging.isLoggingEnabled())

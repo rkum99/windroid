@@ -160,11 +160,10 @@ public final class SpotServiceConnection implements ServiceConnection, ISpotServ
 	}
 
 	@Override
-	public void updateActiveReports(IServiceCallbackListener listener) throws RemoteException
+	public void updateActiveReports(final IServiceCallbackListener listener) throws RemoteException
 	{
 		// TODO Auto-generated method stub
-		
-	}
 
+	}
 
 }

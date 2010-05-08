@@ -28,9 +28,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import de.macsystems.windroid.Logging;
-import de.macsystems.windroid.Util;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.db.DBException;
+import de.macsystems.windroid.db.IDAO;
 import de.macsystems.windroid.db.IRepeatDAO;
 import de.macsystems.windroid.db.IScheduleDAO;
 import de.macsystems.windroid.db.ISelectedDAO;
@@ -453,7 +453,7 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 			moveToFirstOrThrow(c);
 			do
 			{
-				spots.add(getInt(c, ISelectedDAO.COLUMN_ID));
+				spots.add(getInt(c, IDAO.COLUMN_ID));
 			}
 			while (c.moveToNext());
 			db.setTransactionSuccessful();

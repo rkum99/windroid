@@ -35,6 +35,7 @@ import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.R;
 import de.macsystems.windroid.common.IntentConstants;
 import de.macsystems.windroid.io.task.AlarmUpdateTask;
+import de.macsystems.windroid.io.task.UpdateAlarmTask;
 import de.macsystems.windroid.io.task.UpdateAllActiveSpotReports;
 import de.macsystems.windroid.io.task.UpdateSpotForecastTask;
 
@@ -207,8 +208,9 @@ public class SpotService extends Service
 		if (threadPool == null)
 		{
 			final int poolSize = getResources().getInteger(R.integer.schedule_threadpool_size);
-			final BlockingQueue<? super Runnable> queue = new PriorityBlockingQueue(poolSize,
+			final BlockingQueue<? super Runnable> queue = new PriorityBlockingQueue<Runnable>(poolSize,
 					new PriorizedFutureTaskComparator());
+			//
 			threadPool = new ThreadPoolExecutor(1, 1, 1L, TimeUnit.SECONDS, (BlockingQueue<Runnable>) queue);
 		}
 	}

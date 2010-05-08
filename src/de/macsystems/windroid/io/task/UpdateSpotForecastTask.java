@@ -33,7 +33,6 @@ import de.macsystems.windroid.db.IForecastDAO;
 import de.macsystems.windroid.db.ISelectedDAO;
 import de.macsystems.windroid.forecast.Forecast;
 import de.macsystems.windroid.io.RetryLaterException;
-import de.macsystems.windroid.service.AbstractNotificationTask;
 
 /**
  * Callable which will update the current forecast of a spot and updates the

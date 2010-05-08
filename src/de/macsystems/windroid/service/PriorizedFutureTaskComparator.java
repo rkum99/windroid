@@ -27,7 +27,7 @@ import java.util.Comparator;
  *          jens.hohl $
  * @see PRIORITY#compareTo(PRIORITY)
  */
-final class PriorizedFutureTaskComparator implements Comparator<PriorizedFutureTask>
+final class PriorizedFutureTaskComparator<T> implements Comparator<PriorizedFutureTask>
 {
 	/*
 	 * (non-Javadoc)

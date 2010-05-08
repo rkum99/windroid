@@ -26,8 +26,6 @@ import android.graphics.Shader.TileMode;
 import android.graphics.drawable.shapes.ArcShape;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.identifyable.CardinalDirection;
@@ -141,10 +139,10 @@ public final class CompassView extends ImageView
 		if (fromDirection != null && toDirection != null)
 		{
 			final Paint paint = new Paint();
-			
+
 			paint.setAntiAlias(true);
 			paint.setColor(OVERLAY_COLOR);
-			
+
 			paint.setShader(new RadialGradient(100, 100, 100, Color.WHITE, Color.BLUE, TileMode.REPEAT));
 
 			final boolean isFromGreater = fromDirection.getDegree() > toDirection.getDegree();
@@ -176,7 +174,6 @@ public final class CompassView extends ImageView
 
 			shape.resize(CIRCLE_DIMENSION, CIRCLE_DIMENSION);
 
-		
 			shape.draw(canvas, paint);
 		}
 	}

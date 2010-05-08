@@ -20,15 +20,15 @@ public abstract class AudioFeedbackTask extends AbstractNotificationTask impleme
 
 	private final String LOG_TAG = AudioFeedbackTask.class.getSimpleName();
 
-	private MediaPlayer player;
+	private final MediaPlayer player;
 
 	/**
-	 * @param context
+	 * @param _context
 	 * @throws NullPointerException
 	 */
-	public AudioFeedbackTask(Context context) throws NullPointerException
+	public AudioFeedbackTask(final Context _context) throws NullPointerException
 	{
-		super(context);
+		super(_context);
 		player = new MediaPlayer();
 		player.setLooping(false);
 		player.setOnCompletionListener(this);
@@ -54,7 +54,7 @@ public abstract class AudioFeedbackTask extends AbstractNotificationTask impleme
 				player.prepare();
 				player.start();
 			}
-			catch (Exception e)
+			catch (final Exception e)
 			{
 				Log.e(LOG_TAG, "Failed to play sound with id: " + _resourceID, e);
 			}

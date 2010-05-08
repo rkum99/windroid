@@ -66,7 +66,6 @@ public abstract class AudioFeedbackTask extends AbstractNotificationTask impleme
 				afd = getContext().getResources().openRawResourceFd(_resourceID);
 				player.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
 				player.setVolume(1.0f, 1.0f);
-				afd.close();
 				player.prepare();
 				player.start();
 			}

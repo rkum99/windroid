@@ -148,7 +148,7 @@ public final class DownloadActivity extends ChainSubActivity
 					{
 						Log.e(LOG_TAG, "Thread Interrupted - by user ?", e);
 					}
-					catch (IOException e)
+					catch (final IOException e)
 					{
 						Log.e(LOG_TAG, "IO Failure.", e);
 						showInstallationFailed(e);

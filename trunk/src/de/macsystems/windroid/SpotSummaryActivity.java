@@ -135,7 +135,7 @@ public final class SpotSummaryActivity extends Activity
 	private void returnToStartActivity(final int _resultCode)
 	{
 		Util.checkResultCode(_resultCode);
-		// FIXME: We may come back from the "Edit Spot" instead of "Add Spot" 
+		// FIXME: We may come back from the "Edit Spot" instead of "Add Spot"
 		final Intent intent = WindUtils.createIntent(SpotSummaryActivity.this, MainActivity.class, stationInfo);
 		setResult(_resultCode, intent);
 		finish();

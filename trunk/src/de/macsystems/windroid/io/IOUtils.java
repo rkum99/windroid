@@ -559,7 +559,7 @@ public class IOUtils
 			{
 				_assetFileDescriptor.close();
 			}
-			catch (IOException e)
+			catch (final IOException e)
 			{
 				Log.e(LOG_TAG, "Failed to close AssetFileDescriptor", e);
 			}

@@ -7,7 +7,6 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.util.Log;
 import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.io.IOUtils;
-import de.macsystems.windroid.service.AbstractNotificationTask;
 
 /**
  * A Task which provides functions to play audio.

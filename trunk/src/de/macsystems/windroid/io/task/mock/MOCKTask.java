@@ -1,6 +1,7 @@
-package de.macsystems.windroid.service;
+package de.macsystems.windroid.io.task.mock;
 
 import android.content.Context;
+import de.macsystems.windroid.io.task.AbstractNotificationTask;
 
 /**
  * Testing task which only sleeps and shows some notifications.

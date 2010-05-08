@@ -15,7 +15,7 @@
  along with Windroid.  If not, see <http://www.gnu.org/licenses/>.
 
  */
-package de.macsystems.windroid.service;
+package de.macsystems.windroid.io.task;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;

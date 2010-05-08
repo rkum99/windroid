@@ -15,8 +15,6 @@ import de.macsystems.windroid.db.IForecastDAO;
 import de.macsystems.windroid.db.ISelectedDAO;
 import de.macsystems.windroid.forecast.Forecast;
 import de.macsystems.windroid.io.RetryLaterException;
-import de.macsystems.windroid.service.AbstractNotificationTask;
-import de.macsystems.windroid.service.UpdateAlarmTask;
 
 /**
  * A Task which updates all Active Spots
@@ -32,7 +30,7 @@ public class UpdateAllActiveSpotReports extends AbstractNotificationTask
 	 * @param context
 	 * @throws NullPointerException
 	 */
-	public UpdateAllActiveSpotReports(Context context) throws NullPointerException
+	public UpdateAllActiveSpotReports(final Context context) throws NullPointerException
 	{
 		super(context);
 	}

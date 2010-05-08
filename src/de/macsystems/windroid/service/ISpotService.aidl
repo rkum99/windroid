@@ -24,6 +24,7 @@ import de.macsystems.windroid.service.IServiceCallbackListener;
 
 interface ISpotService
 {
+
 	 void initAlarms();
 
 	 void updateAll();

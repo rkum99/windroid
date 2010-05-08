@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Properties;
 
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -544,4 +545,25 @@ public class IOUtils
 		}
 
 	}
+
+	/**
+	 * Closes AssetFileDescriptor.
+	 * 
+	 * @param _assetFileDescriptor
+	 */
+	public static void close(final AssetFileDescriptor _assetFileDescriptor)
+	{
+		if (_assetFileDescriptor != null)
+		{
+			try
+			{
+				_assetFileDescriptor.close();
+			}
+			catch (IOException e)
+			{
+				Log.e(LOG_TAG, "Failed to close AssetFileDescriptor", e);
+			}
+		}
+	}
+
 }

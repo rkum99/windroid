@@ -1,20 +1,3 @@
-/**
- This file is part of Windroid.
-
- Windroid is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Windroid is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Windroid.  If not, see <http://www.gnu.org/licenses/>.
-
- */
 package de.macsystems.windroid.io.task;
 
 import java.io.IOException;
@@ -33,41 +16,38 @@ import de.macsystems.windroid.db.IForecastDAO;
 import de.macsystems.windroid.db.ISelectedDAO;
 import de.macsystems.windroid.forecast.Forecast;
 import de.macsystems.windroid.io.RetryLaterException;
-import de.macsystems.windroid.service.AbstractNotificationTask;
 
 /**
- * Callable which will update the current forecast of a spot and updates the
- * Database.
+ * A Task which is only called from windroid itself as a Alarm happened. It
+ * provides audio feedback to indicate what is going on (testing).
  * 
- * @author Jens Hohl
- * @version $Id: UpdateSpotForecastTask.java 314 2010-04-15 11:50:03Z jens.hohl
- *          $
- * 
+ * @author mac
+ * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
  */
-public class UpdateSpotForecastTask extends AbstractNotificationTask
+public class AlarmUpdateTask extends AudioFeedbackTask
 {
+	private final static String LOG_TAG = AlarmUpdateTask.class.getSimpleName();
 
-	private final static String LOG_TAG = UpdateSpotForecastTask.class.getSimpleName();
-
-	final int selectedID;
+	private final int selectedID;
 
 	/**
 	 * 
-	 * @param _selectedID
 	 * @param _context
+	 * @param _selectedID
 	 * @throws NullPointerException
 	 */
-	public UpdateSpotForecastTask(final int _selectedID, final Context _context) throws NullPointerException
+	public AlarmUpdateTask(final Context _context, final int _selectedID) throws NullPointerException
 	{
 		super(_context);
 		selectedID = _selectedID;
 	}
 
 	@Override
-	public void execute()
+	public void execute() throws Exception
 	{
 		try
 		{
+
 			final ISelectedDAO dao = DAOFactory.getSelectedDAO(getContext());
 			final SpotConfigurationVO vo = dao.getSpotConfiguration(selectedID);
 
@@ -131,4 +111,5 @@ public class UpdateSpotForecastTask extends AbstractNotificationTask
 		}
 
 	}
+
 }

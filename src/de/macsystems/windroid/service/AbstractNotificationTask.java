@@ -28,6 +28,7 @@ import android.content.Intent;
 import android.util.Log;
 import de.macsystems.windroid.OngoingUpdateActivity;
 import de.macsystems.windroid.R;
+import de.macsystems.windroid.io.IOUtils;
 
 /**
  * Abstract base implementation to show the user 'whats going on' by using the
@@ -71,6 +72,16 @@ public abstract class AbstractNotificationTask implements Callable<Void>
 	protected Context getContext()
 	{
 		return context;
+	}
+
+	/**
+	 * Returns <code>true</code> when network is reachable.
+	 * 
+	 * @return
+	 */
+	protected boolean isNetworkReachable()
+	{
+		return IOUtils.isNetworkReachable(context);
 	}
 
 	/**

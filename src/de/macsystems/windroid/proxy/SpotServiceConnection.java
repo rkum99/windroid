@@ -166,4 +166,5 @@ public final class SpotServiceConnection implements ServiceConnection, ISpotServ
 		
 	}
 
+
 }

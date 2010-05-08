@@ -34,6 +34,7 @@ import android.util.Log;
 import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.R;
 import de.macsystems.windroid.common.IntentConstants;
+import de.macsystems.windroid.io.task.AlarmUpdateTask;
 import de.macsystems.windroid.io.task.UpdateAllActiveSpotReports;
 import de.macsystems.windroid.io.task.UpdateSpotForecastTask;
 
@@ -86,7 +87,6 @@ public class SpotService extends Service
 			final UpdateSpotForecastTask task = new UpdateSpotForecastTask(_selectedID, SpotService.this);
 
 			addTask(task, _listener);
-			// mCallbacks.register(_listener);
 		}
 
 		@Override
@@ -119,7 +119,10 @@ public class SpotService extends Service
 	{
 		super.onCreate();
 		createThreadPool();
-		Log.i(LOG_TAG, "Service created");
+		if (Logging.isLoggingEnabled())
+		{
+			Log.i(LOG_TAG, "Service created");
+		}
 	}
 
 	/*
@@ -138,17 +141,30 @@ public class SpotService extends Service
 			Log.i(LOG_TAG, "onStart");
 		}
 		final boolean found = isSelectedID(_intent);
-		if (!found)
+		if (found)
+		{
+			final int selectedID = getSelectedID(_intent);
+			createAlarmTask(selectedID);
+		}
+		else
 		{
 			if (Logging.isLoggingEnabled())
 			{
-				Log.i(LOG_TAG, "Found no spot to update!");
+				Log.w(LOG_TAG, "Service started without any selected id!");
 			}
-			return;
 		}
-		//
-		final int selectedID = getSelectedID(_intent);
-		Log.i(LOG_TAG, "Found spot with selectedID " + selectedID);
+	}
+
+	/**
+	 * Creates an Task when Alarm for a spot with given id is on.
+	 * 
+	 * @param _selectedID
+	 */
+	private final void createAlarmTask(final int _selectedID)
+	{
+
+		// adding Task which updates this SPOT on Alarm
+		addTask(new AlarmUpdateTask(this, _selectedID));
 	}
 
 	/**
@@ -220,12 +236,18 @@ public class SpotService extends Service
 				final boolean isTerminated = threadPool.awaitTermination(4L, TimeUnit.SECONDS);
 				if (!isTerminated)
 				{
-					Log.d(LOG_TAG, "soft shutdown failed, trying hard shutdown.");
+					if (Logging.isLoggingEnabled())
+					{
+						Log.d(LOG_TAG, "soft shutdown failed, trying hard shutdown.");
+					}
 					// Do a hard termination.
 					final List<Runnable> uncompletedTasks = threadPool.shutdownNow();
 					logUncompletedTask(uncompletedTasks);
 				}
-				Log.d(LOG_TAG, "shutdown completed.");
+				if (Logging.isLoggingEnabled())
+				{
+					Log.d(LOG_TAG, "shutdown completed.");
+				}
 			}
 		}
 		catch (final SecurityException e)

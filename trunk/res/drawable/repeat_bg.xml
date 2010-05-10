@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<!--
+		@version $Id$
+	-->
+<bitmap xmlns:android="http://schemas.android.com/apk/res/android"
+    android:src="@drawable/hibiscus_blue_128x128" 
+    android:tileMode="repeat" />

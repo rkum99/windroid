@@ -72,6 +72,10 @@ public final class ScheduleActivity extends ChainSubActivity
 	protected void onCreate(final Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		/**
+		 * Set raw offset as else the Format may add one hour.
+		 */
+		dateFormat.getTimeZone().setRawOffset(0);
 		setContentView(R.layout.schedule);
 
 		if (!WindUtils.isSpotConfigured(getIntent()))
@@ -237,7 +241,10 @@ public final class ScheduleActivity extends ChainSubActivity
 						public final void onTimeSet(final TimePicker _view, final int _hourOfDay, final int _minute)
 						{
 
+							Log.d(LOG_TAG, "Hour " + _hourOfDay + " Minute " + _minute);
+
 							final long dayTime = calcDayTime(_hourOfDay, _minute);
+							Log.d(LOG_TAG, "dayTime " + dayTime);
 							dayToDaytimeMap.put(day, dayTime);
 							final TextView timeView = (TextView) findViewById(_timeTextViews.get(day));
 							final String time = dateFormat.format(dayTime);
@@ -245,7 +252,7 @@ public final class ScheduleActivity extends ChainSubActivity
 						}
 					};
 
-					final TimePickerDialog dialog = new TimePickerDialog(ScheduleActivity.this, listener, 12, 0, false);
+					final TimePickerDialog dialog = new TimePickerDialog(ScheduleActivity.this, listener, 12, 0, true);
 					dialog.show();
 				}
 			});

@@ -17,6 +17,7 @@
  */
 package de.macsystems.windroid.identifyable;
 
+import android.content.res.Resources;
 import de.macsystems.windroid.R;
 
 /**
@@ -55,12 +56,12 @@ import de.macsystems.windroid.R;
 public enum Cavok implements IdentifyAble
 {
 
-	SKC("SKC", "sky clear", R.drawable.weather_sky_clear, R.drawable.weather_clear_night), //
-	FEW("FEW", "few", R.drawable.weather_few, R.drawable.weather_few_clouds_night),
-	SCT("SCT", "scattered", R.drawable.weather_scattered, R.drawable.weather_night_scattered),
-	BKN("BKN", "broken", R.drawable.weather_broken, R.drawable.weather_night_broken),
-	OVC("OVC", "overcast", R.drawable.weather_overcast, R.drawable.weather_night_overcast),
-	OBS("OBS", "obscured", R.drawable.weather_obscured, R.drawable.weather_obscured);
+	SKC("SKC", R.string.CAVOK_SKC, R.drawable.weather_sky_clear, R.drawable.weather_clear_night), //
+	FEW("FEW", R.string.CAVOK_FEW, R.drawable.weather_few, R.drawable.weather_few_clouds_night),
+	SCT("SCT", R.string.CAVOK_SCT, R.drawable.weather_scattered, R.drawable.weather_night_scattered),
+	BKN("BKN", R.string.CAVOK_BKN, R.drawable.weather_broken, R.drawable.weather_night_broken),
+	OVC("OVC", R.string.CAVOK_OVC, R.drawable.weather_overcast, R.drawable.weather_night_overcast),
+	OBS("OBS", R.string.CAVOK_OBS, R.drawable.weather_obscured, R.drawable.weather_obscured);
 
 	private final String id;
 
@@ -68,37 +69,44 @@ public enum Cavok implements IdentifyAble
 
 	private final int nightimeResId;
 
-	private final String description;
+	private final int description;
 	/**
-	 * Daytime
+	 * daytime
 	 */
 	private final static long DAY = 1000L * 60L * 60 * 6L;
 	/**
-	 * Nighttime
+	 * nighttime
 	 */
 	private final static long NIGHT = 1000L * 60L * 60 * 22L;
 
 	/**
 	 * 
 	 * @param _id
-	 * @param _desciption
+	 * @param _descriptionResID
 	 */
-	private Cavok(final String _id, final String _desciption, final int _daytimeResID, final int _nightimeResID)
+	private Cavok(final String _id, final int _descriptionResID, final int _daytimeResID, final int _nightimeResID)
 	{
 		id = _id;
-		description = _desciption;
+		description = _descriptionResID;
 		daytimeResId = _daytimeResID;
 		nightimeResId = _nightimeResID;
 	}
 
 	/**
+	 * Returns an human readable description of this Cavok.
+	 * 
 	 * @return the description
 	 */
 	public String getDescription()
 	{
-		return description;
+		return Resources.getSystem().getString(description);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.macsystems.windroid.identifyable.IdentifyAble#getId()
+	 */
 	@Override
 	public String getId()
 	{

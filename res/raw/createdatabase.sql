@@ -49,7 +49,7 @@ CREATE TRIGGER IF NOT EXISTS forecast_releation_cacade_delete AFTER  DELETE ON f
 -- Preferences
 CREATE TABLE IF NOT EXISTS preferences (_id INTEGER PRIMARY KEY AUTOINCREMENT, key TEXT UNIQUE NOT NULL, value TEXT);
 -- Pre selected Values
-
+INSERT INTO preferences ('key','value') VALUES ('alarmtone','');
 INSERT INTO preferences ('key','value') VALUES ('vibrate_on_alarm','false');
 INSERT INTO preferences ('key','value') VALUES ('preferred_unit','knt');
 INSERT INTO preferences ('key','value') VALUES ('update_while_roaming','false');

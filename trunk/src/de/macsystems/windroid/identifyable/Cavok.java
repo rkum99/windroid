@@ -54,11 +54,12 @@ import de.macsystems.windroid.R;
  */
 public enum Cavok implements IdentifyAble
 {
-	SKC("SKC", "sky clear", R.drawable.weather_sky_clear, R.drawable.weather_sky_clear), //
-	FEW("FEW", "few", R.drawable.weather_few, R.drawable.weather_few),
-	SCT("SCT", "scattered", R.drawable.weather_scattered, R.drawable.weather_scattered),
-	BKN("BKN", "broken", R.drawable.weather_broken, R.drawable.weather_broken),
-	OVC("OVC", "overcast", R.drawable.weather_overcast, R.drawable.weather_overcast),
+
+	SKC("SKC", "sky clear", R.drawable.weather_sky_clear, R.drawable.weather_clear_night), //
+	FEW("FEW", "few", R.drawable.weather_few, R.drawable.weather_few_clouds_night),
+	SCT("SCT", "scattered", R.drawable.weather_scattered, R.drawable.weather_night_scattered),
+	BKN("BKN", "broken", R.drawable.weather_broken, R.drawable.weather_night_broken),
+	OVC("OVC", "overcast", R.drawable.weather_overcast, R.drawable.weather_night_overcast),
 	OBS("OBS", "obscured", R.drawable.weather_obscured, R.drawable.weather_obscured);
 
 	private final String id;
@@ -68,6 +69,14 @@ public enum Cavok implements IdentifyAble
 	private final int nightimeResId;
 
 	private final String description;
+	/**
+	 * Daytime
+	 */
+	private final static long DAY = 1000L * 60L * 60 * 6L;
+	/**
+	 * Nighttime
+	 */
+	private final static long NIGHT = 1000L * 60L * 60 * 22L;
 
 	/**
 	 * 
@@ -114,6 +123,17 @@ public enum Cavok implements IdentifyAble
 	public int getNightimeResId()
 	{
 		return nightimeResId;
+	}
+
+	/**
+	 * Returns Ressource ID by daytime
+	 * 
+	 * @param _daytimeMills
+	 * @return
+	 */
+	public int getResIDByTime(final long _daytimeMills)
+	{
+		return (_daytimeMills >= DAY && _daytimeMills < NIGHT) ? getDaytimeResId() : getNightimeResId();
 	}
 
 }

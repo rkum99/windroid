@@ -285,6 +285,9 @@ public final class ForecastActivity extends DBActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.forecast);
+		
+		timeFormat.getTimeZone().setRawOffset(0);
+		dateFormat.getTimeZone().setRawOffset(0);
 
 		slideLeftIn = AnimationUtils.loadAnimation(this, R.anim.slide_left_in);
 		slideLeftOut = AnimationUtils.loadAnimation(this, R.anim.slide_left_out);
@@ -690,13 +693,15 @@ public final class ForecastActivity extends DBActivity
 
 		//
 
+		final Date aDate = new Date();
+		
 		for (int i = 0; i < _rowIDs.length; i++)
 		{
 			final TextView tv = (TextView) _row.findViewById(_rowIDs[i]);
 			{
 				final ForecastDetail detail = _forecast.get(_offset + i);
-				final Date date = new Date(detail.getTime());
-				tv.setText(timeFormat.format(date));
+				aDate.setTime(detail.getTime());
+				tv.setText(timeFormat.format(aDate));
 			}
 		}
 	}
@@ -919,7 +924,8 @@ public final class ForecastActivity extends DBActivity
 		{
 			final ImageView iv = (ImageView) _row.findViewById(_rowIDs[i]);
 			final ForecastDetail detail = _forecast.get(_offset + i);
-			iv.setImageResource(detail.getClouds().getDaytimeResId());
+			final long time = detail.getTime();
+			iv.setImageResource(detail.getClouds().getResIDByTime(time));
 		}
 	}
 

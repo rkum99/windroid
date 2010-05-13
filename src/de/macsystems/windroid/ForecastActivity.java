@@ -919,7 +919,7 @@ public final class ForecastActivity extends DBActivity
 		{
 			final ImageView iv = (ImageView) _row.findViewById(_rowIDs[i]);
 			final ForecastDetail detail = _forecast.get(_offset + i);
-			iv.setImageResource(detail.getClouds().getResId());
+			iv.setImageResource(detail.getClouds().getDaytimeResId());
 		}
 	}
 

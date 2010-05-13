@@ -28,7 +28,6 @@ import java.util.concurrent.TimeUnit;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 import android.util.Log;
 import de.macsystems.windroid.Logging;
@@ -49,19 +48,10 @@ public class SpotService extends Service
 
 	private final static String LOG_TAG = SpotService.class.getSimpleName();
 
-	protected static final int REPORT_MSG = 0;
-
 	/**
 	 * The Threadpool used to schedule all kind of tasks.
 	 */
 	private ExecutorService threadPool;
-
-	/**
-	 * This is a list of callbacks that have been registered with the service.
-	 * Note that this is package scoped (instead of private) so that it can be
-	 * accessed more efficiently from inner classes.
-	 */
-	final RemoteCallbackList<IServiceCallbackListener> mCallbacks = new RemoteCallbackList<IServiceCallbackListener>();
 
 	private final ISpotService serviceBinder = new ISpotService.Stub()
 	{
@@ -86,15 +76,14 @@ public class SpotService extends Service
 			}
 
 			final UpdateSpotForecastTask task = new UpdateSpotForecastTask(_selectedID, SpotService.this);
-
 			addTask(task, _listener);
 		}
 
 		@Override
-		public void updateActiveReports(final IServiceCallbackListener listener) throws RemoteException
+		public void updateActiveReports(final IServiceCallbackListener _listener) throws RemoteException
 		{
 			final UpdateAllActiveSpotReports task = new UpdateAllActiveSpotReports(SpotService.this);
-			addTask(task, listener);
+			addTask(task, _listener);
 		}
 
 	};
@@ -177,11 +166,29 @@ public class SpotService extends Service
 	 */
 	private final static boolean isSelectedID(final Intent _intent)
 	{
+		final int NOT_FOUND = -1;
 		if (_intent == null)
 		{
 			return false;
 		}
-		return -1 != _intent.getIntExtra(IntentConstants.SELECTED_PRIMARY_KEY, -1);
+		return -1 != _intent.getIntExtra(IntentConstants.SELECTED_PRIMARY_KEY, NOT_FOUND);
+	}
+
+	/**
+	 * Returns <code>true</code> if intent represent a retry
+	 * 
+	 * @param _intent
+	 * @return
+	 * @see #getSelectedID(Intent)
+	 */
+	private final static boolean isRetry(final Intent _intent)
+	{
+		final int NOT_FOUND = -1;
+		if (_intent == null)
+		{
+			return false;
+		}
+		return NOT_FOUND != _intent.getIntExtra(IntentConstants.SELECTED_RETRY_COUNTER, NOT_FOUND);
 	}
 
 	/**
@@ -193,11 +200,31 @@ public class SpotService extends Service
 	 */
 	private final static int getSelectedID(final Intent _intent)
 	{
+		final int NOT_FOUND = -1;
 		if (_intent == null)
 		{
 			throw new NullPointerException("Intent");
 		}
-		return _intent.getIntExtra(IntentConstants.SELECTED_PRIMARY_KEY, -1);
+		return _intent.getIntExtra(IntentConstants.SELECTED_PRIMARY_KEY, NOT_FOUND);
+	}
+
+	/**
+	 * Returns a number which indicates how often this service tried to update
+	 * the spot selected ID. -1 will be returned if intent does not contain a
+	 * retry counter.
+	 * 
+	 * @param _intent
+	 * @return
+	 * @see #isSelectedID(Intent)
+	 */
+	private final static int getRetryCount(final Intent _intent)
+	{
+		final int NOT_FOUND = -1;
+		if (_intent == null)
+		{
+			throw new NullPointerException("Intent");
+		}
+		return _intent.getIntExtra(IntentConstants.SELECTED_RETRY_COUNTER, NOT_FOUND);
 	}
 
 	/**

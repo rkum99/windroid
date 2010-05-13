@@ -19,6 +19,9 @@ package de.macsystems.windroid.db;
 
 import java.util.Map;
 
+import de.macsystems.windroid.identifyable.Continent;
+import de.macsystems.windroid.identifyable.WindUnit;
+
 /**
  * Dao Interface for general application preferences.
  * 
@@ -35,6 +38,42 @@ public interface IPreferencesDAO extends IDAO
 	 * {@value #COLUMN_VALUE}
 	 */
 	public final static String COLUMN_VALUE = "value";
+	/**
+	 * {@value #KEY_ALARM_TONE}
+	 */
+	final static String KEY_ALARM_TONE = "alarmtone";
+	/**
+	 * {@value #KEY_VIBRATE_ON_ALARM} *
+	 */
+	final static String KEY_VIBRATE_ON_ALARM = "vibrate_on_alarm";
+	/**
+	 * {@value #KEY_PREFERRED_UNIT} *
+	 */
+	final static String KEY_PREFERRED_UNIT = "preferred_unit";
+	/**
+	 * {@value #KEY_UPDATE_WHILE_ROAMING}
+	 */
+	final static String KEY_UPDATE_WHILE_ROAMING = "update_while_roaming";
+	/**
+	 * {@value #KEY_LAUNCH_ON_BOOT}
+	 */
+	final static String KEY_LAUNCH_ON_BOOT = "launch_on_boot";
+	/**
+	 * {@value #KEY_PREFERRED_CONTINENT}
+	 */
+	final static String KEY_PREFERRED_CONTINENT = "preferred_continent";
+	/**
+	 * {@value #KEY_WARN_WHEN_UPDATE_FAILED}c
+	 */
+	final static String KEY_WARN_WHEN_UPDATE_FAILED = "warn_when_update_failed";
+	/**
+	 * {@value #KEY_MUSIC_ON_ALARM}
+	 */
+	final static String KEY_MUSIC_ON_ALARM = "music_on_alarm";
+	/**
+	 * {@value #KEY_IS_LICENCE_ACCEPTED}
+	 */
+	final static String KEY_IS_LICENCE_ACCEPTED = "isLicenceAccepted";
 
 	/**
 	 * Updates a preference
@@ -60,5 +99,53 @@ public interface IPreferencesDAO extends IDAO
 	 * @throws DBException
 	 */
 	public boolean useNetworkWhileRoaming() throws DBException;
+
+	/**
+	 * 
+	 * @return
+	 */
+	public String getAlarmTone();
+
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean vibrateOnAlarm();
+
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean launchOnBoot();
+
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean warnWhenUpdateFailed();
+
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean playMusicOnAlarm();
+
+	/**
+	 * 
+	 * @return
+	 */
+	public boolean isLicenceAccepted();
+
+	/**
+	 * 
+	 * @return
+	 */
+	public WindUnit getPreferredWindUnit();
+
+	/**
+	 * 
+	 * @return
+	 */
+	public Continent getPreferredContinent();
 
 }

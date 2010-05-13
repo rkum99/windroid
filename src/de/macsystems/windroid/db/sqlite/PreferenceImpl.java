@@ -27,7 +27,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.db.DBException;
+import de.macsystems.windroid.db.EmptyCursorException;
 import de.macsystems.windroid.db.IPreferencesDAO;
+import de.macsystems.windroid.identifyable.Continent;
+import de.macsystems.windroid.identifyable.WindUnit;
 import de.macsystems.windroid.io.IOUtils;
 
 /**
@@ -199,4 +202,114 @@ public final class PreferenceImpl extends BaseImpl implements IPreferencesDAO
 		}
 		return result;
 	}
+
+	@Override
+	public String getAlarmTone()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Continent getPreferredContinent()
+	{
+		final String continent = getStringValue(KEY_PREFERRED_CONTINENT);
+		
+		return null;
+	}
+
+	@Override
+	public WindUnit getPreferredWindUnit()
+	{
+		
+		final String unit = getStringValue(KEY_PREFERRED_UNIT);
+		return null;
+	}
+
+	@Override
+	public boolean isLicenceAccepted()
+	{
+		return getBooleanValue(KEY_IS_LICENCE_ACCEPTED);
+	}
+
+	@Override
+	public boolean launchOnBoot()
+	{
+		return getBooleanValue(KEY_LAUNCH_ON_BOOT);
+	}
+
+	@Override
+	public boolean playMusicOnAlarm()
+	{
+		return getBooleanValue(KEY_MUSIC_ON_ALARM);
+	}
+
+	@Override
+	public boolean vibrateOnAlarm()
+	{
+		return getBooleanValue(KEY_VIBRATE_ON_ALARM);
+	}
+
+	@Override
+	public boolean warnWhenUpdateFailed()
+	{
+		return getBooleanValue(KEY_WARN_WHEN_UPDATE_FAILED);
+	}
+
+	private String getStringValue(final String _key)
+	{
+		SQLiteDatabase db = null;
+		Cursor cursor = null;
+		String result = null;
+		try
+		{
+			db = getReadableDatabase();
+			cursor = db.rawQuery("SELECT * FROM PREFERENCES WHERE key=?", new String[]
+			{ _key });
+			moveToFirstOrThrow(cursor);
+			result = getString(cursor, COLUMN_VALUE);
+		}
+		catch (final SQLException e)
+		{
+			Log.e(LOG_TAG, "", e);
+		}
+		catch (final EmptyCursorException e)
+		{
+			Log.e(LOG_TAG, "", e);
+		}
+		finally
+		{
+			IOUtils.close(db);
+		}
+		return result;
+	}
+
+	private boolean getBooleanValue(final String _key)
+	{
+		SQLiteDatabase db = null;
+		Cursor cursor = null;
+		boolean result = false;
+		try
+		{
+			db = getReadableDatabase();
+			cursor = db.rawQuery("SELECT * FROM PREFERENCES WHERE key=?", new String[]
+			{ _key });
+			moveToFirstOrThrow(cursor);
+			result = getBoolean(cursor, COLUMN_VALUE);
+		}
+		catch (final SQLException e)
+		{
+			Log.e(LOG_TAG, "", e);
+		}
+		catch (final EmptyCursorException e)
+		{
+			Log.e(LOG_TAG, "", e);
+		}
+		finally
+		{
+			IOUtils.close(db);
+		}
+		return result;
+	}
+
 }

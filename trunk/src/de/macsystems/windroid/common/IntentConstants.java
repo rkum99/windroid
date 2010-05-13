@@ -58,6 +58,12 @@ public final class IntentConstants
 	public final static String SELECTED_PRIMARY_KEY = "selected primary key";
 
 	/**
+	 * Lookup Key for retry counter in a Intent {@value #SELECTED_RETRY_COUNTER}
+	 */
+	public final static String SELECTED_RETRY_COUNTER = "selected retry counter";
+
+	
+	/**
 	 * Lookup Key for primary key of forecast to show.
 	 * {@value #STORED_FORECAST_KEY}
 	 */

@@ -34,7 +34,7 @@ import de.macsystems.windroid.identifyable.World;
  * @version $Id$
  * 
  */
-public class StationHandler extends DefaultHandler
+public final class StationHandler extends DefaultHandler
 {
 	private final static String LOG_TAG = StationHandler.class.getSimpleName();
 

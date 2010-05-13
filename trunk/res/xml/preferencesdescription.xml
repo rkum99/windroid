@@ -46,7 +46,9 @@
 			android:defaultValue="false" />
 
 		<RingtonePreference
+			android:dependency="music_on_alarm"
 			android:key="alarmtone"
+			android:ringtoneType="all"
 			android:title="@string/preferences_miscellaneous_alarmtone_title"
 			android:showDefault="true"
 			android:showSilent="false"

@@ -54,16 +54,18 @@ import de.macsystems.windroid.R;
  */
 public enum Cavok implements IdentifyAble
 {
-	SKC("SKC", "sky clear", R.drawable.weather_sky_clear), //
-	FEW("FEW", "few", R.drawable.weather_few),
-	SCT("SCT", "scattered", R.drawable.weather_sky_clear),
-	BKN("BKN", "broken", R.drawable.weather_sky_clear),
-	OVC("OVC", "overcast", R.drawable.weather_overcast),
-	OBS("OBS", "obscured", R.drawable.weather_sky_clear);
+	SKC("SKC", "sky clear", R.drawable.weather_sky_clear, R.drawable.weather_sky_clear), //
+	FEW("FEW", "few", R.drawable.weather_few, R.drawable.weather_few),
+	SCT("SCT", "scattered", R.drawable.weather_scattered, R.drawable.weather_scattered),
+	BKN("BKN", "broken", R.drawable.weather_broken, R.drawable.weather_broken),
+	OVC("OVC", "overcast", R.drawable.weather_overcast, R.drawable.weather_overcast),
+	OBS("OBS", "obscured", R.drawable.weather_obscured, R.drawable.weather_obscured);
 
 	private final String id;
 
-	private final int resId;
+	private final int daytimeResId;
+
+	private final int nightimeResId;
 
 	private final String description;
 
@@ -72,11 +74,12 @@ public enum Cavok implements IdentifyAble
 	 * @param _id
 	 * @param _desciption
 	 */
-	private Cavok(final String _id, final String _desciption, final int _resID)
+	private Cavok(final String _id, final String _desciption, final int _daytimeResID, final int _nightimeResID)
 	{
 		id = _id;
 		description = _desciption;
-		resId = _resID;
+		daytimeResId = _daytimeResID;
+		nightimeResId = _nightimeResID;
 	}
 
 	/**
@@ -93,9 +96,24 @@ public enum Cavok implements IdentifyAble
 		return id;
 	}
 
-	public int getResId()
+	/**
+	 * Returns Daytime resource id.
+	 * 
+	 * @return resid
+	 */
+	public int getDaytimeResId()
 	{
-		return resId;
+		return daytimeResId;
+	}
+
+	/**
+	 * Returns Icon nightime resource id
+	 * 
+	 * @return resid
+	 */
+	public int getNightimeResId()
+	{
+		return nightimeResId;
 	}
 
 }

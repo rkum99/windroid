@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<!--
+		@version $Id$
+	-->
+<resources>
+	<string name="CAVOK_SKC">clear sky</string>
+	<string name="CAVOK_FEW">few clouds</string>
+	<string name="CAVOK_SCT">scattered</string>
+	<string name="CAVOK_BKN">broken</string>
+	<string name="CAVOK_OVC">overcast</string>
+	<string name="CAVOK_OBS">obscured</string>
+</resources>

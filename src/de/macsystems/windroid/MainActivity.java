@@ -45,6 +45,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -222,6 +223,7 @@ public final class MainActivity extends DBActivity
 	protected void onCreate(final Bundle _savedInstanceState)
 	{
 		super.onCreate(_savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		Util.logDisplayMetrics(this);
 
@@ -268,18 +270,6 @@ public final class MainActivity extends DBActivity
 			{
 				showHelpPage();
 			}
-		});
-
-		final Button forecastButton = (Button) findViewById(R.id.button_show_forecast);
-		forecastButton.setOnClickListener(new View.OnClickListener()
-		{
-			@Override
-			public final void onClick(final View v)
-			{
-				final Intent intent = new Intent(MainActivity.this, ForecastActivity.class);
-				MainActivity.this.startActivity(intent);
-			}
-
 		});
 
 		final CompoundButton toogleServiceButton = (CompoundButton) findViewById(R.id.button_toogle_service);

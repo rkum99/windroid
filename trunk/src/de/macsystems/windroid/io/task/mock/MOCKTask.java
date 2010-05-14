@@ -9,7 +9,7 @@ import de.macsystems.windroid.io.task.AbstractNotificationTask;
  * @author mac
  * @version $Id$
  */
-public final class MOCKTask extends AbstractNotificationTask
+public final class MOCKTask extends AbstractNotificationTask<Void>
 {
 
 	/**

@@ -43,7 +43,7 @@ import de.macsystems.windroid.io.RetryLaterException;
  *          $
  * 
  */
-public class UpdateSpotForecastTask extends AbstractNotificationTask
+public class UpdateSpotForecastTask extends AudioFeedbackTask
 {
 
 	private final static String LOG_TAG = UpdateSpotForecastTask.class.getSimpleName();
@@ -101,6 +101,8 @@ public class UpdateSpotForecastTask extends AbstractNotificationTask
 				// Update Forecast in DB
 				final IForecastDAO forecastDAO = DAOFactory.getForecast(getContext());
 				forecastDAO.updateForecast(forecast, selectedID);
+				// For Audio feedback
+				setAsSuccessfull();
 				//
 				// return forecast;
 			}
@@ -126,6 +128,7 @@ public class UpdateSpotForecastTask extends AbstractNotificationTask
 		}
 		finally
 		{
+			play();
 			clearNotification();
 		}
 

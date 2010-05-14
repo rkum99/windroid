@@ -64,7 +64,6 @@ public class AlarmUpdateTask extends AudioFeedbackTask
 	{
 		try
 		{
-
 			final ISelectedDAO dao = DAOFactory.getSelectedDAO(getContext());
 			final SpotConfigurationVO vo = dao.getSpotConfiguration(selectedID);
 
@@ -75,8 +74,10 @@ public class AlarmUpdateTask extends AudioFeedbackTask
 				{
 					Log.d(LOG_TAG, "Cancel update as spot is not active: " + vo.getStation().getName());
 				}
+				// Quit
+				return;
 			}
-
+			
 			final boolean available = isNetworkReachable();
 			if (!available)
 			{
@@ -99,8 +100,8 @@ public class AlarmUpdateTask extends AudioFeedbackTask
 				// Update Forecast in DB
 				final IForecastDAO forecastDAO = DAOFactory.getForecast(getContext());
 				forecastDAO.updateForecast(forecast, selectedID);
-				//
-				// return forecast;
+				// for Audio output 
+				setAsSuccessfull();
 			}
 			catch (final IOException e)
 			{
@@ -124,6 +125,7 @@ public class AlarmUpdateTask extends AudioFeedbackTask
 		}
 		finally
 		{
+			play();
 			clearNotification();
 		}
 

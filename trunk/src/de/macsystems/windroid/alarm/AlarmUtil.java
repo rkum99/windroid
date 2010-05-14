@@ -85,6 +85,8 @@ public final class AlarmUtil
 	}
 
 	/**
+	 * Creates an Alarm when Network not reachable that will be processed in the
+	 * future.
 	 * 
 	 * @param _selectedID
 	 * @param _context
@@ -103,7 +105,7 @@ public final class AlarmUtil
 		final PendingIntent pendingIntent = PendingIntent.getBroadcast(_context, requestID, intent,
 				PendingIntent.FLAG_ONE_SHOT);
 		final AlarmManager alarmManager = (AlarmManager) _context.getSystemService(Context.ALARM_SERVICE);
-		alarmManager.set(AlarmManager.RTC_WAKEUP, now + (15L * 1000L), pendingIntent);
+		alarmManager.set(AlarmManager.RTC_WAKEUP, now + AlarmManager.INTERVAL_HOUR, pendingIntent);
 	}
 
 	/**

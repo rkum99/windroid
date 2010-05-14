@@ -6,7 +6,7 @@
 	<string name="CAVOK_SKC">klarer Himmel</string>
 	<string name="CAVOK_FEW">wenig Wolken</string>
 	<string name="CAVOK_SCT">Sonne &amp; Wolken</string>
-	<string name="CAVOK_BKN">Bewölkt</string>
+	<string name="CAVOK_BKN">stark bewölkt</string>
 	<string name="CAVOK_OVC">Himmel bedeckt</string>
 	<string name="CAVOK_OBS">Himmel nicht sichtbar</string>
 </resources>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/legend_root" android:layout_width="fill_parent"
+	android:layout_height="fill_parent" android:layout_margin="5dp">
+
+	<TableRow>
+		<ImageView android:id="@+id/cavok_text" android:background="@drawable/weather_sky_clear"
+			android:gravity="center_vertical" android:layout_margin="1dip"
+			android:adjustViewBounds="true" />
+
+		<TextView android:id="@+id/cavok_image" android:text="@string/CAVOK_SKC"
+			android:textStyle="bold" android:gravity="center_vertical"
+			android:layout_width="fill_parent" android:layout_height="fill_parent" android:paddingLeft="5dp" />
+	</TableRow>
+	<TableRow>
+		<ImageView android:id="@+id/cavok_text" android:background="@drawable/weather_few"
+			android:gravity="center" android:layout_margin="1dip" />
+
+		<TextView android:id="@+id/cavok_image" android:text="@string/CAVOK_FEW"
+			android:textStyle="bold" android:gravity="center_vertical"
+			android:layout_width="fill_parent" android:layout_height="fill_parent" android:paddingLeft="5dp"/>
+	</TableRow>
+	<TableRow>
+		<ImageView android:id="@+id/cavok_text" android:background="@drawable/weather_scattered"
+			android:gravity="center" android:layout_margin="1dip" />
+
+		<TextView android:id="@+id/cavok_image" android:text="@string/CAVOK_SCT"
+			android:textStyle="bold" android:gravity="center_vertical"
+			android:layout_width="fill_parent" android:layout_height="fill_parent" android:paddingLeft="5dp"/>
+	</TableRow>
+	<TableRow>
+		<ImageView android:id="@+id/cavok_text" android:background="@drawable/weather_broken"
+			android:gravity="center" android:layout_margin="1dip" />
+
+		<TextView android:id="@+id/cavok_image" android:text="@string/CAVOK_BKN"
+			android:textStyle="bold" android:gravity="center_vertical"
+			android:layout_width="fill_parent" android:layout_height="fill_parent" android:paddingLeft="5dp"/>
+	</TableRow>
+	<TableRow>
+		<ImageView android:id="@+id/cavok_text" android:background="@drawable/weather_overcast"
+			android:gravity="center" android:layout_margin="1dip" />
+
+		<TextView android:id="@+id/cavok_image" android:text="@string/CAVOK_OVC"
+			android:textStyle="bold" android:gravity="center_vertical"
+			android:layout_width="fill_parent" android:layout_height="fill_parent" android:paddingLeft="5dp"/>
+
+	</TableRow>
+	<TableRow>
+		<ImageView android:id="@+id/cavok_text" android:background="@drawable/weather_obscured"
+			android:gravity="center" android:layout_margin="1dip" />
+
+		<TextView android:id="@+id/cavok_image" android:text="@string/CAVOK_OBS"
+			android:textStyle="bold" android:gravity="center_vertical"
+			android:layout_width="fill_parent" android:layout_height="fill_parent" android:paddingLeft="5dp"/>
+
+	</TableRow>
+
+
+</TableLayout>

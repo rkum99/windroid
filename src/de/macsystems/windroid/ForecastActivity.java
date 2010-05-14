@@ -21,6 +21,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
@@ -32,13 +33,16 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteException;
+import android.text.AlteredCharSequence;
 import android.util.AndroidRuntimeException;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.View.OnTouchListener;
 import android.view.animation.Animation;
@@ -109,6 +113,7 @@ public final class ForecastActivity extends DBActivity
 	private final static int OPTION_REFRESH = 1000;
 	private final static int OPTION_NEXT = 1100;
 	private final static int OPTION_PREVIOUS = 1200;
+	private final static int OPTION_LEGEND = 1300;
 
 	private final static int OFFSET_DAY_ONE = 0;
 	private final static int OFFSET_DAY_TWO = 7;
@@ -285,7 +290,7 @@ public final class ForecastActivity extends DBActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.forecast);
-		
+
 		timeFormat.getTimeZone().setRawOffset(0);
 		dateFormat.getTimeZone().setRawOffset(0);
 
@@ -511,7 +516,9 @@ public final class ForecastActivity extends DBActivity
 		//
 		final MenuItem next = menu.add(Menu.NONE, OPTION_NEXT, Menu.NONE, R.string.forecast_options_next);
 		next.setIcon(R.drawable.swipe_next);
-
+		
+		final MenuItem legend = menu.add(Menu.NONE,OPTION_LEGEND,Menu.NONE,R.string.forecast_options_legend);
+			
 		return true;
 	}
 
@@ -545,8 +552,21 @@ public final class ForecastActivity extends DBActivity
 			flipper.showPrevious();
 			result = true;
 		}
+		else if (item.getItemId() == OPTION_LEGEND)
+		{
+			showLegend();
+		}
 
 		return result;
+	}
+
+	private void showLegend()
+	{
+		final Dialog alertDialog = new Dialog(this);
+		alertDialog.setTitle("Legend");
+		alertDialog.setContentView(R.layout.legend);
+		alertDialog.show();
+
 	}
 
 	@Override
@@ -694,7 +714,7 @@ public final class ForecastActivity extends DBActivity
 		//
 
 		final Date aDate = new Date();
-		
+
 		for (int i = 0; i < _rowIDs.length; i++)
 		{
 			final TextView tv = (TextView) _row.findViewById(_rowIDs[i]);

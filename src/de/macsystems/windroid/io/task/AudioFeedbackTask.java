@@ -23,6 +23,7 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.util.Log;
 import de.macsystems.windroid.Logging;
+import de.macsystems.windroid.R;
 import de.macsystems.windroid.io.IOUtils;
 
 /**
@@ -31,12 +32,18 @@ import de.macsystems.windroid.io.IOUtils;
  * @author mac
  * @version $Id$
  */
-public abstract class AudioFeedbackTask extends AbstractNotificationTask implements OnCompletionListener
+public abstract class AudioFeedbackTask extends AbstractNotificationTask<Void> implements OnCompletionListener
 {
 
 	private final String LOG_TAG = AudioFeedbackTask.class.getSimpleName();
 
 	private final MediaPlayer player;
+
+	private final int failedResID;
+
+	private final int successResID;
+
+	private volatile boolean isTaskSuccessfull = false;
 
 	/**
 	 * @param _context
@@ -44,10 +51,32 @@ public abstract class AudioFeedbackTask extends AbstractNotificationTask impleme
 	 */
 	public AudioFeedbackTask(final Context _context) throws NullPointerException
 	{
+		this(_context, R.raw.update_running, R.raw.update_failed);
+	}
+
+	/**
+	 * @param _context
+	 * @throws NullPointerException
+	 */
+	public AudioFeedbackTask(final Context _context, final int _successAudioResID, final int _failedAudioResID)
+			throws NullPointerException
+	{
 		super(_context);
+		successResID = _successAudioResID;
+		failedResID = _failedAudioResID;
 		player = new MediaPlayer();
 		player.setLooping(false);
 		player.setOnCompletionListener(this);
+	}
+
+	public final void setAsSuccessfull()
+	{
+		isTaskSuccessfull = true;
+	}
+
+	public void play()
+	{
+		play(isTaskSuccessfull ? successResID : failedResID);
 	}
 
 	/**
@@ -55,7 +84,7 @@ public abstract class AudioFeedbackTask extends AbstractNotificationTask impleme
 	 * 
 	 * @param _resourceID
 	 */
-	protected void play(final int _resourceID)
+	private void play(final int _resourceID)
 	{
 		if (player != null)
 		{

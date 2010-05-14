@@ -38,7 +38,7 @@ import de.macsystems.windroid.io.IOUtils;
  * @version $Id: AbstractNotificationTask.java 314 2010-04-15 11:50:03Z
  *          jens.hohl $
  */
-public abstract class AbstractNotificationTask implements Callable<Void>
+public abstract class AbstractNotificationTask<V> implements Callable<V>
 {
 
 	private final String LOG_TAG = AbstractNotificationTask.class.getSimpleName();
@@ -69,7 +69,7 @@ public abstract class AbstractNotificationTask implements Callable<Void>
 	 * 
 	 * @return
 	 */
-	protected Context getContext()
+	protected final Context getContext()
 	{
 		return context;
 	}
@@ -79,7 +79,7 @@ public abstract class AbstractNotificationTask implements Callable<Void>
 	 * 
 	 * @return
 	 */
-	protected boolean isNetworkReachable()
+	protected final boolean isNetworkReachable()
 	{
 		return IOUtils.isNetworkReachable(context);
 	}
@@ -95,7 +95,7 @@ public abstract class AbstractNotificationTask implements Callable<Void>
 	 * @see java.util.concurrent.Callable#call()
 	 */
 	@Override
-	public final Void call()
+	public final V call()
 	{
 		try
 		{

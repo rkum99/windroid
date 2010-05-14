@@ -34,7 +34,7 @@ import de.macsystems.windroid.db.ISelectedDAO;
  * @author mac
  * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
  */
-public final class UpdateAlarmTask extends AbstractNotificationTask
+public final class UpdateAlarmTask extends AbstractNotificationTask<Void>
 
 {
 	private final static String LOG_TAG = UpdateAlarmTask.class.getSimpleName();

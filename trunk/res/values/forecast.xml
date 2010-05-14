@@ -8,6 +8,7 @@
 	<string name="forecast_options_refresh">Update</string>
 	<string name="forecast_options_next">Next</string>
 	<string name="forecast_options_previous">Previous</string>
+	<string name="forecast_options_legend">legend</string>
 	<string name="forecast_progressdialog_title">Update</string>
 	<string name="forecast_progressdialog_message">Please wait ...</string>
 

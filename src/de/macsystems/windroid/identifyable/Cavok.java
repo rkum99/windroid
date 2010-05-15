@@ -56,8 +56,8 @@ import de.macsystems.windroid.R;
 public enum Cavok implements IdentifyAble
 {
 
-	SKC("SKC", R.string.CAVOK_SKC, R.drawable.weather_sky_clear, R.drawable.weather_clear_night), //
-	FEW("FEW", R.string.CAVOK_FEW, R.drawable.weather_few, R.drawable.weather_few_clouds_night),
+	SKC("SKC", R.string.CAVOK_SKC, R.drawable.weather_sky_clear, R.drawable.weather_night_clear), //
+	FEW("FEW", R.string.CAVOK_FEW, R.drawable.weather_few, R.drawable.weather_night_few_clouds),
 	SCT("SCT", R.string.CAVOK_SCT, R.drawable.weather_scattered, R.drawable.weather_night_scattered),
 	BKN("BKN", R.string.CAVOK_BKN, R.drawable.weather_broken, R.drawable.weather_night_broken),
 	OVC("OVC", R.string.CAVOK_OVC, R.drawable.weather_overcast, R.drawable.weather_night_overcast),

@@ -18,16 +18,17 @@
 package de.macsystems.windroid.custom.view;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RadialGradient;
 import android.graphics.Shader.TileMode;
 import android.graphics.drawable.shapes.ArcShape;
+import android.graphics.drawable.shapes.Shape;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ImageView;
-import de.macsystems.windroid.Logging;
+import de.macsystems.windroid.R;
 import de.macsystems.windroid.identifyable.CardinalDirection;
 
 /**
@@ -39,11 +40,7 @@ import de.macsystems.windroid.identifyable.CardinalDirection;
  */
 public final class CompassView extends ImageView
 {
-	private final static String LOG_TAG = CompassView.class.getSimpleName();
-	/**
-	 * Create an Color with an alpha channel.
-	 */
-	private final int OVERLAY_COLOR = Color.argb(200, 0, 0, 150);
+
 	/**
 	 * Dimension of overlay.
 	 */
@@ -51,11 +48,25 @@ public final class CompassView extends ImageView
 	/**
 	 * Start direction of Wind
 	 */
-	private CardinalDirection fromDirection;
+	private volatile CardinalDirection fromDirection = CardinalDirection.N;
 	/**
 	 * End direction of Wind
 	 */
-	private CardinalDirection toDirection;
+	private volatile CardinalDirection toDirection = CardinalDirection.S;
+
+	private int overlayInnerColor = 0;
+
+	private int overlayOuterColor = 0;
+
+	private int overlayPivotX = 0;
+
+	private int overlayPivotY = 0;
+
+	private int overlayRadius = 0;
+
+	private Paint overlayPaint;
+
+	private Shape shape;
 
 	/**
 	 * 
@@ -87,97 +98,6 @@ public final class CompassView extends ImageView
 		super(context, attrs, defStyle);
 	}
 
-	/**
-	 * 
-	 * @param _from
-	 */
-	public void setFromDirection(final CardinalDirection _from)
-	{
-		if (_from == null)
-		{
-			throw new NullPointerException("from");
-		}
-
-		fromDirection = _from;
-
-		if (Logging.isLoggingEnabled())
-		{
-			Log.d(LOG_TAG, "setFromDirection :" + fromDirection.name());
-		}
-	}
-
-	/**
-	 * 
-	 * @param _to
-	 */
-	public void setToDirection(final CardinalDirection _to)
-	{
-		if (_to == null)
-		{
-			throw new NullPointerException("to");
-		}
-
-		toDirection = _to;
-
-		if (Logging.isLoggingEnabled())
-		{
-			Log.d(LOG_TAG, "setToDirection :" + toDirection.name());
-		}
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.widget.ImageView#onDraw(android.graphics.Canvas)
-	 */
-	@Override
-	protected void onDraw(final Canvas canvas)
-	{
-		super.onDraw(canvas);
-
-		if (fromDirection != null && toDirection != null)
-		{
-			final Paint paint = new Paint();
-
-			paint.setAntiAlias(true);
-			paint.setColor(OVERLAY_COLOR);
-
-			paint.setShader(new RadialGradient(100, 100, 100, Color.WHITE, Color.BLUE, TileMode.REPEAT));
-
-			final boolean isFromGreater = fromDirection.getDegree() > toDirection.getDegree();
-			// Toast.makeText(getContext(), "isFromGreater Smaller :" +
-			// isFromGreater, Toast.LENGTH_LONG).show();
-			//
-			final ArcShape shape;
-			if (!isFromGreater)
-			{
-				final float startPoint = Math.min(fromDirection.getDegree(), toDirection.getDegree());
-				final float maxAngle = Math.max(fromDirection.getDegree(), toDirection.getDegree());
-				final float angle = maxAngle - startPoint;
-				shape = new ArcShape(startPoint - 90, angle);
-			}
-			else
-			{
-				final float startPoint = Math.max(fromDirection.getDegree(), toDirection.getDegree());
-				final float range = Math.min(fromDirection.getDegree(), toDirection.getDegree());
-				shape = new ArcShape(startPoint - 90, 360 - range);
-			}
-
-			/**
-			 * translate the canvas to the upper left were Arc begins. Seems
-			 * that Android does not draw shapes from its midpoint as Swing
-			 * does.
-			 */
-			canvas.translate((getWidth() - CIRCLE_DIMENSION) / 2, (getHeight() - CIRCLE_DIMENSION) / 2);
-			// canvas.rotate(-90);
-
-			shape.resize(CIRCLE_DIMENSION, CIRCLE_DIMENSION);
-
-			shape.draw(canvas, paint);
-		}
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -189,4 +109,70 @@ public final class CompassView extends ImageView
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.widget.ImageView#onDraw(android.graphics.Canvas)
+	 */
+	@Override
+	protected void onDraw(final Canvas canvas)
+	{
+		if (overlayPaint == null)
+		{
+			readResourceValues();
+			overlayPaint = new Paint();
+			overlayPaint.setShader(new RadialGradient(overlayPivotX, overlayPivotY, overlayRadius, overlayInnerColor,
+					overlayOuterColor, TileMode.REPEAT));
+			overlayPaint.setAntiAlias(true);
+			final boolean isFromGreater = fromDirection.getDegree() > toDirection.getDegree();
+			if (!isFromGreater)
+			{
+				final float startPoint = Math.min(fromDirection.getDegree(), toDirection.getDegree());
+				final float maxAngle = Math.max(fromDirection.getDegree(), toDirection.getDegree());
+				final float angle = maxAngle - startPoint;
+				shape = new ArcShape(startPoint - 90, angle);
+			}
+			else
+			{
+				final float startPoint = fromDirection.getDegree();
+				final float range = Math.min(fromDirection.getDegree(), toDirection.getDegree());
+				// Nullpunkt ist bei 90 Grad
+				final float angle = 360 - startPoint + toDirection.getDegree();
+				shape = new ArcShape(startPoint - 90, angle);
+			}
+
+		}
+		/**
+		 * translate the canvas to the upper left were Arc begins. Seems that
+		 * Android does not draw shapes from its midpoint as Swing does.
+		 */
+		//
+		canvas.translate((getWidth() - overlayRadius) / 2, (getHeight() - overlayRadius) / 2);
+		shape.resize(overlayRadius, overlayRadius);
+		shape.draw(canvas, overlayPaint);
+	}
+
+	/**
+	 * Reads resource values to render compass like pivot and colors.
+	 */
+	private void readResourceValues()
+	{
+		final Resources resources = getResources();
+		overlayInnerColor = resources.getColor(R.color.compass_inner_color);
+		overlayOuterColor = resources.getColor(R.color.compass_outer_color);
+		overlayPivotX = resources.getDimensionPixelOffset(R.dimen.compass_overlay_pivot_x);
+		overlayPivotY = resources.getDimensionPixelOffset(R.dimen.compass_overlay_pivot_y);
+		overlayRadius = resources.getDimensionPixelOffset(R.dimen.compass_overlay_radius);
+	}
+
+	public void setFromDirection(final CardinalDirection _fromDirection)
+	{
+		fromDirection = _fromDirection;
+
+	}
+
+	public void setToDirection(final CardinalDirection _toDirection)
+	{
+		toDirection = _toDirection;
+	}
 }

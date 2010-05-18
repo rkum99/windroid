@@ -7,6 +7,8 @@
 		<ImageView android:id="@+id/cavok_text" android:background="@drawable/weather_sky_clear"
 			android:gravity="center_vertical" android:layout_margin="1dip"
 			android:adjustViewBounds="true" />
+		<ImageView android:id="@+id/cavok_text" android:background="@drawable/weather_night_clear"
+			android:gravity="center" android:layout_margin="1dip" />
 
 		<TextView android:id="@+id/cavok_image" android:text="@string/CAVOK_SKC"
 			android:textStyle="bold" android:gravity="center_vertical"
@@ -14,6 +16,8 @@
 	</TableRow>
 	<TableRow>
 		<ImageView android:id="@+id/cavok_text" android:background="@drawable/weather_few"
+			android:gravity="center" android:layout_margin="1dip" />
+		<ImageView android:id="@+id/cavok_text" android:background="@drawable/weather_night_few_clouds"
 			android:gravity="center" android:layout_margin="1dip" />
 
 		<TextView android:id="@+id/cavok_image" android:text="@string/CAVOK_FEW"
@@ -23,6 +27,8 @@
 	<TableRow>
 		<ImageView android:id="@+id/cavok_text" android:background="@drawable/weather_scattered"
 			android:gravity="center" android:layout_margin="1dip" />
+		<ImageView android:id="@+id/cavok_text" android:background="@drawable/weather_night_scattered"
+			android:gravity="center" android:layout_margin="1dip" />
 
 		<TextView android:id="@+id/cavok_image" android:text="@string/CAVOK_SCT"
 			android:textStyle="bold" android:gravity="center_vertical"
@@ -30,6 +36,8 @@
 	</TableRow>
 	<TableRow>
 		<ImageView android:id="@+id/cavok_text" android:background="@drawable/weather_broken"
+			android:gravity="center" android:layout_margin="1dip" />
+		<ImageView android:id="@+id/cavok_text" android:background="@drawable/weather_night_broken"
 			android:gravity="center" android:layout_margin="1dip" />
 
 		<TextView android:id="@+id/cavok_image" android:text="@string/CAVOK_BKN"
@@ -39,13 +47,15 @@
 	<TableRow>
 		<ImageView android:id="@+id/cavok_text" android:background="@drawable/weather_overcast"
 			android:gravity="center" android:layout_margin="1dip" />
-
+		<ImageView android:id="@+id/cavok_text" android:background="@drawable/weather_night_overcast"
+			android:gravity="center" android:layout_margin="1dip" />
 		<TextView android:id="@+id/cavok_image" android:text="@string/CAVOK_OVC"
 			android:textStyle="bold" android:gravity="center_vertical"
 			android:layout_width="fill_parent" android:layout_height="fill_parent" android:paddingLeft="5dp"/>
-
 	</TableRow>
 	<TableRow>
+		<ImageView android:id="@+id/cavok_text" android:background="@drawable/weather_obscured"
+			android:gravity="center" android:layout_margin="1dip" />
 		<ImageView android:id="@+id/cavok_text" android:background="@drawable/weather_obscured"
 			android:gravity="center" android:layout_margin="1dip" />
 

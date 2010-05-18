@@ -23,6 +23,8 @@ import java.util.Map;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+import android.preference.RingtonePreference;
+import android.provider.Settings.System;
 import android.util.Log;
 import de.macsystems.windroid.db.DAOFactory;
 import de.macsystems.windroid.db.IPreferencesDAO;
@@ -37,10 +39,15 @@ import de.macsystems.windroid.db.IPreferencesDAO;
 public final class Preferences extends PreferenceActivity
 {
 	private final static String LOG_TAG = Preferences.class.getSimpleName();
+	
+	private final static String RINGTONE_MANAGER_LOOKUP_KEY = "alarmtone"; 
 
 	private final DAOManger daoManager = new DAOManger();
 
 	private IPreferencesDAO prefDAO = null;
+	
+//	private RingtonePreference  ringtonePreference = null;
+	
 
 	/*
 	 * (non-Javadoc)
@@ -51,8 +58,14 @@ public final class Preferences extends PreferenceActivity
 	protected void onPause()
 	{
 		// Commit changes to Database
+		
+		
+//		ringtonePreference = (RingtonePreference) findPreference(RINGTONE_MANAGER_LOOKUP_KEY);
+
+		
 		final Map<String, ?> prefs = Util.getSharedPreferences(this).getAll();
 		prefDAO.update(prefs);
+		logSharedPreferences();
 		super.onPause();
 	}
 
@@ -69,6 +82,14 @@ public final class Preferences extends PreferenceActivity
 		daoManager.addDAO(prefDAO);
 		logSharedPreferences();
 		addPreferencesFromResource(R.xml.preferencesdescription);
+		
+		final RingtonePreference ringtonePreference = (RingtonePreference) findPreference(RINGTONE_MANAGER_LOOKUP_KEY);
+		ringtonePreference.setDefaultValue(System.DEFAULT_NOTIFICATION_URI);
+		if(Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG,"DEFAULT_NOTIFICATION_URI : "+System.DEFAULT_NOTIFICATION_URI.toString());
+		}
+		
 	}
 
 	/**

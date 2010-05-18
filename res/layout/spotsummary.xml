@@ -16,32 +16,12 @@
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content">
 
-
-			<View
-				android:id="@+id/dummy"
-				android:layout_width="fill_parent"
-				android:layout_height="5sp" />
-
-
-			<TextView
-				android:id="@+id/spotsummary_alarm_details"
-				android:text="@string/spot_summary_summary"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:gravity="center" />
-
-			<View
-				android:id="@+id/dummy"
-				android:layout_width="fill_parent"
-				android:layout_height="25sp" />
-
 			<LinearLayout
 				xmlns:android="http://schemas.android.com/apk/res/android"
 				android:orientation="horizontal"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:gravity="center"
-				android:background="#ffffff">
+				android:gravity="center">
 
 				<View
 					android:id="@+id/dummy"
@@ -50,7 +30,7 @@
 
 				<de.macsystems.windroid.custom.view.CompassView
 					android:id="@+id/compass"
-					android:background="@drawable/windrose_200x200"
+					android:background="@drawable/compass_new"
 					android:layout_width="200dip"
 					android:layout_height="200dip" />
 

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<!--
+		@version $Id: cavok.xml 425 2010-05-13 22:50:47Z jens.hohl $
+	-->
+<resources>
+	<dimen name="compass_overlay_pivot_x">75px</dimen>
+	<dimen name="compass_overlay_pivot_y">75px</dimen>
+	<dimen name="compass_overlay_radius">110px</dimen>
+</resources>

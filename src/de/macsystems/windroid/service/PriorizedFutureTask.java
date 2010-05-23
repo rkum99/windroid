@@ -21,6 +21,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
+import de.macsystems.windroid.Logging;
+
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteCallbackList;
@@ -72,7 +74,6 @@ final class PriorizedFutureTask extends FutureTask<Void>
 			throw new NullPointerException("prio");
 		}
 		prio = _prio;
-		Log.d(LOG_TAG, "listener :" + _listener);
 		if (_listener != null)
 		{
 			callbackListener.register(_listener);
@@ -87,7 +88,10 @@ final class PriorizedFutureTask extends FutureTask<Void>
 	@Override
 	protected void done()
 	{
-		Log.d(LOG_TAG, "protected void done()");
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "protected void done()");
+		}
 
 		// Dispatch Message
 		final Message message = Message.obtain();
@@ -122,37 +126,44 @@ final class PriorizedFutureTask extends FutureTask<Void>
 			// Broadcast to all clients the new value.
 			final int N = callbackListener.beginBroadcast();
 			final int what = msg.what;
-
-			Log.d(LOG_TAG, "broadcast " + what + " to " + N + " callback listeners");
-			for (int i = 0; i < N; i++)
+			if (Logging.isLoggingEnabled())
 			{
-				try
+				Log.d(LOG_TAG, "broadcast " + what + " to " + N + " callback listeners");
+			}
+			try
+			{
+				for (int i = 0; i < N; i++)
 				{
-					if (what == TASK_COMPLETED)
+					try
 					{
-						callbackListener.getBroadcastItem(i).onTaskComplete();
-					}
-					else if (what == TASK_CANCELLED)
-					{
-						callbackListener.getBroadcastItem(i).onTaskFailed();
-					}
-					else
-					{
-						callbackListener.getBroadcastItem(i).onTaskFailed();
-					}
+						if (what == TASK_COMPLETED)
+						{
+							callbackListener.getBroadcastItem(i).onTaskComplete();
+						}
+						else if (what == TASK_CANCELLED)
+						{
+							callbackListener.getBroadcastItem(i).onTaskFailed();
+						}
+						else
+						{
+							callbackListener.getBroadcastItem(i).onTaskFailed();
+						}
 
-				}
-				catch (final RemoteException e)
-				{
-					// The RemoteCallbackList will take care of
-					// removing
-					// the dead object for us.
+					}
+					catch (final RemoteException e)
+					{
+						// The RemoteCallbackList will take care of
+						// removing
+						// the dead object for us.
+					}
 				}
 			}
-			callbackListener.finishBroadcast();
-			callbackListener.kill();
+			finally
+			{
+				callbackListener.finishBroadcast();
+				callbackListener.kill();
+			}
 		}
 
 	};
-
 }

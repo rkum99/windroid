@@ -191,12 +191,18 @@ public final class Util
 	}
 
 	/**
+	 * Returns a Throwable as a String, if Throwable is null the String "null"
+	 * will be returned.
 	 * 
 	 * @param aThrowable
 	 * @return
 	 */
 	public static String getStackTrace(final Throwable aThrowable)
 	{
+		if (aThrowable == null)
+		{
+			return "null";
+		}
 		final Writer result = new StringWriter();
 		final PrintWriter printWriter = new PrintWriter(result);
 		aThrowable.printStackTrace(printWriter);

@@ -19,6 +19,7 @@ package de.macsystems.windroid.io.task;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 
 import android.content.Context;
 import android.util.Log;
@@ -116,7 +117,11 @@ public class UpdateSpotForecastTask extends AudioFeedbackTask
 				Log.e(LOG_TAG, "", e);
 				AlarmUtil.createRetryAlarm(selectedID, getContext());
 			}
-			catch (final Throwable e)
+			catch (URISyntaxException e)
+			{
+				Log.e(LOG_TAG, "Check URI", e);
+			}
+			catch (InterruptedException e)
 			{
 				Log.e(LOG_TAG, "", e);
 			}

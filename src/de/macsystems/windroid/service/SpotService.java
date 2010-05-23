@@ -33,12 +33,19 @@ import android.util.Log;
 import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.R;
 import de.macsystems.windroid.common.IntentConstants;
+import de.macsystems.windroid.concurrent.ThreadFactory;
 import de.macsystems.windroid.io.task.AlarmUpdateTask;
 import de.macsystems.windroid.io.task.UpdateAlarmTask;
 import de.macsystems.windroid.io.task.UpdateAllActiveSpotReports;
 import de.macsystems.windroid.io.task.UpdateSpotForecastTask;
 
 /**
+ * The background service which inits all tasks thru the AIDL interface. The
+ * Service manages a ThreadPool. Each containing thread can be priorized using a
+ * comparator see {@link PriorizedFutureTaskComparator}. Its possible to receive
+ * a callback from this service if task finished, see
+ * {@link IServiceCallbackListener}.
+ * 
  * @author Jens Hohl
  * @version $Id$
  * 
@@ -70,6 +77,11 @@ public class SpotService extends Service
 		@Override
 		public void update(final int _selectedID, final IServiceCallbackListener _listener)
 		{
+			if (_listener == null)
+			{
+				throw new NullPointerException("IServiceCallbackListener is null");
+			}
+
 			if (Logging.isLoggingEnabled())
 			{
 				Log.d(LOG_TAG, "Insert Task to update spot with selectedID:" + _selectedID + " into scheduler");
@@ -82,6 +94,10 @@ public class SpotService extends Service
 		@Override
 		public void updateActiveReports(final IServiceCallbackListener _listener) throws RemoteException
 		{
+			if (_listener == null)
+			{
+				throw new NullPointerException("IServiceCallbackListener is null");
+			}
 			final UpdateAllActiveSpotReports task = new UpdateAllActiveSpotReports(SpotService.this);
 			addTask(task, _listener);
 		}
@@ -152,7 +168,6 @@ public class SpotService extends Service
 	 */
 	private final void createAlarmTask(final int _selectedID)
 	{
-
 		// adding Task which updates this SPOT on Alarm
 		addTask(new AlarmUpdateTask(this, _selectedID));
 	}
@@ -238,7 +253,8 @@ public class SpotService extends Service
 			final BlockingQueue<? super Runnable> queue = new PriorityBlockingQueue<Runnable>(poolSize,
 					new PriorizedFutureTaskComparator());
 			//
-			threadPool = new ThreadPoolExecutor(1, 1, 1L, TimeUnit.SECONDS, (BlockingQueue<Runnable>) queue);
+			final ThreadFactory factory = new ThreadFactory("SpotService", Thread.NORM_PRIORITY);
+			threadPool = new ThreadPoolExecutor(1, 1, 1L, TimeUnit.SECONDS, (BlockingQueue<Runnable>) queue, factory);
 		}
 	}
 
@@ -304,7 +320,7 @@ public class SpotService extends Service
 			final PriorizedFutureTask task = new PriorizedFutureTask(PRIORITY.NORMAL, _task);
 			threadPool.execute(task);
 		}
-		catch (final Throwable e)
+		catch (final Exception e)
 		{
 			Log.e(LOG_TAG, "Failed to queue task", e);
 		}
@@ -321,7 +337,7 @@ public class SpotService extends Service
 			final PriorizedFutureTask task = new PriorizedFutureTask(PRIORITY.NORMAL, _task, _listener);
 			threadPool.execute(task);
 		}
-		catch (final Throwable e)
+		catch (final Exception e)
 		{
 			Log.e(LOG_TAG, "Failed to queue task", e);
 		}

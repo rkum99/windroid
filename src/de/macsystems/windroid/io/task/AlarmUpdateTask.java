@@ -77,7 +77,7 @@ public class AlarmUpdateTask extends AudioFeedbackTask
 				// Quit
 				return;
 			}
-			
+
 			final boolean available = isNetworkReachable();
 			if (!available)
 			{
@@ -100,7 +100,7 @@ public class AlarmUpdateTask extends AudioFeedbackTask
 				// Update Forecast in DB
 				final IForecastDAO forecastDAO = DAOFactory.getForecast(getContext());
 				forecastDAO.updateForecast(forecast, selectedID);
-				// for Audio output 
+				// for Audio output
 				setAsSuccessfull();
 			}
 			catch (final IOException e)
@@ -112,10 +112,6 @@ public class AlarmUpdateTask extends AudioFeedbackTask
 			{
 				Log.e(LOG_TAG, "", e);
 				AlarmUtil.createRetryAlarm(selectedID, getContext());
-			}
-			catch (final Throwable e)
-			{
-				Log.e(LOG_TAG, "", e);
 			}
 
 		}

@@ -22,7 +22,7 @@ package de.macsystems.windroid.identifyable;
  * @version $Id$
  * 
  */
-public final class WindSpeed
+public final class WindSpeed 
 {
 	private final WindUnit unit;
 

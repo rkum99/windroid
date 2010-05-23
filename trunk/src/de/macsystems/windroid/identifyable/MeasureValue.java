@@ -136,4 +136,11 @@ public abstract class MeasureValue
 		return unit;
 	}
 
+//	/**
+//	 * 
+//	 * @param _measure
+//	 * @return
+//	 */
+//	public abstract MeasureValue convertTo(final Measure _measure);
+
 }

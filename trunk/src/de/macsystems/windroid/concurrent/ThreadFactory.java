@@ -25,20 +25,49 @@ import de.macsystems.windroid.Logging;
 
 /**
  * Creates Threads with some default name, which makes debugging a bit easier.
+ * This Thread are created with normal priority.
  * 
  * @author mac
  * @version $Id$
+ * @TODO: Android seems to ignore the uncaught Exception Handler
  */
 public final class ThreadFactory implements java.util.concurrent.ThreadFactory
 {
 
 	private final static String LOG_TAG = ThreadFactory.class.getSimpleName();
 
-	private final static String THREADNAME = "SpotService-";
+	private final String threadname;
+
+	private final int threadPriority;
 	/**
 	 * Reference Counter
 	 */
-	private final AtomicInteger count = new AtomicInteger(0);
+	private final AtomicInteger count = new AtomicInteger(1);
+
+	/**
+	 * Creates a threadfactory which produces Threads with given name and
+	 * priority. Each created threadname will include a number starting with
+	 * '-1'
+	 * 
+	 * @param _threadName
+	 * @param _priority
+	 * @throws IllegalArgumentException
+	 *             if thread priority is illegal or thread name is null
+	 */
+	public ThreadFactory(final String _threadName, final int _priority) throws IllegalArgumentException
+	{
+		if (_priority != Thread.MAX_PRIORITY || _priority != Thread.MIN_PRIORITY || _priority != Thread.NORM_PRIORITY)
+		{
+			throw new IllegalArgumentException("Illegal Thread priority :" + _priority);
+		}
+		if (_threadName == null)
+		{
+			throw new IllegalArgumentException("Thread name must be given");
+		}
+
+		threadname = _threadName;
+		threadPriority = _priority;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -49,14 +78,13 @@ public final class ThreadFactory implements java.util.concurrent.ThreadFactory
 	public Thread newThread(final Runnable r)
 	{
 		final Thread thread = new Thread(r);
-		thread.setPriority(Thread.NORM_PRIORITY);
+		thread.setPriority(threadPriority);
 		thread.setUncaughtExceptionHandler(new ThreadLogger());
 		final int counter = count.getAndIncrement();
-		final String name = THREADNAME + counter;
-		thread.setName(THREADNAME + counter);
+		thread.setName(threadname + "-" + Integer.toString(counter));
 		if (Logging.isLoggingEnabled())
 		{
-			Log.d(LOG_TAG, "Thread created :" + name);
+			Log.d(LOG_TAG, "Thread created :" + thread.getName());
 		}
 		return thread;
 	}

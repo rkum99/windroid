@@ -19,6 +19,7 @@ package de.macsystems.windroid.io.task;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 
 import android.content.Context;
@@ -137,10 +138,13 @@ public class UpdateAllActiveSpotReports extends AbstractNotificationTask<Void>
 		{
 			Log.e(LOG_TAG, "", e);
 		}
-		catch (final Throwable e)
+		catch (URISyntaxException e)
+		{
+			Log.e(LOG_TAG, "Check URI", e);
+		}
+		catch (InterruptedException e)
 		{
 			Log.e(LOG_TAG, "", e);
 		}
-
 	}
 }

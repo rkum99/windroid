@@ -51,7 +51,6 @@ public enum WindUnit implements IdentifyAble
 		description = _description;
 		shortDisplayName = _shortDisplayName;
 		maximum = _max;
-
 	}
 
 	/**
@@ -60,16 +59,13 @@ public enum WindUnit implements IdentifyAble
 	 * @param _id
 	 * @return
 	 * @throws IllegalArgumentException
+	 * @see {@link Enum#name()}
 	 */
 	public final static WindUnit getById(final String _id) throws IllegalArgumentException
 	{
-		if (_id == null)
-		{
-			throw new IllegalArgumentException("ID is  null.");
-		}
 		for (final WindUnit unit : WindUnit.values())
 		{
-			if (_id.equalsIgnoreCase(unit.id))
+			if (unit.id.equalsIgnoreCase(_id))
 			{
 				return unit;
 			}

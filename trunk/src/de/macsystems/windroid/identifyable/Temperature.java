@@ -22,7 +22,7 @@ package de.macsystems.windroid.identifyable;
  * @version $Id$
  * 
  */
-public class Temperature extends MeasureValue
+public final class Temperature extends MeasureValue implements IConvertable
 {
 	/**
 	 * 
@@ -65,4 +65,28 @@ public class Temperature extends MeasureValue
 		return new Temperature(_value, Measure.FAHRENHEIT);
 	}
 
+	@Override
+	public MeasureValue convertTo(final Measure _measure)
+	{
+		if (_measure == null)
+		{
+			throw new NullPointerException("Measure");
+		}
+		if (getMeasure() == _measure)
+		{
+			return this;
+		}
+
+		switch (_measure)
+		{
+			case CELSIUS:
+				return new Temperature(getValue(), Measure.CELSIUS);
+			case FAHRENHEIT:
+				return new Temperature(getValue(), Measure.FAHRENHEIT);
+			default:
+				throw new IllegalArgumentException("cant convert " + getMeasure() + " into "
+						+ _measure.getShortDisplayName());
+
+		}
+	}
 }

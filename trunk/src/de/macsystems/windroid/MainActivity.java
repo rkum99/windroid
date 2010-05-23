@@ -24,11 +24,7 @@ import java.util.List;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.ActivityManager.RunningServiceInfo;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -54,14 +50,12 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import de.macsystems.windroid.alarm.AlarmDetail;
 import de.macsystems.windroid.alarm.AlarmUtil;
 import de.macsystems.windroid.common.IntentConstants;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.db.DAOFactory;
 import de.macsystems.windroid.db.ISelectedDAO;
 import de.macsystems.windroid.db.ISpotDAO;
-import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.proxy.SpotServiceConnection;
 import de.macsystems.windroid.receiver.EnableViewConnectionBroadcastReciever;
 import de.macsystems.windroid.service.SpotService;
@@ -76,7 +70,9 @@ import de.macsystems.windroid.service.SpotService;
 public final class MainActivity extends DBActivity
 {
 
-	private final static int ABOUT_MENU_ID = 777;
+	private static final String DE_MACSYSTEMS_WINDROID_SPOT_SERVICE = "de.macsystems.windroid.SpotService";
+	private static final String DE_MACSYSTEMS_WINDROID = "de.macsystems.windroid";
+	private final static int OPTION_ABOUT_MENU_ID = 777;
 	/**
 	 * Configuration SubActivities will be launched by this request code
 	 */
@@ -413,9 +409,9 @@ public final class MainActivity extends DBActivity
 				Log.d(LOG_TAG, "Service Nr. " + i + " class name   : " + services.get(i).service.getClassName());
 			}
 
-			if ("de.macsystems.windroid".equals(services.get(i).service.getPackageName()))
+			if (DE_MACSYSTEMS_WINDROID.equals(services.get(i).service.getPackageName()))
 			{
-				if ("de.macsystems.windroid.SpotService".equals(services.get(i).service.getClassName()))
+				if (DE_MACSYSTEMS_WINDROID_SPOT_SERVICE.equals(services.get(i).service.getClassName()))
 				{
 					isServiceFound = true;
 					break;
@@ -459,41 +455,16 @@ public final class MainActivity extends DBActivity
 			{
 				// TODO FIX requestID
 				AlarmUtil.cancelAlarm(1, 1, MainActivity.this);
-
 			}
 		};
 		button.setOnClickListener(listener);
-	}
-
-	private static void showNotification(final Context context, final NotificationManager notificationManager,
-			final int alarmID, final String alarmTitle, final String alarmDetails)
-	{
-		final Notification notification = new Notification(R.drawable.icon, "Alarm", System.currentTimeMillis());
-
-		notification.ledARGB = 0xff00ff00;
-		notification.ledOnMS = 40;
-		notification.ledOffMS = 40;
-		notification.flags |= Notification.FLAG_SHOW_LIGHTS;
-
-		notification.sound = IOUtils.getResourceURI(context, R.raw.wind_chime);
-
-		final Intent intent = new Intent(context, AlarmNotificationDetail.class);
-		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-		final AlarmDetail details = new AlarmDetail(alarmID, "station id", "Mauritius");
-		intent.putExtra(IntentConstants.ALARM_DETAIL, details);
-		intent.putExtra("AlarmID", alarmID);
-		final PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-
-		notification.setLatestEventInfo(context, alarmTitle, alarmDetails, pendingIntent);
-		notificationManager.notify(alarmID, notification);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu)
 	{
 		super.onCreateOptionsMenu(menu);
-		final MenuItem about = menu.add(Menu.NONE, ABOUT_MENU_ID, Menu.NONE, R.string.about_button_text);
+		final MenuItem about = menu.add(Menu.NONE, OPTION_ABOUT_MENU_ID, Menu.NONE, R.string.about_button_text);
 		about.setIcon(R.drawable.info);
 		return true;
 	}
@@ -512,7 +483,7 @@ public final class MainActivity extends DBActivity
 			Log.d(LOG_TAG, "selected icon id " + item.getItemId());
 		}
 		boolean result = false;
-		if (item.getItemId() == ABOUT_MENU_ID)
+		if (item.getItemId() == OPTION_ABOUT_MENU_ID)
 		{
 			showAboutDialog();
 			result = true;

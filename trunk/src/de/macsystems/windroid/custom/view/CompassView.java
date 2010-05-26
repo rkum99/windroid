@@ -26,7 +26,6 @@ import android.graphics.Shader.TileMode;
 import android.graphics.drawable.shapes.ArcShape;
 import android.graphics.drawable.shapes.Shape;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.ImageView;
 import de.macsystems.windroid.R;
 import de.macsystems.windroid.identifyable.CardinalDirection;
@@ -40,11 +39,6 @@ import de.macsystems.windroid.identifyable.CardinalDirection;
  */
 public final class CompassView extends ImageView
 {
-
-	/**
-	 * Dimension of overlay.
-	 */
-	private final float CIRCLE_DIMENSION = 165f;
 	/**
 	 * Start direction of Wind
 	 */
@@ -135,7 +129,6 @@ public final class CompassView extends ImageView
 			else
 			{
 				final float startPoint = fromDirection.getDegree();
-				final float range = Math.min(fromDirection.getDegree(), toDirection.getDegree());
 				// Nullpunkt ist bei 90 Grad
 				final float angle = 360 - startPoint + toDirection.getDegree();
 				shape = new ArcShape(startPoint - 90, angle);
@@ -147,7 +140,7 @@ public final class CompassView extends ImageView
 		 * Android does not draw shapes from its midpoint as Swing does.
 		 */
 		//
-		canvas.translate((getWidth() - overlayRadius) / 2, (getHeight() - overlayRadius) / 2);
+		canvas.translate((getWidth() - overlayRadius) / 2.0f, (getHeight() - overlayRadius) / 2.0f);
 		shape.resize(overlayRadius, overlayRadius);
 		shape.draw(canvas, overlayPaint);
 	}
@@ -165,14 +158,22 @@ public final class CompassView extends ImageView
 		overlayRadius = resources.getDimensionPixelOffset(R.dimen.compass_overlay_radius);
 	}
 
-	public void setFromDirection(final CardinalDirection _fromDirection)
+	public void setFromDirection(final CardinalDirection _fromDirection) throws NullPointerException
 	{
-		fromDirection = _fromDirection;
+		if (_fromDirection == null)
+		{
+			throw new NullPointerException("_fromDirection");
+		}
 
+		fromDirection = _fromDirection;
 	}
 
-	public void setToDirection(final CardinalDirection _toDirection)
+	public void setToDirection(final CardinalDirection _toDirection) throws NullPointerException
 	{
+		if (_toDirection == null)
+		{
+			throw new NullPointerException("_toDirection");
+		}
 		toDirection = _toDirection;
 	}
 }

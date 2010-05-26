@@ -33,7 +33,7 @@ import android.util.Log;
 import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.R;
 import de.macsystems.windroid.common.IntentConstants;
-import de.macsystems.windroid.concurrent.ThreadFactory;
+import de.macsystems.windroid.concurrent.WindroidThreadFactory;
 import de.macsystems.windroid.io.task.AlarmUpdateTask;
 import de.macsystems.windroid.io.task.UpdateAlarmTask;
 import de.macsystems.windroid.io.task.UpdateAllActiveSpotReports;
@@ -253,7 +253,7 @@ public class SpotService extends Service
 			final BlockingQueue<? super Runnable> queue = new PriorityBlockingQueue<Runnable>(poolSize,
 					new PriorizedFutureTaskComparator());
 			//
-			final ThreadFactory factory = new ThreadFactory("SpotService", Thread.NORM_PRIORITY);
+			final WindroidThreadFactory factory = new WindroidThreadFactory("SpotService", Thread.NORM_PRIORITY);
 			threadPool = new ThreadPoolExecutor(1, 1, 1L, TimeUnit.SECONDS, (BlockingQueue<Runnable>) queue, factory);
 		}
 	}

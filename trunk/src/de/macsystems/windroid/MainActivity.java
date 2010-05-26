@@ -190,8 +190,8 @@ public final class MainActivity extends DBActivity
 	@Override
 	protected void onStop()
 	{
-		super.onStop();
 		unregisterReceiver(broadcastReceiver);
+		super.onStop();
 	}
 
 	/*

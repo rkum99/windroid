@@ -247,7 +247,7 @@ public final class Util
 	{
 		if (_resultCode != Activity.RESULT_OK && _resultCode != Activity.RESULT_CANCELED)
 		{
-			throw new IllegalArgumentException("ResultCode not valid. Must be RESULT or RESULT_CANCELED but was "
+			throw new IllegalArgumentException("ResultCode not valid. Must be RESULT_OK or RESULT_CANCELED but was "
 					+ _resultCode);
 		}
 	}

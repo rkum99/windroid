@@ -140,6 +140,5 @@ public abstract class AbstractNotificationTask<V> implements Callable<V>
 		final NotificationManager notificationManager = (NotificationManager) context
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 		notificationManager.cancel(statusID);
-
 	}
 }

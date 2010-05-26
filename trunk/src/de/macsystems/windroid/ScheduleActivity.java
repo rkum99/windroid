@@ -73,7 +73,7 @@ public final class ScheduleActivity extends ChainSubActivity
 	{
 		super.onCreate(savedInstanceState);
 		/**
-		 * Set raw offset as else the Format may add one hour.
+		 * Set raw offset as else the Format may add GMT Offset which we not want there.
 		 */
 		dateFormat.getTimeZone().setRawOffset(0);
 		setContentView(R.layout.schedule);

@@ -130,6 +130,13 @@ public final class ForecastActivity extends DBActivity
 	private Animation slideRightIn;
 	private Animation slideRightOut;
 
+	/**
+	 * Detector we use to detect fling events
+	 */
+	private GestureDetector detector = null;
+	/**
+	 * Handler to send messages to service
+	 */
 	private final Handler handler = new Handler()
 	{
 		@Override
@@ -156,7 +163,7 @@ public final class ForecastActivity extends DBActivity
 		{
 			if (Logging.isLoggingEnabled())
 			{
-				Log.d(LOG_TAG, "onServiceConnected");
+				Log.d(LOG_TAG, "onServiceDisconnected");
 			}
 			service = null;
 		}
@@ -215,66 +222,26 @@ public final class ForecastActivity extends DBActivity
 		@Override
 		public boolean onFling(final MotionEvent e1, final MotionEvent e2, final float velocityX, final float velocityY)
 		{
-			try
+			if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
 			{
-				if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
-				{
-					return false;
-				}
-				// right to left swipe
-				if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY)
-				{
-					flipper.setInAnimation(slideLeftIn);
-					flipper.setOutAnimation(slideLeftOut);
-					flipper.showNext();
-				}
-				else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY)
-				{
-					flipper.setInAnimation(slideRightIn);
-					flipper.setOutAnimation(slideRightOut);
-					flipper.showPrevious();
-				}
+				return false;
 			}
-			catch (final Exception e)
+			// right to left swipe
+			if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY)
 			{
-				// nothing
+				flipper.setInAnimation(slideLeftIn);
+				flipper.setOutAnimation(slideLeftOut);
+				flipper.showNext();
+			}
+			else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY)
+			{
+				flipper.setInAnimation(slideRightIn);
+				flipper.setOutAnimation(slideRightOut);
+				flipper.showPrevious();
 			}
 			return false;
 		}
-
-		// @Override
-		// public boolean onFling(MotionEvent e1, MotionEvent e2, float
-		// velocityX, float velocityY)
-		// {
-		// Log.d(LOG_TAG, " velocityX " + velocityX);
-		// Log.d(LOG_TAG, " velocityY " + velocityY);
-		//			
-		//			
-		//
-		// if (velocityX > 0)
-		// {
-		// if (Math.abs(velocityX) > 250.0f)
-		// {
-		//					
-		// flipper.showNext();
-		// }
-		// }
-		// else
-		// {
-		// if (Math.abs(velocityX) < 250.0f)
-		// {
-		// flipper.showPrevious();
-		// }
-		// }
-		//
-		// return super.onFling(e1, e2, velocityX, velocityY);
-		// }
-
 	};
-	/**
-	 * Detector we use to detect fling events
-	 */
-	private GestureDetector detector = null;
 
 	/*
 	 * (non-Javadoc)
@@ -350,6 +317,7 @@ public final class ForecastActivity extends DBActivity
 	@Override
 	protected void onResume()
 	{
+		super.onResume();
 		if (Logging.isLoggingEnabled())
 		{
 			Log.d(LOG_TAG, "onResume");
@@ -363,18 +331,17 @@ public final class ForecastActivity extends DBActivity
 			throw new AndroidRuntimeException("Failed to bind service");
 		}
 
-		super.onResume();
 	}
 
 	@Override
 	protected void onStart()
 	{
+		super.onStart();
 		if (Logging.isLoggingEnabled())
 		{
 			Log.d(LOG_TAG, "onStart");
 		}
 
-		super.onStart();
 	}
 
 	/**
@@ -512,9 +479,9 @@ public final class ForecastActivity extends DBActivity
 		//
 		final MenuItem next = menu.add(Menu.NONE, OPTION_NEXT, Menu.NONE, R.string.forecast_options_next);
 		next.setIcon(R.drawable.swipe_next);
-		
-		final MenuItem legend = menu.add(Menu.NONE,OPTION_LEGEND,Menu.NONE,R.string.forecast_options_legend);
-			
+
+		final MenuItem legend = menu.add(Menu.NONE, OPTION_LEGEND, Menu.NONE, R.string.forecast_options_legend);
+
 		return true;
 	}
 
@@ -613,7 +580,7 @@ public final class ForecastActivity extends DBActivity
 		//
 		final TableRow rowWaterTemp = (TableRow) findViewById(R.id.forecast_row_water_temperature);
 		fillWaterTempRow(rowWaterTemp, R.string.water_temperature, _forecast, TEXT_ROW_IDS, OFFSET_DAY_ONE);
-		final TableRow rowWaterTemp2 = (TableRow) findViewById(R.id.forecast_row_page_two_air_temperature);
+		final TableRow rowWaterTemp2 = (TableRow) findViewById(R.id.forecast_page_two_row_water_temperature);
 		fillWaterTempRow(rowWaterTemp2, R.string.water_temperature, _forecast, TEXT_ROW_IDS, OFFSET_DAY_TWO);
 		//
 		final TableRow rowWaveHeight = (TableRow) findViewById(R.id.forecast_row_wave_height);

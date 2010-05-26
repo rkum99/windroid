@@ -41,7 +41,7 @@ public final class SpotSummaryActivity extends Activity
 
 	private final static String LOG_TAG = SpotSummaryActivity.class.getSimpleName();
 
-	private SpotConfigurationVO stationInfo = null;
+	private SpotConfigurationVO spotConfiguration = null;
 
 	/*
 	 * (non-Javadoc)
@@ -53,11 +53,11 @@ public final class SpotSummaryActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.spotsummary);
-		stationInfo = (SpotConfigurationVO) getIntent().getExtras().get(IntentConstants.SPOT_TO_CONFIGURE);
+		spotConfiguration = (SpotConfigurationVO) getIntent().getExtras().get(IntentConstants.SPOT_TO_CONFIGURE);
 
-		final CompassView imageView = (CompassView) findViewById(R.id.compass);
-		imageView.setFromDirection(stationInfo.getFromDirection());
-		imageView.setToDirection(stationInfo.getToDirection());
+		final CompassView compassView = (CompassView) findViewById(R.id.compass);
+		compassView.setFromDirection(spotConfiguration.getFromDirection());
+		compassView.setToDirection(spotConfiguration.getToDirection());
 
 		final Button acceptButton = (Button) findViewById(R.id.spotsummary_accept);
 		acceptButton.setOnClickListener(getAcceptClickListener());
@@ -136,9 +136,8 @@ public final class SpotSummaryActivity extends Activity
 	{
 		Util.checkResultCode(_resultCode);
 		// FIXME: We may come back from the "Edit Spot" instead of "Add Spot"
-		final Intent intent = WindUtils.createIntent(SpotSummaryActivity.this, MainActivity.class, stationInfo);
+		final Intent intent = WindUtils.createIntent(SpotSummaryActivity.this, MainActivity.class, spotConfiguration);
 		setResult(_resultCode, intent);
 		finish();
 	}
-
 }

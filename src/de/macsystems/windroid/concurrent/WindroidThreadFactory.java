@@ -18,6 +18,8 @@
 
 package de.macsystems.windroid.concurrent;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import android.util.Log;
@@ -31,10 +33,10 @@ import de.macsystems.windroid.Logging;
  * @version $Id$
  * @TODO: Android seems to ignore the uncaught Exception Handler
  */
-public final class ThreadFactory implements java.util.concurrent.ThreadFactory
+public final class WindroidThreadFactory implements java.util.concurrent.ThreadFactory
 {
 
-	private final static String LOG_TAG = ThreadFactory.class.getSimpleName();
+	private final static String LOG_TAG = WindroidThreadFactory.class.getSimpleName();
 
 	private final String threadname;
 
@@ -43,6 +45,14 @@ public final class ThreadFactory implements java.util.concurrent.ThreadFactory
 	 * Reference Counter
 	 */
 	private final AtomicInteger count = new AtomicInteger(1);
+
+	private static final Set<Integer> ALLOWED_PRIORITYS = new HashSet<Integer>();
+	static
+	{
+		ALLOWED_PRIORITYS.add(Thread.MAX_PRIORITY);
+		ALLOWED_PRIORITYS.add(Thread.MIN_PRIORITY);
+		ALLOWED_PRIORITYS.add(Thread.NORM_PRIORITY);
+	}
 
 	/**
 	 * Creates a threadfactory which produces Threads with given name and
@@ -54,9 +64,9 @@ public final class ThreadFactory implements java.util.concurrent.ThreadFactory
 	 * @throws IllegalArgumentException
 	 *             if thread priority is illegal or thread name is null
 	 */
-	public ThreadFactory(final String _threadName, final int _priority) throws IllegalArgumentException
+	public WindroidThreadFactory(final String _threadName, final int _priority) throws IllegalArgumentException
 	{
-		if (_priority != Thread.MAX_PRIORITY || _priority != Thread.MIN_PRIORITY || _priority != Thread.NORM_PRIORITY)
+		if (!ALLOWED_PRIORITYS.contains(_priority))
 		{
 			throw new IllegalArgumentException("Illegal Thread priority :" + _priority);
 		}

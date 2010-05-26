@@ -74,90 +74,90 @@ public final class ForecastParser
 	/**
 	 * 
 	 * @param airPresureMap
-	 * @param builder
+	 * @param _builder
 	 * @throws JSONException
 	 */
-	private static void parseAirPresure(final JSONObject airPresureMap, final Builder builder) throws JSONException
+	private static void parseAirPresure(final JSONObject airPresureMap, final Builder _builder) throws JSONException
 	{
 		final float value = getFloat(airPresureMap, VALUE);
 		final String unit = airPresureMap.getString(UNIT);
 
 		final Pressure airPressure = Pressure.create(value, unit);
-		builder.setAirPressure(airPressure);
+		_builder.setAirPressure(airPressure);
 	}
 
 	/**
 	 * 
 	 * @param airTempMap
-	 * @param builder
+	 * @param _builder
 	 * @throws JSONException
 	 */
-	private static void parseAirTemperature(final JSONObject airTempMap, final Builder builder) throws JSONException
+	private static void parseAirTemperature(final JSONObject airTempMap, final Builder _builder) throws JSONException
 	{
 		final float value = getFloat(airTempMap, VALUE);
 		final String unit = airTempMap.getString(UNIT);
 
 		final Temperature temp = Temperature.create(value, unit);
-		builder.setAirTemperature(temp);
+		_builder.setAirTemperature(temp);
 	}
 
 	/**
 	 * 
 	 * @param wavePeriodMap
-	 * @param builder
+	 * @param _builder
 	 * @throws JSONException
 	 */
-	private static void parseWaveHeight(final JSONObject wavePeriodMap, final Builder builder) throws JSONException
+	private static void parseWaveHeight(final JSONObject wavePeriodMap, final Builder _builder) throws JSONException
 	{
 		final float value = getFloat(wavePeriodMap, VALUE);
 		final String unit = wavePeriodMap.getString(UNIT);
 
 		final WaveHeight waveHeiht = WaveHeight.create(value, unit);
-		builder.setWaveHeight(waveHeiht);
+		_builder.setWaveHeight(waveHeiht);
 	}
 
 	/**
 	 * 
 	 * @param forecastDetailMap
-	 * @param builder
+	 * @param _builder
 	 * @throws JSONException
 	 */
-	private static void parseClouds(final JSONObject forecastDetailMap, final Builder builder) throws JSONException
+	private static void parseClouds(final JSONObject forecastDetailMap, final Builder _builder) throws JSONException
 	{
 		final String directionString = forecastDetailMap.getString(CLOUDS);
 		final int index = IdentityUtil.indexOf(directionString, Cavok.values());
 		final Cavok cavok = Cavok.values()[index];
-		builder.setClouds(cavok);
+		_builder.setClouds(cavok);
 	}
 
 	/**
 	 * 
 	 * @param windSpeedMap
-	 * @param builder
+	 * @param _builder
 	 * @throws JSONException
 	 */
-	private static void parseWindSpeedMap(final JSONObject windSpeedMap, final Builder builder) throws JSONException
+	private static void parseWindSpeedMap(final JSONObject windSpeedMap, final Builder _builder) throws JSONException
 	{
 		final float value = getFloat(windSpeedMap, VALUE);
 		final String unit = windSpeedMap.getString(UNIT);
 
 		final WindSpeed windSpeed = WindSpeed.create(value, unit);
-		builder.setWindSpeed(windSpeed);
+		_builder.setWindSpeed(windSpeed);
 	}
 
 	/**
 	 * 
 	 * @param windGustsMap
-	 * @param builder
+	 * @param _builder
 	 * @throws JSONException
 	 */
-	private static void parseWindGustsMap(final JSONObject windGustsMap, final Builder builder) throws JSONException
+	private static void parseWindGustsMap(final JSONObject windGustsMap, final Builder _builder) throws JSONException
 	{
 		final float value = getFloat(windGustsMap, VALUE);
 		final String unit = windGustsMap.getString(UNIT);
 		//
 		final WindSpeed windGusts = WindSpeed.create(value, unit);
-		builder.setWindGusts(windGusts);
+		_builder.setWindGusts(windGusts);
 	}
 
 	/**
@@ -182,63 +182,63 @@ public final class ForecastParser
 	/**
 	 * 
 	 * @param waterTemperatureMap
-	 * @param builder
+	 * @param _builder
 	 * @throws JSONException
 	 */
-	private static void parseWaterTemperatureMap(final JSONObject waterTemperatureMap, final Builder builder)
+	private static void parseWaterTemperatureMap(final JSONObject waterTemperatureMap, final Builder _builder)
 			throws JSONException
 	{
 		final float value = getFloat(waterTemperatureMap, VALUE);
 		final String unit = waterTemperatureMap.getString(UNIT);
 
 		final Temperature waterTemp = Temperature.create(value, unit);
-		builder.setWaterTemperature(waterTemp);
+		_builder.setWaterTemperature(waterTemp);
 	}
 
 	/**
 	 * 
 	 * @param jSONObject
-	 * @param builder
+	 * @param _builder
 	 * @throws JSONException
 	 */
-	private static void parseWindDirection(final JSONObject jSONObject, final Builder builder) throws JSONException
+	private static void parseWindDirection(final JSONObject jSONObject, final Builder _builder) throws JSONException
 	{
 		final String directionString = jSONObject.getString(WIND_DIRECTION);
 		final int index = IdentityUtil.indexOf(directionString, CardinalDirection.values());
 		final CardinalDirection direction = CardinalDirection.values()[index];
-		builder.setWinddirection(direction);
+		_builder.setWinddirection(direction);
 
 	}
 
 	/**
 	 * 
 	 * @param wavePeriodMap
-	 * @param builder
+	 * @param _builder
 	 * @throws JSONException
 	 */
-	private static void parseWavePeriod(final JSONObject wavePeriodMap, final Builder builder) throws JSONException
+	private static void parseWavePeriod(final JSONObject wavePeriodMap, final Builder _builder) throws JSONException
 	{
 		final float value = getFloat(wavePeriodMap, VALUE);
 		final String unit = wavePeriodMap.getString(UNIT);
 
 		final WavePeriod wavePeriod = WavePeriod.create(value, unit);
-		builder.setWavePeriod(wavePeriod);
+		_builder.setWavePeriod(wavePeriod);
 	}
 
 	/**
 	 * 
 	 * @param precipitationMap
-	 * @param builder
+	 * @param _builder
 	 * @throws JSONException
 	 */
-	private static void parsePrecipitationMap(final JSONObject precipitationMap, final Builder builder)
+	private static void parsePrecipitationMap(final JSONObject precipitationMap, final Builder _builder)
 			throws JSONException
 	{
 		final float value = getFloat(precipitationMap, VALUE);
 		final String unit = precipitationMap.getString(UNIT);
 
 		final Precipitation precipitation = Precipitation.create(value, unit);
-		builder.setPrecipitation(precipitation);
+		_builder.setPrecipitation(precipitation);
 	}
 
 	/**
@@ -305,16 +305,16 @@ public final class ForecastParser
 	/**
 	 * 
 	 * @param waveDirectionMap
-	 * @param builder
+	 * @param _builder
 	 * @throws JSONException
 	 */
-	private static void parseWaveDirection(final JSONObject waveDirectionMap, final Builder builder)
+	private static void parseWaveDirection(final JSONObject waveDirectionMap, final Builder _builder)
 			throws JSONException
 	{
 		final String directionString = waveDirectionMap.getString(WAVE_DIRECTION);
 		final int index = IdentityUtil.indexOf(directionString, CardinalDirection.values());
 		final CardinalDirection direction = CardinalDirection.values()[index];
-		builder.setWaveDirection(direction);
+		_builder.setWaveDirection(direction);
 
 	}
 
@@ -324,10 +324,10 @@ public final class ForecastParser
 	 * "date":"2010 02 07"
 	 * 
 	 * @param forecastDetailMap
-	 * @param builder
+	 * @param _builder
 	 * @throws JSONException
 	 */
-	private static void parseDate(final JSONObject forecastDetailMap, final Builder builder) throws JSONException
+	private static void parseDate(final JSONObject forecastDetailMap, final Builder _builder) throws JSONException
 	{
 		final String dateString = forecastDetailMap.getString(DATE);
 
@@ -339,7 +339,7 @@ public final class ForecastParser
 		try
 		{
 			final long newTime = jsonDateFormat.parse(dateString).getTime();
-			builder.setDate(newTime);
+			_builder.setDate(newTime);
 		}
 		catch (final ParseException e)
 		{
@@ -353,10 +353,10 @@ public final class ForecastParser
 	 * TODO: Keep care of Timezone (GMT) when calculating.
 	 * 
 	 * @param forecastDetailMap
-	 * @param builder
+	 * @param _builder
 	 * @throws JSONException
 	 */
-	private static void parseTime(final JSONObject forecastDetailMap, final Builder builder) throws JSONException
+	private static void parseTime(final JSONObject forecastDetailMap, final Builder _builder) throws JSONException
 	{
 		final String timeString = forecastDetailMap.getString(TIME);
 
@@ -370,7 +370,7 @@ public final class ForecastParser
 		final long sec = Long.parseLong(timeString.substring(4, 6));
 		final long time = (hrs * 60L * 60L * 1000L) + (min * 60L * 1000L) + (sec * 1000L);
 
-		builder.setTime(time);
+		_builder.setTime(time);
 
 	}
 

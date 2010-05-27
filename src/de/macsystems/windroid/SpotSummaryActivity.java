@@ -121,7 +121,7 @@ public final class SpotSummaryActivity extends Activity
 
 				new AlertDialog.Builder(SpotSummaryActivity.this).setTitle(R.string.spot_summary_delete_alert_title)
 						.setMessage(R.string.spot_summary_delete_alert_text).setNegativeButton(android.R.string.no,
-								null).setPositiveButton(android.R.string.yes, okListener).setIcon(R.drawable.icon)
+								null).setPositiveButton(android.R.string.yes, okListener).setIcon(R.drawable.launcher)
 						.show();
 
 			}

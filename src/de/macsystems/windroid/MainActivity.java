@@ -329,7 +329,7 @@ public final class MainActivity extends DBActivity
 			final android.content.DialogInterface.OnClickListener listener) throws NotFoundException
 	{
 		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setIcon(R.drawable.icon);
+		builder.setIcon(R.drawable.launcher);
 		builder.setCancelable(false);
 		builder.setNegativeButton(android.R.string.no, listener);
 		builder.setPositiveButton(android.R.string.yes, listener);
@@ -338,7 +338,7 @@ public final class MainActivity extends DBActivity
 		final TextView gplTextView = new TextView(this);
 		final ScrollView scrollView = new ScrollView(this);
 		scrollView.setPadding(10, 10, 10, 10);
-
+		
 		scrollView.addView(gplTextView);
 		final SpannableString spanned = new SpannableString(Html.fromHtml(getResources().getString(_textResID)));
 		Linkify.addLinks(spanned, Linkify.WEB_URLS);
@@ -494,7 +494,7 @@ public final class MainActivity extends DBActivity
 	private void showAboutDialog()
 	{
 		final AlertDialog.Builder aboutBuilder = new AlertDialog.Builder(this);
-		aboutBuilder.setIcon(R.drawable.icon);
+		aboutBuilder.setIcon(R.drawable.launcher);
 		aboutBuilder.setTitle(R.string.about_title);
 		aboutBuilder.setMessage(R.string.about_text);
 		aboutBuilder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()

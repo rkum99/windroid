@@ -125,7 +125,7 @@ public abstract class AbstractNotificationTask<V> implements Callable<V>
 		final Intent notificationIntent = new Intent(context, OngoingUpdateActivity.class);
 		final PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 
-		final Notification notification = new Notification(R.drawable.icon, _notificationTitle, when);
+		final Notification notification = new Notification(R.drawable.launcher, _notificationTitle, when);
 		notification.flags |= Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
 		notification.setLatestEventInfo(context, _notificationTitle, _notificationDetails, contentIntent);
 		//

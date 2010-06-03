@@ -24,7 +24,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import de.macsystems.windroid.identifyable.CardinalDirection;
 import de.macsystems.windroid.identifyable.IdentityUtil;
-import de.macsystems.windroid.identifyable.WindUnit;
+import de.macsystems.windroid.identifyable.Measure;
 
 /**
  * Renders the listview of selected Spots.
@@ -98,9 +98,11 @@ public final class SpotOverviewViewBinder implements SimpleCursorAdapter.ViewBin
 		{
 			final TextView tv = (TextView) view;
 			final String id = cursor.getString(columnIndex);
-			final WindUnit unit = WindUnit.getById(id);
+			// final WindUnit unit = WindUnit.getById(id);
+			final Measure measure = Measure.getById(id);
+
 			String name = (String) tv.getText();
-			name = name.replace("$measure", unit.name());
+			name = name.replace("$measure", measure.name());
 			tv.setText(name);
 		}
 		else if (columnIndex == INDEX_WIND_DIRECTION_START)

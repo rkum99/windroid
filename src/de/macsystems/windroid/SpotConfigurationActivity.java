@@ -37,7 +37,7 @@ import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.custom.activity.ChainSubActivity;
 import de.macsystems.windroid.identifyable.CardinalDirection;
 import de.macsystems.windroid.identifyable.IdentityUtil;
-import de.macsystems.windroid.identifyable.WindUnit;
+import de.macsystems.windroid.identifyable.Measure;
 
 /**
  * @author Jens Hohl
@@ -49,7 +49,7 @@ public final class SpotConfigurationActivity extends ChainSubActivity
 {
 	private final String LOG_TAG = SpotConfigurationActivity.class.getSimpleName();
 
-	private WindUnit currentSelectUnit = WindUnit.BEAUFORT;
+	private Measure currentSelectUnit = Measure.BEAUFORT;
 
 	private Vibrator vibrator = null;
 	/**
@@ -96,11 +96,11 @@ public final class SpotConfigurationActivity extends ChainSubActivity
 		 * Fill Unit Spinner and pre select default value from preferences
 		 */
 		final Spinner unitsSpinner = (Spinner) findViewById(R.id.units_spinner);
-		final ArrayAdapter<WindUnit> continentAdapter = new ArrayAdapter<WindUnit>(this,
-				android.R.layout.simple_spinner_item, WindUnit.values());
+		final ArrayAdapter<Measure> continentAdapter = new ArrayAdapter<Measure>(this,
+				android.R.layout.simple_spinner_item, Measure.values());
 		continentAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		// unitsSpinner.setAdapter(continentAdapter);
-		final int index = IdentityUtil.indexOf(currentSelectUnit.getId(), WindUnit.values());
+		final int index = IdentityUtil.indexOf(currentSelectUnit.getId(), Measure.values());
 		unitsSpinner.setOnItemSelectedListener(getUnitsListener());
 		unitsSpinner.setSelection(index);
 
@@ -373,7 +373,7 @@ public final class SpotConfigurationActivity extends ChainSubActivity
 	 * @param min
 	 * @param max
 	 */
-	private void updateDeltaTextView(final WindUnit unit, final int min, final int max)
+	private void updateDeltaTextView(final Measure unit, final int min, final int max)
 	{
 		final TextView deltaView = (TextView) findViewById(R.id.unit_delta_textview);
 		deltaView.setText(unit.toString() + " " + Integer.toString(min) + " - " + Integer.toString(max));

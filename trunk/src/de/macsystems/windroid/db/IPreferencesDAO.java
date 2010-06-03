@@ -20,7 +20,7 @@ package de.macsystems.windroid.db;
 import java.util.Map;
 
 import de.macsystems.windroid.identifyable.Continent;
-import de.macsystems.windroid.identifyable.WindUnit;
+import de.macsystems.windroid.identifyable.Measure;
 
 /**
  * Dao Interface for general application preferences.
@@ -140,7 +140,7 @@ public interface IPreferencesDAO extends IDAO
 	 * 
 	 * @return
 	 */
-	public WindUnit getPreferredWindUnit();
+	public Measure getPreferredWindUnit();
 
 	/**
 	 * 

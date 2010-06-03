@@ -17,6 +17,8 @@
  */
 package de.macsystems.windroid.identifyable;
 
+import java.util.Arrays;
+
 /**
  * @author Jens Hohl
  * @version $Id$
@@ -25,26 +27,38 @@ package de.macsystems.windroid.identifyable;
  */
 public enum Measure implements IdentifyAble
 {
-
-	METER("m", "m"), //
-	MILLIMETER("mm", "mm"),
-	SECONDS("s", "s"),
-	FAHRENHEIT("fahrenheit", "f"),
-	CELSIUS("celsius", "c"),
-	HEKTOPASCAL("hpa", "hpa");
+	METER("m", "meter", "m", 1), //
+	MILLIMETER("mm", "millimeter", "mm", 1),
+	SECONDS("s", "seconds", "s", 1),
+	FAHRENHEIT("fahrenheit", "fahrenheit", "f", 1),
+	CELSIUS("celsius", "celsius", "c", 99),
+	HEKTOPASCAL("hpa", "hectopascal", "hpa", 100),
+	//
+	BEAUFORT("bft", "Beaufort", "bft", 12), //
+	KNOTS("kts", "Knots", "kts", 63),
+	MPS("mps", "Meter per Second (m/s)", "mps", 37),
+	MPH("mph", "Miles per Hour", "mph", 83),
+	KMH("kmh", "Kilometer per Hour", "kmh", 133);
 
 	private final String id;
 
+	private final String description;
+
 	private final String shortDisplayName;
+
+	private final float maximum;
 
 	/**
 	 * 
 	 * @param _id
 	 */
-	private Measure(final String _id, final String _shortDisplayName)
+	// private Measure(final String _id, final String _shortDisplayName)
+	private Measure(final String _id, final String _description, final String _shortDisplayName, final float _max)
 	{
 		id = _id;
 		shortDisplayName = _shortDisplayName;
+		description = _description;
+		maximum = _max;
 	}
 
 	/*
@@ -65,6 +79,44 @@ public enum Measure implements IdentifyAble
 	public String getShortDisplayName()
 	{
 		return shortDisplayName;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public String getDescription()
+	{
+		return description;
+	}
+
+	/**
+	 * 
+	 * @return
+	 */
+	public float getMaximum()
+	{
+		return maximum;
+	}
+
+	/**
+	 * Returns <code>Measure</code> by its id.
+	 * 
+	 * @param _id
+	 * @return
+	 * @throws IllegalArgumentException
+	 * @see {@link Enum#name()}
+	 */
+	public final static Measure getById(final String _id) throws IllegalArgumentException
+	{
+		for (final Measure unit : values())
+		{
+			if (unit.id.equalsIgnoreCase(_id))
+			{
+				return unit;
+			}
+		}
+		throw new IllegalArgumentException("unknown id \"" + _id + "\". Known Values :" + Arrays.toString(values()));
 	}
 
 }

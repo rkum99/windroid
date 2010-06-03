@@ -33,7 +33,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import de.macsystems.windroid.common.PrefConstants;
 import de.macsystems.windroid.identifyable.Continent;
-import de.macsystems.windroid.identifyable.WindUnit;
+import de.macsystems.windroid.identifyable.Measure;
 
 /**
  * @author Jens Hohl
@@ -52,7 +52,7 @@ public final class Util
 	/**
 	 * {@value #DEFAULT_WIND_UNIT}
 	 */
-	private final static String DEFAULT_WIND_UNIT = WindUnit.KNOTS.getId();
+	private final static String DEFAULT_WIND_UNIT = Measure.KNOTS.getId();
 	/**
 	 * {@value #DEFAULT_CONTINENT}
 	 */
@@ -106,13 +106,13 @@ public final class Util
 	}
 
 	/**
-	 * Returns ID of selected WindUnit from <code>SharedPreferences</code>. If
+	 * Returns ID of selected Wind Unit from <code>SharedPreferences</code>. If
 	 * no selection was made the default Value will returned.
 	 * 
 	 * @param _pref
 	 * @return
 	 * @see #DEFAULT_WIND_UNIT
-	 * @see WindUnit
+	 * @see Measure
 	 */
 
 	public final static String getSelectedUnitID(final SharedPreferences _pref)

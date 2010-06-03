@@ -21,9 +21,9 @@ package de.macsystems.windroid.common;
 import java.io.Serializable;
 
 import de.macsystems.windroid.identifyable.CardinalDirection;
+import de.macsystems.windroid.identifyable.Measure;
 import de.macsystems.windroid.identifyable.Schedule;
 import de.macsystems.windroid.identifyable.Station;
-import de.macsystems.windroid.identifyable.WindUnit;
 
 /**
  * Holds Information about a Station which user configures
@@ -59,7 +59,7 @@ public final class SpotConfigurationVO implements Serializable
 	/**
 	 * Preferred Windunit of User.
 	 */
-	private WindUnit preferredWindUnit = WindUnit.KNOTS;
+	private Measure preferredWindUnit = Measure.KNOTS;
 
 	/**
 	 * @return the primaryKey
@@ -89,7 +89,7 @@ public final class SpotConfigurationVO implements Serializable
 	/**
 	 * @return the preferredWindUnit
 	 */
-	public WindUnit getPreferredWindUnit()
+	public Measure getPreferredWindUnit()
 	{
 		return preferredWindUnit;
 	}
@@ -98,7 +98,7 @@ public final class SpotConfigurationVO implements Serializable
 	 * @param preferredWindUnit
 	 *            the preferredWindUnit to set
 	 */
-	public void setPreferredWindUnit(final WindUnit preferredWindUnit)
+	public void setPreferredWindUnit(final Measure preferredWindUnit)
 	{
 		this.preferredWindUnit = preferredWindUnit;
 	}

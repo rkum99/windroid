@@ -30,7 +30,7 @@ import de.macsystems.windroid.db.DBException;
 import de.macsystems.windroid.db.EmptyCursorException;
 import de.macsystems.windroid.db.IPreferencesDAO;
 import de.macsystems.windroid.identifyable.Continent;
-import de.macsystems.windroid.identifyable.WindUnit;
+import de.macsystems.windroid.identifyable.Measure;
 import de.macsystems.windroid.io.IOUtils;
 
 /**
@@ -219,7 +219,7 @@ public final class PreferenceImpl extends BaseImpl implements IPreferencesDAO
 	}
 
 	@Override
-	public WindUnit getPreferredWindUnit()
+	public Measure getPreferredWindUnit()
 	{
 		
 		final String unit = getStringValue(KEY_PREFERRED_UNIT);

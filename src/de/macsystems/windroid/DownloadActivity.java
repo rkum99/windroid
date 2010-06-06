@@ -75,6 +75,28 @@ public final class DownloadActivity extends ChainSubActivity
 		startDownload(downloadProgressBar, databaseProgressBar);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onRestart()
+	 */
+	public void onRestart()
+	{
+		super.onRestart();
+		if (downloadThread == null)
+		{
+			final ProgressBar downloadProgressBar = (ProgressBar) findViewById(R.id.download_progressbar);
+			final ProgressBar databaseProgressBar = (ProgressBar) findViewById(R.id.download_database_progressbar);
+
+			final Button cancelButton = (Button) findViewById(R.id.download_cancel_button);
+			cancelButton.setOnClickListener(getCancelListener());
+			// FIXME: if user rotates device we create another thread!
+			startDownload(downloadProgressBar, databaseProgressBar);
+		}
+
+		Log.d(LOG_TAG, "public void onRestart()");
+	}
+
 	/**
 	 * 
 	 * @param _downloadProgress
@@ -89,6 +111,10 @@ public final class DownloadActivity extends ChainSubActivity
 		{
 			throw new NullPointerException();
 		}
+		// In case we restarted we init the progress again.
+		_databaseProgress.setProgress(0);
+		_downloadProgress.setProgress(0);
+
 		final IProgress downloadProgress = new ProgressBarAdapter(_downloadProgress);
 		final IProgress databaseProgress = new ProgressBarAdapter(_databaseProgress);
 
@@ -151,12 +177,18 @@ public final class DownloadActivity extends ChainSubActivity
 					catch (final IOException e)
 					{
 						Log.e(LOG_TAG, "IO Failure.", e);
-						showInstallationFailed(e);
+						if (!isInterrupted())
+						{
+							showInstallationFailed(e);
+						}
 					}
 					catch (final Exception e)
 					{
 						Log.e(LOG_TAG, "Failed to parse xml.", e);
-						showInstallationFailed(e);
+						if (!isInterrupted())
+						{
+							showInstallationFailed(e);
+						}
 					}
 					finally
 					{
@@ -240,15 +272,7 @@ public final class DownloadActivity extends ChainSubActivity
 			{
 				try
 				{
-					if (Logging.isLoggingEnabled())
-					{
-						Log.d(LOG_TAG, "Interrupting thread");
-					}
-					downloadThread.interrupt();
-				}
-				catch (final Exception e)
-				{
-					Log.e(LOG_TAG, "Failed to interrupt thread", e);
+					interruptThread();
 				}
 				finally
 				{
@@ -266,8 +290,34 @@ public final class DownloadActivity extends ChainSubActivity
 	 * @see android.app.Activity#onStop()
 	 */
 	@Override
-	protected void onStop()
+	protected void onPause()
 	{
-		super.onStop();
+		interruptThread();
+		super.onPause();
 	}
+
+	/**
+	 * Terminates the download-thread and nulls it!
+	 */
+	private void interruptThread()
+	{
+		try
+		{
+			if (Logging.isLoggingEnabled())
+			{
+				Log.d(LOG_TAG, "Interrupting thread");
+			}
+			if (downloadThread != null)
+			{
+				downloadThread.interrupt();
+			}
+			downloadThread = null;
+		}
+		catch (final SecurityException e)
+		{
+			Log.e(LOG_TAG, "Failed to interrupt thread", e);
+		}
+
+	}
+
 }

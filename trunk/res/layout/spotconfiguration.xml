@@ -25,13 +25,6 @@
 			android:orientation="vertical"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content">
-			<Spinner
-				android:id="@+id/units_spinner"
-				android:layout_alignParentTop="true"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:drawSelectorOnTop="false" />
-
 
 			<TextView
 				android:id="@+id/unit_delta_textview"

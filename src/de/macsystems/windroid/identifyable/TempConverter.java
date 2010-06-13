@@ -50,7 +50,7 @@ public final class TempConverter implements IConvertable
 	 * @param _value
 	 * @throws NullPointerException
 	 */
-	public TempConverter(final Temperature _value) throws NullPointerException
+	public TempConverter(final IMeasureValue _value) throws NullPointerException
 	{
 		if (_value == null)
 		{

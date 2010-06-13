@@ -24,7 +24,7 @@ package de.macsystems.windroid.identifyable;
  * @see Measure
  * 
  */
-public abstract class MeasureValue
+public abstract class MeasureValue implements IMeasureValue 
 {
 
 	protected final Measure measure;
@@ -105,18 +105,16 @@ public abstract class MeasureValue
 		return true;
 	}
 
-	/**
-	 * 
-	 * @return
+	/* (non-Javadoc)
+	 * @see de.macsystems.windroid.identifyable.IMeasureValue#getValue()
 	 */
 	public float getValue()
 	{
 		return value;
 	}
 
-	/**
-	 * 
-	 * @return
+	/* (non-Javadoc)
+	 * @see de.macsystems.windroid.identifyable.IMeasureValue#getMeasure()
 	 */
 	public Measure getMeasure()
 	{

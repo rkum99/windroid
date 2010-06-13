@@ -223,7 +223,7 @@ public final class PreferenceImpl extends BaseImpl implements IPreferencesDAO
 	{
 		
 		final String unit = getStringValue(KEY_PREFERRED_UNIT);
-		return null;
+		return Measure.getById(unit);
 	}
 
 	@Override

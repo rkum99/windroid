@@ -22,7 +22,7 @@ import java.util.Iterator;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.forecast.Forecast;
 import de.macsystems.windroid.forecast.ForecastDetail;
-import de.macsystems.windroid.identifyable.WindSpeed;
+import de.macsystems.windroid.identifyable.IMeasureValue;
 
 /**
  * @author Jens Hohl
@@ -47,7 +47,7 @@ public final class AlarmDetector
 		while (iter.hasNext())
 		{
 			final ForecastDetail detail = iter.next();
-			final WindSpeed windspeed = detail.getWindSpeed();
+			final IMeasureValue windspeed = detail.getWindSpeed();
 
 			if (_spotConfigurationVO.isUseWindirection())
 			{

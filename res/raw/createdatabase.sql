@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS preferences (_id INTEGER PRIMARY KEY AUTOINCREMENT, k
 -- Pre selected Values
 INSERT INTO preferences ('key','value') VALUES ('alarmtone','');
 INSERT INTO preferences ('key','value') VALUES ('vibrate_on_alarm','false');
-INSERT INTO preferences ('key','value') VALUES ('preferred_unit','knt');
+INSERT INTO preferences ('key','value') VALUES ('preferred_unit','kts');
 INSERT INTO preferences ('key','value') VALUES ('update_while_roaming','false');
 INSERT INTO preferences ('key','value') VALUES ('launch_on_boot','true');
 INSERT INTO preferences ('key','value') VALUES ('preferred_continent','North America');

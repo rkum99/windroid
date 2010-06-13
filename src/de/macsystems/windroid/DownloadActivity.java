@@ -65,6 +65,7 @@ public final class DownloadActivity extends ChainSubActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.download);
+		Background.apply(this);
 
 		final ProgressBar downloadProgressBar = (ProgressBar) findViewById(R.id.download_progressbar);
 		final ProgressBar databaseProgressBar = (ProgressBar) findViewById(R.id.download_database_progressbar);
@@ -93,8 +94,6 @@ public final class DownloadActivity extends ChainSubActivity
 			// FIXME: if user rotates device we create another thread!
 			startDownload(downloadProgressBar, databaseProgressBar);
 		}
-
-		Log.d(LOG_TAG, "public void onRestart()");
 	}
 
 	/**

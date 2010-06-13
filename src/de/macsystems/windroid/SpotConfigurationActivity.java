@@ -72,6 +72,7 @@ public final class SpotConfigurationActivity extends ChainSubActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.spotconfiguration);
+		Background.apply(this);
 		/**
 		 * Insert Station Name
 		 */
@@ -92,17 +93,10 @@ public final class SpotConfigurationActivity extends ChainSubActivity
 			new IllegalArgumentException("Spot Configuration missing.");
 		}
 		vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-		/**
-		 * Fill Unit Spinner and pre select default value from preferences
-		 */
-		final Spinner unitsSpinner = (Spinner) findViewById(R.id.units_spinner);
 		final ArrayAdapter<Measure> continentAdapter = new ArrayAdapter<Measure>(this,
 				android.R.layout.simple_spinner_item, Measure.values());
 		continentAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		// unitsSpinner.setAdapter(continentAdapter);
-		final int index = IdentityUtil.indexOf(currentSelectUnit.getId(), Measure.values());
-		unitsSpinner.setOnItemSelectedListener(getUnitsListener());
-		unitsSpinner.setSelection(index);
 
 		// --
 		final Spinner directionsFromSpinner = (Spinner) findViewById(R.id.units_windirection_from_spinner);

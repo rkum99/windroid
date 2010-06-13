@@ -36,6 +36,7 @@ import de.macsystems.windroid.forecast.Forecast;
 import de.macsystems.windroid.forecast.ForecastDetail;
 import de.macsystems.windroid.identifyable.CardinalDirection;
 import de.macsystems.windroid.identifyable.Cavok;
+import de.macsystems.windroid.identifyable.IMeasureValue;
 import de.macsystems.windroid.identifyable.IdentityUtil;
 import de.macsystems.windroid.identifyable.Precipitation;
 import de.macsystems.windroid.identifyable.Pressure;
@@ -196,21 +197,21 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 
 			moveToFirstOrThrow(cursor);
 
-			final Pressure airPressure = Pressure.create(getFloat(cursor, COLUMN_AIR_PRESSURE), getString(cursor,
+			final IMeasureValue airPressure = Pressure.create(getFloat(cursor, COLUMN_AIR_PRESSURE), getString(cursor,
 					COLUMN_AIR_PRESSURE_UNIT));
-			final Temperature airTemperature = Temperature.create(getFloat(cursor, COLUMN_AIR_TEMPERATURE), getString(
+			final IMeasureValue airTemperature = Temperature.create(getFloat(cursor, COLUMN_AIR_TEMPERATURE), getString(
 					cursor, COLUMN_AIR_TEMPERATURE_UNIT));
-			final Temperature waterTemperature = Temperature.create(getFloat(cursor, COLUMN_WATER_TEMPERATURE),
+			final IMeasureValue waterTemperature = Temperature.create(getFloat(cursor, COLUMN_WATER_TEMPERATURE),
 					getString(cursor, COLUMN_WATER_TEMPERATURE_UNIT));
-			final Precipitation precipitation = Precipitation.create(getFloat(cursor, COLUMN_PRECIPITATION), getString(
+			final IMeasureValue precipitation = Precipitation.create(getFloat(cursor, COLUMN_PRECIPITATION), getString(
 					cursor, COLUMN_PRECIPITATION_UNIT));
-			final WaveHeight waveHeight = WaveHeight.create(getFloat(cursor, COLUMN_WAVE_HEIGHT), getString(cursor,
+			final IMeasureValue waveHeight = WaveHeight.create(getFloat(cursor, COLUMN_WAVE_HEIGHT), getString(cursor,
 					COLUMN_WAVE_HEIGHT_UNIT));
-			final WavePeriod wavePeriod = WavePeriod.create(getFloat(cursor, COLUMN_WAVE_PERIOD), getString(cursor,
+			final IMeasureValue wavePeriod = WavePeriod.create(getFloat(cursor, COLUMN_WAVE_PERIOD), getString(cursor,
 					COLUMN_WAVE_PERIOD_UNIT));
-			final WindSpeed windSpeed = WindSpeed.create(getFloat(cursor, COLUMN_WIND_SPEED), getString(cursor,
+			final IMeasureValue windSpeed = WindSpeed.create(getFloat(cursor, COLUMN_WIND_SPEED), getString(cursor,
 					COLUMN_WIND_SPEED_UNIT));
-			final WindSpeed windGuest = WindSpeed.create(getFloat(cursor, COLUMN_WIND_GUSTS), getString(cursor,
+			final IMeasureValue windGuest = WindSpeed.create(getFloat(cursor, COLUMN_WIND_GUSTS), getString(cursor,
 					COLUMN_WIND_GUST_UNIT));
 			final String waveDirectionString = getString(cursor, COLUMN_WAVE_DIRECTION);
 			final String windDirectionString = getString(cursor, COLUMN_WIND_DIRECTION);
@@ -310,10 +311,10 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 				values.put(COLUMN_WIND_DIRECTION, detail.getWinddirection().getId());
 				//
 				values.put(COLUMN_WIND_GUSTS, detail.getWindGusts().getValue());
-				values.put(COLUMN_WIND_GUST_UNIT, detail.getWindGusts().getUnit().getId());
+				values.put(COLUMN_WIND_GUST_UNIT, detail.getWindGusts().getMeasure().getId());
 				//
 				values.put(COLUMN_WIND_SPEED, detail.getWindSpeed().getValue());
-				values.put(COLUMN_WIND_SPEED_UNIT, detail.getWindSpeed().getUnit().getId());
+				values.put(COLUMN_WIND_SPEED_UNIT, detail.getWindSpeed().getMeasure().getId());
 				//
 				final long rowID = db.insert(tableName, null, values);
 				// Update Forecast

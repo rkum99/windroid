@@ -38,6 +38,7 @@ import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.View.OnTouchListener;
@@ -54,6 +55,9 @@ import de.macsystems.windroid.db.DBException;
 import de.macsystems.windroid.db.IForecastDAO;
 import de.macsystems.windroid.forecast.Forecast;
 import de.macsystems.windroid.forecast.ForecastDetail;
+import de.macsystems.windroid.identifyable.Measure;
+import de.macsystems.windroid.identifyable.TempConverter;
+import de.macsystems.windroid.identifyable.WindSpeedConverter;
 import de.macsystems.windroid.service.IServiceCallbackListener;
 import de.macsystems.windroid.service.ISpotService;
 
@@ -83,6 +87,13 @@ public final class ForecastActivity extends DBActivity
 	 * Used to format all decimals
 	 */
 	private final static DecimalFormat numberFormat = new DecimalFormat("##0.0");
+	
+	
+	/**
+	 * Used to format all decimals
+	 */
+	private final static DecimalFormat smallNumberFormat = new DecimalFormat("##0");
+	
 	/**
 	 * All res id used to set text on a table row
 	 */
@@ -111,6 +122,25 @@ public final class ForecastActivity extends DBActivity
 	private final static int OPTION_PREVIOUS = 1200;
 	private final static int OPTION_LEGEND = 1300;
 
+	// Wind
+	private final static int OPTION_GROUP_WIND = 50000;
+
+	private final static int OPTION_GROUP_WIND_SHOW_BEAUFORT = 5000;
+	private final static int OPTION_GROUP_WIND_SHOW_KNOTS = 5100;
+	private final static int OPTION_GROUP_WIND_SHOW_KMH = 5200;
+	private final static int OPTION_GROUP_WIND_SHOW_FPS = 5300;
+	private final static int OPTION_GROUP_WIND_SHOW_FTM = 5400;
+	private final static int OPTION_GROUP_WIND_SHOW_MMI = 5500;
+	private final static int OPTION_GROUP_WIND_SHOW_MPH = 5600;
+	private final static int OPTION_GROUP_WIND_SHOW_MPS = 5700;
+
+	// Temp
+	private final static int OPTION_GROUP_TEMP = 60000;
+
+	private final static int OPTION_GROUP_TEMP_CELSIUS = 6000;
+	private final static int OPTION_GROUP_TEMP_FAHRENHEIT = 6100;
+
+	// Offset Days
 	private final static int OFFSET_DAY_ONE = 0;
 	private final static int OFFSET_DAY_TWO = 7;
 
@@ -480,7 +510,22 @@ public final class ForecastActivity extends DBActivity
 		final MenuItem next = menu.add(Menu.NONE, OPTION_NEXT, Menu.NONE, R.string.forecast_options_next);
 		next.setIcon(R.drawable.swipe_next);
 
-		final MenuItem legend = menu.add(Menu.NONE, OPTION_LEGEND, Menu.NONE, R.string.forecast_options_legend);
+		menu.add(Menu.NONE, OPTION_LEGEND, Menu.NONE, R.string.forecast_options_legend);
+		// Windspeed sub menu
+		final SubMenu windspeed = menu.addSubMenu("Windspeed");
+		windspeed.add(OPTION_GROUP_WIND, OPTION_GROUP_WIND_SHOW_BEAUFORT, 0, Measure.BEAUFORT.getDescription());
+		windspeed.add(OPTION_GROUP_WIND, OPTION_GROUP_WIND_SHOW_KNOTS, 1, Measure.KNOTS.getDescription());
+		windspeed.add(OPTION_GROUP_WIND, OPTION_GROUP_WIND_SHOW_KMH, 2, Measure.KMH.getDescription());
+		windspeed.add(OPTION_GROUP_WIND, OPTION_GROUP_WIND_SHOW_MPH, 3, Measure.MPH.getDescription());
+		windspeed.add(OPTION_GROUP_WIND, OPTION_GROUP_WIND_SHOW_MPS, 4, Measure.MPS.getDescription());
+		windspeed.add(OPTION_GROUP_WIND, OPTION_GROUP_WIND_SHOW_FPS, 5, Measure.FPS.getDescription());
+		windspeed.add(OPTION_GROUP_WIND, OPTION_GROUP_WIND_SHOW_FTM, 6, Measure.FTM.getDescription());
+		windspeed.add(OPTION_GROUP_WIND, OPTION_GROUP_WIND_SHOW_MMI, 7, Measure.MMI.getDescription());
+		//
+		// Windspeed sub menu
+		final SubMenu tempMenu = menu.addSubMenu("Temp");
+		tempMenu.add(OPTION_GROUP_TEMP, OPTION_GROUP_TEMP_CELSIUS, 1, Measure.CELSIUS.getDescription());
+		tempMenu.add(OPTION_GROUP_TEMP, OPTION_GROUP_TEMP_FAHRENHEIT, 0, Measure.FAHRENHEIT.getDescription());
 
 		return true;
 	}
@@ -519,8 +564,106 @@ public final class ForecastActivity extends DBActivity
 		{
 			showLegend();
 		}
+		else if (item.getGroupId() == OPTION_GROUP_WIND)
+		{
+			handleWindSpeedClick(item);
+		}
+		else if (item.getGroupId() == OPTION_GROUP_TEMP)
+		{
+			handleTempClick(item);
+		}
 
 		return result;
+	}
+
+	private void handleTempClick(final MenuItem _item)
+	{
+		if (_item.getGroupId() != OPTION_GROUP_TEMP)
+		{
+			throw new IllegalArgumentException("wrong group id: " + _item.getGroupId());
+		}
+
+		final Measure measure;
+		switch (_item.getItemId())
+		{
+			case OPTION_GROUP_TEMP_CELSIUS:
+				measure = Measure.CELSIUS;
+				break;
+			case OPTION_GROUP_TEMP_FAHRENHEIT:
+				measure = Measure.FAHRENHEIT;
+				break;
+
+			default:
+				throw new IllegalArgumentException("unkown measure");
+
+		}
+		TempConverter.setPreferredMeasure(measure);
+		try
+		{
+			loadForecast(selectedID);
+		}
+		catch (final DBException e)
+		{
+			Toast.makeText(this, "An error occured.", Toast.LENGTH_LONG);
+			Log.e(LOG_TAG, "failed to load forcast", e);
+		}
+	}
+
+	private final void handleWindSpeedClick(final MenuItem _item)
+	{
+		if (_item.getGroupId() != OPTION_GROUP_WIND)
+		{
+			throw new IllegalArgumentException("wrong group id: " + _item.getGroupId());
+		}
+		final Measure measure;
+		switch (_item.getItemId())
+		{
+			case OPTION_GROUP_WIND_SHOW_BEAUFORT:
+				Toast.makeText(this, "Beaufort", Toast.LENGTH_LONG).show();
+				measure = Measure.BEAUFORT;
+				break;
+			case OPTION_GROUP_WIND_SHOW_FPS:
+				Toast.makeText(this, "Feet per Second", Toast.LENGTH_LONG).show();
+				measure = Measure.FPS;
+				break;
+			case OPTION_GROUP_WIND_SHOW_FTM:
+				Toast.makeText(this, "Feet per minute", Toast.LENGTH_LONG).show();
+				measure = Measure.FTM;
+				break;
+			case OPTION_GROUP_WIND_SHOW_KMH:
+				Toast.makeText(this, "Kilometer per hour", Toast.LENGTH_LONG).show();
+				measure = Measure.KMH;
+				break;
+			case OPTION_GROUP_WIND_SHOW_KNOTS:
+				Toast.makeText(this, "Knot", Toast.LENGTH_LONG).show();
+				measure = Measure.KNOTS;
+				break;
+			case OPTION_GROUP_WIND_SHOW_MMI:
+				Toast.makeText(this, "meter per minute", Toast.LENGTH_LONG).show();
+				measure = Measure.MMI;
+				break;
+			case OPTION_GROUP_WIND_SHOW_MPH:
+				Toast.makeText(this, "Miles per hour", Toast.LENGTH_LONG).show();
+				measure = Measure.MPH;
+				break;
+			case OPTION_GROUP_WIND_SHOW_MPS:
+				Toast.makeText(this, "meter per second", Toast.LENGTH_LONG).show();
+				measure = Measure.MPS;
+				break;
+			default:
+				throw new IllegalArgumentException("unkown measure");
+
+		}
+		WindSpeedConverter.setPreferredMeasure(measure);
+		try
+		{
+			loadForecast(selectedID);
+		}
+		catch (final DBException e)
+		{
+			Toast.makeText(this, "An error occured.", Toast.LENGTH_LONG);
+			Log.e(LOG_TAG, "failed to load forcast", e);
+		}
 	}
 
 	private void showLegend()
@@ -724,12 +867,16 @@ public final class ForecastActivity extends DBActivity
 		//
 		// final Iterator<ForecastDetail> iter = _forecast.iterator();
 
+		final Date aDate = new Date();
+
 		for (int i = 0; i < rowIDs.length; i++)
 		{
 			final TextView tv = (TextView) _row.findViewById(rowIDs[i]);
 			{
 				final ForecastDetail detail = _forecast.get(_offset + i);
-				tv.setText(dateFormat.format(detail.getDate()));
+				aDate.setTime(detail.getDate() + (1000L * 60L));
+				// Log.d(LOG_TAG, "Date " + aDate.toString());
+				tv.setText(dateFormat.format(aDate));
 			}
 		}
 	}
@@ -771,7 +918,7 @@ public final class ForecastActivity extends DBActivity
 		{
 			final TextView tv = (TextView) _row.findViewById(_rowIDs[i]);
 			final ForecastDetail detail = _forecast.get(_offset + i);
-			tv.setText(numberFormat.format(detail.getAirPressure().getValue()));
+			tv.setText(smallNumberFormat.format(detail.getAirPressure().getValue()));
 		}
 	}
 
@@ -806,7 +953,7 @@ public final class ForecastActivity extends DBActivity
 
 		final TextView rowName = (TextView) _row.findViewById(R.id.forecast_text_column_name);
 		final String text = _row.getResources().getString(_columNameResID);
-		rowName.setText(text + " (" + _forecast.get(0).getWindSpeed().getUnit().getShortDisplayName() + ")");
+		rowName.setText(text + " (" + _forecast.get(0).getWindSpeed().getMeasure().getShortDisplayName() + ")");
 
 		//
 		// final Iterator<ForecastDetail> iter = _forecast.iterator();
@@ -833,13 +980,13 @@ public final class ForecastActivity extends DBActivity
 		//
 		final TextView rowName = (TextView) _row.findViewById(R.id.forecast_text_column_name);
 		final String text = _row.getResources().getString(_columNameResID);
-		rowName.setText(text + " (" + _forecast.get(0).getWindGusts().getUnit().getShortDisplayName() + ")");
+		rowName.setText(text + " (" + _forecast.get(0).getWindGusts().getMeasure().getShortDisplayName() + ")");
 
 		for (int i = 0; i < _rowIDs.length; i++)
 		{
 			final TextView tv = (TextView) _row.findViewById(_rowIDs[i]);
 			final ForecastDetail detail = _forecast.get(_offset + i);
-			tv.setText(numberFormat.format(detail.getWindGusts().getValue()));
+			tv.setText(smallNumberFormat.format(detail.getWindGusts().getValue()));
 		}
 	}
 
@@ -859,7 +1006,7 @@ public final class ForecastActivity extends DBActivity
 		{
 			final TextView tv = (TextView) _row.findViewById(_rowIDs[i]);
 			final ForecastDetail detail = _forecast.get(_offset + i);
-			tv.setText(numberFormat.format(detail.getAirTemperature().getValue()));
+			tv.setText(smallNumberFormat.format(detail.getAirTemperature().getValue()));
 
 		}
 	}
@@ -882,7 +1029,7 @@ public final class ForecastActivity extends DBActivity
 		{
 			final TextView tv = (TextView) _row.findViewById(_rowIDs[i]);
 			final ForecastDetail detail = _forecast.get(_offset + i);
-			tv.setText(numberFormat.format(detail.getWaterTemperature().getValue()));
+			tv.setText(smallNumberFormat.format(detail.getWaterTemperature().getValue()));
 		}
 	}
 

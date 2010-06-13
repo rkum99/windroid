@@ -19,12 +19,10 @@ package de.macsystems.windroid.forecast;
 
 import de.macsystems.windroid.identifyable.CardinalDirection;
 import de.macsystems.windroid.identifyable.Cavok;
-import de.macsystems.windroid.identifyable.Precipitation;
-import de.macsystems.windroid.identifyable.Pressure;
-import de.macsystems.windroid.identifyable.Temperature;
-import de.macsystems.windroid.identifyable.WaveHeight;
-import de.macsystems.windroid.identifyable.WavePeriod;
-import de.macsystems.windroid.identifyable.WindSpeed;
+import de.macsystems.windroid.identifyable.IConvertable;
+import de.macsystems.windroid.identifyable.IMeasureValue;
+import de.macsystems.windroid.identifyable.TempConverter;
+import de.macsystems.windroid.identifyable.WindSpeedConverter;
 
 /**
  * @author Jens Hohl
@@ -49,27 +47,27 @@ public final class ForecastDetail
 
 	private final long time;
 
-	private final Temperature airTemperature;
+	private final IConvertable airTemperature;
 
-	private final Temperature waterTemperature;
+	private final IConvertable waterTemperature;
 
 	private final CardinalDirection winddirection;
 
-	private final WindSpeed windSpeed;
+	private final IConvertable windSpeed;
 
-	private final WindSpeed windGusts;
+	private final IConvertable windGusts;
 
 	private final Cavok clouds;
 
-	private final Precipitation precipitation;
+	private final IMeasureValue precipitation;
 
-	private final WaveHeight waveHeight;
+	private final IMeasureValue waveHeight;
 
-	private final WavePeriod wavePeriod;
+	private final IMeasureValue wavePeriod;
 
 	private final CardinalDirection waveDirection;
 
-	private final Pressure airPressure;
+	private final IMeasureValue airPressure;
 
 	/**
 	 * 
@@ -81,11 +79,11 @@ public final class ForecastDetail
 	{
 		this.date = _builder.date;
 		this.time = _builder.time;
-		this.airTemperature = _builder.airTemperature;
-		this.waterTemperature = _builder.waterTemperature;
+		this.airTemperature = new TempConverter(_builder.airTemperature);
+		this.waterTemperature = new TempConverter(_builder.waterTemperature);
 		this.winddirection = _builder.winddirection;
-		this.windSpeed = _builder.windSpeed;
-		this.windGusts = _builder.windGusts;
+		this.windSpeed = new WindSpeedConverter(_builder.windSpeed);
+		this.windGusts = new WindSpeedConverter(_builder.windGusts);
 		this.clouds = _builder.clouds;
 		this.precipitation = _builder.precipitation;
 		this.waveHeight = _builder.waveHeight;
@@ -111,7 +109,7 @@ public final class ForecastDetail
 	/**
 	 * @return the air pressure
 	 */
-	public Pressure getAirPressure()
+	public IMeasureValue getAirPressure()
 	{
 		return airPressure;
 	}
@@ -141,7 +139,7 @@ public final class ForecastDetail
 	/**
 	 * @return the airTemperature
 	 */
-	public Temperature getAirTemperature()
+	public IMeasureValue getAirTemperature()
 	{
 		return airTemperature;
 	}
@@ -149,7 +147,7 @@ public final class ForecastDetail
 	/**
 	 * @return the waterTemperature
 	 */
-	public Temperature getWaterTemperature()
+	public IMeasureValue getWaterTemperature()
 	{
 		return waterTemperature;
 	}
@@ -165,7 +163,7 @@ public final class ForecastDetail
 	/**
 	 * @return the windSpeed
 	 */
-	public WindSpeed getWindSpeed()
+	public IMeasureValue getWindSpeed()
 	{
 		return windSpeed;
 	}
@@ -173,7 +171,7 @@ public final class ForecastDetail
 	/**
 	 * @return the windGusts
 	 */
-	public WindSpeed getWindGusts()
+	public IMeasureValue getWindGusts()
 	{
 		return windGusts;
 	}
@@ -189,7 +187,7 @@ public final class ForecastDetail
 	/**
 	 * @return the precipitation
 	 */
-	public Precipitation getPrecipitation()
+	public IMeasureValue getPrecipitation()
 	{
 		return precipitation;
 	}
@@ -197,7 +195,7 @@ public final class ForecastDetail
 	/**
 	 * @return the waveHeight
 	 */
-	public WaveHeight getWaveHeight()
+	public IMeasureValue getWaveHeight()
 	{
 		return waveHeight;
 	}
@@ -205,7 +203,7 @@ public final class ForecastDetail
 	/**
 	 * @return the wavePeriod
 	 */
-	public WavePeriod getWavePeriod()
+	public IMeasureValue getWavePeriod()
 	{
 		return wavePeriod;
 	}
@@ -240,27 +238,27 @@ public final class ForecastDetail
 
 		private long time;
 
-		private Temperature airTemperature;
+		private IMeasureValue airTemperature;
 
-		private Temperature waterTemperature;
+		private IMeasureValue waterTemperature;
 
 		private CardinalDirection winddirection;
 
-		private WindSpeed windSpeed;
+		private IMeasureValue windSpeed;
 
-		private WindSpeed windGusts;
+		private IMeasureValue windGusts;
 
 		private Cavok clouds;
 
-		private Precipitation precipitation;
+		private IMeasureValue precipitation;
 
-		private WaveHeight waveHeight;
+		private IMeasureValue waveHeight;
 
-		private WavePeriod wavePeriod;
+		private IMeasureValue wavePeriod;
 
 		private CardinalDirection waveDirection;
 
-		private Pressure airPressure;
+		private IMeasureValue airPressure;
 
 		public Builder()
 		{
@@ -290,7 +288,7 @@ public final class ForecastDetail
 		 * @param _airTemperature
 		 *            the airTemperature to set
 		 */
-		public Builder setAirTemperature(final Temperature _airTemperature)
+		public Builder setAirTemperature(final IMeasureValue _airTemperature)
 		{
 			this.airTemperature = _airTemperature;
 			return this;
@@ -300,7 +298,7 @@ public final class ForecastDetail
 		 * @param _waterTemperature
 		 *            the waterTemperature to set
 		 */
-		public Builder setWaterTemperature(final Temperature _waterTemperature)
+		public Builder setWaterTemperature(final IMeasureValue _waterTemperature)
 		{
 			this.waterTemperature = _waterTemperature;
 			return this;
@@ -320,7 +318,7 @@ public final class ForecastDetail
 		 * @param _windSpeed
 		 *            the windSpeed to set
 		 */
-		public Builder setWindSpeed(final WindSpeed _windSpeed)
+		public Builder setWindSpeed(final IMeasureValue _windSpeed)
 		{
 			this.windSpeed = _windSpeed;
 			return this;
@@ -330,7 +328,7 @@ public final class ForecastDetail
 		 * @param _windGusts
 		 *            the windGusts to set
 		 */
-		public Builder setWindGusts(final WindSpeed _windGusts)
+		public Builder setWindGusts(final IMeasureValue _windGusts)
 		{
 
 			this.windGusts = _windGusts;
@@ -351,7 +349,7 @@ public final class ForecastDetail
 		 * @param _precipitation
 		 *            the precipitation to set
 		 */
-		public Builder setPrecipitation(final Precipitation _precipitation)
+		public Builder setPrecipitation(final IMeasureValue _precipitation)
 		{
 			this.precipitation = _precipitation;
 			return this;
@@ -361,7 +359,7 @@ public final class ForecastDetail
 		 * @param _waveHeight
 		 *            the waveHeight to set
 		 */
-		public Builder setWaveHeight(final WaveHeight _waveHeight)
+		public Builder setWaveHeight(final IMeasureValue _waveHeight)
 		{
 			this.waveHeight = _waveHeight;
 			return this;
@@ -371,7 +369,7 @@ public final class ForecastDetail
 		 * @param _wavePeriod
 		 *            the wavePeriod to set
 		 */
-		public Builder setWavePeriod(final WavePeriod _wavePeriod)
+		public Builder setWavePeriod(final IMeasureValue _wavePeriod)
 		{
 			this.wavePeriod = _wavePeriod;
 			return this;
@@ -391,7 +389,7 @@ public final class ForecastDetail
 		 * @param _airPressure
 		 *            the airPressure to set
 		 */
-		public Builder setAirPressure(final Pressure _airPressure)
+		public Builder setAirPressure(final IMeasureValue _airPressure)
 		{
 			this.airPressure = _airPressure;
 			return this;
@@ -400,8 +398,9 @@ public final class ForecastDetail
 		/**
 		 * 
 		 * @return
+		 * @throws NullPointerException
 		 */
-		public ForecastDetail build()
+		public ForecastDetail build() throws NullPointerException
 		{
 			return new ForecastDetail(this);
 		}
@@ -411,8 +410,10 @@ public final class ForecastDetail
 	/**
 	 * 
 	 * @param _object
+	 * @param _name
+	 * @throws NullPointerException
 	 */
-	public final static void nullCheck(final Object _object, final String _name)
+	public final static void nullCheck(final Object _object, final String _name) throws NullPointerException
 	{
 		if (null == _object)
 		{

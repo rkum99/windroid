@@ -67,6 +67,7 @@ public final class SpotSelectionActivity extends DBChainSubActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.spotselection);
+		Background.apply(this);
 		handler.post(populateParsingResults());
 
 		spotDAO = DAOFactory.getSpotDAO(SpotSelectionActivity.this);

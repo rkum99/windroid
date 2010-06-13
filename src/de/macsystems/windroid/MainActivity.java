@@ -38,6 +38,7 @@ import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -227,13 +228,12 @@ public final class MainActivity extends DBActivity
 
 		startSpotService();
 		setContentView(R.layout.main);
-		
-		
-		//final View view = findViewById(R.id.background_image_main);
-		//System.out.println("View "+view);
-		
+
+		// final View view = findViewById(R.id.background_image_main);
+		// System.out.println("View "+view);
+
 		Background.apply(this);
-		
+
 		final Button selectSpotButton = (Button) findViewById(R.id.button_show_station_selection);
 		selectSpotButton.setOnClickListener(new View.OnClickListener()
 		{
@@ -344,7 +344,7 @@ public final class MainActivity extends DBActivity
 		final TextView gplTextView = new TextView(this);
 		final ScrollView scrollView = new ScrollView(this);
 		scrollView.setPadding(10, 10, 10, 10);
-		
+
 		scrollView.addView(gplTextView);
 		final SpannableString spanned = new SpannableString(Html.fromHtml(getResources().getString(_textResID)));
 		Linkify.addLinks(spanned, Linkify.WEB_URLS);
@@ -499,10 +499,13 @@ public final class MainActivity extends DBActivity
 
 	private void showAboutDialog()
 	{
+		LayoutInflater inflater = LayoutInflater.from(this);
+		final View view = inflater.inflate(R.layout.about, null);
+
 		final AlertDialog.Builder aboutBuilder = new AlertDialog.Builder(this);
 		aboutBuilder.setIcon(R.drawable.launcher);
 		aboutBuilder.setTitle(R.string.about_title);
-		aboutBuilder.setMessage(R.string.about_text);
+		aboutBuilder.setView(view);
 		aboutBuilder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener()
 		{
 			public final void onClick(final DialogInterface dialog, final int which)

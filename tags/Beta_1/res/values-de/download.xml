@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<!--
+		@version $Id: spotsummary.xml 158 2010-01-20 02:07:02Z jens.hohl $
+	-->
+
+<resources>
+	<string
+		name="download_loading_spot_description">Lade Spotbeschreibung</string>
+	<string
+		name="download_create_database_progress">Erzeuge Datenbank</string>
+	<string
+		name="download_title">Installation</string>
+	<string
+		name="download_cancel_button_text">Abbrechen</string>
+	<string
+		name="download_description_text">Die Anwendung wird nun die Spotbeschreibung
+		herunterladen.
+		Danach
+		wird eine Interne Datenbank angelegt. Im Anschluss können Sie
+		Ihren
+		ersten Spot konfigurieren. Je nach Verbindungsgeschwindigkeit
+		kann
+		dies
+		etwas Zeit in anspruch nehmen.\nSollte der Download scheitern
+		überprüfen Sie ihre Netzwerkeinstellungen.</string>
+	<string
+		name="download_failure_header">Fehler</string>
+	<string
+		name="download_success_header">Erfolg</string>
+	<string
+		name="download_failure_text">Die Installation schlug fehl.\n\nDetails:\n</string>
+	<string
+		name="download_success_text">Die Installation ist nun abgeschlossen, Windroid ist
+		bereit.\nViel Spass!</string>
+</resources>

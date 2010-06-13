@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<!--
+		@version $Id$
+	-->
+
+
+<resources>
+<string name="mainfest_description">Windalarms for Kiters, Surfers and anybody driven by Wind</string>
+<string name="mainfest_label">Windroid</string>
+</resources>

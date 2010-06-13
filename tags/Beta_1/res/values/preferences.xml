@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<!--
+		@version $Id: spotsummary.xml 158 2010-01-20 02:07:02Z jens.hohl $
+	-->
+
+<resources>
+	<string
+		name="preferences_title">Preferences</string>
+	<string
+		name="preferences_preferred_setting_title">Preferred User settings</string>
+
+	<string
+		name="preferences_preferred_units_title">Measure</string>
+	<string
+		name="preferences_preferred_units_summary">Wind measure</string>
+
+	<string
+		name="preferences_preferred_continent_title">Measures</string>
+	<string
+		name="preferences_preferred_continent_summary">Preferred Wind measure</string>
+
+	<string
+		name="preferences_miscellaneous_title">Miscellaneous</string>
+	<string
+		name="preferences_miscellaneous_update_while_roaming_title">Roaming</string>
+	<string
+		name="preferences_miscellaneous_update_while_roaming_summary">
+		Monitor spots if roaming active</string>
+	<string
+		name="preferences_miscellaneous_vibrate_on_alarm_summary">Vibrate on alarm</string>
+	<string
+		name="preferences_miscellaneous_vibrate_on_alarm_title">Vibration</string>
+	<string
+		name="preferences_miscellaneous_music_on_alarm_title">Audio alert</string>
+	<string
+		name="preferences_miscellaneous_alarmtone_title">Alarm</string>
+	<string
+		name="preferences_miscellaneous_music_on_alarm_summary">Play audio on alarm</string>
+	<string
+		name="preferences_miscellaneous_alarmtone_summary">Choose alarm sound</string>
+	<string
+		name="preferences_miscellaneous_warn_when_update_failed_summary">Alert on failed monitoring</string>
+	<string
+		name="preferences_miscellaneous_warn_when_update_failed_title">Monitoring alert</string>
+	<string
+		name="preferences_miscellaneous_launch_on_boot_title">Auto start </string>
+	<string
+		name="preferences_miscellaneous_launch_on_boot_summary">automatic start application after reboot</string>
+</resources>

@@ -1,0 +1,75 @@
+/**
+ This file is part of Windroid.
+
+ Windroid is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ Windroid is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with Windroid.  If not, see <http://www.gnu.org/licenses/>.
+
+ */
+package de.macsystems.windroid.receiver;
+
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
+import de.macsystems.windroid.Logging;
+import de.macsystems.windroid.common.IntentConstants;
+
+/**
+ * Called when Alarm comes up. The primary key received is the Spot which needs
+ * to be monitored.
+ * 
+ * @author mac
+ * @version $Id: AlarmBroadcastReciever.java 190 2010-02-06 01:04:09Z jens.hohl
+ *          $
+ */
+public class AlarmBroadcastReciever extends BroadcastReceiver
+{
+	private final static String LOG_TAG = AlarmBroadcastReciever.class.getSimpleName();
+
+	private final int ILLEGAL_VALUE = -1;
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.content.BroadcastReceiver#onReceive(android.content.Context,
+	 * android.content.Intent)
+	 */
+	@Override
+	public void onReceive(final Context context, final Intent intent)
+	{
+		final int id = intent.getIntExtra(IntentConstants.SELECTED_PRIMARY_KEY, ILLEGAL_VALUE);
+		if (id == ILLEGAL_VALUE)
+		{
+			throw new IllegalArgumentException("missing id");
+		}
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "Alarm for Station " + id + " triggered.");
+		}
+		// Start the SpotService
+		final Intent startServiceIntent = new Intent();
+		startServiceIntent.putExtra(IntentConstants.SELECTED_PRIMARY_KEY, id);
+		startServiceIntent.setAction(IntentConstants.DE_MACSYSTEMS_WINDROID_START_SPOT_SERVICE_ACTION);
+		final ComponentName name = context.startService(startServiceIntent);
+		if (name == null)
+		{
+			Log.e(LOG_TAG, "Failed to start SpotService.");
+		}
+		else
+		{
+			Log.i(LOG_TAG, "SpotService launched : " + name.toString());
+		}
+
+	}
+}

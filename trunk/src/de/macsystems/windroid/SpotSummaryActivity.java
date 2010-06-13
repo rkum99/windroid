@@ -52,7 +52,8 @@ public final class SpotSummaryActivity extends Activity
 	protected void onCreate(final Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.spotsummary);
+		setContentView(R.layout.spot_summary_new);
+		Background.apply(this);
 		spotConfiguration = (SpotConfigurationVO) getIntent().getExtras().get(IntentConstants.SPOT_TO_CONFIGURE);
 
 		final CompassView compassView = (CompassView) findViewById(R.id.compass);

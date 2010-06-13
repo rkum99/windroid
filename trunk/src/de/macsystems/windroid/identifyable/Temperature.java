@@ -20,9 +20,9 @@ package de.macsystems.windroid.identifyable;
 /**
  * @author Jens Hohl
  * @version $Id$
- * 
+ * @see http://de.wikipedia.org/wiki/Grad_Fahrenheit
  */
-public final class Temperature extends MeasureValue implements IConvertable
+public final class Temperature extends MeasureValue
 {
 	/**
 	 * 
@@ -42,10 +42,12 @@ public final class Temperature extends MeasureValue implements IConvertable
 	 */
 	public static Temperature create(final float _value, final String _unit)
 	{
+
 		return new Temperature(_value, getUnit(_unit));
 	}
 
 	/**
+	 * creates Celsius.
 	 * 
 	 * @param _value
 	 * @return
@@ -56,6 +58,7 @@ public final class Temperature extends MeasureValue implements IConvertable
 	}
 
 	/**
+	 * Creates Fahrenheit.
 	 * 
 	 * @param _value
 	 * @return
@@ -65,28 +68,15 @@ public final class Temperature extends MeasureValue implements IConvertable
 		return new Temperature(_value, Measure.FAHRENHEIT);
 	}
 
-	@Override
-	public MeasureValue convertTo(final Measure _measure)
+	/**
+	 * Calculates celsius into fahrenheit.
+	 * 
+	 * @param _value
+	 * @return
+	 */
+	public static Temperature asFahrenheit(final Temperature _celsius)
 	{
-		if (_measure == null)
-		{
-			throw new NullPointerException("Measure");
-		}
-		if (getMeasure() == _measure)
-		{
-			return this;
-		}
-
-		switch (_measure)
-		{
-			case CELSIUS:
-				return new Temperature(getValue(), Measure.CELSIUS);
-			case FAHRENHEIT:
-				return new Temperature(getValue(), Measure.FAHRENHEIT);
-			default:
-				throw new IllegalArgumentException("cant convert " + getMeasure() + " into "
-						+ _measure.getShortDisplayName());
-
-		}
+		return new Temperature(_celsius.getValue() * 1.8f + 32, Measure.FAHRENHEIT);
 	}
+
 }

@@ -28,6 +28,7 @@ import android.provider.Settings.System;
 import android.util.Log;
 import de.macsystems.windroid.db.DAOFactory;
 import de.macsystems.windroid.db.IPreferencesDAO;
+import de.macsystems.windroid.identifyable.WindSpeedConverter;
 
 /**
  * Main Preferences Screen of Windroid
@@ -66,6 +67,10 @@ public final class Preferences extends PreferenceActivity
 		final Map<String, ?> prefs = Util.getSharedPreferences(this).getAll();
 		prefDAO.update(prefs);
 		logSharedPreferences();
+		
+		
+		WindSpeedConverter.setPreferredMeasure(prefDAO.getPreferredWindUnit());
+		
 		super.onPause();
 	}
 

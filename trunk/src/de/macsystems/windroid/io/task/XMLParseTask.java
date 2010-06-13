@@ -89,7 +89,7 @@ public class XMLParseTask extends IOTask<Integer, InputStream>
 	@Override
 	public Integer process(final Context _context, final InputStream _instream) throws IOException, Exception
 	{
-		final BufferedInputStream buffInStream = new BufferedInputStream(_instream);
+		final BufferedInputStream buffInStream = new BufferedInputStream(_instream, IOUtils.BIG_BUFFER_SIZE);
 		try
 		{
 			final SAXParserFactory factory = SAXParserFactory.newInstance();

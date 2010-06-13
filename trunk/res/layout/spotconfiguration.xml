@@ -3,7 +3,8 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical"
 	android:layout_width="fill_parent"
-	android:layout_height="wrap_content">
+	android:layout_height="wrap_content"
+	android:id="@+id/background_pattern">
 	<TextView
 		android:id="@+id/title_spot_configuration"
 		android:text="@string/spot_config_title"
@@ -90,14 +91,14 @@
 				android:layout_alignParentTop="true"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
-				android:drawSelectorOnTop="false" />
+				android:drawSelectorOnTop="true" />
 
 			<Spinner
 				android:id="@+id/units_windirection_to_spinner"
 				android:layout_alignParentTop="true"
 				android:layout_width="fill_parent"
 				android:layout_height="wrap_content"
-				android:drawSelectorOnTop="false" />
+				android:drawSelectorOnTop="true" />
 
 			<View
 				android:layout_height="10dip"

@@ -7,6 +7,7 @@ import java.util.Random;
 import android.app.Activity;
 import android.graphics.Shader.TileMode;
 import android.graphics.drawable.BitmapDrawable;
+import android.util.Log;
 import android.view.View;
 
 /**
@@ -17,6 +18,8 @@ import android.view.View;
  */
 public final class Background
 {
+	private final static String LOG_TAG = Background.class.getSimpleName();
+
 	private final static List<TileModePair> bgs = new ArrayList<TileModePair>();
 	static
 	{
@@ -25,29 +28,49 @@ public final class Background
 	};
 	private static Random random = new Random(bgs.size());
 
+	private final static int UNKNOWN = -1;
+
+	private static volatile int choosenBg = UNKNOWN;
+
 	/**
 	 * Applys a Background to an activiy. The Activity already must have a
-	 * layout which contains a ID with name: <b>R.id.background_pattern</b>
+	 * layout which contains a ID : {@link R.id.background_pattern}.
 	 * 
-	 * @param activity
+	 * @param _activity
 	 */
-	public static void apply(final Activity activity)
+	public static void apply(final Activity _activity)
 	{
-		if (activity == null)
+		if (_activity == null)
 		{
 			throw new NullPointerException("Activity");
 		}
 
-		final View view = activity.findViewById(R.id.background_pattern);
+		final View view = _activity.findViewById(R.id.background_pattern);
+		if (view == null)
+		{
+			Log.w(LOG_TAG, "Cant find id for Background, skipping! Activity is :" + _activity.getClass().getName());
+			return;
+		}
+
 		final TileModePair pair = getRandom(bgs);
-		final BitmapDrawable bgImage = (BitmapDrawable) activity.getResources().getDrawable(pair.resID);
+		final BitmapDrawable bgImage = (BitmapDrawable) _activity.getResources().getDrawable(pair.resID);
 		bgImage.setTileModeXY(pair.modeX, pair.modeY);
 		view.setBackgroundDrawable(bgImage);
 	}
 
+	/**
+	 * Returns {@link TileModePair}
+	 * 
+	 * @param _list
+	 * @return
+	 */
 	private static TileModePair getRandom(final List<? extends TileModePair> _list)
 	{
-		return _list.get(random.nextInt(_list.size()));
+		if (choosenBg == UNKNOWN)
+		{
+			choosenBg = random.nextInt(_list.size());
+		}
+		return _list.get(choosenBg);
 	}
 
 	private static final class TileModePair
@@ -62,6 +85,5 @@ public final class Background
 			modeX = _x;
 			modeY = _y;
 		}
-
 	}
 }

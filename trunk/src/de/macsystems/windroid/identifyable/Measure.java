@@ -27,15 +27,22 @@ import java.util.Arrays;
  */
 public enum Measure implements IdentifyAble
 {
+	// Length
 	METER("m", "meter", "m", 1), //
 	MILLIMETER("mm", "millimeter", "mm", 1),
+	// Time
 	SECONDS("s", "seconds", "s", 1),
+	// Pressure
+	HEKTOPASCAL("hpa", "hectopascal", "hpa", 100),
+	// Temp
 	FAHRENHEIT("fahrenheit", "fahrenheit", "f", 1),
 	CELSIUS("celsius", "celsius", "c", 99),
-	HEKTOPASCAL("hpa", "hectopascal", "hpa", 100),
-	//
+	// Wind
 	BEAUFORT("bft", "Beaufort", "bft", 12), //
 	KNOTS("kts", "Knots", "kts", 63),
+	FPS("fps", "Feet per second (f/s)", "fps", 0),
+	FTM("ftm", "Feet per minute (f/min)", "ftm", 0),
+	MMI("mmi", "Meter per minute (m/min)", "mmi", 0),
 	MPS("mps", "Meter per Second (m/s)", "mps", 37),
 	MPH("mph", "Miles per Hour", "mph", 83),
 	KMH("kmh", "Kilometer per Hour", "kmh", 133);

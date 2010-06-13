@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.Toast;
 import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.Util;
 import de.macsystems.windroid.common.IntentConstants;
@@ -80,6 +81,7 @@ public class BootCompletedBroadcastReceiver extends BroadcastReceiver
 				}
 				else
 				{
+					Toast.makeText(_context, "Windroid on boot started", Toast.LENGTH_LONG).show();
 					if (Logging.isLoggingEnabled())
 					{
 						Log.i(LOG_TAG, "SpotService on boot launched.");

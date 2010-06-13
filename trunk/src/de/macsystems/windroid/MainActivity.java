@@ -227,7 +227,13 @@ public final class MainActivity extends DBActivity
 
 		startSpotService();
 		setContentView(R.layout.main);
-
+		
+		
+		//final View view = findViewById(R.id.background_image_main);
+		//System.out.println("View "+view);
+		
+		Background.apply(this);
+		
 		final Button selectSpotButton = (Button) findViewById(R.id.button_show_station_selection);
 		selectSpotButton.setOnClickListener(new View.OnClickListener()
 		{

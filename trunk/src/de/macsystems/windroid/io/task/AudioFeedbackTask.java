@@ -76,7 +76,7 @@ public abstract class AudioFeedbackTask extends AbstractNotificationTask<Void> i
 	 */
 	public AudioFeedbackTask(final Context _context) throws NullPointerException
 	{
-		this(_context, R.raw.update_running, R.raw.update_failed);
+		this(_context, R.raw.update_sucessfull, R.raw.update_failed);
 	}
 
 	/**

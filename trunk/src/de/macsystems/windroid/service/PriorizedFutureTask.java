@@ -21,13 +21,12 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
-import de.macsystems.windroid.Logging;
-
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 import android.util.Log;
+import de.macsystems.windroid.Logging;
 
 /**
  * @author mac
@@ -38,11 +37,11 @@ final class PriorizedFutureTask extends FutureTask<Void>
 
 	private final static String LOG_TAG = PriorizedFutureTask.class.getSimpleName();
 
-	final PRIORITY prio;
+	protected final PRIORITY prio;
 
-	private final int TASK_FAILED = 10;
-	private final int TASK_COMPLETED = 20;
-	private final int TASK_CANCELLED = 30;
+	private final static int TASK_FAILED = 100;
+	private final static int TASK_COMPLETED = 200;
+	private final static int TASK_CANCELLED = 300;
 
 	private final RemoteCallbackList<IServiceCallbackListener> callbackListener = new RemoteCallbackList<IServiceCallbackListener>();
 
@@ -88,6 +87,7 @@ final class PriorizedFutureTask extends FutureTask<Void>
 	@Override
 	protected void done()
 	{
+		super.done();
 		if (Logging.isLoggingEnabled())
 		{
 			Log.d(LOG_TAG, "protected void done()");
@@ -108,9 +108,10 @@ final class PriorizedFutureTask extends FutureTask<Void>
 		{
 			message.what = TASK_FAILED;
 		}
-
-		mHandler.sendMessage(message);
-		super.done();
+		finally
+		{
+			mHandler.sendMessage(message);
+		}
 	}
 
 	/**
@@ -124,15 +125,15 @@ final class PriorizedFutureTask extends FutureTask<Void>
 		public void handleMessage(final Message msg)
 		{
 			// Broadcast to all clients the new value.
-			final int N = callbackListener.beginBroadcast();
+			final int nrOfCallbacks = callbackListener.beginBroadcast();
 			final int what = msg.what;
 			if (Logging.isLoggingEnabled())
 			{
-				Log.d(LOG_TAG, "broadcast " + what + " to " + N + " callback listeners");
+				Log.d(LOG_TAG, "broadcast " + what + " to " + nrOfCallbacks + " callback listeners");
 			}
 			try
 			{
-				for (int i = 0; i < N; i++)
+				for (int i = 0; i < nrOfCallbacks; i++)
 				{
 					try
 					{

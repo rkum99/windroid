@@ -231,6 +231,7 @@ public final class SpotOverviewActivity extends DBListActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.spotoverview);
+		Background.apply(this);
 		dao = DAOFactory.getSelectedDAO(this);
 		daoManager.addDAO(dao);
 	}

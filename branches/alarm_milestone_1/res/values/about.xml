@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<!--
+		@version $Id$
+	-->
+<resources>
+	<string
+		name="about_text">Windroid\n\n
+		\n
+		Author Jens Hohl\n
+		\n
+		See	http://code.google.com/p/windroid/
+		for
+		further
+		information.\n\nWindroid is licensed under General Public
+		Licence 3
+		(GPLv3)\n
+		\n
+		Data provided by Windfinder.com\n
+		\n
+		Icons from
+		http://www.everaldo.com\n
+		\n
+		GNOME Weather Icons by DarKobra\n
+	</string>
+	<string
+		name="about_title">About</string>
+	<string
+		name="about_button_text">About</string>
+</resources>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<!--
+		@version $Id: spotconfiguration.xml 14 2009-07-29 01:54:55Z jens.hohl
+		$
+	-->
+
+<resources>
+	<string
+		name="spot_configuration_title">Details</string>
+	<string
+		name="spot_config_title">Please configure details for $1.</string>
+	<string
+		name="unit_enable_winddirection_select">Wind direction</string>
+	<string
+		name="spot_configuration_accept_button">Ok</string>
+
+
+
+	<string
+		name="unit_range_start_text">From</string>
+	<string
+		name="unit_range_end_text">To</string>
+
+</resources>

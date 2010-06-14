@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<!--
+		@version $Id$
+	-->
+
+<resources>
+	<string
+		name="schedule_button_ok_text">Apply</string>
+	<string
+		name="schedule_title">Update Schedule</string>
+	<string
+		name="schedule_button_time_text">Time</string>
+</resources>

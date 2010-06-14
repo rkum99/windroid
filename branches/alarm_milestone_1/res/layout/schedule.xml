@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:scrollbars="vertical"
+	android:layout_height="fill_parent"
+	android:layout_width="fill_parent"
+	android:id="@+id/background_pattern">
+	<TableLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:stretchColumns="*">
+		<TableRow>
+			<CheckBox
+				android:id="@+id/schedule_checkbox_weekday_monday"
+				android:text="@string/weekday_monday" />
+			<Button
+				android:text="@string/schedule_button_time_text"
+				android:id="@+id/schedule_button_weekday_monday" />
+			<TextView
+				android:text="--:--"
+				android:textStyle="bold"
+				android:id="@+id/schedule_label_weekday_monday"
+				android:layout_gravity="center_horizontal|center_vertical" />
+		</TableRow>
+		<TableRow>
+			<CheckBox
+				android:id="@+id/schedule_checkbox_weekday_tuesday"
+				android:text="@string/weekday_tuesday" />
+			<Button
+				android:text="@string/schedule_button_time_text"
+				android:id="@+id/schedule_button_weekday_tuesday" />
+			<TextView
+				android:text="--:--"
+				android:textStyle="bold"
+				android:id="@+id/schedule_label_weekday_tuesday"
+				android:layout_gravity="center_horizontal|center_vertical" />
+		</TableRow>
+		<TableRow>
+			<CheckBox
+				android:id="@+id/schedule_checkbox_weekday_wednesday"
+				android:text="@string/weekday_wednesday" />
+			<Button
+				android:text="@string/schedule_button_time_text"
+				android:id="@+id/schedule_button_weekday_wednesday" />
+			<TextView
+				android:text="--:--"
+				android:textStyle="bold"
+				android:id="@+id/schedule_label_weekday_wednesday"
+				android:layout_gravity="center_horizontal|center_vertical" />
+		</TableRow>
+		<TableRow>
+			<CheckBox
+				android:id="@+id/schedule_checkbox_weekday_thursday"
+				android:text="@string/weekday_thursday" />
+			<Button
+				android:text="@string/schedule_button_time_text"
+				android:id="@+id/schedule_button_weekday_thursday" />
+			<TextView
+				android:text="--:--"
+				android:textStyle="bold"
+				android:id="@+id/schedule_label_weekday_thursday"
+				android:layout_gravity="center_horizontal|center_vertical" />
+		</TableRow>
+		<TableRow>
+			<CheckBox
+				android:id="@+id/schedule_checkbox_weekday_friday"
+				android:text="@string/weekday_friday" />
+			<Button
+				android:text="@string/schedule_button_time_text"
+				android:id="@+id/schedule_button_weekday_friday" />
+			<TextView
+				android:text="--:--"
+				android:id="@+id/schedule_label_weekday_friday"
+				android:layout_gravity="center_horizontal|center_vertical" />
+		</TableRow>
+		<TableRow>
+			<CheckBox
+				android:id="@+id/schedule_checkbox_weekday_saturday"
+				android:text="@string/weekday_saturday" />
+			<Button
+				android:text="@string/schedule_button_time_text"
+				android:id="@+id/schedule_button_weekday_saturday" />
+			<TextView
+				android:text="--:--"
+				android:textStyle="bold"
+				android:id="@+id/schedule_label_weekday_saturday"
+				android:layout_gravity="center_horizontal|center_vertical" />
+		</TableRow>
+		<TableRow>
+			<CheckBox
+				android:id="@+id/schedule_checkbox_weekday_sunday"
+				android:text="@string/weekday_sunday" />
+			<Button
+				android:text="@string/schedule_button_time_text"
+				android:id="@+id/schedule_button_weekday_sunday" />
+			<TextView
+				android:text="--:--"
+				android:textStyle="bold"
+				android:id="@+id/schedule_label_weekday_sunday"
+				android:layout_gravity="center_horizontal|center_vertical" />
+		</TableRow>
+		<View
+			android:layout_height="10dip"
+			android:layout_width="fill_parent" />
+		<TableRow>
+			<Button
+				android:id="@+id/schedule_button_ok"
+				android:layout_span="3"
+				android:text="@string/schedule_button_ok_text"
+				android:layout_width="fill_parent"
+				android:layout_height="fill_parent" />
+		</TableRow>
+	</TableLayout>
+</ScrollView>

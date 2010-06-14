@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/forecast_flipper_page_one"
+	android:layout_height="fill_parent"
+	android:layout_width="fill_parent">
+	<LinearLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:orientation="vertical"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+
+		<TextView
+			android:id="@+id/about_top_line"
+			android:gravity="center_horizontal"
+			android:text="Windroid"
+			android:textStyle="bold"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:linksClickable="true" />
+
+
+		<TextView
+			android:id="@+id/about_author"
+			android:gravity="center_horizontal"
+			android:text="Author : Jens Hohl"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:linksClickable="true" />
+
+		<View
+			android:layout_width="fill_parent"
+			android:layout_height="20dp" />
+
+
+		<TextView
+			android:id="@+id/about_data_provider"
+			android:gravity="center_horizontal"
+			android:text="Data : http://windfinder.com"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:linksClickable="true"
+			android:autoLink="web" />
+
+		<TextView
+			android:id="@+id/about_icons_weather"
+			android:gravity="center_horizontal"
+			android:text="GNOME Weather Icons by DarKobra"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:linksClickable="true"
+			android:autoLink="web" />
+
+		<TextView
+			android:id="@+id/about_icons_weather"
+			android:gravity="center_horizontal"
+			android:text="Crystal Icons by http://www.everaldo.com"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:linksClickable="true"
+			android:autoLink="web" />
+
+		<View
+			android:layout_width="fill_parent"
+			android:layout_height="20dp" />
+		<TextView
+			android:id="@+id/about_further_infos"
+			android:gravity="center_horizontal"
+			android:text="See http://code.google.com/p/windroid for further information.\nWindroid is licensed under General Public Licence 3 (GPLv3)"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:linksClickable="true"
+			android:autoLink="web" />
+
+
+	</LinearLayout>
+</ScrollView>

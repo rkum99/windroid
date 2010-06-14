@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/background_pattern">
+
+	<de.macsystems.windroid.custom.view.CompassView
+		android:id="@+id/compass"
+		android:layout_centerHorizontal="true"
+		android:background="@drawable/compass_new"
+		android:layout_width="200dip"
+		android:layout_height="200dip" />
+
+	<View
+		android:id="@+id/dummy"
+		android:layout_below="@id/compass"
+		android:layout_width="fill_parent"
+		android:layout_height="20dp" />
+
+	<Button
+		android:id="@+id/spotsummary_accept"
+		android:drawableTop="@drawable/activ_on"
+		android:text="@string/spot_summary_add"
+		android:layout_alignParentBottom="true"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" />
+	<Button
+		android:id="@+id/spotsummary_cancel"
+		android:drawableTop="@drawable/activ_off"
+		android:text="@string/spot_summary_cancel"
+		android:layout_above="@id/spotsummary_accept"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content" />
+</RelativeLayout>

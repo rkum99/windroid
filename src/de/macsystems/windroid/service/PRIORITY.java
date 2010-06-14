@@ -20,7 +20,7 @@ package de.macsystems.windroid.service;
 import java.util.Comparator;
 
 /**
- * Define Priority
+ * Define Priority of a Task
  * 
  * @author mac
  * @version $Id$

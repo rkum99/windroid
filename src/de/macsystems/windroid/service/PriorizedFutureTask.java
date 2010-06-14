@@ -29,6 +29,8 @@ import android.util.Log;
 import de.macsystems.windroid.Logging;
 
 /**
+ * A Task with a priority.
+ * 
  * @author mac
  * @version $Id$
  */
@@ -61,8 +63,8 @@ final class PriorizedFutureTask extends FutureTask<Void>
 	 * 
 	 * @param _prio
 	 * @param _task
+	 * @param _listener
 	 * @throws NullPointerException
-	 * 
 	 */
 	PriorizedFutureTask(final PRIORITY _prio, final Callable<Void> _task, final IServiceCallbackListener _listener)
 			throws NullPointerException

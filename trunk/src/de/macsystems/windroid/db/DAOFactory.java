@@ -32,8 +32,13 @@ import de.macsystems.windroid.progress.IProgress;
 import de.macsystems.windroid.progress.NullProgressAdapter;
 
 /**
+ * Creates all DAO instances.
+ * 
+ * 
  * @author Jens Hohl
  * @version $Id$
+ * @see IProgress
+ * @see NullProgressAdapter
  */
 public final class DAOFactory
 {
@@ -63,64 +68,51 @@ public final class DAOFactory
 	public final static ISpotDAO getSpotDAO(final Context _context)
 	{
 		return new SpotImpl(createDatabase(_context), NullProgressAdapter.INSTANCE);
-		// return new SpotImpl(new Database(_context),
-		// NullProgressAdapter.INSTANCE);
 	}
 
 	public final static ISpotDAO getSpotDAO(final Context _context, final IProgress _progress)
 	{
 		return new SpotImpl(createDatabase(_context), _progress);
-		// return new SpotImpl(new Database(_context), _progress);
 	}
 
 	public final static IContinentDAO getContinentDAO(final Context _context)
 	{
 		return new ContinentImpl(createDatabase(_context), NullProgressAdapter.INSTANCE);
-		// return new ContinentImpl(new Database(_context),
-		// NullProgressAdapter.INSTANCE);
 	}
 
 	public final static IContinentDAO getContinentDAO(final Context _context, final IProgress _progress)
 	{
 		return new ContinentImpl(createDatabase(_context), _progress);
-		// return new ContinentImpl(new Database(_context), _progress);
 	}
 
 	public final static ISelectedDAO getSelectedDAO(final Context _context)
 	{
-
 		return new SelectedImpl(createDatabase(_context));
-		// return new SelectedImpl(new Database(_context));
 	}
 
 	public final static ISelectedDAO getSelectedDAO(final Context _context, final IProgress _progress)
 	{
 		return new SelectedImpl(createDatabase(_context), _progress);
-		// return new SelectedImpl(new Database(_context), _progress);
 	}
 
 	public static ICountryDAO getCountryDAO(final Context _context)
 	{
 		return new CountryImpl(createDatabase(_context));
-		// return new CountryImpl(new Database(_context));
 	}
 
 	public final static IRegionDAO getRegionDAO(final Context _context, final IProgress _progress)
 	{
 		return new RegionImpl(createDatabase(_context), _progress);
-		// return new RegionImpl(new Database(_context), _progress);
 	}
 
 	public final static IRegionDAO getRegionDAO(final Context _context)
 	{
 		return new RegionImpl(createDatabase(_context));
-		// return new RegionImpl(new Database(_context));
 	}
 
 	public final static IPreferencesDAO getPreferencesDAO(final Context _context)
 	{
 		return new PreferenceImpl(createDatabase(_context));
-		// return new PreferenceImpl(new Database(_context));
 	}
 
 }

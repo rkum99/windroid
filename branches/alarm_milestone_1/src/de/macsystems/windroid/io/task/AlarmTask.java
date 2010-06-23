@@ -26,6 +26,7 @@ import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.R;
 import de.macsystems.windroid.WindUtils;
 import de.macsystems.windroid.alarm.AlarmUtil;
+import de.macsystems.windroid.alarm.Alert;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.db.DAOFactory;
 import de.macsystems.windroid.db.DBException;
@@ -35,37 +36,45 @@ import de.macsystems.windroid.forecast.Forecast;
 import de.macsystems.windroid.io.RetryLaterException;
 
 /**
- * A Task which is only called from windroid itself as a Alarm happened. It
- * provides audio feedback to indicate what is going on (testing).
+ * A Task which is only called from windroid-service itself. This Alarm is a
+ * regular Alarm which got invoked by the AlarmManager enqueued PendingIntent
+ * instances.<br>
+ * 
  * 
  * @author mac
  * @version $Id$
  */
-public class AlarmUpdateTask extends AudioFeedbackTask
+public class AlarmTask extends AudioFeedbackTask
 {
-	private final static String LOG_TAG = AlarmUpdateTask.class.getSimpleName();
+	private final static String LOG_TAG = AlarmTask.class.getSimpleName();
 
-	private final int selectedID;
+	private final Alert alert;
 
 	/**
 	 * 
 	 * @param _context
-	 * @param _selectedID
+	 * @param _alert
 	 * @throws NullPointerException
 	 */
-	public AlarmUpdateTask(final Context _context, final int _selectedID) throws NullPointerException
+	public AlarmTask(final Context _context, final Alert _alert) throws NullPointerException
 	{
 		super(_context);
-		selectedID = _selectedID;
+		if (_alert == null)
+		{
+			throw new NullPointerException("alert");
+		}
+		alert = _alert;
 	}
 
 	@Override
 	public void execute() throws Exception
 	{
+		boolean showNotification = true;
 		try
 		{
+
 			final ISelectedDAO dao = DAOFactory.getSelectedDAO(getContext());
-			final SpotConfigurationVO vo = dao.getSpotConfiguration(selectedID);
+			final SpotConfigurationVO vo = dao.getSpotConfiguration(alert.getSelectedID());
 
 			showStatus(getContext().getString(R.string.recieve_forecast_update_title) + vo.getStation().getName(), "");
 			if (!vo.isActiv())
@@ -81,7 +90,7 @@ public class AlarmUpdateTask extends AudioFeedbackTask
 			final boolean available = isNetworkReachable();
 			if (!available)
 			{
-				AlarmUtil.createRetryAlarm(selectedID, getContext());
+				AlarmUtil.enqueueRetryAlarm(alert, getContext());
 				if (Logging.isLoggingEnabled())
 				{
 					Log.d(LOG_TAG, "Cancel update as network not reachable.");
@@ -99,19 +108,19 @@ public class AlarmUpdateTask extends AudioFeedbackTask
 				final Forecast forecast = task.execute(getContext());
 				// Update Forecast in DB
 				final IForecastDAO forecastDAO = DAOFactory.getForecast(getContext());
-				forecastDAO.updateForecast(forecast, selectedID);
+				forecastDAO.updateForecast(forecast, alert.getSelectedID());
 				// for Audio output
 				setAsSuccessfull();
 			}
 			catch (final IOException e)
 			{
 				Log.e(LOG_TAG, "Failed to create uri", e);
-				AlarmUtil.createRetryAlarm(selectedID, getContext());
+				AlarmUtil.enqueueRetryAlarm(alert, getContext());
 			}
 			catch (final RetryLaterException e)
 			{
 				Log.e(LOG_TAG, "", e);
-				AlarmUtil.createRetryAlarm(selectedID, getContext());
+				AlarmUtil.enqueueRetryAlarm(alert, getContext());
 			}
 
 		}
@@ -126,5 +135,4 @@ public class AlarmUpdateTask extends AudioFeedbackTask
 		}
 
 	}
-
 }

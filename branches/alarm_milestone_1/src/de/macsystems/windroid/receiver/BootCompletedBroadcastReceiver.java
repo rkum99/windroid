@@ -17,6 +17,11 @@
  */
 package de.macsystems.windroid.receiver;
 
+import java.util.Collection;
+
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -25,8 +30,15 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 import de.macsystems.windroid.Logging;
+import de.macsystems.windroid.OngoingUpdateActivity;
+import de.macsystems.windroid.R;
 import de.macsystems.windroid.Util;
+import de.macsystems.windroid.alarm.AlarmUtil;
 import de.macsystems.windroid.common.IntentConstants;
+import de.macsystems.windroid.common.SpotConfigurationVO;
+import de.macsystems.windroid.db.DAOFactory;
+import de.macsystems.windroid.db.DBException;
+import de.macsystems.windroid.db.ISelectedDAO;
 
 /**
  * Broadcast Reciever which gets called when Boot is complete. When called it
@@ -63,31 +75,101 @@ public class BootCompletedBroadcastReceiver extends BroadcastReceiver
 				Log.i(LOG_TAG, "Boot completed.");
 			}
 
-			// TODO Use DB!
-			final SharedPreferences preferences = Util.getSharedPreferences(_context);
-			final boolean isLaunchOnBoot = Util.isLaunchOnBoot(preferences);
-			if (Logging.isLoggingEnabled())
+			try
 			{
-				Log.i(LOG_TAG, "Start SpotService on boot :" + isLaunchOnBoot);
-			}
-			if (isLaunchOnBoot)
-			{
-				final Intent startServiceIntent = new Intent();
-				startServiceIntent.setAction(IntentConstants.DE_MACSYSTEMS_WINDROID_START_SPOT_SERVICE_ACTION);
-				final ComponentName name = _context.startService(startServiceIntent);
-				if (name == null)
+				final ISelectedDAO dao = DAOFactory.getSelectedDAO(_context);
+				if (dao.isSpotActiv())
 				{
-					Log.e(LOG_TAG, "Failed to start SpotService.");
+					final Collection<SpotConfigurationVO> activeSpots = dao.getActivSpots();
+					enqueueSpots(activeSpots, _context);
 				}
 				else
 				{
-					Toast.makeText(_context, "Windroid on boot started", Toast.LENGTH_LONG).show();
 					if (Logging.isLoggingEnabled())
 					{
-						Log.i(LOG_TAG, "SpotService on boot launched.");
+						Log.d(LOG_TAG, "No Spots to enqueue on reboot.");
 					}
 				}
 			}
+			catch (final DBException e)
+			{
+				Log.e(LOG_TAG, "Failed to fetch active spots.", e);
+			}
+
+			startService(_context);
 		}
+	}
+
+	private static void startService(final Context _context)
+	{
+		// TODO Use DB!
+		final SharedPreferences preferences = Util.getSharedPreferences(_context);
+		final boolean isLaunchOnBoot = Util.isLaunchOnBoot(preferences);
+		if (Logging.isLoggingEnabled())
+		{
+			Log.i(LOG_TAG, "Start SpotService on boot :" + isLaunchOnBoot);
+		}
+		if (isLaunchOnBoot)
+		{
+			final Intent startServiceIntent = new Intent();
+			startServiceIntent.setAction(IntentConstants.DE_MACSYSTEMS_WINDROID_START_SPOT_SERVICE_ACTION);
+			final ComponentName name = _context.startService(startServiceIntent);
+			if (name == null)
+			{
+				Log.e(LOG_TAG, "Failed to start SpotService.");
+			}
+			else
+			{
+				Toast.makeText(_context, "Windroid on boot started", Toast.LENGTH_LONG).show();
+				if (Logging.isLoggingEnabled())
+				{
+					Log.i(LOG_TAG, "SpotService on boot launched.");
+				}
+			}
+		}
+	}
+
+	/**
+	 * Enqueues all spots again after reboot.
+	 * 
+	 * @param _spots
+	 *            can be null
+	 * @param _context
+	 * @throws NullPointerException
+	 *             if context is null
+	 */
+	private final static void enqueueSpots(final Collection<SpotConfigurationVO> _spots, final Context _context)
+			throws NullPointerException
+	{
+		if (_spots == null)
+		{
+			Log.w(LOG_TAG, "No spots to enqueue as collection is null!");
+			return;
+		}
+		if (_context == null)
+		{
+			throw new NullPointerException("Context");
+		}
+		for (SpotConfigurationVO vo : _spots)
+		{
+			AlarmUtil.createAlarmForSpot(vo, _context);
+		}
+
+		final String _notificationTitle = "Monitoring started";
+		final String _notificationDetails = "" + _spots.size() + " spots scheduled.";
+
+		final NotificationManager notificationManager = (NotificationManager) _context
+				.getSystemService(Context.NOTIFICATION_SERVICE);
+
+		final long when = System.currentTimeMillis(); // notification time
+		final Intent notificationIntent = new Intent(_context, OngoingUpdateActivity.class);
+		final PendingIntent contentIntent = PendingIntent.getActivity(_context, 0, notificationIntent, 0);
+
+		final Notification notification = new Notification(R.drawable.launcher, _notificationTitle, when);
+		notification.flags |= Notification.FLAG_AUTO_CANCEL;
+		notification.setLatestEventInfo(_context, _notificationTitle, _notificationDetails, contentIntent);
+		//
+		notificationManager.notify(777, notification);
+
 	}
 }

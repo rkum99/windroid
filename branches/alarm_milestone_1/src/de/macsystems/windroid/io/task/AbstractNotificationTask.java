@@ -43,11 +43,11 @@ public abstract class AbstractNotificationTask<V> implements Callable<V>
 
 	private final String LOG_TAG = AbstractNotificationTask.class.getSimpleName();
 	/**
-	 * Thread save integer which can be used to count alarm id.
+	 * Thread save integer which can be used to count notification id.
 	 */
 	private final static AtomicInteger notificationCounter = new AtomicInteger(1);
 
-	private int statusID = -1;
+	private int notificationID = -1;
 
 	private final Context context;
 
@@ -112,6 +112,7 @@ public abstract class AbstractNotificationTask<V> implements Callable<V>
 	 * 
 	 * @param _notificationTitle
 	 * @param _notificationDetails
+	 * @see #clearNotification()
 	 */
 	protected void showStatus(final String _notificationTitle, final String _notificationDetails)
 	{
@@ -119,7 +120,7 @@ public abstract class AbstractNotificationTask<V> implements Callable<V>
 		final NotificationManager notificationManager = (NotificationManager) context
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 
-		statusID = notificationCounter.incrementAndGet();
+		notificationID = notificationCounter.incrementAndGet();
 
 		final long when = System.currentTimeMillis(); // notification time
 		final Intent notificationIntent = new Intent(context, OngoingUpdateActivity.class);
@@ -129,7 +130,7 @@ public abstract class AbstractNotificationTask<V> implements Callable<V>
 		notification.flags |= Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
 		notification.setLatestEventInfo(context, _notificationTitle, _notificationDetails, contentIntent);
 		//
-		notificationManager.notify(statusID, notification);
+		notificationManager.notify(notificationID, notification);
 	}
 
 	/**
@@ -139,6 +140,6 @@ public abstract class AbstractNotificationTask<V> implements Callable<V>
 	{
 		final NotificationManager notificationManager = (NotificationManager) context
 				.getSystemService(Context.NOTIFICATION_SERVICE);
-		notificationManager.cancel(statusID);
+		notificationManager.cancel(notificationID);
 	}
 }

@@ -36,15 +36,25 @@ public final class IntentConstants
 	public static final String SPOT_TO_CONFIGURE = "selectedStation";
 
 	/**
-	 * Used to recieve AlarmDetail Object {@value #ALARM_DETAIL}
+	 * Used to recieve AlarmDetail Object notification
+	 * {@value #ALARM_NOTIFICATION}
 	 */
-	public static final String ALARM_DETAIL = "AlarmDetail";
+	public static final String ALARM_NOTIFICATION = "ALARM_NOTIFICATION";
+
+	/**
+	 * Used to retrieve the repeat id from an intent {@value #REPEAT_ID}
+	 */
+	public static final String REPEAT_ID = "repeat_id";
 
 	/**
 	 * Name of Action which will start this Service
 	 * {@value #DE_MACSYSTEMS_WINDROID_START_SPOT_SERVICE_ACTION}
 	 */
 	public static final String DE_MACSYSTEMS_WINDROID_START_SPOT_SERVICE_ACTION = "de.macsystems.windroid.START_SPOT_SERVICE_ACTION";
+	/**
+	 * Name of Action for Alert {@value #DE_MACSYSTEMS_WINDROID_ALERT_TRIGGER}
+	 */
+	public static final String DE_MACSYSTEMS_WINDROID_ALERT_TRIGGER = "de.macsystems.windroid.ALERT_TRIGGER";
 
 	/**
 	 * Name of Intent Action which will be broadcasted on Spot update (use a
@@ -62,16 +72,10 @@ public final class IntentConstants
 	 */
 	public final static String SELECTED_RETRY_COUNTER = "selected retry counter";
 
-	
 	/**
 	 * Lookup Key for primary key of forecast to show.
 	 * {@value #STORED_FORECAST_KEY}
 	 */
 	public final static String STORED_FORECAST_KEY = "show forecast key";
-
-	/**
-	 * Type of event which
-	 */
-	public final static String ALARM_ON_SPOT = "alarm on spot";
 
 }

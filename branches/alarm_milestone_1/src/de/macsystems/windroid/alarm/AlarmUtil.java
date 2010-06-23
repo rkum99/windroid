@@ -17,6 +17,9 @@
  */
 package de.macsystems.windroid.alarm;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import android.app.AlarmManager;
@@ -26,9 +29,13 @@ import android.content.Intent;
 import android.util.Log;
 import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.common.IntentConstants;
+import de.macsystems.windroid.common.SpotConfigurationVO;
+import de.macsystems.windroid.identifyable.Repeat;
+import de.macsystems.windroid.identifyable.Schedule;
 import de.macsystems.windroid.receiver.AlarmBroadcastReciever;
 
 /**
+ * Util class for Alert/Alarm handling
  * 
  * @author mac
  * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
@@ -37,75 +44,143 @@ public final class AlarmUtil
 {
 	private final static String LOG_TAG = AlarmUtil.class.getSimpleName();
 
-	private static final long INITIAL_DELAY = 100L;
+	private final static long INITIAL_DELAY = 100L;
 
 	private final static AtomicInteger REQUEST_COUNTER = new AtomicInteger(1);
+
+	private final static int MAX_RETRYS = 3;
 
 	private AlarmUtil()
 	{
 	}
 
 	/**
-	 * Creates an Alarm by using the <code>AlarmService</code>. Each Alarm will
-	 * call {@link AlarmBroadcastReciever}. Lookup Intent data to lookup primary
-	 * key of selected spot to update.
+	 * Creates an Alerts for each <code>Repeat</code> which is active by using
+	 * the <code>AlarmService</code>. Each Alarm will call
+	 * {@link AlarmBroadcastReciever}.<br>
+	 * The Intent will call the {@link AlarmBroadcastReciever} with intent data
+	 * which describe an {@link Alert}.
 	 * 
 	 * @param _id
 	 * @param _context
-	 * @see IntentConstants#SELECTED_PRIMARY_KEY can be used to lookup primary
-	 *      key of spot to monitor
+	 * @see Alert
+	 * @see AlarmUtil#readAlertFormAlarmIntent(Intent) to get an {@link Alert}
+	 *      from an {@link Intent}
+	 * @see AlarmUtil#writeAlertToIntent(Alert, Intent) to write an
+	 *      {@link Alert} into an {@link Intent}
 	 */
-	public static void createAlarmForSpot(final int _id, final Context _context)
+	public static void createAlarmForSpot(final SpotConfigurationVO _vo, final Context _context)
 	{
 		if (_context == null)
 		{
 			throw new NullPointerException("context");
 		}
 
+		if (_vo == null)
+		{
+			throw new NullPointerException("vo");
+		}
+
 		if (Logging.isLoggingEnabled())
 		{
-			Log.d(LOG_TAG, "Creating alarm for spot with id:" + _id);
+			Log.d(LOG_TAG, "Creating alarms for spot with id:" + _vo.getPrimaryKey());
 		}
+
+		final Schedule schedule = _vo.getSchedule();
+		final Iterator<Integer> iter = schedule.getRepeatIterator();
+
+		final List<Alert> alertsToEnqueue = new ArrayList<Alert>();
+		while (iter.hasNext())
+		{
+			final Repeat repeat = schedule.getRepeat(iter.next());
+			if (repeat.isActiv())
+			{
+				alertsToEnqueue.add(new Alert(_vo.getStation().getName(), _vo.getPrimaryKey(), repeat.getId(), 0,
+						repeat.getDayTime(), repeat.getDayOfWeek()));
+			}
+		}
+
+		final AlarmManager alarmManager = (AlarmManager) _context.getSystemService(Context.ALARM_SERVICE);
+
 		final long now = System.currentTimeMillis();
 		//
-		final Intent intent = new Intent(_context, AlarmBroadcastReciever.class);
-		intent.putExtra(IntentConstants.SELECTED_PRIMARY_KEY, _id);
 
-		final int requestID = REQUEST_COUNTER.incrementAndGet();
+		for (int i = 0; i < alertsToEnqueue.size(); i++)
+		{
+			final Alert alert = alertsToEnqueue.get(i);
+			final Intent intent = new Intent(_context, AlarmBroadcastReciever.class);
+			intent.setAction(IntentConstants.DE_MACSYSTEMS_WINDROID_ALERT_TRIGGER);
+			AlarmUtil.writeAlertToIntent(alert, intent);
+			//
+			final PendingIntent pendingIntent = PendingIntent.getBroadcast(_context, REQUEST_COUNTER.incrementAndGet(),
+					intent, 0);
+			alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (1L * 1000L),
+					(30L * 1000L), pendingIntent);
 
-		final PendingIntent pendingIntent = PendingIntent.getBroadcast(_context, requestID, intent,
-				PendingIntent.FLAG_ONE_SHOT);
-		final AlarmManager alarmManager = (AlarmManager) _context.getSystemService(Context.ALARM_SERVICE);
-		// TODO Fix initial delay
-		alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, now + INITIAL_DELAY, (10L * 1000L), pendingIntent);
+			if (Logging.isLoggingEnabled())
+			{
+				Log.d(LOG_TAG, "Enqueued Alert " + alert.toString());
+			}
+		}
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "Creating alarms for spot with id:" + _vo.getPrimaryKey() + " finished.");
+		}
 
-		// alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, now +
-		// INITIAL_DELAY, AlarmManager.INTERVAL_DAY,
-		// pendingIntent);
 	}
 
 	/**
-	 * Creates an Alarm when Network not reachable that will be processed in the
-	 * future.
+	 * Creates an alarm if network not reachable that will be processed in the
+	 * future using {@link AlarmManager}.<br>
+	 * It is possible that an alert will not be processed as the alert already
+	 * reached max retrys.
 	 * 
-	 * @param _selectedID
+	 * @return <code>true</code> if alarm is enqueued.
+	 * @param _alert
 	 * @param _context
+	 * @throws NullPointerException
 	 */
-	public static void createRetryAlarm(final int _selectedID, final Context _context)
+	public static boolean enqueueRetryAlarm(final Alert _alert, final Context _context) throws NullPointerException
 	{
-		if (Logging.isLoggingEnabled())
+		if (_alert == null)
 		{
-			Log.d(LOG_TAG, "Creating retry alarm for selected with id :" + _selectedID);
+			throw new NullPointerException("Alert");
 		}
+		if (_context == null)
+		{
+			throw new NullPointerException("Context");
+		}
+		// TODO: Change to control wake up retry time
+		// final long retryInMS = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
+		final long retryInMS = 1000L * 3;
+		_alert.incrementRetryCounter();
+		if (_alert.isExpired())
+		{
+			if (Logging.isLoggingEnabled())
+			{
+				Log.d(LOG_TAG, "Alert expired for Spot :\"" + _alert.getSpotName() + "\", retrys : "
+						+ _alert.getRetryCounter() + ", skipping!");
+				return false;
+
+			}
+		}
+
 		final long now = System.currentTimeMillis();
 		//
 		final Intent intent = new Intent(_context, AlarmBroadcastReciever.class);
-		intent.putExtra(IntentConstants.SELECTED_PRIMARY_KEY, _selectedID);
+		writeAlertToIntent(_alert, intent);
 		final int requestID = REQUEST_COUNTER.incrementAndGet();
 		final PendingIntent pendingIntent = PendingIntent.getBroadcast(_context, requestID, intent,
 				PendingIntent.FLAG_ONE_SHOT);
 		final AlarmManager alarmManager = (AlarmManager) _context.getSystemService(Context.ALARM_SERVICE);
-		alarmManager.set(AlarmManager.RTC_WAKEUP, now + AlarmManager.INTERVAL_HOUR, pendingIntent);
+		alarmManager.set(AlarmManager.RTC_WAKEUP, now + retryInMS, pendingIntent);
+		//
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "Enqueued retry alert :" + _alert.toString());
+		}
+		return true;
+
 	}
 
 	/**
@@ -118,7 +193,7 @@ public final class AlarmUtil
 	{
 		if (Logging.isLoggingEnabled())
 		{
-			Log.d(LOG_TAG, "Canceling Alarm for selected with id :" + _selectedID);
+			Log.d(LOG_TAG, "Canceling Alert for selected with id :" + _selectedID);
 		}
 		//
 
@@ -130,4 +205,122 @@ public final class AlarmUtil
 		alarmManager.cancel(pendingIntent);
 	}
 
+	/**
+	 * Recreats an <code>Alert</code> from an Intent. (Deserialize)
+	 * 
+	 * @param _intent
+	 * @return
+	 * @throws NullPointerException
+	 * @throws IllegalArgumentException
+	 * @see #writeAlertToIntent(Alert, Intent)
+	 * @see #isAlertIntent(Intent)
+	 */
+	public static Alert readAlertFormAlarmIntent(final Intent _intent) throws NullPointerException,
+			IllegalArgumentException
+	{
+		if (_intent == null)
+		{
+			throw new NullPointerException("Intent");
+		}
+		final int NOT_FOUND = -1;
+		final int NOT_FOUND_LONG = -1;
+		//
+		final String stationName = _intent.getStringExtra(Alert.SPOTNAME);
+		final int selectedID = _intent.getIntExtra(Alert.SELECTED_ID, NOT_FOUND);
+		final int repeatID = _intent.getIntExtra(Alert.REPEAT_ID, NOT_FOUND);
+		final int retryCounter = _intent.getIntExtra(Alert.RETRYS, NOT_FOUND);
+		final long time = _intent.getLongExtra(Alert.TIME, NOT_FOUND_LONG);
+		final int weekday = _intent.getIntExtra(Alert.WEEKDAY, NOT_FOUND);
+
+		if (stationName == null || selectedID == NOT_FOUND || repeatID == NOT_FOUND || repeatID == NOT_FOUND
+				|| retryCounter == NOT_FOUND || weekday == NOT_FOUND || time == NOT_FOUND_LONG)
+		{
+			throw new IllegalArgumentException("Intent missing alert entrys! Entrys : stationName=" + stationName
+					+ " selectedID=" + selectedID + " repeatID=" + repeatID + " retryCounter=" + retryCounter
+					+ " time=" + time + " weekday=" + weekday);
+		}
+
+		final Alert alert = new Alert(stationName, selectedID, repeatID, retryCounter, time, weekday);
+		return alert;
+	}
+
+	/**
+	 * 
+	 * @param _intent
+	 * @return
+	 * @throws NullPointerException
+	 */
+	public static boolean isAlertIntent(final Intent _intent) throws NullPointerException
+	{
+		if (_intent == null)
+		{
+			throw new NullPointerException("Intent");
+		}
+		final int NOT_FOUND = -1;
+		final int NOT_FOUND_LONG = -1;
+		//
+		final String spotName = _intent.getStringExtra(Alert.SPOTNAME);
+		final int selectedID = _intent.getIntExtra(Alert.SELECTED_ID, NOT_FOUND);
+		final int repeatID = _intent.getIntExtra(Alert.REPEAT_ID, NOT_FOUND);
+		final int retryCounter = _intent.getIntExtra(Alert.RETRYS, NOT_FOUND);
+		final long time = _intent.getLongExtra(Alert.TIME, NOT_FOUND_LONG);
+		final int weekday = _intent.getIntExtra(Alert.WEEKDAY, NOT_FOUND);
+
+		final boolean result = (spotName != null || selectedID != NOT_FOUND || repeatID != NOT_FOUND
+				|| repeatID != NOT_FOUND || retryCounter != NOT_FOUND || weekday != NOT_FOUND || time != NOT_FOUND_LONG);
+		return result;
+
+	}
+
+	/**
+	 * Cancels an alert which occured if nessesary!
+	 * 
+	 * @param _alert
+	 * @param _context
+	 */
+	public static void cancelAlarm(final Alert _alert, final Context _context)
+	{
+		if (_alert == null)
+		{
+			throw new NullPointerException("Alert");
+		}
+		if (_context == null)
+		{
+			throw new NullPointerException("Context");
+		}
+
+		if (_alert.isRetry() && _alert.getRetryCounter() >= MAX_RETRYS)
+		{
+
+		}
+
+		throw new UnsupportedOperationException("Cancel Alarm not supported yet.");
+
+	}
+
+	/**
+	 * Writes all info needed to recreate an alert from an intent (Serialize).
+	 * 
+	 * @param _alert
+	 * @param _intent
+	 * @throws NullPointerException
+	 * @see {@link #readAlertFormAlarmIntent(Intent)}
+	 */
+	public static void writeAlertToIntent(final Alert _alert, final Intent _intent) throws NullPointerException
+	{
+		if (_intent == null)
+		{
+			throw new NullPointerException("intent");
+		}
+		if (_alert == null)
+		{
+			throw new NullPointerException("alert");
+		}
+		_intent.putExtra(Alert.SPOTNAME, _alert.getSpotName());
+		_intent.putExtra(Alert.REPEAT_ID, _alert.getRepeatID());
+		_intent.putExtra(Alert.RETRYS, _alert.getRetryCounter());
+		_intent.putExtra(Alert.SELECTED_ID, _alert.getSelectedID());
+		_intent.putExtra(Alert.TIME, _alert.getTime());
+		_intent.putExtra(Alert.WEEKDAY, _alert.getDayOfWeek());
+	}
 }

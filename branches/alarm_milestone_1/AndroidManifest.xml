@@ -3,17 +3,17 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	package="de.macsystems.windroid"
 	android:versionCode="1"
-	android:versionName="pre Beta">
-	
+	android:versionName="0.9.1">
+
 	<uses-sdk
 		android:minSdkVersion="3"
-		android:targetSdkVersion="4"/>
+		android:targetSdkVersion="4" />
 
 	<supports-screens
 		android:smallScreens="true"
 		android:normalScreens="true"
 		android:largeScreens="true"
-		android:anyDensity="true"/>
+		android:anyDensity="true" />
 
 	<uses-permission
 		android:name="android.permission.INTERNET" />
@@ -24,10 +24,10 @@
 	<uses-permission
 		android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 	<application
-		android:debuggable="true"
 		android:label="@string/mainfest_label"
 		android:description="@string/mainfest_description"
-		android:allowClearUserData="true" android:icon="@drawable/launcher">
+		android:allowClearUserData="true"
+		android:icon="@drawable/launcher">
 		<activity
 			android:name="de.macsystems.windroid.MainActivity"
 			android:label="@string/app_name"
@@ -41,42 +41,42 @@
 		</activity>
 		<activity
 			android:name="de.macsystems.windroid.DownloadActivity"
-			android:label="@string/download_title"
-			 />
+			android:label="@string/download_title" />
 		<activity
 			android:name="de.macsystems.windroid.ForecastActivity"
 			android:label="Forecast"
 			android:screenOrientation="landscape" />
 		<activity
 			android:name="de.macsystems.windroid.SpotSelectionActivity"
-			android:label="@string/spot_selection_title"/>
+			android:label="@string/spot_selection_title" />
 		<activity
 			android:name="de.macsystems.windroid.Preferences"
-			android:label="@string/preferences_title"/>
+			android:label="@string/preferences_title" />
 		<activity
 			android:name="de.macsystems.windroid.SpotConfigurationActivity"
-			android:label="@string/spot_configuration_title"/>
+			android:label="@string/spot_configuration_title" />
 		<activity
 			android:name="de.macsystems.windroid.ScheduleActivity"
-			android:label="@string/schedule_title"/>
+			android:label="@string/schedule_title" />
 
 		<activity
 			android:name="de.macsystems.windroid.SpotSummaryActivity"
-			android:label="@string/spot_summary_title"/>
+			android:label="@string/spot_summary_title" />
 		<activity
 			android:name="de.macsystems.windroid.AlarmNotificationDetail"
-			android:label="@string/alarm_notification_detail_title"/>
+			android:label="@string/alarm_notification_detail_title" />
 		<activity
 			android:name="de.macsystems.windroid.HomeScreenConfigure"
-			android:label="@string/app_name"/>
+			android:label="@string/app_name" />
 		<activity
 			android:name="de.macsystems.windroid.SpotOverviewActivity"
-			android:label="@string/spot_overview_title"/>
+			android:label="@string/spot_overview_title" />
 		<receiver
 			android:name="de.macsystems.windroid.receiver.BootCompletedBroadcastReceiver"
 			android:label="@string/app_name"
 			android:enabled="true"
-			android:exported="false">
+			android:exported="false"
+			android:process="">
 			<intent-filter>
 				<action
 					android:name="android.intent.action.BOOT_COMPLETED" />
@@ -87,6 +87,11 @@
 			android:label="@string/app_name"
 			android:enabled="true"
 			android:exported="false">
+			<intent-filter>
+				<action
+					android:name="de.macsystems.windroid.ALERT_TRIGGER" />
+			</intent-filter>
+
 		</receiver>
 
 		<receiver

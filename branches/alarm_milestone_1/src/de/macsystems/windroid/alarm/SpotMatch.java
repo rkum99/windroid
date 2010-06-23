@@ -22,27 +22,28 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
+ * Class which represent a result for a spot were the conditions matches.
  * 
  * @author Jens Hohl
  * @version $Id$
  * 
  */
-public class AlarmDetail implements Parcelable
+public class SpotMatch implements Parcelable
 {
 	private final int alarmID;
 
 	private final String name;
 
 	private final String stationID;
-
-	public AlarmDetail(final int _alarmID, final String _stationID, final String _name)
+	
+	public SpotMatch(final int _alarmID, final String _stationID, final String _name)
 	{
 		alarmID = _alarmID;
 		stationID = _stationID;
 		name = _name;
 	}
 
-	private AlarmDetail(final Parcel _parcel)
+	private SpotMatch(final Parcel _parcel)
 	{
 		alarmID = _parcel.readInt();
 		name = _parcel.readString();
@@ -101,16 +102,16 @@ public class AlarmDetail implements Parcelable
 	/**
 	 * @see Creator
 	 */
-	public static final Parcelable.Creator<AlarmDetail> CREATOR = new Parcelable.Creator<AlarmDetail>()
+	public static final Parcelable.Creator<SpotMatch> CREATOR = new Parcelable.Creator<SpotMatch>()
 	{
-		public AlarmDetail createFromParcel(final Parcel in)
+		public SpotMatch createFromParcel(final Parcel in)
 		{
-			return new AlarmDetail(in);
+			return new SpotMatch(in);
 		}
 
-		public AlarmDetail[] newArray(final int size)
+		public SpotMatch[] newArray(final int size)
 		{
-			return new AlarmDetail[size];
+			return new SpotMatch[size];
 		}
 	};
 }

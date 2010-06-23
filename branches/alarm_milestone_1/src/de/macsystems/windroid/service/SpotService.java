@@ -36,6 +36,7 @@ import de.macsystems.windroid.alarm.AlarmUtil;
 import de.macsystems.windroid.alarm.Alert;
 import de.macsystems.windroid.concurrent.WindroidThreadFactory;
 import de.macsystems.windroid.io.task.AlarmTask;
+import de.macsystems.windroid.io.task.EnqueueActiveSpots;
 import de.macsystems.windroid.io.task.UpdateAlarmTask;
 import de.macsystems.windroid.io.task.UpdateAllActiveSpotReports;
 import de.macsystems.windroid.io.task.UpdateSpotForecastTask;
@@ -154,7 +155,11 @@ public class SpotService extends Service
 			Log.i(LOG_TAG, "onStart");
 		}
 
-		if (AlarmUtil.isAlertIntent(_intent))
+		if (AlarmUtil.isRestartActiveSpotsIntent(_intent))
+		{
+			addTask(new EnqueueActiveSpots(this));
+		}
+		else if (AlarmUtil.isAlertIntent(_intent))
 		{
 			final Alert alert = AlarmUtil.readAlertFormAlarmIntent(_intent);
 			createAlarmTask(alert);
@@ -175,7 +180,6 @@ public class SpotService extends Service
 		// adding Task which updates this SPOT on Alarm
 		addTask(new AlarmTask(this, _alert));
 	}
-
 
 	/**
 	 * Checks if ThreadPool already created, if not it creates it

@@ -49,7 +49,6 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import de.macsystems.windroid.alarm.AlarmUtil;
 import de.macsystems.windroid.common.IntentConstants;
@@ -117,22 +116,25 @@ public final class MainActivity extends DBActivity
 
 					final ISelectedDAO dao = DAOFactory.getSelectedDAO(this);
 					dao.insertSpot(spot);
+					AlarmUtil.createAlarmForSpot(spot, this);
 
-					if (Logging.isLoggingEnabled())
-					{
-						final StringBuilder builder = new StringBuilder(256).append("\n");
-						builder.append("Folgender Spot wurde Angelegt:\n").append("\n\n");
-						builder.append("Name: ").append(spot.getStation().getName()).append("\n");
-						builder.append("ID: ").append(spot.getStation().getId()).append("\n");
-						builder.append("Keyword: ").append(spot.getStation().getKeyword()).append("\n");
-						builder.append("hasStatistic: ").append(spot.getStation().hasStatistic()).append("\n");
-						builder.append("hasSuperForcast: ").append(spot.getStation().hasSuperforecast()).append("\n");
-						builder.append("PreferedWindUnit: ").append(spot.getPreferredWindUnit()).append("\n");
-						builder.append("Wind From: ").append(spot.getFromDirection()).append("\n");
-						builder.append("Wind To: ").append(spot.getToDirection()).append("\n");
-						builder.append("Take care of Windirection: ").append(spot.isUseWindirection()).append("\n");
-						Toast.makeText(MainActivity.this, builder.toString(), Toast.LENGTH_LONG).show();
-					}
+					// if (Logging.isLoggingEnabled())s
+					// {
+					// final StringBuilder builder = new
+					// StringBuilder(256).append("\n");
+					// builder.append("Folgender Spot wurde Angelegt:\n").append("\n\n");
+					// builder.append("Name: ").append(spot.getStation().getName()).append("\n");
+					// builder.append("ID: ").append(spot.getStation().getId()).append("\n");
+					// builder.append("Keyword: ").append(spot.getStation().getKeyword()).append("\n");
+					// builder.append("hasStatistic: ").append(spot.getStation().hasStatistic()).append("\n");
+					// builder.append("hasSuperForcast: ").append(spot.getStation().hasSuperforecast()).append("\n");
+					// builder.append("PreferedWindUnit: ").append(spot.getPreferredWindUnit()).append("\n");
+					// builder.append("Wind From: ").append(spot.getFromDirection()).append("\n");
+					// builder.append("Wind To: ").append(spot.getToDirection()).append("\n");
+					// builder.append("Take care of Windirection: ").append(spot.isUseWindirection()).append("\n");
+					// Toast.makeText(MainActivity.this, builder.toString(),
+					// Toast.LENGTH_LONG).show();
+					// }
 				}
 
 			}
@@ -280,13 +282,6 @@ public final class MainActivity extends DBActivity
 		toogleServiceButton.setOnCheckedChangeListener(createServiceToogleListener(serviceConnection));
 
 		setupCancelAlarmTest();
-
-		// create alarms for selected IDs // testing
-		for (int i = 0; i < 1; i++)
-		{
-			AlarmUtil.createAlarmForSpot(1, this);
-		}
-
 	}
 
 	final private void showGPL()
@@ -383,6 +378,7 @@ public final class MainActivity extends DBActivity
 					}
 					else
 					{
+						// TODO: Implement Stop on all enqueued alerts
 						// _connection.stop();
 					}
 				}

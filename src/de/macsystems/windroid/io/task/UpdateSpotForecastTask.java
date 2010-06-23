@@ -26,7 +26,6 @@ import android.util.Log;
 import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.R;
 import de.macsystems.windroid.WindUtils;
-import de.macsystems.windroid.alarm.AlarmUtil;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.db.DAOFactory;
 import de.macsystems.windroid.db.DBException;
@@ -36,8 +35,8 @@ import de.macsystems.windroid.forecast.Forecast;
 import de.macsystems.windroid.io.RetryLaterException;
 
 /**
- * Callable which will update the current forecast of a spot and updates the
- * Database.
+ * Callable which will retrieve current forecast of a spot and updates the
+ * Database. This will be generally used when user forces an update.
  * 
  * @author Jens Hohl
  * @version $Id: UpdateSpotForecastTask.java 314 2010-04-15 11:50:03Z jens.hohl
@@ -49,7 +48,7 @@ public class UpdateSpotForecastTask extends AudioFeedbackTask
 
 	private final static String LOG_TAG = UpdateSpotForecastTask.class.getSimpleName();
 
-	final int selectedID;
+	private final int selectedID;
 
 	/**
 	 * 
@@ -80,10 +79,9 @@ public class UpdateSpotForecastTask extends AudioFeedbackTask
 				}
 			}
 
-			final boolean available = isNetworkReachable();
-			if (!available)
+			// If network not reachable simply skip. (Task status will remain failed).
+			if (!isNetworkReachable())
 			{
-				AlarmUtil.createRetryAlarm(selectedID, getContext());
 				if (Logging.isLoggingEnabled())
 				{
 					Log.d(LOG_TAG, "Cancel update as network not reachable.");
@@ -104,32 +102,27 @@ public class UpdateSpotForecastTask extends AudioFeedbackTask
 				forecastDAO.updateForecast(forecast, selectedID);
 				// For Audio feedback
 				setAsSuccessfull();
-				//
-				// return forecast;
 			}
 			catch (final IOException e)
 			{
 				Log.e(LOG_TAG, "Failed to create uri", e);
-				AlarmUtil.createRetryAlarm(selectedID, getContext());
 			}
 			catch (final RetryLaterException e)
 			{
 				Log.e(LOG_TAG, "", e);
-				AlarmUtil.createRetryAlarm(selectedID, getContext());
 			}
-			catch (URISyntaxException e)
+			catch (final URISyntaxException e)
 			{
 				Log.e(LOG_TAG, "Check URI", e);
 			}
-			catch (InterruptedException e)
+			catch (final InterruptedException e)
 			{
 				Log.e(LOG_TAG, "", e);
 			}
-
 		}
 		catch (final DBException e)
 		{
-			Log.e(LOG_TAG, "", e);
+			Log.e(LOG_TAG, "failed to fetch spotconfiguration.", e);
 		}
 		finally
 		{

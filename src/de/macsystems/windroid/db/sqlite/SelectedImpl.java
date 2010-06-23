@@ -391,7 +391,7 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 				}
 				catch (final Exception e)
 				{
-					Log.e(LOG_TAG, "failed to create SpotConfigurationVO", e);
+					Log.e(LOG_TAG, "failed to fetch SpotConfigurationVO", e);
 				}
 			}
 			while (c.moveToNext());

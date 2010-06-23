@@ -32,9 +32,10 @@ import android.os.RemoteException;
 import android.util.Log;
 import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.R;
-import de.macsystems.windroid.common.IntentConstants;
+import de.macsystems.windroid.alarm.AlarmUtil;
+import de.macsystems.windroid.alarm.Alert;
 import de.macsystems.windroid.concurrent.WindroidThreadFactory;
-import de.macsystems.windroid.io.task.AlarmUpdateTask;
+import de.macsystems.windroid.io.task.AlarmTask;
 import de.macsystems.windroid.io.task.UpdateAlarmTask;
 import de.macsystems.windroid.io.task.UpdateAllActiveSpotReports;
 import de.macsystems.windroid.io.task.UpdateSpotForecastTask;
@@ -68,12 +69,18 @@ public class SpotService extends Service
 			addTask(new SpotAlarmTask(SpotService.this));
 		}
 
+		/**
+		 * Call method if you want to update all activ spots
+		 */
 		@Override
 		public void updateAll() throws RemoteException
 		{
 			addTask(new UpdateAlarmTask(SpotService.this));
 		}
 
+		/**
+		 * Call Method if you want to update a Spot only once.
+		 */
 		@Override
 		public void update(final int _selectedID, final IServiceCallbackListener _listener)
 		{
@@ -146,101 +153,29 @@ public class SpotService extends Service
 		{
 			Log.i(LOG_TAG, "onStart");
 		}
-		final boolean found = isSelectedID(_intent);
-		if (found)
+
+		if (AlarmUtil.isAlertIntent(_intent))
 		{
-			final int selectedID = getSelectedID(_intent);
-			createAlarmTask(selectedID);
+			final Alert alert = AlarmUtil.readAlertFormAlarmIntent(_intent);
+			createAlarmTask(alert);
 		}
 		else
 		{
-			if (Logging.isLoggingEnabled())
-			{
-				Log.w(LOG_TAG, "Service started without any selected id!");
-			}
+			Log.w(LOG_TAG, "Service started without any Alert infos!");
 		}
 	}
 
 	/**
-	 * Creates an Task when Alarm for a spot with given id is on.
+	 * Creates an Task for Alarm.
 	 * 
-	 * @param _selectedID
+	 * @param _repeatID
 	 */
-	private final void createAlarmTask(final int _selectedID)
+	private final void createAlarmTask(final Alert _alert)
 	{
 		// adding Task which updates this SPOT on Alarm
-		addTask(new AlarmUpdateTask(this, _selectedID));
+		addTask(new AlarmTask(this, _alert));
 	}
 
-	/**
-	 * Returns <code>true</code> if a id is present
-	 * 
-	 * @param _intent
-	 * @return
-	 * @see #getSelectedID(Intent)
-	 */
-	private final static boolean isSelectedID(final Intent _intent)
-	{
-		final int NOT_FOUND = -1;
-		if (_intent == null)
-		{
-			return false;
-		}
-		return -1 != _intent.getIntExtra(IntentConstants.SELECTED_PRIMARY_KEY, NOT_FOUND);
-	}
-
-	/**
-	 * Returns <code>true</code> if intent represent a retry
-	 * 
-	 * @param _intent
-	 * @return
-	 * @see #getSelectedID(Intent)
-	 */
-	private final static boolean isRetry(final Intent _intent)
-	{
-		final int NOT_FOUND = -1;
-		if (_intent == null)
-		{
-			return false;
-		}
-		return NOT_FOUND != _intent.getIntExtra(IntentConstants.SELECTED_RETRY_COUNTER, NOT_FOUND);
-	}
-
-	/**
-	 * Returns primary key of selected spot which needs to be updated.
-	 * 
-	 * @param _intent
-	 * @return
-	 * @see #isSelectedID(Intent)
-	 */
-	private final static int getSelectedID(final Intent _intent)
-	{
-		final int NOT_FOUND = -1;
-		if (_intent == null)
-		{
-			throw new NullPointerException("Intent");
-		}
-		return _intent.getIntExtra(IntentConstants.SELECTED_PRIMARY_KEY, NOT_FOUND);
-	}
-
-	/**
-	 * Returns a number which indicates how often this service tried to update
-	 * the spot selected ID. -1 will be returned if intent does not contain a
-	 * retry counter.
-	 * 
-	 * @param _intent
-	 * @return
-	 * @see #isSelectedID(Intent)
-	 */
-	private final static int getRetryCount(final Intent _intent)
-	{
-		final int NOT_FOUND = -1;
-		if (_intent == null)
-		{
-			throw new NullPointerException("Intent");
-		}
-		return _intent.getIntExtra(IntentConstants.SELECTED_RETRY_COUNTER, NOT_FOUND);
-	}
 
 	/**
 	 * Checks if ThreadPool already created, if not it creates it

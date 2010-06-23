@@ -323,4 +323,18 @@ public final class AlarmUtil
 		_intent.putExtra(Alert.TIME, _alert.getTime());
 		_intent.putExtra(Alert.WEEKDAY, _alert.getDayOfWeek());
 	}
+
+	/**
+	 * 
+	 * @param _intent
+	 * @return
+	 */
+	public static boolean isRestartActiveSpotsIntent(final Intent _intent)
+	{
+		if (_intent != null)
+		{
+			return _intent.getStringExtra(IntentConstants.ENQUEUE_ACTIV_SPOTS_AFTER_REBOOT) != null;
+		}
+		return false;
+	}
 }

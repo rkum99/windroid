@@ -55,7 +55,7 @@ public final class AlarmBroadcastReciever extends BroadcastReceiver
 		}
 		if (!AlarmUtil.isAlertIntent(_intent))
 		{
-			Log.e(LOG_TAG, "Expected intent whicn contains alert, skipping!");
+			Log.e(LOG_TAG, "Expected intent which contains alert, skipping!");
 			return;
 		}
 		final Alert alert = AlarmUtil.readAlertFormAlarmIntent(_intent);

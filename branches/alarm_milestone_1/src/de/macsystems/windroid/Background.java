@@ -100,8 +100,20 @@ public final class Background
 		private final TileMode modeY;
 		private final int resID;
 
-		private TileModePair(final int _resID, final TileMode _x, final TileMode _y)
+		/**
+		 * 
+		 * @param _resID
+		 * @param _x
+		 * @param _y
+		 * @throws NullPointerException
+		 */
+		private TileModePair(final int _resID, final TileMode _x, final TileMode _y) throws NullPointerException
 		{
+			if (_x == null || _y == null)
+			{
+				throw new NullPointerException("tilemode");
+			}
+
 			resID = _resID;
 			modeX = _x;
 			modeY = _y;

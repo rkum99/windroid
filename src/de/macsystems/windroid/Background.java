@@ -49,6 +49,10 @@ public final class Background
 
 	private static volatile int choosenBg = UNKNOWN;
 
+	private Background()
+	{
+	}
+
 	/**
 	 * Applys a Background to an activiy. The Activity already must have a
 	 * layout which contains a ID : {@link R.id.background_pattern}.

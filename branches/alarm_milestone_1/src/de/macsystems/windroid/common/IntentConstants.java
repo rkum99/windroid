@@ -78,9 +78,10 @@ public final class IntentConstants
 	 */
 	public final static String STORED_FORECAST_KEY = "show forecast key";
 	/**
-	 * Lookup Key for Intent which describe that after a reboot all activ spots
-	 * should be enqueued again. {@value #ENQUEUE_ACTIV_SPOTS_AFTER_REBOOT}
+	 * Lookup Key for Intent which describe that after a reboot or package
+	 * replacement(update) all activ spots should be enqueued again.
+	 * {@value #ENQUEUE_ACTIV_SPOTS_AFTER_REBOOT_OR_UPDATE}
 	 */
-	public final static String ENQUEUE_ACTIV_SPOTS_AFTER_REBOOT = "reboot.enqueue_activ_spots";
+	public final static String ENQUEUE_ACTIV_SPOTS_AFTER_REBOOT_OR_UPDATE = "reboot.enqueue_activ_spots";
 
 }

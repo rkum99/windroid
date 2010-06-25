@@ -45,5 +45,5 @@
 	<string
 		name="preferences_miscellaneous_launch_on_boot_title">Auto start </string>
 	<string
-		name="preferences_miscellaneous_launch_on_boot_summary">automatic start application after reboot</string>
+		name="preferences_miscellaneous_launch_on_boot_summary">auto start monitoring after reboot</string>
 </resources>

@@ -18,7 +18,8 @@ import de.macsystems.windroid.db.DBException;
 import de.macsystems.windroid.db.ISelectedDAO;
 
 /**
- * 
+ * Will run after an reboot to create alarms for active spots again. The User
+ * gets informed about the scheduling.
  * 
  * @author mac
  * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
@@ -38,14 +39,13 @@ public class EnqueueActiveSpots extends AbstractNotificationTask<Void>
 	{
 		try
 		{
-
 			final ISelectedDAO dao = DAOFactory.getSelectedDAO(getContext());
 			if (dao.isSpotActiv())
 			{
 				final Collection<SpotConfigurationVO> activeSpots = dao.getActivSpots();
 				if (Logging.isLoggingEnabled())
 				{
-					Log.d(LOG_TAG, "Schedule " + activeSpots.size() + " activ spots after reboot!");
+					Log.d(LOG_TAG, "Scheduling " + activeSpots.size() + " activ spot(s) after reboot to monitor.");
 				}
 				enqueueSpots(activeSpots, getContext());
 				showScheduleNotification(getContext(), activeSpots.size());
@@ -54,7 +54,7 @@ public class EnqueueActiveSpots extends AbstractNotificationTask<Void>
 			{
 				if (Logging.isLoggingEnabled())
 				{
-					Log.d(LOG_TAG, "No Spots to enqueue on reboot.");
+					Log.d(LOG_TAG, "No Spots to enqueue after reboot.");
 				}
 			}
 		}
@@ -96,21 +96,22 @@ public class EnqueueActiveSpots extends AbstractNotificationTask<Void>
 
 	private static void showScheduleNotification(final Context _context, final int _nrOfSpots)
 	{
-		NotificationManager mNotificationManager = (NotificationManager) _context
+		final NotificationManager mNotificationManager = (NotificationManager) _context
 				.getSystemService(Context.NOTIFICATION_SERVICE);
 
-		int icon = R.drawable.launcher;
-		CharSequence tickerText = "Monitoring";
-		long time = System.currentTimeMillis();
+		final int icon = R.drawable.launcher;
+		final CharSequence tickerText = _context.getString(R.string.on_reboot_monitored_spots_tickertext);
+		final long time = System.currentTimeMillis();
 
-		Notification notification = new Notification(icon, tickerText, time);
-		notification.flags = Notification.DEFAULT_LIGHTS & Notification.FLAG_AUTO_CANCEL;
+		final Notification notification = new Notification(icon, tickerText, time);
+		notification.flags |= Notification.DEFAULT_LIGHTS | Notification.FLAG_AUTO_CANCEL;
 
-		Context context = _context.getApplicationContext();
-		CharSequence contentTitle = "Monitoring";
-		CharSequence contentText = _nrOfSpots + " Spots monitored.";
-		Intent notificationIntent = new Intent(context, OngoingUpdateActivity.class);
-		PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
+		final Context context = _context.getApplicationContext();
+		final String contentTitle = _context.getString(R.string.on_reboot_monitored_spots_title);
+		final String temp = _context.getString(R.string.on_reboot_monitored_spots_text);
+		final String contentText = temp.replace("$1", Integer.toString(_nrOfSpots));
+		final Intent notificationIntent = new Intent(context, OngoingUpdateActivity.class);
+		final PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 		notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
 		mNotificationManager.notify(1, notification);
 	}

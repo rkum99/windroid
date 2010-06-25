@@ -127,7 +127,9 @@ public abstract class AbstractNotificationTask<V> implements Callable<V>
 		final PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
 
 		final Notification notification = new Notification(R.drawable.launcher, _notificationTitle, when);
-		notification.flags |= Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
+		notification.flags |= Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT
+				| Notification.FLAG_SHOW_LIGHTS;
+		notification.ledARGB = 0xff00ff00;
 		notification.setLatestEventInfo(context, _notificationTitle, _notificationDetails, contentIntent);
 		//
 		notificationManager.notify(notificationID, notification);

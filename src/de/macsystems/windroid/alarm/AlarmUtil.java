@@ -17,9 +17,14 @@
  */
 package de.macsystems.windroid.alarm;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import android.app.AlarmManager;
@@ -28,6 +33,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import de.macsystems.windroid.Logging;
+import de.macsystems.windroid.Util;
 import de.macsystems.windroid.common.IntentConstants;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.identifyable.Repeat;
@@ -50,6 +56,25 @@ public final class AlarmUtil
 
 	private final static int MAX_RETRYS = 3;
 
+	private final static SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+	/**
+	 * Used for debug output
+	 */
+	private final static Map<Integer, String> dayMap = new HashMap<Integer, String>();
+	static
+	{
+		dayMap.put(Calendar.MONDAY, "Monday");
+		dayMap.put(Calendar.TUESDAY, "Tuesday");
+		dayMap.put(Calendar.WEDNESDAY, "Wednesday");
+		dayMap.put(Calendar.THURSDAY, "Thusday");
+		dayMap.put(Calendar.FRIDAY, "Friday");
+		dayMap.put(Calendar.SATURDAY, "Saturday");
+		dayMap.put(Calendar.SUNDAY, "Sunday");
+	}
+
+	/**
+	 * Util class
+	 */
 	private AlarmUtil()
 	{
 	}
@@ -83,7 +108,7 @@ public final class AlarmUtil
 
 		if (Logging.isLoggingEnabled())
 		{
-			Log.d(LOG_TAG, "Creating alarms for spot with id:" + _vo.getPrimaryKey());
+			Log.d(LOG_TAG, "Creating alarm for spot " + _vo.getStation().getName());
 		}
 
 		final Schedule schedule = _vo.getSchedule();
@@ -101,8 +126,6 @@ public final class AlarmUtil
 		}
 
 		final AlarmManager alarmManager = (AlarmManager) _context.getSystemService(Context.ALARM_SERVICE);
-
-		final long now = System.currentTimeMillis();
 		//
 
 		for (int i = 0; i < alertsToEnqueue.size(); i++)
@@ -114,19 +137,37 @@ public final class AlarmUtil
 			//
 			final PendingIntent pendingIntent = PendingIntent.getBroadcast(_context, REQUEST_COUNTER.incrementAndGet(),
 					intent, 0);
-			alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (1L * 1000L),
-					(30L * 1000L), pendingIntent);
+			alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (15L * 1000L),
+					AlarmManager.INTERVAL_HOUR * 2, pendingIntent);
 
 			if (Logging.isLoggingEnabled())
 			{
-				Log.d(LOG_TAG, "Enqueued Alert " + alert.toString());
+				Log.d(LOG_TAG, alert.toString());
+				Log.d(LOG_TAG, getAlertAsDebugString(alert));
 			}
 		}
 		if (Logging.isLoggingEnabled())
 		{
-			Log.d(LOG_TAG, "Creating alarms for spot with id:" + _vo.getPrimaryKey() + " finished.");
+			Log.d(LOG_TAG, "Creating alarms for spot :" + _vo.getStation().getName() + " finished.");
 		}
+	}
 
+	private static long calcSchedulingStartTime(final Alert _alert)
+	{
+		final Calendar now = Calendar.getInstance();
+		now.set(Calendar.HOUR_OF_DAY, 0);
+		now.set(Calendar.MINUTE, 0);
+		now.set(Calendar.SECOND, 1);
+
+		Log.d(LOG_TAG, "Now set to:" + now.toString());
+		final int daysToRoll = Util.getDayToRoll(now.getTimeInMillis(), _alert.getDayOfWeek());
+
+		final long dayToRollInMills = daysToRoll * AlarmManager.INTERVAL_HOUR;
+		final long alertTime = dayToRollInMills + _alert.getTime();
+
+		Log.d(LOG_TAG, "Alert time is : " + new Date(alertTime));
+
+		return alertTime;
 	}
 
 	/**
@@ -151,8 +192,8 @@ public final class AlarmUtil
 			throw new NullPointerException("Context");
 		}
 		// TODO: Change to control wake up retry time
-		// final long retryInMS = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
-		final long retryInMS = 1000L * 3;
+		final long retryInMS = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
+		// final long retryInMS = 1000L * 3;
 		_alert.incrementRetryCounter();
 		if (_alert.isExpired())
 		{
@@ -337,4 +378,38 @@ public final class AlarmUtil
 		}
 		return false;
 	}
+
+	/**
+	 * Returns an String which is human readable. Use it to log debug output.
+	 * 
+	 * @param _alert
+	 * @return
+	 */
+	public static String getAlertAsDebugString(final Alert _alert)
+	{
+		final StringBuffer buffer = new StringBuffer(64);
+		//
+		final Date time = new Date(_alert.getTime());
+
+		final String nameOfWeekDay = dayMap.get(_alert.getDayOfWeek());
+
+		buffer.append("Alert for Spot ").append(_alert.getSpotName()).append(" get invoked every ").append(
+				nameOfWeekDay).append(" at ").append(timeFormat.format(time)).append(".");
+
+		return buffer.toString();
+	}
+
+	/**
+	 * Debug Method.<br>
+	 * Returns integer as a human readable String. <code>null</code> returned if
+	 * nothing found.
+	 * 
+	 * @param _day
+	 * @return
+	 */
+	public static String getDayAsString(final int _day)
+	{
+		return dayMap.get(_day);
+	}
+
 }

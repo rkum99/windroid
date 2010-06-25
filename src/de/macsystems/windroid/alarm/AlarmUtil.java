@@ -137,12 +137,12 @@ public final class AlarmUtil
 			//
 			final PendingIntent pendingIntent = PendingIntent.getBroadcast(_context, REQUEST_COUNTER.incrementAndGet(),
 					intent, 0);
+			// TODO: Fix Interval in release to 24 Hrs
 			alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (15L * 1000L),
 					AlarmManager.INTERVAL_HOUR * 2, pendingIntent);
 
 			if (Logging.isLoggingEnabled())
 			{
-				Log.d(LOG_TAG, alert.toString());
 				Log.d(LOG_TAG, getAlertAsDebugString(alert));
 			}
 		}
@@ -374,7 +374,7 @@ public final class AlarmUtil
 	{
 		if (_intent != null)
 		{
-			return _intent.getStringExtra(IntentConstants.ENQUEUE_ACTIV_SPOTS_AFTER_REBOOT) != null;
+			return _intent.getStringExtra(IntentConstants.ENQUEUE_ACTIV_SPOTS_AFTER_REBOOT_OR_UPDATE) != null;
 		}
 		return false;
 	}

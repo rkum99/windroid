@@ -27,6 +27,8 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 
 import android.content.Context;
 import android.util.Log;
@@ -50,6 +52,7 @@ public abstract class IOTask<V, I> implements Task<V, I>
 	private final static String LOG_TAG = IOTask.class.getSimpleName();
 
 	private final static HttpClient client = new DefaultHttpClient();
+	private final static HttpParams HTTP_PARAMS = client.getParams();
 	/**
 	 * HTTP User Agent
 	 */
@@ -58,6 +61,10 @@ public abstract class IOTask<V, I> implements Task<V, I>
 	private final URI uri;
 
 	private final IProgress progress;
+	/**
+	 * One Minute Timeout.
+	 */
+	private final int HTTP_TIMEOUT = 1000 * 60;
 
 	/**
 	 * 
@@ -79,6 +86,9 @@ public abstract class IOTask<V, I> implements Task<V, I>
 		}
 		uri = _uri;
 		progress = _progress;
+		//
+		HttpConnectionParams.setConnectionTimeout(HTTP_PARAMS, HTTP_TIMEOUT);
+		HttpConnectionParams.setSoTimeout(HTTP_PARAMS, HTTP_TIMEOUT);
 	}
 
 	protected URI getURI()
@@ -108,6 +118,7 @@ public abstract class IOTask<V, I> implements Task<V, I>
 
 		final HttpGet httpGet = new HttpGet(uri);
 		httpGet.addHeader("User-Agent", MOZILLA_5_0);
+		httpGet.setParams(HTTP_PARAMS);
 
 		final HttpResponse response = getHTTPClient().execute(httpGet);
 		if (Logging.isLoggingEnabled())
@@ -127,12 +138,12 @@ public abstract class IOTask<V, I> implements Task<V, I>
 		}
 		/**
 		 * Every Exception behind is catched using 'Exception Firewall' and
-		 * translated into a RetryLaterException
+		 * translated into a RetryLaterException.
 		 */
-		InputStream instream = null;
+		CountInputStream instream = null;
 		try
 		{
-			instream = response.getEntity().getContent();
+			instream = new CountInputStream(response.getEntity().getContent());
 			if (Logging.isLoggingEnabled())
 			{
 				Log.d(LOG_TAG, "HTTP Content Lenght:" + response.getEntity().getContentLength());

@@ -387,6 +387,8 @@ public final class AlarmUtil
 	 */
 	public static String getAlertAsDebugString(final Alert _alert)
 	{
+		// avoid wrong output using a offset!
+		timeFormat.getTimeZone().setRawOffset(0);
 		final StringBuffer buffer = new StringBuffer(64);
 		//
 		final Date time = new Date(_alert.getTime());

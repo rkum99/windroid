@@ -1,20 +1,3 @@
-/**
- This file is part of Windroid.
-
- Windroid is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Windroid is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Windroid.  If not, see <http://www.gnu.org/licenses/>.
-
- */
 package de.macsystems.windroid.receiver;
 
 import android.content.BroadcastReceiver;
@@ -27,18 +10,16 @@ import de.macsystems.windroid.Util;
 import de.macsystems.windroid.common.IntentConstants;
 
 /**
- * Broadcast Reciever which gets called when Boot is complete. When called it
- * starts the Background Service when configured.
+ * A Reciever which gets called when an update/replacement of the application
+ * held.
  * 
- * @author Jens Hohl
- * @version $Id: BootCompletedBroadcastReceiver.java 2 2009-07-28 02:15:38Z
- *          jens.hohl $
- * 
+ * @author mac
+ * @version $Id$
  */
-public final class BootCompletedBroadcastReceiver extends BroadcastReceiver
+public final class ReplaceReceiver extends BroadcastReceiver
 {
 
-	private final static String LOG_TAG = "BootCompletedReceiver";
+	private final static String LOG_TAG = ReplaceReceiver.class.getSimpleName();
 
 	/*
 	 * (non-Javadoc)
@@ -49,17 +30,9 @@ public final class BootCompletedBroadcastReceiver extends BroadcastReceiver
 	@Override
 	public void onReceive(final Context _context, final Intent _intent)
 	{
-		if (Logging.isLoggingEnabled())
+		Log.i(LOG_TAG, "Package replaced/updated, Enqueue Alerts!");
+		if (Intent.ACTION_PACKAGE_CHANGED.equals(_intent.getAction()))
 		{
-			Log.d(LOG_TAG, "BootCompletedBroadcastReceiver#onRecieve(...) called.");
-		}
-
-		if (Intent.ACTION_BOOT_COMPLETED.equals(_intent.getAction()))
-		{
-			if (Logging.isLoggingEnabled())
-			{
-				Log.i(LOG_TAG, "Boot completed.");
-			}
 			startService(_context);
 		}
 	}

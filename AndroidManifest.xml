@@ -91,9 +91,14 @@
 				<action
 					android:name="de.macsystems.windroid.ALERT_TRIGGER" />
 			</intent-filter>
-
 		</receiver>
-
+		<receiver
+			android:name="de.macsystems.windroid.receiver.ReplaceReceiver">
+			<intent-filter>
+				<action
+					android:name="android.intent.action.PACKAGE_REPLACED" />
+			</intent-filter>
+		</receiver>
 		<receiver
 			android:name="de.macsystems.windroid.HomeScreenWidget">
 			<intent-filter>

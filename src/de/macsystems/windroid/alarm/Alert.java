@@ -101,7 +101,7 @@ public final class Alert
 	}
 
 	/**
-	 * returns daytime this alert happen first.
+	 * returns daytime this alert happen first in mills.
 	 * 
 	 * @return
 	 */

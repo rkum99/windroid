@@ -34,6 +34,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+import de.macsystems.windroid.alarm.AlarmUtil;
 import de.macsystems.windroid.common.IntentConstants;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.custom.activity.ChainSubActivity;
@@ -153,10 +154,11 @@ public final class ScheduleActivity extends ChainSubActivity
 						final int day = iter.next();
 						final int resID = checkboxesMap.get(day);
 						final CheckBox box = (CheckBox) findViewById(resID);
-						final boolean checked = box.isChecked();
+						final boolean activ = box.isChecked();
 						final Schedule schedule = spotInfo.getSchedule();
-						// TODO read daytime
-						schedule.addRepeat(new Repeat(day, 12L * 60L * 60L * 1000L, checked));
+						final long dayTime = dayToDaytimeMap.get(day);
+						//
+						schedule.addRepeat(new Repeat(day, dayTime, activ));
 					}
 
 					startActivityForResult(intent, MainActivity.CONFIGURATION_REQUEST_CODE);
@@ -200,10 +202,6 @@ public final class ScheduleActivity extends ChainSubActivity
 		while (iter.hasNext())
 		{
 			final int day = iter.next();
-			if (Logging.isLoggingEnabled())
-			{
-				Log.d(LOG_TAG, "day " + day);
-			}
 			final CheckBox box = (CheckBox) findViewById(_checkBoxes.get(day));
 			box.setOnClickListener(new View.OnClickListener()
 			{
@@ -242,15 +240,17 @@ public final class ScheduleActivity extends ChainSubActivity
 					{
 						public final void onTimeSet(final TimePicker _view, final int _hourOfDay, final int _minute)
 						{
-
-							Log.d(LOG_TAG, "Hour " + _hourOfDay + " Minute " + _minute);
-
 							final long dayTime = calcDayTime(_hourOfDay, _minute);
-							Log.d(LOG_TAG, "dayTime " + dayTime);
 							dayToDaytimeMap.put(day, dayTime);
 							final TextView timeView = (TextView) findViewById(_timeTextViews.get(day));
 							final String time = dateFormat.format(dayTime);
 							timeView.setText(time);
+							//
+							if (Logging.isLoggingEnabled())
+							{
+								Log.d(LOG_TAG, AlarmUtil.getDayAsString(day) + " Time " + dayTime + " set.");
+								Log.d(LOG_TAG, "Hour " + _hourOfDay + " Minute " + _minute);
+							}
 						}
 					};
 

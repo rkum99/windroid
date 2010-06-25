@@ -18,7 +18,6 @@
 package de.macsystems.windroid.receiver;
 
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -84,19 +83,7 @@ public final class BootCompletedBroadcastReceiver extends BroadcastReceiver
 			final Intent startServiceIntent = new Intent();
 			startServiceIntent.setAction(IntentConstants.DE_MACSYSTEMS_WINDROID_START_SPOT_SERVICE_ACTION);
 			startServiceIntent.putExtra(IntentConstants.ENQUEUE_ACTIV_SPOTS_AFTER_REBOOT, "dummy");
-			final ComponentName name = _context.startService(startServiceIntent);
-			if (name == null)
-			{
-				Log.e(LOG_TAG, "Failed to start SpotService.");
-			}
-			else
-			{
-				if (Logging.isLoggingEnabled())
-				{
-					Log.i(LOG_TAG, "SpotService on boot launched.");
-				}
-			}
+			_context.startService(startServiceIntent);
 		}
 	}
-
 }

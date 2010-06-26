@@ -3,10 +3,7 @@ package de.macsystems.windroid.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.util.Log;
-import de.macsystems.windroid.Logging;
-import de.macsystems.windroid.Util;
 import de.macsystems.windroid.common.IntentConstants;
 
 /**

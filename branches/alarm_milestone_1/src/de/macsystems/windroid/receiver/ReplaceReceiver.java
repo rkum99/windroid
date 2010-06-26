@@ -38,25 +38,16 @@ public final class ReplaceReceiver extends BroadcastReceiver
 	}
 
 	/**
-	 * Starts the Service
+	 * Starts the Service, this will trigger the service to enqueue alarms
+	 * again.
 	 * 
 	 * @param _context
 	 */
 	private static void startService(final Context _context)
 	{
-		// TODO Use DB!
-		final SharedPreferences preferences = Util.getSharedPreferences(_context);
-		final boolean isLaunchOnBoot = Util.isLaunchOnBoot(preferences);
-		if (Logging.isLoggingEnabled())
-		{
-			Log.i(LOG_TAG, "Start SpotService on boot :" + isLaunchOnBoot);
-		}
-		if (isLaunchOnBoot)
-		{
-			final Intent startServiceIntent = new Intent();
-			startServiceIntent.setAction(IntentConstants.DE_MACSYSTEMS_WINDROID_START_SPOT_SERVICE_ACTION);
-			startServiceIntent.putExtra(IntentConstants.ENQUEUE_ACTIV_SPOTS_AFTER_REBOOT_OR_UPDATE, "dummy");
-			_context.startService(startServiceIntent);
-		}
+		final Intent startServiceIntent = new Intent();
+		startServiceIntent.setAction(IntentConstants.DE_MACSYSTEMS_WINDROID_START_SPOT_SERVICE_ACTION);
+		startServiceIntent.putExtra(IntentConstants.ENQUEUE_ACTIV_SPOTS_AFTER_REBOOT_OR_UPDATE, "dummy");
+		_context.startService(startServiceIntent);
 	}
 }

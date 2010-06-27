@@ -54,6 +54,7 @@ import de.macsystems.windroid.alarm.AlarmUtil;
 import de.macsystems.windroid.common.IntentConstants;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.db.DAOFactory;
+import de.macsystems.windroid.db.DBException;
 import de.macsystems.windroid.db.ISelectedDAO;
 import de.macsystems.windroid.db.ISpotDAO;
 import de.macsystems.windroid.proxy.SpotServiceConnection;
@@ -83,8 +84,6 @@ public final class MainActivity extends DBActivity
 	private EnableViewConnectionBroadcastReciever broadcastReceiver;
 
 	private ISpotDAO spotDAO = null;
-
-	private SpotServiceConnection serviceConnection;
 
 	/*
 	 * (non-Javadoc)
@@ -276,11 +275,6 @@ public final class MainActivity extends DBActivity
 			}
 		});
 
-		final CompoundButton toogleServiceButton = (CompoundButton) findViewById(R.id.button_toogle_service);
-		serviceConnection = new SpotServiceConnection(toogleServiceButton, this);
-
-		toogleServiceButton.setOnCheckedChangeListener(createServiceToogleListener(serviceConnection));
-
 		setupCancelAlarmTest();
 	}
 
@@ -447,7 +441,7 @@ public final class MainActivity extends DBActivity
 	private final void setupCancelAlarmTest()
 	{
 
-		final Button button = (Button) findViewById(R.id.button_simulate_wind_alert);
+		final Button button = (Button) findViewById(R.id.button_cancel_all_alerts);
 
 		final OnClickListener listener = new View.OnClickListener()
 		{
@@ -455,8 +449,7 @@ public final class MainActivity extends DBActivity
 			@Override
 			public final void onClick(final View v)
 			{
-				// TODO FIX requestID
-				AlarmUtil.cancelAlarm(1, 1, MainActivity.this);
+				AlarmUtil.cancelAllAlerts(MainActivity.this);
 			}
 		};
 		button.setOnClickListener(listener);

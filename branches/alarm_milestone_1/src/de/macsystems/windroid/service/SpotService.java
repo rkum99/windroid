@@ -154,7 +154,10 @@ public class SpotService extends Service
 		{
 			Log.i(LOG_TAG, "onStart");
 		}
-
+		/**
+		 * Check if we invoked because of an Reboot or Update (market or
+		 * install)
+		 */
 		if (AlarmUtil.isRestartActiveSpotsIntent(_intent))
 		{
 			addTask(new EnqueueActiveSpots(this));

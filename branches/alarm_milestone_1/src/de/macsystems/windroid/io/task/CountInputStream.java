@@ -19,6 +19,8 @@ public final class CountInputStream extends FilterInputStream
 
 	private long bytes = 0;
 
+	private volatile boolean isClosed = false;
+
 	/**
 	 * 
 	 * @param _inStream
@@ -48,12 +50,18 @@ public final class CountInputStream extends FilterInputStream
 	@Override
 	public void close() throws IOException
 	{
+		if (isClosed)
+		{
+			return;
+		}
+
 		try
 		{
 			super.close();
 		}
 		finally
 		{
+			isClosed = true;
 			final float kbs = (float) bytes / 1024.0f;
 			final float mb = kbs / 1024.0f;
 			Log.i(LOG_TAG, "Read :" + bytes + " Byte, " + kbs + " kB, " + mb + " MB");

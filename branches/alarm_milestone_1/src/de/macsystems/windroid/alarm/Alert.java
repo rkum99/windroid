@@ -19,6 +19,9 @@ package de.macsystems.windroid.alarm;
 
 import java.util.Calendar;
 
+import de.macsystems.windroid.identifyable.Repeat;
+import de.macsystems.windroid.identifyable.Station;
+
 import android.app.AlarmManager;
 
 /**
@@ -39,7 +42,7 @@ public final class Alert
 
 	private final static int MAX_RETRYS = 3;
 
-	private final int repeatID;
+	private final int alarmID;
 
 	private final int selectedID;
 
@@ -60,12 +63,14 @@ public final class Alert
 	 * @param _time
 	 * @param _dayOfWeek
 	 * @see Calendar#DAY_OF_WEEK
+	 * @see Repeat#getId()
+	 * @see Station#getId()
 	 */
 	Alert(final String _spotName, final int _selectedID, final int _repeatId, final int _retryCounter,
 			final long _time, final int _dayOfWeek)
 	{
 		selectedID = _selectedID;
-		repeatID = _repeatId;
+		alarmID = _repeatId;
 		retryCounter = _retryCounter;
 		time = _time;
 		dayOfWeek = _dayOfWeek;
@@ -76,16 +81,18 @@ public final class Alert
 	 * ID which is used to create or cancel Alerts using {@link AlarmManager}
 	 * 
 	 * @return
+	 * @see Repeat#getId()
 	 */
 	public int getAlertID()
 	{
-		return repeatID;
+		return alarmID;
 	}
 
 	/**
 	 * Retrieve selected id
 	 * 
 	 * @return
+	 * @see Station#getId()
 	 */
 	public int getSelectedID()
 	{
@@ -175,7 +182,7 @@ public final class Alert
 	@Override
 	public String toString()
 	{
-		return "Alert [dayOfWeek=" + dayOfWeek + ", repeatID=" + repeatID + ", retryCounter=" + retryCounter
+		return "Alert [dayOfWeek=" + dayOfWeek + ", repeatID=" + alarmID + ", retryCounter=" + retryCounter
 				+ ", selectedID=" + selectedID + ", spotName=" + spotName + ", time=" + time + "]";
 	}
 

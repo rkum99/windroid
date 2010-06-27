@@ -54,9 +54,9 @@ public final class AlarmUtil
 {
 	private final static String LOG_TAG = AlarmUtil.class.getSimpleName();
 
-	private final static long retryInMS = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
+	private final static long RETRY_IN_MS = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
 
-	private final static long intervalInMS = AlarmManager.INTERVAL_HOUR;
+	private final static long INTERVAL_IN_MS = AlarmManager.INTERVAL_HOUR;
 
 	private final static AtomicInteger REQUEST_COUNTER = new AtomicInteger(1);
 
@@ -129,7 +129,7 @@ public final class AlarmUtil
 			//
 			final PendingIntent pendingIntent = PendingIntent.getBroadcast(_context, alert.getAlertID(), intent, 0);
 			// TODO: Fix Interval in release to 24 Hrs
-			alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (15L * 1000L), 10L * 1000L,
+			alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), INTERVAL_IN_MS,
 					pendingIntent);
 
 			if (Logging.isLoggingEnabled())
@@ -221,14 +221,13 @@ public final class AlarmUtil
 			return false;
 		}
 
-		final long now = System.currentTimeMillis();
 		//
 		final Intent intent = new Intent(_context, AlarmBroadcastReciever.class);
 		writeAlertToIntent(_alert, intent);
 		final int requestID = REQUEST_COUNTER.incrementAndGet();
 		final PendingIntent pendingIntent = PendingIntent.getBroadcast(_context, requestID, intent, 0);
 		final AlarmManager alarmManager = (AlarmManager) _context.getSystemService(Context.ALARM_SERVICE);
-		alarmManager.set(AlarmManager.RTC_WAKEUP, now + retryInMS, pendingIntent);
+		alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + RETRY_IN_MS, pendingIntent);
 		//
 		if (Logging.isLoggingEnabled())
 		{
@@ -237,7 +236,6 @@ public final class AlarmUtil
 		return true;
 
 	}
-
 
 	/**
 	 * Cancels all regular alerts for all active spots. still be processed!

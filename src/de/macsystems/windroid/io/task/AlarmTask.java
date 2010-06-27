@@ -119,7 +119,7 @@ public class AlarmTask extends AudioFeedbackTask
 			}
 			catch (final RetryLaterException e)
 			{
-				Log.e(LOG_TAG, "", e);
+				Log.e(LOG_TAG, "RetryLaterException on Alert " + alert.toString(), e);
 				AlarmUtil.enqueueRetryAlarm(alert, getContext());
 			}
 

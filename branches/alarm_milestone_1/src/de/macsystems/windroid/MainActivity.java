@@ -54,7 +54,6 @@ import de.macsystems.windroid.alarm.AlarmUtil;
 import de.macsystems.windroid.common.IntentConstants;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.db.DAOFactory;
-import de.macsystems.windroid.db.DBException;
 import de.macsystems.windroid.db.ISelectedDAO;
 import de.macsystems.windroid.db.ISpotDAO;
 import de.macsystems.windroid.proxy.SpotServiceConnection;

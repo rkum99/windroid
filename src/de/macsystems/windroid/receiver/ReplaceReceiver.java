@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 import de.macsystems.windroid.common.IntentConstants;
 
 /**
@@ -27,11 +28,9 @@ public final class ReplaceReceiver extends BroadcastReceiver
 	@Override
 	public void onReceive(final Context _context, final Intent _intent)
 	{
-		Log.i(LOG_TAG, "Package replaced/updated, Enqueue Alerts!");
-		if (Intent.ACTION_PACKAGE_CHANGED.equals(_intent.getAction()))
-		{
-			startService(_context);
-		}
+		Log.i(LOG_TAG, "Enqueue Alerts, Action is :" + _intent.getAction());
+		Toast.makeText(_context, "Package Installer ", Toast.LENGTH_LONG).show();
+		startService(_context);
 	}
 
 	/**

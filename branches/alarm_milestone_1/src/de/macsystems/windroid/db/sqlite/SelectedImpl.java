@@ -373,10 +373,11 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 			db = getReadableDatabase();
 			// db.beginTransaction();
 
-			c = db.rawQuery(
-					"SELECT B._id, A.*, B.* FROM selected as B, spot as A WHERE A.spotid=B.spotid AND B.activ=?",
-					new String[]
-					{ "1" });
+			c = db
+					.rawQuery(
+							"SELECT DISTINCT B._id, A.*, B.* FROM selected as B, spot as A WHERE A.spotid=B.spotid AND B.activ=? GROUP BY B.spotid",
+							new String[]
+							{ "1" });
 			moveToFirstOrThrow(c);
 			do
 			{

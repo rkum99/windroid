@@ -19,6 +19,8 @@ package de.macsystems.windroid.alarm;
 
 import java.util.Calendar;
 
+import android.app.AlarmManager;
+
 /**
  * Represents an alarm queued in AlarmManager
  * 
@@ -71,11 +73,11 @@ public final class Alert
 	}
 
 	/**
-	 * Retrieve repeat ID
+	 * ID which is used to create or cancel Alerts using {@link AlarmManager}
 	 * 
 	 * @return
 	 */
-	public int getRepeatID()
+	public int getAlertID()
 	{
 		return repeatID;
 	}

@@ -20,6 +20,7 @@ package de.macsystems.windroid.alarm;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -36,6 +37,9 @@ import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.Util;
 import de.macsystems.windroid.common.IntentConstants;
 import de.macsystems.windroid.common.SpotConfigurationVO;
+import de.macsystems.windroid.db.DAOFactory;
+import de.macsystems.windroid.db.DBException;
+import de.macsystems.windroid.db.ISelectedDAO;
 import de.macsystems.windroid.identifyable.Repeat;
 import de.macsystems.windroid.identifyable.Schedule;
 import de.macsystems.windroid.receiver.AlarmBroadcastReciever;
@@ -50,11 +54,11 @@ public final class AlarmUtil
 {
 	private final static String LOG_TAG = AlarmUtil.class.getSimpleName();
 
-	private final static long INITIAL_DELAY = 100L;
+	private final static long retryInMS = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
+
+	private final static long intervalInMS = AlarmManager.INTERVAL_HOUR;
 
 	private final static AtomicInteger REQUEST_COUNTER = new AtomicInteger(1);
-
-	private final static int MAX_RETRYS = 3;
 
 	private final static SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 	/**
@@ -111,6 +115,42 @@ public final class AlarmUtil
 			Log.d(LOG_TAG, "Creating alarm for spot " + _vo.getStation().getName());
 		}
 
+		final List<Alert> alertsToEnqueue = getAlertsFromSpotConfiguration(_vo);
+
+		final AlarmManager alarmManager = (AlarmManager) _context.getSystemService(Context.ALARM_SERVICE);
+		//
+
+		for (int i = 0; i < alertsToEnqueue.size(); i++)
+		{
+			final Alert alert = alertsToEnqueue.get(i);
+			final Intent intent = new Intent(_context, AlarmBroadcastReciever.class);
+			intent.setAction(IntentConstants.DE_MACSYSTEMS_WINDROID_ALERT_TRIGGER);
+			AlarmUtil.writeAlertToIntent(alert, intent);
+			//
+			final PendingIntent pendingIntent = PendingIntent.getBroadcast(_context, alert.getAlertID(), intent, 0);
+			// TODO: Fix Interval in release to 24 Hrs
+			alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (15L * 1000L), 10L * 1000L,
+					pendingIntent);
+
+			if (Logging.isLoggingEnabled())
+			{
+				Log.d(LOG_TAG, getAlertAsDebugString(alert));
+			}
+		}
+		if (Logging.isLoggingEnabled())
+		{
+			Log.d(LOG_TAG, "Creating alarms for spot :" + _vo.getStation().getName() + " finished.");
+		}
+	}
+
+	/**
+	 * Returns all alerts which are active for spot
+	 * 
+	 * @param _vo
+	 * @return
+	 */
+	private static List<Alert> getAlertsFromSpotConfiguration(final SpotConfigurationVO _vo)
+	{
 		final Schedule schedule = _vo.getSchedule();
 		final Iterator<Integer> iter = schedule.getRepeatIterator();
 
@@ -124,32 +164,7 @@ public final class AlarmUtil
 						repeat.getDayTime(), repeat.getDayOfWeek()));
 			}
 		}
-
-		final AlarmManager alarmManager = (AlarmManager) _context.getSystemService(Context.ALARM_SERVICE);
-		//
-
-		for (int i = 0; i < alertsToEnqueue.size(); i++)
-		{
-			final Alert alert = alertsToEnqueue.get(i);
-			final Intent intent = new Intent(_context, AlarmBroadcastReciever.class);
-			intent.setAction(IntentConstants.DE_MACSYSTEMS_WINDROID_ALERT_TRIGGER);
-			AlarmUtil.writeAlertToIntent(alert, intent);
-			//
-			final PendingIntent pendingIntent = PendingIntent.getBroadcast(_context, REQUEST_COUNTER.incrementAndGet(),
-					intent, 0);
-			// TODO: Fix Interval in release to 24 Hrs
-			alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (15L * 1000L),
-					AlarmManager.INTERVAL_HOUR * 2, pendingIntent);
-
-			if (Logging.isLoggingEnabled())
-			{
-				Log.d(LOG_TAG, getAlertAsDebugString(alert));
-			}
-		}
-		if (Logging.isLoggingEnabled())
-		{
-			Log.d(LOG_TAG, "Creating alarms for spot :" + _vo.getStation().getName() + " finished.");
-		}
+		return alertsToEnqueue;
 	}
 
 	private static long calcSchedulingStartTime(final Alert _alert)
@@ -176,9 +191,9 @@ public final class AlarmUtil
 	 * It is possible that an alert will not be processed as the alert already
 	 * reached max retrys.
 	 * 
-	 * @return <code>true</code> if alarm is enqueued.
 	 * @param _alert
 	 * @param _context
+	 * @return <code>true</code> if alarm is enqueued.
 	 * @throws NullPointerException
 	 */
 	public static boolean enqueueRetryAlarm(final Alert _alert, final Context _context) throws NullPointerException
@@ -192,7 +207,7 @@ public final class AlarmUtil
 			throw new NullPointerException("Context");
 		}
 		// TODO: Change to control wake up retry time
-		final long retryInMS = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
+
 		// final long retryInMS = 1000L * 3;
 		_alert.incrementRetryCounter();
 		if (_alert.isExpired())
@@ -201,9 +216,9 @@ public final class AlarmUtil
 			{
 				Log.d(LOG_TAG, "Alert expired for Spot :\"" + _alert.getSpotName() + "\", retrys : "
 						+ _alert.getRetryCounter() + ", skipping!");
-				return false;
 
 			}
+			return false;
 		}
 
 		final long now = System.currentTimeMillis();
@@ -211,39 +226,56 @@ public final class AlarmUtil
 		final Intent intent = new Intent(_context, AlarmBroadcastReciever.class);
 		writeAlertToIntent(_alert, intent);
 		final int requestID = REQUEST_COUNTER.incrementAndGet();
-		final PendingIntent pendingIntent = PendingIntent.getBroadcast(_context, requestID, intent,
-				PendingIntent.FLAG_ONE_SHOT);
+		final PendingIntent pendingIntent = PendingIntent.getBroadcast(_context, requestID, intent, 0);
 		final AlarmManager alarmManager = (AlarmManager) _context.getSystemService(Context.ALARM_SERVICE);
 		alarmManager.set(AlarmManager.RTC_WAKEUP, now + retryInMS, pendingIntent);
 		//
 		if (Logging.isLoggingEnabled())
 		{
-			Log.d(LOG_TAG, "Enqueued retry alert :" + _alert.toString());
+			Log.d(LOG_TAG, "Created Retry alert :" + getAlertAsDebugString(_alert));
 		}
 		return true;
 
 	}
 
-	/**
-	 * 
-	 * @param _selectedID
-	 * @param _requestID
-	 * @param _context
-	 */
-	public static void cancelAlarm(final int _selectedID, final int _requestID, final Context _context)
-	{
-		if (Logging.isLoggingEnabled())
-		{
-			Log.d(LOG_TAG, "Canceling Alert for selected with id :" + _selectedID);
-		}
-		//
 
-		final Intent intent = new Intent(_context, AlarmBroadcastReciever.class);
-		intent.putExtra(IntentConstants.SELECTED_PRIMARY_KEY, _selectedID);
-		final PendingIntent pendingIntent = PendingIntent.getBroadcast(_context, _requestID, intent,
-				PendingIntent.FLAG_ONE_SHOT);
-		final AlarmManager alarmManager = (AlarmManager) _context.getSystemService(Context.ALARM_SERVICE);
-		alarmManager.cancel(pendingIntent);
+	/**
+	 * Cancels all regular alerts for all active spots. still be processed!
+	 * 
+	 * @param _context
+	 * @TODO: retry alerts will still be processed
+	 */
+	public static void cancelAllAlerts(final Context _context)
+	{
+		final ISelectedDAO dao = DAOFactory.getSelectedDAO(_context);
+		if (!dao.isSpotActiv())
+		{
+			Log.i(LOG_TAG, "No active spot configured, skipping!");
+			return;
+		}
+		try
+		{
+			final Collection<SpotConfigurationVO> spots = dao.getActivSpots();
+			if (Logging.isLoggingEnabled())
+			{
+				Log.i(LOG_TAG, "Found " + spots.size() + " Spots which are active.");
+			}
+
+			final Iterator<SpotConfigurationVO> iter = spots.iterator();
+			while (iter.hasNext())
+			{
+				final SpotConfigurationVO spot = iter.next();
+				final List<Alert> alertsToCancel = getAlertsFromSpotConfiguration(spot);
+				for (final Alert alert : alertsToCancel)
+				{
+					AlarmUtil.cancelAlarm(alert, _context);
+				}
+			}
+		}
+		catch (final DBException e)
+		{
+			Log.e(LOG_TAG, "Failure while fetch active spots.", e);
+		}
 	}
 
 	/**
@@ -314,12 +346,13 @@ public final class AlarmUtil
 	}
 
 	/**
-	 * Cancels an alert which occured if nessesary!
+	 * Cancels an alert!
 	 * 
 	 * @param _alert
 	 * @param _context
+	 * @throws NullPointerException
 	 */
-	public static void cancelAlarm(final Alert _alert, final Context _context)
+	public static void cancelAlarm(final Alert _alert, final Context _context) throws NullPointerException
 	{
 		if (_alert == null)
 		{
@@ -330,13 +363,15 @@ public final class AlarmUtil
 			throw new NullPointerException("Context");
 		}
 
-		if (_alert.isRetry() && _alert.getRetryCounter() >= MAX_RETRYS)
-		{
+		final Intent intent = new Intent(_context, AlarmBroadcastReciever.class);
+		intent.setAction(IntentConstants.DE_MACSYSTEMS_WINDROID_ALERT_TRIGGER);
+		AlarmUtil.writeAlertToIntent(_alert, intent);
 
-		}
+		final AlarmManager alarmManager = (AlarmManager) _context.getSystemService(Context.ALARM_SERVICE);
+		final PendingIntent pendingIntent = PendingIntent.getBroadcast(_context, _alert.getAlertID(), intent, 0);
+		alarmManager.cancel(pendingIntent);
 
-		throw new UnsupportedOperationException("Cancel Alarm not supported yet.");
-
+		Log.i(LOG_TAG, "Cancel Alert :" + getAlertAsDebugString(_alert));
 	}
 
 	/**
@@ -358,7 +393,7 @@ public final class AlarmUtil
 			throw new NullPointerException("alert");
 		}
 		_intent.putExtra(Alert.SPOTNAME, _alert.getSpotName());
-		_intent.putExtra(Alert.REPEAT_ID, _alert.getRepeatID());
+		_intent.putExtra(Alert.REPEAT_ID, _alert.getAlertID());
 		_intent.putExtra(Alert.RETRYS, _alert.getRetryCounter());
 		_intent.putExtra(Alert.SELECTED_ID, _alert.getSelectedID());
 		_intent.putExtra(Alert.TIME, _alert.getTime());
@@ -396,8 +431,8 @@ public final class AlarmUtil
 		final String nameOfWeekDay = dayMap.get(_alert.getDayOfWeek());
 
 		buffer.append("Alert for Spot ").append(_alert.getSpotName()).append(" get invoked every ").append(
-				nameOfWeekDay).append(" at ").append(timeFormat.format(time)).append(".");
-
+				nameOfWeekDay).append(" at ").append(timeFormat.format(time)).append(". retrys=").append(
+				_alert.getRetryCounter()).append(" alertID=").append(_alert.getAlertID());
 		return buffer.toString();
 	}
 

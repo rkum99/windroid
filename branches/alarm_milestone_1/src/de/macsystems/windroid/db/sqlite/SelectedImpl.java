@@ -375,7 +375,7 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 
 			c = db
 					.rawQuery(
-							"SELECT DISTINCT B._id, A.*, B.* FROM selected as B, spot as A WHERE A.spotid=B.spotid AND B.activ=? GROUP BY B.spotid",
+							"SELECT DISTINCT B._id, A.*, B.* FROM selected as B, spot as A WHERE A.spotid=B.spotid AND B.activ=? GROUP BY B._id",
 							new String[]
 							{ "1" });
 			moveToFirstOrThrow(c);

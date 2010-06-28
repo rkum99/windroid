@@ -19,6 +19,7 @@ package de.macsystems.windroid.io.task;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 
 import android.content.Context;
 import android.util.Log;
@@ -69,7 +70,6 @@ public class AlarmTask extends AudioFeedbackTask
 	@Override
 	public void execute() throws Exception
 	{
-		boolean showNotification = true;
 		try
 		{
 
@@ -97,30 +97,32 @@ public class AlarmTask extends AudioFeedbackTask
 				}
 				return;
 			}
-			if (Logging.isLoggingEnabled())
+
+			final int MAX_RETRYS = 3;
+			boolean updateFailed = true;
+
+			for (int retry = 0; retry < MAX_RETRYS; retry++)
 			{
-				Log.d(LOG_TAG, "Alarm for: " + vo.getStation().getName());
+				try
+				{
+					Log.i(LOG_TAG, "Atempt no. " + retry + " to update " + alert.getSpotName() + ".");
+					tryUpdate(vo);
+					setAsSuccessfull();
+					Thread.sleep(10 * 1000L);
+				}
+				catch (final Exception e)
+				{
+					Log.e(LOG_TAG, "Failed to update spot on alarm.", e);
+				}
 			}
-			try
+
+			if (updateFailed)
 			{
-				final URI uri = WindUtils.getJSONForcastURL(vo.getStation().getId()).toURI();
-				final ParseForecastTask task = new ParseForecastTask(uri);
-				final Forecast forecast = task.execute(getContext());
-				// Update Forecast in DB
-				final IForecastDAO forecastDAO = DAOFactory.getForecast(getContext());
-				forecastDAO.updateForecast(forecast, alert.getSelectedID());
-				// for Audio output
+				AlarmUtil.enqueueRetryAlarm(alert, getContext());
+			}
+			else
+			{
 				setAsSuccessfull();
-			}
-			catch (final IOException e)
-			{
-				Log.e(LOG_TAG, "Failed to create uri", e);
-				AlarmUtil.enqueueRetryAlarm(alert, getContext());
-			}
-			catch (final RetryLaterException e)
-			{
-				Log.e(LOG_TAG, "RetryLaterException on Alert " + alert.toString(), e);
-				AlarmUtil.enqueueRetryAlarm(alert, getContext());
 			}
 
 		}
@@ -134,5 +136,24 @@ public class AlarmTask extends AudioFeedbackTask
 			clearNotification();
 		}
 
+	}
+
+	/**
+	 * 
+	 * @param vo
+	 * @throws URISyntaxException
+	 * @throws IOException
+	 * @throws RetryLaterException
+	 * @throws InterruptedException
+	 */
+	private void tryUpdate(final SpotConfigurationVO vo) throws URISyntaxException, IOException, RetryLaterException,
+			InterruptedException
+	{
+		final URI uri = WindUtils.getJSONForcastURL(vo.getStation().getId()).toURI();
+		final ParseForecastTask task = new ParseForecastTask(uri);
+		final Forecast forecast = task.execute(getContext());
+		// Update Forecast in DB
+		final IForecastDAO forecastDAO = DAOFactory.getForecast(getContext());
+		forecastDAO.updateForecast(forecast, alert.getSelectedID());
 	}
 }

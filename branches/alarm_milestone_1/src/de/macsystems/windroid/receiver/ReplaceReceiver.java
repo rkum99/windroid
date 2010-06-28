@@ -3,8 +3,8 @@ package de.macsystems.windroid.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
 import de.macsystems.windroid.common.IntentConstants;
 
 /**
@@ -18,6 +18,10 @@ public final class ReplaceReceiver extends BroadcastReceiver
 {
 
 	private final static String LOG_TAG = ReplaceReceiver.class.getSimpleName();
+	/**
+	 * Used to identify that this Application get replaced or updated.
+	 */
+	private final Uri uri = new Uri.Builder().scheme("package").encodedOpaquePart("de.macsystems.windroid").build();
 
 	/*
 	 * (non-Javadoc)
@@ -28,9 +32,11 @@ public final class ReplaceReceiver extends BroadcastReceiver
 	@Override
 	public void onReceive(final Context _context, final Intent _intent)
 	{
-		Log.i(LOG_TAG, "Enqueue Alerts, Action is :" + _intent.getAction());
-		Toast.makeText(_context, "Package Installer ", Toast.LENGTH_LONG).show();
-		startService(_context);
+		if (uri.equals(_intent.getData()))
+		{
+			Log.i(LOG_TAG, "Enqueue Alerts, Action is :" + _intent.getAction());
+			startService(_context);
+		}
 	}
 
 	/**

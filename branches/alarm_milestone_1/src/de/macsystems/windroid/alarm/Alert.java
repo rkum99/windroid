@@ -138,7 +138,6 @@ public final class Alert
 	void incrementRetryCounter()
 	{
 		retryCounter++;
-		System.out.println("Retry Counter :"+retryCounter);
 	}
 
 	/**

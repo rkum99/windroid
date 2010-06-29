@@ -303,8 +303,8 @@ public final class AlarmUtil
 		final long time = _intent.getLongExtra(Alert.TIME, NOT_FOUND_LONG);
 		final int weekday = _intent.getIntExtra(Alert.WEEKDAY, NOT_FOUND);
 
-		if (stationName == null || selectedID == NOT_FOUND || repeatID == NOT_FOUND || repeatID == NOT_FOUND
-				|| retryCounter == NOT_FOUND || weekday == NOT_FOUND || time == NOT_FOUND_LONG)
+		if (stationName == null || selectedID == NOT_FOUND || repeatID == NOT_FOUND || retryCounter == NOT_FOUND
+				|| weekday == NOT_FOUND || time == NOT_FOUND_LONG)
 		{
 			throw new IllegalArgumentException("Intent missing alert entrys! Entrys : stationName=" + stationName
 					+ " selectedID=" + selectedID + " repeatID=" + repeatID + " retryCounter=" + retryCounter
@@ -338,7 +338,7 @@ public final class AlarmUtil
 		final int weekday = _intent.getIntExtra(Alert.WEEKDAY, NOT_FOUND);
 
 		final boolean result = (spotName != null || selectedID != NOT_FOUND || repeatID != NOT_FOUND
-				|| repeatID != NOT_FOUND || retryCounter != NOT_FOUND || weekday != NOT_FOUND || time != NOT_FOUND_LONG);
+				|| retryCounter != NOT_FOUND || weekday != NOT_FOUND || time != NOT_FOUND_LONG);
 		return result;
 
 	}

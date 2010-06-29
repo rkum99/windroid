@@ -133,16 +133,28 @@ public class IOUtils
 	 * Returns the Name of the Network Connection eg. WIFI, MOBILE.
 	 * 
 	 * @param _context
-	 * @return
+	 * @return the name of the network or "Network not found!"
 	 * @see #isNetworkReachable(Context)
 	 */
 	public static String getNetworkName(final Context _context)
 	{
 		final ConnectivityManager systemService = (ConnectivityManager) _context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
-		String networkTypeName = systemService.getActiveNetworkInfo().getTypeName();
-		networkTypeName = networkTypeName + " [" + systemService.getActiveNetworkInfo().getSubtypeName() + "]";
-		return networkTypeName;
+
+		final StringBuilder builder = new StringBuilder(64);
+
+		if (systemService.getActiveNetworkInfo() != null)
+		{
+			builder.append(systemService.getActiveNetworkInfo().getTypeName());
+			builder.append(" [").append(systemService.getActiveNetworkInfo().getSubtypeName()).append("]");
+		}
+		else
+		{
+			builder.append("Network not found!");
+		}
+
+		return builder.toString();
+
 	}
 
 	/**

@@ -86,7 +86,7 @@ public final class ForecastActivity extends DBActivity
 	/**
 	 * Used to format all decimals
 	 */
-	private final static DecimalFormat numberFormat = new DecimalFormat("##0.0");
+	private final static DecimalFormat numberFormat = new DecimalFormat("##0.#");
 
 	/**
 	 * Used to format all decimals

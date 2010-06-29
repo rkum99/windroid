@@ -50,6 +50,17 @@ public class AlarmTask extends AudioFeedbackTask
 	private final static String LOG_TAG = AlarmTask.class.getSimpleName();
 
 	private final Alert alert;
+	/**
+	 * Maximum retrys this task trys to get an update before it will be
+	 * scheduled as an retry using
+	 * {@link AlarmUtil#enqueueRetryAlarm(Alert, Context)}.
+	 */
+	private final int MAX_RETRYS = 3;
+	/**
+	 * Time which the thread sleeps after an attempt to update/connect before
+	 * next retry.
+	 */
+	private final long IN_BETWEEN_SLEEP_TIME = 30L * 1000L;
 
 	/**
 	 * 
@@ -75,7 +86,6 @@ public class AlarmTask extends AudioFeedbackTask
 
 			final ISelectedDAO dao = DAOFactory.getSelectedDAO(getContext());
 			final SpotConfigurationVO vo = dao.getSpotConfiguration(alert.getSelectedID());
-
 			showStatus(getContext().getString(R.string.recieve_forecast_update_title) + vo.getStation().getName(), "");
 			if (!vo.isActiv())
 			{
@@ -98,37 +108,39 @@ public class AlarmTask extends AudioFeedbackTask
 				return;
 			}
 
-			final int MAX_RETRYS = 3;
-			boolean updateFailed = true;
+			boolean updateSuccessful = false;
 
 			for (int retry = 0; retry < MAX_RETRYS; retry++)
 			{
 				try
 				{
-					Log.i(LOG_TAG, "Atempt no. " + retry + " to update " + alert.getSpotName() + ".");
+					Log.i(LOG_TAG, "Attempt no. " + retry + " to update " + alert.getSpotName() + ".");
 					tryUpdate(vo);
 					setAsSuccessfull();
-					Thread.sleep(10 * 1000L);
+					// continue after success
+					break;
 				}
 				catch (final Exception e)
 				{
+					updateSuccessful = false;
 					Log.e(LOG_TAG, "Failed to update spot on alarm.", e);
 				}
+				Thread.sleep(IN_BETWEEN_SLEEP_TIME);
 			}
 
-			if (updateFailed)
+			if (updateSuccessful)
 			{
-				AlarmUtil.enqueueRetryAlarm(alert, getContext());
+				setAsSuccessfull();
 			}
 			else
 			{
-				setAsSuccessfull();
+				AlarmUtil.enqueueRetryAlarm(alert, getContext());
 			}
 
 		}
 		catch (final DBException e)
 		{
-			Log.e(LOG_TAG, "", e);
+			Log.e(LOG_TAG, "Failed to fetch spotconfiguration", e);
 		}
 		finally
 		{

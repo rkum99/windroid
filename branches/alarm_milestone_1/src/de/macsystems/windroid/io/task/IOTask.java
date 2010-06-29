@@ -113,6 +113,7 @@ public abstract class IOTask<V, I> implements Task<V, I>
 		}
 		if (Logging.isLoggingEnabled())
 		{
+			Log.d(LOG_TAG, "Using Network :" + IOUtils.getNetworkName(_context));
 			Log.d(LOG_TAG, "Connecting to :" + uri.toString());
 		}
 

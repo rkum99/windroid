@@ -117,6 +117,7 @@ public class AlarmTask extends AudioFeedbackTask
 					Log.i(LOG_TAG, "Attempt no. " + retry + " to update " + alert.getSpotName() + ".");
 					tryUpdate(vo);
 					setAsSuccessfull();
+					Log.i(LOG_TAG, "Update successful !");
 					// continue after success
 					break;
 				}
@@ -147,7 +148,6 @@ public class AlarmTask extends AudioFeedbackTask
 			play();
 			clearNotification();
 		}
-
 	}
 
 	/**

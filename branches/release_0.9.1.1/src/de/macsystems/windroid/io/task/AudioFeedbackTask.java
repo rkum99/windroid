@@ -77,6 +77,7 @@ public abstract class AudioFeedbackTask extends AbstractNotificationTask<Void> i
 	 * 
 	 * @param _context
 	 * @throws NullPointerException
+	 * @see {@link #NO_SOUND_RES_ID}
 	 */
 	public AudioFeedbackTask(final Context _context) throws NullPointerException
 	{

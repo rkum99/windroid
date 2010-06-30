@@ -82,7 +82,7 @@ public class SpotAlarmTask implements Callable<Void>
 			while (iter.hasNext())
 			{
 				final SpotConfigurationVO spot = iter.next();
-				AlarmUtil.createAlarmForSpot(spot.getPrimaryKey(), context);
+				AlarmUtil.createAlarmForSpot(spot, context);
 			}
 
 		}

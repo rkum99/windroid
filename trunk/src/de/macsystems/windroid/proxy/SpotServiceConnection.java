@@ -71,16 +71,7 @@ public final class SpotServiceConnection implements ServiceConnection, ISpotServ
 		}
 
 		viewToEnable = _viewToEnable;
-
 		_context.startService(new Intent(_context, SpotService.class));
-
-		// final boolean success = _context.bindService(new Intent(
-		// IntentConstants.DE_MACSYSTEMS_WINDROID_START_SPOT_SERVICE_ACTION),
-		// this, Context.BIND_AUTO_CREATE);
-		// if (!success)
-		// {
-		// throw new AndroidRuntimeException("Failed to bind Service.");
-		// }
 	}
 
 	/*
@@ -162,8 +153,7 @@ public final class SpotServiceConnection implements ServiceConnection, ISpotServ
 	@Override
 	public void updateActiveReports(final IServiceCallbackListener listener) throws RemoteException
 	{
-		// TODO Auto-generated method stub
-
+		throw new UnsupportedOperationException();
 	}
 
 }

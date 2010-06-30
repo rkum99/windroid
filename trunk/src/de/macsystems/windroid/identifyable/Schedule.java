@@ -23,9 +23,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import android.util.Log;
-import de.macsystems.windroid.Logging;
-
 /**
  * This is some glue Code that a SpotConfiguration did not contain so many
  * fields/methods.
@@ -83,10 +80,10 @@ public final class Schedule implements Serializable
 
 		final int id = _repeat.getDayOfWeek();
 		repeats.put(id, _repeat);
-		if (Logging.isLoggingEnabled())
-		{
-			Log.d(LOG_TAG, "Added repeat on schedule: " + _repeat.toString());
-		}
+		// if (Logging.isLoggingEnabled())
+		// {
+		// Log.d(LOG_TAG, "Added repeat on schedule: " + _repeat.toString());
+		// }
 	}
 
 	/*

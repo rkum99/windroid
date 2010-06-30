@@ -26,6 +26,7 @@ import de.macsystems.windroid.db.sqlite.Database;
 import de.macsystems.windroid.db.sqlite.ForecastImpl;
 import de.macsystems.windroid.db.sqlite.PreferenceImpl;
 import de.macsystems.windroid.db.sqlite.RegionImpl;
+import de.macsystems.windroid.db.sqlite.RepeatImpl;
 import de.macsystems.windroid.db.sqlite.SelectedImpl;
 import de.macsystems.windroid.db.sqlite.SpotImpl;
 import de.macsystems.windroid.progress.IProgress;
@@ -113,6 +114,12 @@ public final class DAOFactory
 	public final static IPreferencesDAO getPreferencesDAO(final Context _context)
 	{
 		return new PreferenceImpl(createDatabase(_context));
+	}
+
+	public static IRepeatDAO getRepeatDAO(final Context _context)
+	{
+		return new RepeatImpl(createDatabase(_context));
+
 	}
 
 }

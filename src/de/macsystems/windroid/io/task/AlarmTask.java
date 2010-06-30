@@ -70,7 +70,7 @@ public class AlarmTask extends AudioFeedbackTask
 	 */
 	public AlarmTask(final Context _context, final Alert _alert) throws NullPointerException
 	{
-		super(_context);
+		super(_context, NO_SOUND_RES_ID, R.raw.update_failed);
 		if (_alert == null)
 		{
 			throw new NullPointerException("alert");

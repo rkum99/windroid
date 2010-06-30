@@ -214,14 +214,14 @@ public final class PreferenceImpl extends BaseImpl implements IPreferencesDAO
 	public Continent getPreferredContinent()
 	{
 		final String continent = getStringValue(KEY_PREFERRED_CONTINENT);
-		
+
 		return null;
 	}
 
 	@Override
 	public Measure getPreferredWindUnit()
 	{
-		
+
 		final String unit = getStringValue(KEY_PREFERRED_UNIT);
 		return Measure.getById(unit);
 	}

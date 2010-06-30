@@ -66,6 +66,7 @@ public final class WindSpeed extends MeasureValue implements IMeasureValue
 	{
 		return new WindSpeed(_value, _measure);
 	}
+
 	// @Override
 	// public void convertTo(final Measure _measure)
 	// {
@@ -158,7 +159,7 @@ public final class WindSpeed extends MeasureValue implements IMeasureValue
 	//
 	// }
 
-	public static IMeasureValue print(float _value, Measure _measure)
+	public static IMeasureValue print(final float _value, final Measure _measure)
 	{
 		float v = 0f;
 

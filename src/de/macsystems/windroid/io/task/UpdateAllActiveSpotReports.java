@@ -139,11 +139,11 @@ public class UpdateAllActiveSpotReports extends AbstractNotificationTask<Void>
 		{
 			Log.e(LOG_TAG, "", e);
 		}
-		catch (URISyntaxException e)
+		catch (final URISyntaxException e)
 		{
 			Log.e(LOG_TAG, "Check URI", e);
 		}
-		catch (InterruptedException e)
+		catch (final InterruptedException e)
 		{
 			Log.e(LOG_TAG, "", e);
 		}

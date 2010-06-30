@@ -111,7 +111,7 @@ public final class WindSpeedConverter implements IConvertable
 		// System.out.println("Converting into: "+_measure.getDescription());
 		// TODO: Move calculation into switch block for better performance
 		//
-		float v = orginalValue.getValue(); // always Knots!!!
+		final float v = orginalValue.getValue(); // always Knots!!!
 
 		final float ms = v * 0.514444f; // m s-1
 

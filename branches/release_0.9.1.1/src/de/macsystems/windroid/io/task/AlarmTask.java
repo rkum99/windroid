@@ -114,10 +114,16 @@ public class AlarmTask extends AudioFeedbackTask
 			{
 				try
 				{
-					Log.i(LOG_TAG, "Attempt no. " + retry + " to update " + alert.getSpotName() + ".");
+					if (Logging.isLoggingEnabled())
+					{
+						Log.i(LOG_TAG, "Attempt no. " + retry + " to update " + alert.getSpotName() + ".");
+					}
 					tryUpdate(vo);
 					setAsSuccessfull();
-					Log.i(LOG_TAG, "Update successful !");
+					if (Logging.isLoggingEnabled())
+					{
+						Log.i(LOG_TAG, "Update successful !");
+					}
 					// continue after success
 					break;
 				}

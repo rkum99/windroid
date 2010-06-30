@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<!--
+		@version $Id$
+	-->
+
+<resources>
+	<string
+		name="on_reboot.monitored_spots_title">Monitoring</string>
+	<string
+		name="on_reboot.monitored_spots_text">$1 spot(s) get monitored.</string>
+	<string
+		name="on_reboot.monitored_spots_tickertext">Monitoring spots</string>
+</resources>

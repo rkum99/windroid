@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<!--
+		@version $Id$
+	-->
+
+
+<resources>
+	<string name="forecast_options_refresh">Update</string>
+	<string name="forecast_options_next">Next</string>
+	<string name="forecast_options_previous">Previous</string>
+	<string name="forecast_options_legend">legend</string>
+	<string name="forecast_progressdialog_title">Update</string>
+	<string name="forecast_progressdialog_message">Please wait ...</string>
+
+	<string name="forecast_title_layout">&#160;updated&#160;</string>
+	<string name="forecast_failed_to_load_forecast">Failed to load forecast</string>
+</resources>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<!--
+		@version $Id: spotsummary.xml 158 2010-01-20 02:07:02Z jens.hohl $
+	-->
+
+<resources>
+	<string
+		name="date">Datum</string>
+	<string
+		name="time">Uhrzeit</string>
+	<string
+		name="clouds">Bewölkung</string>
+	<string
+		name="wind_direction">Windrichtung</string>
+	<string
+		name="wind_speed">Windgeschwindigkeit</string>
+	<string
+		name="wave_period">Wellenperiode</string>
+	<string
+		name="wave_direction">Wellenrichtung</string>
+	<string
+		name="precipitation">Niederschlag</string>
+	<string
+		name="air_pressure">Luftdruck</string>
+	<string
+		name="windgust">Windböen</string>
+	<string
+		name="water_temperature">Wassertemperatur</string>
+	<string
+		name="air_temperature">Lufttemperatur</string>
+	<string
+		name="wave_height">Wellenhöhe</string>
+</resources>

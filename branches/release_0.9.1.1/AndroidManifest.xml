@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	package="de.macsystems.windroid"
+	android:versionCode="1"
+	android:versionName="0.9.1">
+
+	<uses-sdk
+		android:minSdkVersion="3"
+		android:targetSdkVersion="4" />
+
+	<supports-screens
+		android:smallScreens="true"
+		android:normalScreens="true"
+		android:largeScreens="true"
+		android:anyDensity="true" />
+
+	<uses-permission
+		android:name="android.permission.INTERNET" />
+	<uses-permission
+		android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission
+		android:name="android.permission.VIBRATE" />
+	<uses-permission
+		android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+	<application
+		android:label="@string/mainfest_label"
+		android:description="@string/mainfest_description"
+		android:allowClearUserData="true"
+		android:icon="@drawable/launcher">
+		<activity
+			android:name="de.macsystems.windroid.MainActivity"
+			android:label="@string/app_name"
+			android:icon="@drawable/launcher">
+			<intent-filter>
+				<action
+					android:name="android.intent.action.MAIN" />
+				<category
+					android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
+		<activity
+			android:name="de.macsystems.windroid.DownloadActivity"
+			android:label="@string/download_title" />
+		<activity
+			android:name="de.macsystems.windroid.ForecastActivity"
+			android:label="Forecast"
+			android:screenOrientation="landscape" />
+		<activity
+			android:name="de.macsystems.windroid.SpotSelectionActivity"
+			android:label="@string/spot_selection_title" />
+		<activity
+			android:name="de.macsystems.windroid.Preferences"
+			android:label="@string/preferences_title" />
+		<activity
+			android:name="de.macsystems.windroid.SpotConfigurationActivity"
+			android:label="@string/spot_configuration_title" />
+		<activity
+			android:name="de.macsystems.windroid.ScheduleActivity"
+			android:label="@string/schedule_title" />
+
+		<activity
+			android:name="de.macsystems.windroid.SpotSummaryActivity"
+			android:label="@string/spot_summary_title" />
+		<activity
+			android:name="de.macsystems.windroid.AlarmNotificationDetail"
+			android:label="@string/alarm_notification_detail_title" />
+		<activity
+			android:name="de.macsystems.windroid.HomeScreenConfigure"
+			android:label="@string/app_name" />
+		<activity
+			android:name="de.macsystems.windroid.SpotOverviewActivity"
+			android:label="@string/spot_overview_title" />
+		<receiver
+			android:name="de.macsystems.windroid.receiver.BootCompletedBroadcastReceiver"
+			android:label="@string/app_name"
+			android:enabled="true"
+			android:exported="false">
+			<intent-filter>
+				<action
+					android:name="android.intent.action.BOOT_COMPLETED" />
+			</intent-filter>
+		</receiver>
+		<receiver
+			android:name="de.macsystems.windroid.receiver.AlarmBroadcastReciever"
+			android:label="@string/app_name"
+			android:enabled="true"
+			android:exported="false">
+			<intent-filter>
+				<action
+					android:name="de.macsystems.windroid.ALERT_TRIGGER" />
+			</intent-filter>
+		</receiver>
+		<receiver
+			android:name="de.macsystems.windroid.receiver.ReplaceReceiver"
+			android:label="@string/app_name"
+			android:enabled="true"
+			android:exported="false">
+			<intent-filter>
+				<action
+					android:name="android.intent.action.PACKAGE_CHANGED" />
+				<action
+					android:name="android.intent.action.PACKAGE_ADDED" />
+				<action
+					android:name="android.intent.action.PACKAGE_INSTALL" />
+				<action
+					android:name="android.intent.action.PACKAGE_REPLACED" />
+				<data
+					android:scheme="package"
+					android:path="de.macsystems.windroid" />
+			</intent-filter>
+		</receiver>
+		<receiver
+			android:name="de.macsystems.windroid.HomeScreenWidget">
+			<intent-filter>
+				<action
+					android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+			</intent-filter>
+			<meta-data
+				android:name="android.appwidget.provider"
+				android:resource="@xml/homescreen_appwidget_info" />
+		</receiver>
+		<service
+			android:name="de.macsystems.windroid.service.SpotService"
+			android:label="@string/app_name"
+			android:enabled="true">
+			<intent-filter>
+				<action
+					android:name="de.macsystems.windroid.START_SPOT_SERVICE_ACTION" />
+			</intent-filter>
+		</service>
+	</application>
+</manifest> 

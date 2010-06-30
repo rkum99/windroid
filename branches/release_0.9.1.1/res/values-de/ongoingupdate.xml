@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<!--
+		@version $Id$
+	-->
+
+<resources>
+	<string
+		name="ongoing_update_text">Monitoring der Konfigurierten Spots.
+	</string>
+	<string
+		name="ongoing_update_title">Monitoring</string>
+
+</resources>

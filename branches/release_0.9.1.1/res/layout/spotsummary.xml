@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:app="http://schemas.android.com/apk/res/de.macsystems.windroid.api"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:id="@+id/background_pattern">
+	<ScrollView
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_weight="1">
+		<LinearLayout
+			xmlns:app="http://schemas.android.com/apk/res/de.macsystems.windroid.api"
+			xmlns:android="http://schemas.android.com/apk/res/android"
+			android:orientation="vertical"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content">
+
+			<LinearLayout
+				xmlns:android="http://schemas.android.com/apk/res/android"
+				android:orientation="horizontal"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:gravity="center">
+
+				<View
+					android:id="@+id/dummy"
+					android:layout_width="100dip"
+					android:layout_height="fill_parent" />
+
+				<de.macsystems.windroid.custom.view.CompassView
+					android:id="@+id/compass"
+					android:background="@drawable/compass_new"
+					android:layout_width="200dip"
+					android:layout_height="200dip" />
+
+				<View
+					android:id="@+id/dummy"
+					android:layout_width="100dip"
+					android:layout_height="fill_parent" />
+			</LinearLayout>
+			<View
+				android:id="@+id/dummy"
+				android:layout_width="fill_parent"
+				android:layout_height="20dp" />
+
+			<Button
+				android:id="@+id/spotsummary_accept"
+				android:text="@string/spot_summary_add"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content" />
+			<Button
+				android:id="@+id/spotsummary_cancel"
+				android:text="@string/spot_summary_cancel"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content" />
+		</LinearLayout>
+	</ScrollView>
+</LinearLayout>

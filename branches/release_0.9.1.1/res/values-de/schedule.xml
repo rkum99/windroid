@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<!--
+		@version $Id$
+	-->
+
+<resources>
+	<string name="schedule_button_ok_text">Übernehmen</string>
+	<string name="schedule_title">Zeitplanung</string>
+	<string name="schedule_button_time_text">Zeit</string>
+</resources>

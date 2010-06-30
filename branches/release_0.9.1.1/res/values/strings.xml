@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<!--  
+    		@version $Id$
+	 -->
+
+<resources>
+	<string
+		name="hello">Windroid Test</string>
+	<string
+		name="app_name">Windroid</string>
+</resources>
+

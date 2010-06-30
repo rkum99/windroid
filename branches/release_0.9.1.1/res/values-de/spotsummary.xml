@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<!--
+		@version $Id$
+	-->
+
+<resources>
+
+	<string
+		name="spot_summary_add">Spot Zufügen</string>
+	<string
+		name="spot_summary_cancel">Spot Verwerfen</string>
+	<string
+		name="spot_summary_summary">Zusammenfassung:</string>
+	<string
+		name="spot_summary_title">Zusammenfassung</string>
+	<string
+		name="spot_summary_delete_alert_text">Möchten Sie wirklich den Spot verwerfen ?</string>
+	<string
+		name="spot_summary_delete_alert_title">Hinweis</string>
+</resources>

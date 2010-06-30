@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<!--
+		@version $Id$
+	-->
+
+<resources>
+	<string name="application_title">Windroid</string>
+	<string name="welcome_message">Welcome to Windroid</string>
+	<string name="description">Please choose a spot which will be used to
+		configure alarms on
+		matching conditions.</string>
+
+	<string name="button_show_station_selection">Add Spot</string>
+	<string name="button_show_station_preferences">Preferences</string>
+	<string name="button_show_station_help">Help</string>
+
+	<string name="button_show_spot_overview">Overview</string>
+	<string name="button_simulate_wind_alert_button">Test: Cancel Alarms</string>
+
+	<string name="button_toogle_service_selected">Stop monitoring</string>
+	<string name="button_toogle_service_unselected">Start monitoring</string>
+	<string name="welcome_database_size">Found $1 spots in database.</string>
+
+
+	<string name="main_help_url">http://code.google.com/p/windroid/wiki/About
+	</string>
+</resources>

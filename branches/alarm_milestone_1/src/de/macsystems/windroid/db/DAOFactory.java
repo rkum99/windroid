@@ -116,7 +116,7 @@ public final class DAOFactory
 		return new PreferenceImpl(createDatabase(_context));
 	}
 
-	public static IRepeatDAO getRepeatDAO(Context _context)
+	public static IRepeatDAO getRepeatDAO(final Context _context)
 	{
 		return new RepeatImpl(createDatabase(_context));
 

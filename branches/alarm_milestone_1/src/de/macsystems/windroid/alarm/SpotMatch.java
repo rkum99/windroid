@@ -35,7 +35,7 @@ public class SpotMatch implements Parcelable
 	private final String name;
 
 	private final String stationID;
-	
+
 	public SpotMatch(final int _alarmID, final String _stationID, final String _name)
 	{
 		alarmID = _alarmID;

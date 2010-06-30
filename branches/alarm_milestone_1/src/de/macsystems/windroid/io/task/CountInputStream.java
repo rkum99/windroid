@@ -35,7 +35,8 @@ public final class CountInputStream extends FilterInputStream
 	 * 
 	 * @see java.io.FilterInputStream#read(byte[], int, int)
 	 */
-	public int read(byte[] b, int off, int len) throws IOException
+	@Override
+	public int read(final byte[] b, final int off, final int len) throws IOException
 	{
 		final int bytesRead = super.read(b, off, len);
 		bytes += bytesRead;
@@ -62,7 +63,7 @@ public final class CountInputStream extends FilterInputStream
 		finally
 		{
 			isClosed = true;
-			final float kbs = (float) bytes / 1024.0f;
+			final float kbs = bytes / 1024.0f;
 			final float mb = kbs / 1024.0f;
 			Log.i(LOG_TAG, "Read :" + bytes + " Byte, " + kbs + " kB, " + mb + " MB");
 		}

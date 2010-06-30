@@ -67,7 +67,7 @@ public final class TempConverter implements IConvertable
 	 * .windroid.identifyable.Measure)
 	 */
 	@Override
-	public void convertTo(Measure _measure) throws IllegalArgumentException
+	public void convertTo(final Measure _measure) throws IllegalArgumentException
 	{
 		if (_measure == null)
 		{

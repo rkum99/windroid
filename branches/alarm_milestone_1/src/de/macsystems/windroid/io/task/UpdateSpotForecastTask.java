@@ -79,7 +79,8 @@ public class UpdateSpotForecastTask extends AudioFeedbackTask
 				}
 			}
 
-			// If network not reachable simply skip. (Task status will remain failed).
+			// If network not reachable simply skip. (Task status will remain
+			// failed).
 			if (!isNetworkReachable())
 			{
 				if (Logging.isLoggingEnabled())

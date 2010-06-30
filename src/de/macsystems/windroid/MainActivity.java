@@ -487,7 +487,7 @@ public final class MainActivity extends DBActivity
 
 	private void showAboutDialog()
 	{
-		LayoutInflater inflater = LayoutInflater.from(this);
+		final LayoutInflater inflater = LayoutInflater.from(this);
 		final View view = inflater.inflate(R.layout.about, null);
 
 		final AlertDialog.Builder aboutBuilder = new AlertDialog.Builder(this);

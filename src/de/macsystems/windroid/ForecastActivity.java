@@ -86,14 +86,13 @@ public final class ForecastActivity extends DBActivity
 	/**
 	 * Used to format all decimals
 	 */
-	private final static DecimalFormat numberFormat = new DecimalFormat("##0.0");
-	
-	
+	private final static DecimalFormat numberFormat = new DecimalFormat("##0.#");
+
 	/**
 	 * Used to format all decimals
 	 */
 	private final static DecimalFormat smallNumberFormat = new DecimalFormat("##0");
-	
+
 	/**
 	 * All res id used to set text on a table row
 	 */
@@ -329,7 +328,7 @@ public final class ForecastActivity extends DBActivity
 		final Intent intent = getIntent();
 		if (!isForecastID(intent))
 		{
-			Toast.makeText(this, "Missing Forecast ID", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "Missing Forecast ID!", Toast.LENGTH_LONG).show();
 			return;
 		}
 		// cache selected id

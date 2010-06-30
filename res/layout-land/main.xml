@@ -6,72 +6,65 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical"
 	android:layout_width="fill_parent"
-	android:layout_height="fill_parent" 
+	android:layout_height="fill_parent"
 	android:background="@drawable/repeat_bg"
 	android:id="@+id/background_pattern">
-			<ImageView
-				android:id="@+id/banner"
-				android:background="@drawable/banner_big_480"
-				android:gravity="fill"
-				android:text="@string/description"
+	<ImageView
+		android:id="@+id/banner"
+		android:background="@drawable/banner_big_480"
+		android:gravity="fill"
+		android:text="@string/description"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:adjustViewBounds="true" />
+	<ScrollView
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_weight="1">
+
+		<LinearLayout
+			xmlns:android="http://schemas.android.com/apk/res/android"
+			android:orientation="vertical"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:paddingTop="5dip">
+
+			<Button
+				android:id="@+id/button_show_spot_overview"
+				android:text="@string/button_show_spot_overview"
 				android:layout_width="fill_parent"
-				android:layout_height="wrap_content" 
-				android:adjustViewBounds="true" />
-			<ScrollView
+				android:layout_height="wrap_content" />
+
+			<Button
+				android:id="@+id/button_show_station_selection"
+				android:text="@string/button_show_station_selection"
 				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:layout_weight="1">
+				android:layout_height="fill_parent" />
 
-			<LinearLayout
-				xmlns:android="http://schemas.android.com/apk/res/android"
-				android:orientation="vertical"
+			<Button
+				android:id="@+id/button_show_station_preferences"
+				android:text="@string/button_show_station_preferences"
 				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:paddingTop="5dip">
+				android:layout_height="wrap_content" />
 
-				<Button
-					android:id="@+id/button_show_spot_overview"
-					android:text="@string/button_show_spot_overview"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content" />
+			<Button
+				android:id="@+id/button_show_station_help"
+				android:text="@string/button_show_station_help"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content" />
 
-				<Button
-					android:id="@+id/button_show_station_selection"
-					android:text="@string/button_show_station_selection"
-					android:layout_width="fill_parent"
-					android:layout_height="fill_parent" />
+			<Button
+				android:id="@+id/button_cancel_all_alerts"
+				android:text="@string/button_simulate_wind_alert_button"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content" />
 
-				<Button
-					android:id="@+id/button_show_station_preferences"
-					android:text="@string/button_show_station_preferences"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content" />
-
-				<Button
-					android:id="@+id/button_show_station_help"
-					android:text="@string/button_show_station_help"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content" />
-
-				<Button
-					android:id="@+id/button_simulate_wind_alert"
-					android:text="@string/button_simulate_wind_alert_button"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content" />
-
-				<ToggleButton
-					android:id="@+id/button_toogle_service"
-					android:textOn="@string/button_toogle_service_selected"
-					android:textOff="@string/button_toogle_service_unselected"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content"
-					android:enabled="false" />
-				<TextView
-					android:id="@+id/main_footer_database_size"
-					android:gravity="center_horizontal"
-					android:text="@string/welcome_database_size"
-					android:layout_width="fill_parent"
-					android:layout_height="wrap_content" />
-			</LinearLayout>
+			<TextView
+				android:id="@+id/main_footer_database_size"
+				android:gravity="center_horizontal"
+				android:text="@string/welcome_database_size"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content" />
+		</LinearLayout>
 	</ScrollView>
 </LinearLayout>

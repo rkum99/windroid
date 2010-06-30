@@ -65,7 +65,7 @@ public final class UpdateAlarmTask extends AbstractNotificationTask<Void>
 			final ISelectedDAO dao = DAOFactory.getSelectedDAO(getContext());
 			if (!dao.isSpotActiv())
 			{
-				Log.i(LOG_TAG, "No active spot configured.");
+				Log.i(LOG_TAG, "No active spot configured, skipping!");
 				return;
 			}
 			try
@@ -80,12 +80,12 @@ public final class UpdateAlarmTask extends AbstractNotificationTask<Void>
 				while (iter.hasNext())
 				{
 					final SpotConfigurationVO spot = iter.next();
-					AlarmUtil.createAlarmForSpot(spot.getPrimaryKey(), getContext());
+					AlarmUtil.createAlarmForSpot(spot, getContext());
 				}
 			}
 			catch (final DBException e)
 			{
-				Log.e(LOG_TAG, "", e);
+				Log.e(LOG_TAG, "Failure while fetch active spots.", e);
 			}
 		}
 		finally

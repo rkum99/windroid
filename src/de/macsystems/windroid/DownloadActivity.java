@@ -81,6 +81,7 @@ public final class DownloadActivity extends ChainSubActivity
 	 * 
 	 * @see android.app.Activity#onRestart()
 	 */
+	@Override
 	public void onRestart()
 	{
 		super.onRestart();

@@ -199,8 +199,8 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 
 			final IMeasureValue airPressure = Pressure.create(getFloat(cursor, COLUMN_AIR_PRESSURE), getString(cursor,
 					COLUMN_AIR_PRESSURE_UNIT));
-			final IMeasureValue airTemperature = Temperature.create(getFloat(cursor, COLUMN_AIR_TEMPERATURE), getString(
-					cursor, COLUMN_AIR_TEMPERATURE_UNIT));
+			final IMeasureValue airTemperature = Temperature.create(getFloat(cursor, COLUMN_AIR_TEMPERATURE),
+					getString(cursor, COLUMN_AIR_TEMPERATURE_UNIT));
 			final IMeasureValue waterTemperature = Temperature.create(getFloat(cursor, COLUMN_WATER_TEMPERATURE),
 					getString(cursor, COLUMN_WATER_TEMPERATURE_UNIT));
 			final IMeasureValue precipitation = Precipitation.create(getFloat(cursor, COLUMN_PRECIPITATION), getString(

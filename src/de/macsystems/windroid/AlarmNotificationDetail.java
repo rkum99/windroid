@@ -24,7 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
-import de.macsystems.windroid.alarm.AlarmDetail;
+import de.macsystems.windroid.alarm.SpotMatch;
 import de.macsystems.windroid.common.IntentConstants;
 
 /**
@@ -50,8 +50,8 @@ public final class AlarmNotificationDetail extends Activity
 		final Intent intent = getIntent();
 		if (intent != null)
 		{
-			final Parcelable pdetails = intent.getParcelableExtra(IntentConstants.ALARM_DETAIL);
-			final AlarmDetail alarmDetail = (AlarmDetail) pdetails;
+			final Parcelable pdetails = intent.getParcelableExtra(IntentConstants.ALARM_NOTIFICATION);
+			final SpotMatch alarmDetail = (SpotMatch) pdetails;
 			cancelAlarm(this, alarmDetail.getId());
 			new AlertDialog.Builder(this).setTitle("Windalarm").setMessage(
 					"Alarm für " + alarmDetail.getName() + " wurde ausgelöst.").setCancelable(true).show();

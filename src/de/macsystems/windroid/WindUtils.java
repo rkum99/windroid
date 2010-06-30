@@ -267,7 +267,7 @@ public class WindUtils
 	}
 
 	/**
-	 * Return URL of JSON Forecast
+	 * Return URL of JSON Forecast by id of station.
 	 * 
 	 * @return
 	 * @throws IOException

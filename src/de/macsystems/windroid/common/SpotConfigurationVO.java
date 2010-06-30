@@ -249,4 +249,14 @@ public final class SpotConfigurationVO implements Serializable
 		return lastupdate;
 	}
 
+	@Override
+	public String toString()
+	{
+		return "SpotConfigurationVO [active=" + active + ", fromDirection=" + fromDirection + ", lastupdate="
+				+ lastupdate + ", preferredWindUnit=" + preferredWindUnit + ", primaryKey=" + primaryKey
+				+ ", schedule=" + schedule + ", station=" + station + ", toDirection=" + toDirection
+				+ ", useWindirection=" + useWindirection + ", windspeedMax=" + windspeedMax + ", windspeedMin="
+				+ windspeedMin + "]";
+	}
+
 }

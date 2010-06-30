@@ -511,7 +511,7 @@ public final class ForecastActivity extends DBActivity
 
 		menu.add(Menu.NONE, OPTION_LEGEND, Menu.NONE, R.string.forecast_options_legend);
 		// Windspeed sub menu
-		final SubMenu windspeed = menu.addSubMenu("Windspeed");
+		final SubMenu windspeed = menu.addSubMenu(R.string.forecast_options_windspeed);
 		windspeed.add(OPTION_GROUP_WIND, OPTION_GROUP_WIND_SHOW_BEAUFORT, 0, Measure.BEAUFORT.getDescription());
 		windspeed.add(OPTION_GROUP_WIND, OPTION_GROUP_WIND_SHOW_KNOTS, 1, Measure.KNOTS.getDescription());
 		windspeed.add(OPTION_GROUP_WIND, OPTION_GROUP_WIND_SHOW_KMH, 2, Measure.KMH.getDescription());
@@ -522,7 +522,7 @@ public final class ForecastActivity extends DBActivity
 		windspeed.add(OPTION_GROUP_WIND, OPTION_GROUP_WIND_SHOW_MMI, 7, Measure.MMI.getDescription());
 		//
 		// Windspeed sub menu
-		final SubMenu tempMenu = menu.addSubMenu("Temp");
+		final SubMenu tempMenu = menu.addSubMenu(getString(R.string.forecast_options_temp));
 		tempMenu.add(OPTION_GROUP_TEMP, OPTION_GROUP_TEMP_CELSIUS, 1, Measure.CELSIUS.getDescription());
 		tempMenu.add(OPTION_GROUP_TEMP, OPTION_GROUP_TEMP_FAHRENHEIT, 0, Measure.FAHRENHEIT.getDescription());
 
@@ -668,7 +668,7 @@ public final class ForecastActivity extends DBActivity
 	private void showLegend()
 	{
 		final Dialog alertDialog = new Dialog(this);
-		alertDialog.setTitle("Legend");
+		alertDialog.setTitle(getString(R.string.forecast_dialog_legend_title));
 		alertDialog.setContentView(R.layout.legend);
 		alertDialog.show();
 

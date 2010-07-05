@@ -65,7 +65,7 @@ public class ParseForecastTask extends IOTask<Forecast, InputStream>
 	@Override
 	public Forecast process(final Context _context, final InputStream _instream) throws IOException, Exception
 	{
-		final StringBuilder builder = IOUtils.asString(_instream);
+		final StringBuilder builder = IOUtils.asString(_instream, IOUtils.EIGHT_KB_BUFFER_SIZE);
 		return ForecastParser.parse(builder);
 	}
 }

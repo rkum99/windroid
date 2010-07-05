@@ -65,6 +65,8 @@ public class IOUtils
 
 	public static final int BIG_BUFFER_SIZE = 1024 * 32;
 
+	public static final int EIGHT_KB_BUFFER_SIZE = 1024 * 8;
+
 	public static final int DEFAULT_BUFFER_SIZE = 1024;
 
 	/**
@@ -503,7 +505,45 @@ public class IOUtils
 		{
 			close(reader);
 		}
+	}
 
+	/**
+	 * Reads from given <code>InputStream</code> into a
+	 * <code>StringBuffer</code>.
+	 * 
+	 * @param _instream
+	 * @param _bufferSize
+	 * @return
+	 * @throws IOException
+	 */
+	public static StringBuilder asString(final InputStream _instream, int _bufferSize) throws IOException
+	{
+		if (_instream == null)
+		{
+			throw new NullPointerException("InputStream");
+		}
+		if (_bufferSize < 1)
+		{
+			_bufferSize = DEFAULT_BUFFER_SIZE;
+		}
+
+		final BufferedReader reader = new BufferedReader(new InputStreamReader(_instream), _bufferSize);
+
+		try
+		{
+			String line;
+			final StringBuilder builder = new StringBuilder(_bufferSize);
+			while ((line = reader.readLine()) != null)
+			{
+				builder.append(line);
+			}
+			return builder;
+
+		}
+		finally
+		{
+			close(reader);
+		}
 	}
 
 	/**

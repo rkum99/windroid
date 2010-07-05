@@ -108,7 +108,7 @@ public class AlarmTask extends AudioFeedbackTask
 				return;
 			}
 
-			boolean updateSuccessful = false;
+			boolean updateSuccessful = true;
 
 			for (int retry = 0; retry < MAX_RETRYS; retry++)
 			{

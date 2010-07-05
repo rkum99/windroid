@@ -58,7 +58,7 @@ public final class AlarmUtil
 
 	private final static long INTERVAL_IN_MS = AlarmManager.INTERVAL_HOUR;
 
-	private final static AtomicInteger REQUEST_COUNTER = new AtomicInteger(1);
+	private final static AtomicInteger RETRY_REQUEST_COUNTER = new AtomicInteger(1);
 
 	private final static SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 	/**
@@ -224,7 +224,7 @@ public final class AlarmUtil
 		//
 		final Intent intent = new Intent(_context, AlarmBroadcastReciever.class);
 		writeAlertToIntent(_alert, intent);
-		final int requestID = REQUEST_COUNTER.incrementAndGet();
+		final int requestID = RETRY_REQUEST_COUNTER.incrementAndGet();
 		final PendingIntent pendingIntent = PendingIntent.getBroadcast(_context, requestID, intent, 0);
 		final AlarmManager alarmManager = (AlarmManager) _context.getSystemService(Context.ALARM_SERVICE);
 		alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + RETRY_IN_MS, pendingIntent);

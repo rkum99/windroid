@@ -266,23 +266,12 @@ public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRel
 		try
 		{
 			final Set<Integer> columnIdsToDelete = getRowsToDelete(db, _selectedID);
-
-			if (Logging.isLoggingEnabled())
-			{
-				Log.d(LOG_TAG, "Found Columns to delete:" + columnIdsToDelete.toString());
-			}
-
 			final StringBuilder relationUpdateBuilder = new StringBuilder(128);
 
 			final Iterator<ForecastDetail> iter = forecast.iterator();
 			while (iter.hasNext())
 			{
 				final ForecastDetail detail = iter.next();
-				if (Logging.isLoggingEnabled())
-				{
-					Log.d(LOG_TAG, "Insert a forecast into Database " + detail.toString());
-				}
-
 				final ContentValues values = new ContentValues();
 				values.put(COLUMN_AIR_PRESSURE, detail.getAirPressure().getValue());
 				values.put(COLUMN_AIR_PRESSURE_UNIT, detail.getAirPressure().getMeasure().getId());

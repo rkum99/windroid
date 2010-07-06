@@ -22,9 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.AlertDialog;
-import android.app.ActivityManager.RunningServiceInfo;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -226,7 +224,7 @@ public final class MainActivity extends DBActivity
 
 		showGPL();
 
-		startSpotService();
+		// startSpotService();
 		setContentView(R.layout.main);
 
 		// final View view = findViewById(R.id.background_image_main);
@@ -382,55 +380,6 @@ public final class MainActivity extends DBActivity
 			}
 		};
 		return listener;
-	}
-
-	/**
-	 * Checks if Background SpotService already running. If not it will be
-	 * started.
-	 */
-	private void startSpotService()
-	{
-		final ActivityManager activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-		final List<RunningServiceInfo> services = activityManager.getRunningServices(Integer.MAX_VALUE);
-
-		boolean isServiceFound = false;
-
-		for (int i = 0; i < services.size(); i++)
-		{
-			if (Logging.isLoggingEnabled())
-			{
-				Log.d(LOG_TAG, "Service Nr. " + i + " :" + services.get(i).service);
-				Log.d(LOG_TAG, "Service Nr. " + i + " package name : " + services.get(i).service.getPackageName());
-				Log.d(LOG_TAG, "Service Nr. " + i + " class name   : " + services.get(i).service.getClassName());
-			}
-
-			if (DE_MACSYSTEMS_WINDROID.equals(services.get(i).service.getPackageName()))
-			{
-				if (DE_MACSYSTEMS_WINDROID_SPOT_SERVICE.equals(services.get(i).service.getClassName()))
-				{
-					isServiceFound = true;
-					break;
-				}
-			}
-		}
-
-		if (!isServiceFound)
-		{
-			if (Logging.isLoggingEnabled())
-			{
-				Log.d(LOG_TAG, "Starting Service");
-			}
-			final Intent startServiceIntent = new Intent();
-			startServiceIntent.setAction(IntentConstants.DE_MACSYSTEMS_WINDROID_START_SPOT_SERVICE_ACTION);
-			startService(startServiceIntent);
-		}
-		else
-		{
-			if (Logging.isLoggingEnabled())
-			{
-				Log.i(LOG_TAG, "Nothing to do, SpotService already running !!!!!");
-			}
-		}
 	}
 
 	/**

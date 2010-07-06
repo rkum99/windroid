@@ -32,8 +32,8 @@ import android.os.RemoteException;
 import android.util.Log;
 import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.R;
-import de.macsystems.windroid.alarm.AlarmUtil;
 import de.macsystems.windroid.alarm.Alert;
+import de.macsystems.windroid.common.IntentConstants;
 import de.macsystems.windroid.concurrent.WindroidThreadFactory;
 import de.macsystems.windroid.io.task.AlarmTask;
 import de.macsystems.windroid.io.task.EnqueueActiveSpots;
@@ -158,13 +158,13 @@ public class SpotService extends Service
 		 * Check if we invoked because of an Reboot or Update (market or
 		 * install)
 		 */
-		if (AlarmUtil.isRestartActiveSpotsIntent(_intent))
+		if (SpotService.isRestartActiveSpotsIntent(_intent))
 		{
 			addTask(new EnqueueActiveSpots(this));
 		}
-		else if (AlarmUtil.isAlertIntent(_intent))
+		else if (Alert.isAlertIntent(_intent))
 		{
-			final Alert alert = AlarmUtil.readAlertFormAlarmIntent(_intent);
+			final Alert alert = Alert.readAlertFormAlarmIntent(_intent);
 			createAlarmTask(alert);
 		}
 		else
@@ -304,5 +304,19 @@ public class SpotService extends Service
 				Log.d(LOG_TAG, " Task not completed: " + task.toString());
 			}
 		}
+	}
+
+	/**
+	 * 
+	 * @param _intent
+	 * @return
+	 */
+	public static boolean isRestartActiveSpotsIntent(final Intent _intent)
+	{
+		if (_intent != null)
+		{
+			return _intent.getStringExtra(IntentConstants.ENQUEUE_ACTIV_SPOTS_AFTER_REBOOT_OR_UPDATE) != null;
+		}
+		return false;
 	}
 }

@@ -19,11 +19,10 @@ package de.macsystems.windroid.alarm;
 
 import java.util.Calendar;
 
-import de.macsystems.windroid.identifyable.Repeat;
-import de.macsystems.windroid.identifyable.Station;
-
 import android.app.AlarmManager;
 import android.content.Intent;
+import de.macsystems.windroid.identifyable.Repeat;
+import de.macsystems.windroid.identifyable.Station;
 
 /**
  * Represents an alarm queued in AlarmManager. This Class is designed to be
@@ -65,7 +64,7 @@ public final class Alert
 	public final static String SPOTNAME = "alert.spotname";
 	/**
 	 * Constant which describes how often the alert will be enqueued using
-	 * {@link AlarmUtil#enqueueRetryAlarm(Alert, android.content.Context)}
+	 * {@link AlarmManager#enqueueRetryAlarm(Alert, android.content.Context)}
 	 * before marked as failed/expired.
 	 */
 	private final static int MAX_RETRYS = 3;
@@ -224,6 +223,99 @@ public final class Alert
 	{
 		return "Alert [dayOfWeek=" + dayOfWeek + ", repeatID=" + alarmID + ", retryCounter=" + retryCounter
 				+ ", selectedID=" + selectedID + ", spotName=" + spotName + ", time=" + time + "]";
+	}
+
+	/**
+	 * Writes all info needed to recreate an alert from an intent (Serialize).
+	 * 
+	 * @param _alert
+	 * @param _intent
+	 * @throws NullPointerException
+	 * @see {@link readAlertFormAlarmIntent}
+	 */
+	public static void writeAlertToIntent(final Alert _alert, final Intent _intent) throws NullPointerException
+	{
+		if (_intent == null)
+		{
+			throw new NullPointerException("intent");
+		}
+		if (_alert == null)
+		{
+			throw new NullPointerException("alert");
+		}
+		_intent.putExtra(SPOTNAME, _alert.getSpotName());
+		_intent.putExtra(REPEAT_ID, _alert.getAlertID());
+		_intent.putExtra(RETRYS, _alert.getRetryCounter());
+		_intent.putExtra(SELECTED_ID, _alert.getSelectedID());
+		_intent.putExtra(TIME, _alert.getTime());
+		_intent.putExtra(WEEKDAY, _alert.getDayOfWeek());
+	}
+
+	/**
+	 * 
+	 * @param _intent
+	 * @return
+	 * @throws NullPointerException
+	 */
+	public static boolean isAlertIntent(final Intent _intent) throws NullPointerException
+	{
+		if (_intent == null)
+		{
+			throw new NullPointerException("Intent");
+		}
+		final int NOT_FOUND = -1;
+		final int NOT_FOUND_LONG = -1;
+		//
+		final String spotName = _intent.getStringExtra(SPOTNAME);
+		final int selectedID = _intent.getIntExtra(SELECTED_ID, NOT_FOUND);
+		final int repeatID = _intent.getIntExtra(REPEAT_ID, NOT_FOUND);
+		final int retryCounter = _intent.getIntExtra(RETRYS, NOT_FOUND);
+		final long time = _intent.getLongExtra(TIME, NOT_FOUND_LONG);
+		final int weekday = _intent.getIntExtra(WEEKDAY, NOT_FOUND);
+	
+		final boolean result = (spotName != null || selectedID != NOT_FOUND || repeatID != NOT_FOUND
+				|| retryCounter != NOT_FOUND || weekday != NOT_FOUND || time != NOT_FOUND_LONG);
+		return result;
+	
+	}
+
+	/**
+	 * Recreats an <code>Alert</code> from an Intent. (Deserialize)
+	 * 
+	 * @param _intent
+	 * @return
+	 * @throws NullPointerException
+	 * @throws IllegalArgumentException
+	 * @see Alert#writeAlertToIntent(Alert, Intent)
+	 * @see Alert#isAlertIntent(Intent)
+	 */
+	public static Alert readAlertFormAlarmIntent(final Intent _intent) throws NullPointerException,
+			IllegalArgumentException
+	{
+		if (_intent == null)
+		{
+			throw new NullPointerException("Intent");
+		}
+		final int NOT_FOUND = -1;
+		final int NOT_FOUND_LONG = -1;
+		//
+		final String stationName = _intent.getStringExtra(SPOTNAME);
+		final int selectedID = _intent.getIntExtra(SELECTED_ID, NOT_FOUND);
+		final int repeatID = _intent.getIntExtra(REPEAT_ID, NOT_FOUND);
+		final int retryCounter = _intent.getIntExtra(RETRYS, NOT_FOUND);
+		final long time = _intent.getLongExtra(TIME, NOT_FOUND_LONG);
+		final int weekday = _intent.getIntExtra(WEEKDAY, NOT_FOUND);
+	
+		if (stationName == null || selectedID == NOT_FOUND || repeatID == NOT_FOUND || retryCounter == NOT_FOUND
+				|| weekday == NOT_FOUND || time == NOT_FOUND_LONG)
+		{
+			throw new IllegalArgumentException("Intent missing alert entrys! Entrys : stationName=" + stationName
+					+ " selectedID=" + selectedID + " repeatID=" + repeatID + " retryCounter=" + retryCounter
+					+ " time=" + time + " weekday=" + weekday);
+		}
+	
+		final Alert alert = new Alert(stationName, selectedID, repeatID, retryCounter, time, weekday);
+		return alert;
 	}
 
 }

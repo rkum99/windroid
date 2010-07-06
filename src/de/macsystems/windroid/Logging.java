@@ -38,6 +38,6 @@ public final class Logging
 	 */
 	public final static boolean isLoggingEnabled()
 	{
-		return false;
+		return true;
 	}
 }

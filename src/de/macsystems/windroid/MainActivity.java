@@ -50,7 +50,7 @@ import android.widget.CompoundButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import de.macsystems.windroid.alarm.AlarmUtil;
+import de.macsystems.windroid.alarm.AlarmStrategieFactory;
 import de.macsystems.windroid.common.IntentConstants;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.db.DAOFactory;
@@ -114,7 +114,7 @@ public final class MainActivity extends DBActivity
 
 					final ISelectedDAO dao = DAOFactory.getSelectedDAO(this);
 					dao.insertSpot(spot);
-					AlarmUtil.createAlarmForSpot(spot, this);
+					AlarmStrategieFactory.getAlarmManager().createAlarmForSpot(spot, this);
 
 					// if (Logging.isLoggingEnabled())s
 					// {
@@ -448,7 +448,7 @@ public final class MainActivity extends DBActivity
 			@Override
 			public final void onClick(final View v)
 			{
-				AlarmUtil.cancelAllAlerts(MainActivity.this);
+				AlarmStrategieFactory.getAlarmManager().cancelAllAlerts(MainActivity.this);
 			}
 		};
 		button.setOnClickListener(listener);

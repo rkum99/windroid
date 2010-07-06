@@ -21,7 +21,10 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.app.Activity;
 import android.content.Context;
@@ -31,6 +34,8 @@ import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import de.macsystems.windroid.alarm.Alert;
+import de.macsystems.windroid.alarm.BaseStrategie;
 import de.macsystems.windroid.common.PrefConstants;
 import de.macsystems.windroid.identifyable.Continent;
 import de.macsystems.windroid.identifyable.Measure;
@@ -44,6 +49,21 @@ public final class Util
 {
 
 	private final static String LOG_TAG = Util.class.getSimpleName();
+	/**
+	 * Used for debug output
+	 */
+	public final static Map<Integer, String> dayMap = new HashMap<Integer, String>();
+
+	static
+	{
+		dayMap.put(Calendar.MONDAY, "Monday");
+		dayMap.put(Calendar.TUESDAY, "Tuesday");
+		dayMap.put(Calendar.WEDNESDAY, "Wednesday");
+		dayMap.put(Calendar.THURSDAY, "Thusday");
+		dayMap.put(Calendar.FRIDAY, "Friday");
+		dayMap.put(Calendar.SATURDAY, "Saturday");
+		dayMap.put(Calendar.SUNDAY, "Sunday");
+	}
 
 	private Util()
 	{
@@ -342,6 +362,41 @@ public final class Util
 		metricsBuffer.append(",density=");
 		metricsBuffer.append(metrics.density);
 		Log.d(LOG_TAG, metricsBuffer.toString());
+	}
+
+	/**
+	 * Debug Method.<br>
+	 * Returns integer as a human readable String. <code>null</code> returned if
+	 * nothing found.
+	 * 
+	 * @param _day
+	 * @return
+	 */
+	public static String getDayAsString(final int _day)
+	{
+		return Util.dayMap.get(_day);
+	}
+
+	/**
+	 * Returns an String which is human readable. Use it to log debug output.
+	 * 
+	 * @param _alert
+	 * @return
+	 */
+	public static String getAlertAsDebugString(final Alert _alert)
+	{
+		// avoid wrong output using a offset!
+		BaseStrategie.timeFormat.getTimeZone().setRawOffset(0);
+		final StringBuffer buffer = new StringBuffer(64);
+		//
+		final Date time = new Date(_alert.getTime());
+
+		final String nameOfWeekDay = getDayAsString(_alert.getDayOfWeek());
+
+		buffer.append("Alert for Spot ").append(_alert.getSpotName()).append(" get invoked every ").append(
+				nameOfWeekDay).append(" at ").append(BaseStrategie.timeFormat.format(time)).append(". retrys=").append(
+				_alert.getRetryCounter()).append(" alertID=").append(_alert.getAlertID());
+		return buffer.toString();
 	}
 
 }

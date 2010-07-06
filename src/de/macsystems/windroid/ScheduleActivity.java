@@ -34,7 +34,6 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-import de.macsystems.windroid.alarm.AlarmUtil;
 import de.macsystems.windroid.common.IntentConstants;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.custom.activity.ChainSubActivity;
@@ -248,7 +247,7 @@ public final class ScheduleActivity extends ChainSubActivity
 							//
 							if (Logging.isLoggingEnabled())
 							{
-								Log.d(LOG_TAG, AlarmUtil.getDayAsString(day) + " Time " + dayTime + " set.");
+								Log.d(LOG_TAG, Util.getDayAsString(day) + " Time " + dayTime + " set.");
 								Log.d(LOG_TAG, "Hour " + _hourOfDay + " Minute " + _minute);
 							}
 						}

@@ -23,7 +23,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import de.macsystems.windroid.Logging;
-import de.macsystems.windroid.alarm.AlarmUtil;
 import de.macsystems.windroid.alarm.Alert;
 import de.macsystems.windroid.common.IntentConstants;
 import de.macsystems.windroid.service.SpotService;
@@ -53,12 +52,12 @@ public final class AlarmBroadcastReciever extends BroadcastReceiver
 		{
 			Log.d(LOG_TAG, "AlarmBroadcastReciever::onReceive");
 		}
-		if (!AlarmUtil.isAlertIntent(_intent))
+		if (!Alert.isAlertIntent(_intent))
 		{
 			Log.e(LOG_TAG, "Expected intent which contains alert, skipping!");
 			return;
 		}
-		final Alert alert = AlarmUtil.readAlertFormAlarmIntent(_intent);
+		final Alert alert = Alert.readAlertFormAlarmIntent(_intent);
 		handleAlert(_context, alert);
 	}
 
@@ -72,7 +71,7 @@ public final class AlarmBroadcastReciever extends BroadcastReceiver
 	private static void handleAlert(final Context _context, final Alert _alert)
 	{
 		final Intent startServiceIntent = new Intent();
-		AlarmUtil.writeAlertToIntent(_alert, startServiceIntent);
+		Alert.writeAlertToIntent(_alert, startServiceIntent);
 		startServiceIntent.setAction(IntentConstants.DE_MACSYSTEMS_WINDROID_START_SPOT_SERVICE_ACTION);
 		final ComponentName name = _context.startService(startServiceIntent);
 		if (name == null)

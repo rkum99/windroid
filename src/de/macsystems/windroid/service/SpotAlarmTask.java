@@ -25,7 +25,6 @@ import android.content.Context;
 import android.util.Log;
 import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.alarm.AlarmStrategieFactory;
-import de.macsystems.windroid.alarm.BaseStrategie;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.db.DAOFactory;
 import de.macsystems.windroid.db.DBException;

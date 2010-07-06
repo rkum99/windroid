@@ -23,35 +23,75 @@ import de.macsystems.windroid.identifyable.Repeat;
 import de.macsystems.windroid.identifyable.Station;
 
 import android.app.AlarmManager;
+import android.content.Intent;
 
 /**
- * Represents an alarm queued in AlarmManager
+ * Represents an alarm queued in AlarmManager. This Class is designed to be
+ * serialized into an {@link Intent}.
  * 
  * @author mac
  * @version $Id$
  */
 public final class Alert
 {
-
+	/**
+	 * Lookup value
+	 */
 	public final static String RETRYS = "alert.retrys";
+	/**
+	 * Lookup value
+	 */
+
 	public final static String REPEAT_ID = "alert.repeatid";
+
+	/**
+	 * Lookup value
+	 */
 	public final static String SELECTED_ID = "alert.selectedid";
+	/**
+	 * Lookup value
+	 */
+
 	public final static String TIME = "alert.time";
+	/**
+	 * Lookup value
+	 */
+
 	public final static String WEEKDAY = "alert.weekday";
+	/**
+	 * Lookup value
+	 */
+
 	public final static String SPOTNAME = "alert.spotname";
-
+	/**
+	 * Constant which describes how often the alert will be enqueued using
+	 * {@link AlarmUtil#enqueueRetryAlarm(Alert, android.content.Context)}
+	 * before marked as failed/expired.
+	 */
 	private final static int MAX_RETRYS = 3;
-
+	/**
+	 * @see #REPEAT_ID
+	 */
 	private final int alarmID;
-
+	/**
+	 * @see #SELECTED_ID
+	 */
 	private final int selectedID;
-
+	/**
+	 * @see #RETRYS
+	 */
 	private int retryCounter = 0;
-
+	/**
+	 * @see #TIME
+	 */
 	private final long time;
-
+	/**
+	 * @see #WEEKDAY
+	 */
 	private final int dayOfWeek;
-
+	/**
+	 * @see #SPOTNAME
+	 */
 	private final String spotName;
 
 	/**

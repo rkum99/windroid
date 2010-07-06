@@ -80,7 +80,7 @@ public final class Alert
 	/**
 	 * @see #RETRYS
 	 */
-	private int retryCounter = 0;
+	private volatile int retryCounter = 0;
 	/**
 	 * @see #TIME
 	 */

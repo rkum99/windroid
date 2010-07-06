@@ -29,7 +29,8 @@ import android.util.Log;
 import de.macsystems.windroid.Logging;
 
 /**
- * A Task with a priority.
+ * A Task with a priority. The Task is able to call back after using
+ * {@link IServiceCallbackListener}.
  * 
  * @author mac
  * @version $Id$
@@ -64,7 +65,10 @@ final class PriorizedFutureTask extends FutureTask<Void>
 	 * @param _prio
 	 * @param _task
 	 * @param _listener
+	 *            <code>null</code> allowed
 	 * @throws NullPointerException
+	 * @see {@link FutureTask}
+	 * 
 	 */
 	PriorizedFutureTask(final PRIORITY _prio, final Callable<Void> _task, final IServiceCallbackListener _listener)
 			throws NullPointerException
@@ -90,11 +94,6 @@ final class PriorizedFutureTask extends FutureTask<Void>
 	protected void done()
 	{
 		super.done();
-		if (Logging.isLoggingEnabled())
-		{
-			Log.d(LOG_TAG, "protected void done()");
-		}
-
 		// Dispatch Message
 		final Message message = Message.obtain();
 		try

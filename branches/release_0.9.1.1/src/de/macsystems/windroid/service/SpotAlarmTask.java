@@ -24,7 +24,8 @@ import java.util.concurrent.Callable;
 import android.content.Context;
 import android.util.Log;
 import de.macsystems.windroid.Logging;
-import de.macsystems.windroid.alarm.AlarmUtil;
+import de.macsystems.windroid.alarm.AlarmStrategieFactory;
+import de.macsystems.windroid.alarm.BaseStrategie;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.db.DAOFactory;
 import de.macsystems.windroid.db.DBException;
@@ -35,7 +36,7 @@ import de.macsystems.windroid.db.ISelectedDAO;
  * 
  * @author mac
  * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
- * @see AlarmUtil#createAlarmForSpot(int, Context)
+ * @see BaseStrategie#createAlarmForSpot(int, Context)
  */
 public class SpotAlarmTask implements Callable<Void>
 {
@@ -82,7 +83,7 @@ public class SpotAlarmTask implements Callable<Void>
 			while (iter.hasNext())
 			{
 				final SpotConfigurationVO spot = iter.next();
-				AlarmUtil.createAlarmForSpot(spot, context);
+				AlarmStrategieFactory.getAlarmManager().createAlarmForSpot(spot, context);
 			}
 
 		}

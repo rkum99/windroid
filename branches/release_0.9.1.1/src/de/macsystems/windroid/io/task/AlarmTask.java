@@ -26,8 +26,9 @@ import android.util.Log;
 import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.R;
 import de.macsystems.windroid.WindUtils;
-import de.macsystems.windroid.alarm.AlarmUtil;
+import de.macsystems.windroid.alarm.AlarmStrategieFactory;
 import de.macsystems.windroid.alarm.Alert;
+import de.macsystems.windroid.alarm.BaseStrategie;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.db.DAOFactory;
 import de.macsystems.windroid.db.DBException;
@@ -53,7 +54,7 @@ public class AlarmTask extends AudioFeedbackTask
 	/**
 	 * Maximum retrys this task trys to get an update before it will be
 	 * scheduled as an retry using
-	 * {@link AlarmUtil#enqueueRetryAlarm(Alert, Context)}.
+	 * {@link BaseStrategie#enqueueRetryAlarm(Alert, Context)}.
 	 */
 	private final int MAX_RETRYS = 3;
 	/**
@@ -100,7 +101,7 @@ public class AlarmTask extends AudioFeedbackTask
 			final boolean available = isNetworkReachable();
 			if (!available)
 			{
-				AlarmUtil.enqueueRetryAlarm(alert, getContext());
+				AlarmStrategieFactory.getAlarmManager().enqueueRetryAlarm(alert, getContext());
 				if (Logging.isLoggingEnabled())
 				{
 					Log.d(LOG_TAG, "Cancel update as network not reachable.");
@@ -141,7 +142,7 @@ public class AlarmTask extends AudioFeedbackTask
 			}
 			else
 			{
-				AlarmUtil.enqueueRetryAlarm(alert, getContext());
+				AlarmStrategieFactory.getAlarmManager().enqueueRetryAlarm(alert, getContext());
 			}
 
 		}

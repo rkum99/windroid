@@ -4,9 +4,8 @@ import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import de.macsystems.windroid.Logging;
-
 import android.util.Log;
+import de.macsystems.windroid.Logging;
 
 /**
  * A Stream which counts read bytes and log them when closed.

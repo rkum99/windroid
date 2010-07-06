@@ -53,10 +53,14 @@ import de.macsystems.windroid.receiver.AlarmBroadcastReciever;
 public final class AlarmUtil
 {
 	private final static String LOG_TAG = AlarmUtil.class.getSimpleName();
-
-	private final static long RETRY_IN_MS = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
-
-	private final static long INTERVAL_IN_MS = AlarmManager.INTERVAL_HOUR;
+	/**
+	 * Interval used when some error detected like Network problems.
+	 */
+	private final static long RETRY_INTERVAL = AlarmManager.INTERVAL_FIFTEEN_MINUTES;
+	/**
+	 * Interval used for a normal update period
+	 */
+	private final static long NORMAL_INTERVAL = 7L * AlarmManager.INTERVAL_DAY;
 
 	private final static AtomicInteger RETRY_REQUEST_COUNTER = new AtomicInteger(1);
 
@@ -129,7 +133,7 @@ public final class AlarmUtil
 			//
 			final PendingIntent pendingIntent = PendingIntent.getBroadcast(_context, alert.getAlertID(), intent, 0);
 			// TODO: Fix Interval in release to 24 Hrs
-			alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), INTERVAL_IN_MS,
+			alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), NORMAL_INTERVAL,
 					pendingIntent);
 
 			if (Logging.isLoggingEnabled())
@@ -227,7 +231,7 @@ public final class AlarmUtil
 		final int requestID = RETRY_REQUEST_COUNTER.incrementAndGet();
 		final PendingIntent pendingIntent = PendingIntent.getBroadcast(_context, requestID, intent, 0);
 		final AlarmManager alarmManager = (AlarmManager) _context.getSystemService(Context.ALARM_SERVICE);
-		alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + RETRY_IN_MS, pendingIntent);
+		alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + RETRY_INTERVAL, pendingIntent);
 		//
 		if (Logging.isLoggingEnabled())
 		{

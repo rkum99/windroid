@@ -17,7 +17,6 @@
  */
 package de.macsystems.windroid.alarm;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -48,7 +47,7 @@ import de.macsystems.windroid.receiver.AlarmBroadcastReciever;
  * @author mac
  * @version $Id$
  */
-public abstract class BaseStrategie implements IAlarmStrategie
+abstract class BaseStrategie implements IAlarmStrategie
 {
 	private final static String LOG_TAG = BaseStrategie.class.getSimpleName();
 	/**
@@ -61,9 +60,6 @@ public abstract class BaseStrategie implements IAlarmStrategie
 	private final long NORMAL_INTERVAL;
 
 	private final static AtomicInteger RETRY_REQUEST_COUNTER = new AtomicInteger(1);
-
-	public final static SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-	
 
 	/**
 	 * Util class

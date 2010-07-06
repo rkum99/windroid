@@ -28,7 +28,6 @@ import de.macsystems.windroid.R;
 import de.macsystems.windroid.WindUtils;
 import de.macsystems.windroid.alarm.AlarmStrategieFactory;
 import de.macsystems.windroid.alarm.Alert;
-import de.macsystems.windroid.alarm.BaseStrategie;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.db.DAOFactory;
 import de.macsystems.windroid.db.DBException;

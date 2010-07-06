@@ -38,6 +38,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.NetworkInfo.State;
 import android.util.Log;
@@ -99,11 +100,27 @@ public class IOUtils
 		 */
 		if (systemService.getActiveNetworkInfo() == null)
 		{
-			Log.i(LOG_TAG, "Network not reachable");
+			Log.i(LOG_TAG, "Network not reachable!");
 			return false;
 		}
 
 		final State networkState = systemService.getActiveNetworkInfo().getState();
+		if (Logging.isLoggingEnabled())
+		{
+			final NetworkInfo info = systemService.getActiveNetworkInfo();
+
+			Log.i(LOG_TAG, "NetworkInfo.extraInfo               : " + info.getExtraInfo());
+			Log.i(LOG_TAG, "NetworkInfo.reason                  : " + info.getReason());
+			Log.i(LOG_TAG, "NetworkInfo.subtypeName             : " + info.getSubtypeName());
+			Log.i(LOG_TAG, "NetworkInfo.state                   : " + info.getState());
+			Log.i(LOG_TAG, "NetworkInfo.detailedState           : " + info.getDetailedState());
+			Log.i(LOG_TAG, "NetworkInfo.isAvailable             : " + info.isAvailable());
+			Log.i(LOG_TAG, "NetworkInfo.isConnected             : " + info.isConnected());
+			Log.i(LOG_TAG, "NetworkInfo.isConnectedOrConnecting : " + info.isConnectedOrConnecting());
+			Log.i(LOG_TAG, "NetworkInfo.isFailover              : " + info.isFailover());
+			Log.i(LOG_TAG, "NetworkInfo.isRoaming               : " + info.isRoaming());
+
+		}
 		final boolean isRoamingNow = systemService.getActiveNetworkInfo().isRoaming();
 		// Query User Configuration
 		final IPreferencesDAO dao = DAOFactory.getPreferencesDAO(_context);
@@ -428,8 +445,7 @@ public class IOUtils
 		final StringBuilder builder = new StringBuilder(128);
 		builder.append("android.resource://");
 		builder.append(_context.getPackageName());
-		builder.append("/");
-		builder.append("/");
+		builder.append("//");
 		builder.append(_resourceId);
 
 		return Uri.parse(builder.toString());

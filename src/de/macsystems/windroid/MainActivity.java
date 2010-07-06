@@ -68,8 +68,6 @@ import de.macsystems.windroid.service.SpotService;
 public final class MainActivity extends DBActivity
 {
 
-	private static final String DE_MACSYSTEMS_WINDROID_SPOT_SERVICE = "de.macsystems.windroid.SpotService";
-	private static final String DE_MACSYSTEMS_WINDROID = "de.macsystems.windroid";
 	private final static int OPTION_ABOUT_MENU_ID = 777;
 	/**
 	 * Configuration SubActivities will be launched by this request code

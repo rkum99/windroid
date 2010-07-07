@@ -80,7 +80,7 @@ public final class UpdateAlarmTask extends AbstractNotificationTask<Void>
 				while (iter.hasNext())
 				{
 					final SpotConfigurationVO spot = iter.next();
-					AlarmStrategieFactory.getAlarmManager().createAlarmForSpot(spot, getContext());
+					AlarmStrategieFactory.getAlarmManager().createAlarmForSpot(spot, getContext(), false);
 				}
 			}
 			catch (final DBException e)

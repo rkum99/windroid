@@ -89,7 +89,7 @@ public class EnqueueActiveSpots extends AbstractNotificationTask<Void>
 
 		for (final SpotConfigurationVO vo : _spots)
 		{
-			AlarmStrategieFactory.getAlarmManager().createAlarmForSpot(vo, _context);
+			AlarmStrategieFactory.getAlarmManager().createAlarmForSpot(vo, _context, true);
 		}
 
 	}

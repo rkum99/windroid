@@ -22,7 +22,7 @@ import android.content.Intent;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.receiver.AlarmBroadcastReciever;
 
-public interface IAlarmStrategie
+public interface IAlarmManager
 {
 
 	/**
@@ -31,13 +31,15 @@ public interface IAlarmStrategie
 	 * {@link AlarmBroadcastReciever}.<br>
 	 * The Intent will call the {@link AlarmBroadcastReciever} with intent data
 	 * which describe an {@link Alert}.
+	 * 
 	 * @param _context
-	 * @param _isReboot TODO
+	 * @param _isReboot
+	 *            TODO
 	 * @param _id
 	 * 
 	 * @see Alert
-	 * @see Alert#readAlertFormAlarmIntent(Intent) to get an {@link Alert}
-	 *      from an {@link Intent}
+	 * @see Alert#readAlertFormAlarmIntent(Intent) to get an {@link Alert} from
+	 *      an {@link Intent}
 	 * @see Alert#writeAlertToIntent(Alert, Intent) to write an {@link Alert}
 	 *      into an {@link Intent}
 	 */

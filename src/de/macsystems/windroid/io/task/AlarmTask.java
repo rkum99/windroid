@@ -26,7 +26,7 @@ import android.util.Log;
 import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.R;
 import de.macsystems.windroid.WindUtils;
-import de.macsystems.windroid.alarm.AlarmStrategieFactory;
+import de.macsystems.windroid.alarm.AlarmManagerFactory;
 import de.macsystems.windroid.alarm.Alert;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.db.DAOFactory;
@@ -100,7 +100,7 @@ public class AlarmTask extends AudioFeedbackTask
 			final boolean available = isNetworkReachable();
 			if (!available)
 			{
-				AlarmStrategieFactory.getAlarmManager().enqueueRetryAlarm(alert, getContext());
+				AlarmManagerFactory.getAlarmManager().enqueueRetryAlarm(alert, getContext());
 				if (Logging.isEnabled())
 				{
 					Log.d(LOG_TAG, "Cancel update as network not reachable.");
@@ -141,7 +141,7 @@ public class AlarmTask extends AudioFeedbackTask
 			}
 			else
 			{
-				AlarmStrategieFactory.getAlarmManager().enqueueRetryAlarm(alert, getContext());
+				AlarmManagerFactory.getAlarmManager().enqueueRetryAlarm(alert, getContext());
 			}
 
 		}

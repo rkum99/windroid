@@ -47,7 +47,7 @@ import de.macsystems.windroid.receiver.AlarmBroadcastReciever;
  * @author mac
  * @version $Id$
  */
-abstract class BaseStrategie implements IAlarmStrategie
+abstract class BaseStrategie implements IAlarmManager
 {
 	private final static String LOG_TAG = BaseStrategie.class.getSimpleName();
 	/**
@@ -88,7 +88,7 @@ abstract class BaseStrategie implements IAlarmStrategie
 	 * de.macsystems.windroid.alarm.IAlarmStrategie#createAlarmForSpot(de.macsystems
 	 * .windroid.common.SpotConfigurationVO, android.content.Context)
 	 */
-	public void createAlarmForSpot(final SpotConfigurationVO _vo, final Context _context, boolean _isReboot)
+	public void createAlarmForSpot(final SpotConfigurationVO _vo, final Context _context, final boolean _isReboot)
 	{
 		if (_context == null)
 		{

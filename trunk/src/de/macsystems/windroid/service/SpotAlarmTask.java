@@ -24,7 +24,7 @@ import java.util.concurrent.Callable;
 import android.content.Context;
 import android.util.Log;
 import de.macsystems.windroid.Logging;
-import de.macsystems.windroid.alarm.AlarmStrategieFactory;
+import de.macsystems.windroid.alarm.AlarmManagerFactory;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.db.DAOFactory;
 import de.macsystems.windroid.db.DBException;
@@ -82,7 +82,7 @@ public class SpotAlarmTask implements Callable<Void>
 			while (iter.hasNext())
 			{
 				final SpotConfigurationVO spot = iter.next();
-				AlarmStrategieFactory.getAlarmManager().createAlarmForSpot(spot, context, false);
+				AlarmManagerFactory.getAlarmManager().createAlarmForSpot(spot, context, false);
 			}
 
 		}

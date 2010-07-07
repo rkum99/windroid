@@ -272,11 +272,11 @@ public final class Alert
 		final int retryCounter = _intent.getIntExtra(RETRYS, NOT_FOUND);
 		final long time = _intent.getLongExtra(TIME, NOT_FOUND_LONG);
 		final int weekday = _intent.getIntExtra(WEEKDAY, NOT_FOUND);
-	
+
 		final boolean result = (spotName != null || selectedID != NOT_FOUND || repeatID != NOT_FOUND
 				|| retryCounter != NOT_FOUND || weekday != NOT_FOUND || time != NOT_FOUND_LONG);
 		return result;
-	
+
 	}
 
 	/**
@@ -305,7 +305,7 @@ public final class Alert
 		final int retryCounter = _intent.getIntExtra(RETRYS, NOT_FOUND);
 		final long time = _intent.getLongExtra(TIME, NOT_FOUND_LONG);
 		final int weekday = _intent.getIntExtra(WEEKDAY, NOT_FOUND);
-	
+
 		if (stationName == null || selectedID == NOT_FOUND || repeatID == NOT_FOUND || retryCounter == NOT_FOUND
 				|| weekday == NOT_FOUND || time == NOT_FOUND_LONG)
 		{
@@ -313,7 +313,7 @@ public final class Alert
 					+ " selectedID=" + selectedID + " repeatID=" + repeatID + " retryCounter=" + retryCounter
 					+ " time=" + time + " weekday=" + weekday);
 		}
-	
+
 		final Alert alert = new Alert(stationName, selectedID, repeatID, retryCounter, time, weekday);
 		return alert;
 	}

@@ -21,11 +21,11 @@ package de.macsystems.windroid.alarm;
  * @author mac
  * @version $Id$
  */
-public final class AlarmStrategieFactory
+public final class AlarmManagerFactory
 {
-	private final static IAlarmStrategie strategie = new ReleaseStrategie();
+	private final static IAlarmManager strategie = new ReleaseStrategie();
 
-	private AlarmStrategieFactory()
+	private AlarmManagerFactory()
 	{
 	}
 
@@ -34,7 +34,7 @@ public final class AlarmStrategieFactory
 	 * 
 	 * @return
 	 */
-	public final static IAlarmStrategie getAlarmManager()
+	public final static IAlarmManager getAlarmManager()
 	{
 		return strategie;
 	}

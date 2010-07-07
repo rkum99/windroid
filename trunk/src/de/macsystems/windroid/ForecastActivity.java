@@ -190,7 +190,7 @@ public final class ForecastActivity extends DBActivity
 		@Override
 		public void onServiceDisconnected(final ComponentName _name)
 		{
-			if (Logging.isLoggingEnabled())
+			if (Logging.isEnabled())
 			{
 				Log.d(LOG_TAG, "onServiceDisconnected");
 			}
@@ -200,7 +200,7 @@ public final class ForecastActivity extends DBActivity
 		@Override
 		public void onServiceConnected(final ComponentName _name, final IBinder _service)
 		{
-			if (Logging.isLoggingEnabled())
+			if (Logging.isEnabled())
 			{
 				Log.d(LOG_TAG, "onServiceConnected");
 			}
@@ -347,7 +347,7 @@ public final class ForecastActivity extends DBActivity
 	protected void onResume()
 	{
 		super.onResume();
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "onResume");
 		}
@@ -366,7 +366,7 @@ public final class ForecastActivity extends DBActivity
 	protected void onStart()
 	{
 		super.onStart();
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "onStart");
 		}
@@ -386,7 +386,7 @@ public final class ForecastActivity extends DBActivity
 		final Object obj = getLastNonConfigurationInstance();
 		if (obj != null)
 		{
-			if (Logging.isLoggingEnabled())
+			if (Logging.isEnabled())
 			{
 				Log.d(LOG_TAG, "Using cached forecast");
 			}
@@ -413,7 +413,7 @@ public final class ForecastActivity extends DBActivity
 	@Override
 	public Object onRetainNonConfigurationInstance()
 	{
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "Saving cached forecast.");
 		}
@@ -429,7 +429,7 @@ public final class ForecastActivity extends DBActivity
 	@Override
 	protected void onStop()
 	{
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "onStop");
 		}
@@ -444,7 +444,7 @@ public final class ForecastActivity extends DBActivity
 	@Override
 	protected void onPause()
 	{
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "onPause");
 		}
@@ -458,7 +458,7 @@ public final class ForecastActivity extends DBActivity
 	 */
 	private Dialog createUpdateProgressDialog()
 	{
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "createUpdateProgressDialog");
 		}
@@ -478,7 +478,7 @@ public final class ForecastActivity extends DBActivity
 	@Override
 	protected Dialog onCreateDialog(final int _id)
 	{
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "onCreateDialog :" + _id);
 		}

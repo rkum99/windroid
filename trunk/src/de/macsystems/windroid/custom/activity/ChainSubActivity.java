@@ -46,7 +46,7 @@ public abstract class ChainSubActivity extends Activity
 	protected void onActivityResult(final int _requestCode, final int _resultCode, final Intent _data)
 	{
 		super.onActivityResult(_requestCode, _resultCode, _data);
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "recieved requestCode :" + _requestCode + " recieved resultCode :" + _resultCode);
 		}

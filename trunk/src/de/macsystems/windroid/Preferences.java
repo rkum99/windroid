@@ -87,7 +87,7 @@ public final class Preferences extends PreferenceActivity
 
 		final RingtonePreference ringtonePreference = (RingtonePreference) findPreference(RINGTONE_MANAGER_LOOKUP_KEY);
 		ringtonePreference.setDefaultValue(System.DEFAULT_NOTIFICATION_URI);
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "DEFAULT_NOTIFICATION_URI : " + System.DEFAULT_NOTIFICATION_URI.toString());
 		}
@@ -112,7 +112,7 @@ public final class Preferences extends PreferenceActivity
 	private void logSharedPreferences()
 	{
 
-		if (!Logging.isLoggingEnabled())
+		if (!Logging.isEnabled())
 		{
 			return;
 		}

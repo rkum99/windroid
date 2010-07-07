@@ -92,7 +92,7 @@ public final class WindroidThreadFactory implements java.util.concurrent.ThreadF
 		thread.setUncaughtExceptionHandler(new ThreadLogger());
 		final int counter = count.getAndIncrement();
 		thread.setName(threadname + "-" + Integer.toString(counter));
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "Thread created :" + thread.getName());
 		}

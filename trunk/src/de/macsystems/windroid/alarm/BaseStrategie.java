@@ -100,7 +100,7 @@ abstract class BaseStrategie implements IAlarmStrategie
 			throw new NullPointerException("vo");
 		}
 
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "Creating alarm for spot " + _vo.getStation().getName());
 		}
@@ -123,12 +123,12 @@ abstract class BaseStrategie implements IAlarmStrategie
 			alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + millsToAdd,
 					NORMAL_INTERVAL, pendingIntent);
 
-			if (Logging.isLoggingEnabled())
+			if (Logging.isEnabled())
 			{
 				Log.d(LOG_TAG, Util.getAlertAsDebugString(alert));
 			}
 		}
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "Creating alarms for spot :" + _vo.getStation().getName() + " finished.");
 		}
@@ -199,7 +199,7 @@ abstract class BaseStrategie implements IAlarmStrategie
 		_alert.incrementRetryCounter();
 		if (_alert.isExpired())
 		{
-			if (Logging.isLoggingEnabled())
+			if (Logging.isEnabled())
 			{
 				Log.d(LOG_TAG, "Alert expired for Spot :\"" + _alert.getSpotName() + "\", retrys : "
 						+ _alert.getRetryCounter() + ", skipping!");
@@ -216,7 +216,7 @@ abstract class BaseStrategie implements IAlarmStrategie
 		final AlarmManager alarmManager = (AlarmManager) _context.getSystemService(Context.ALARM_SERVICE);
 		alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + RETRY_INTERVAL, pendingIntent);
 		//
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "Created Retry alert :" + Util.getAlertAsDebugString(_alert));
 		}
@@ -242,7 +242,7 @@ abstract class BaseStrategie implements IAlarmStrategie
 		try
 		{
 			final Collection<SpotConfigurationVO> spots = dao.getActivSpots();
-			if (Logging.isLoggingEnabled())
+			if (Logging.isEnabled())
 			{
 				Log.i(LOG_TAG, "Found " + spots.size() + " Spots which are active.");
 			}

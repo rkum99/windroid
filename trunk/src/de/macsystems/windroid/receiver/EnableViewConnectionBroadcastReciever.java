@@ -93,7 +93,7 @@ public class EnableViewConnectionBroadcastReciever extends BroadcastReceiver
 		viewsToEnable = new ArrayList<View>(_viewsToEnable);
 		_contextToRegister.registerReceiver(this, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "EnableViewConnectionBroadcastReciever created.");
 		}
@@ -105,7 +105,7 @@ public class EnableViewConnectionBroadcastReciever extends BroadcastReceiver
 		try
 		{
 			final boolean isConnected = intent.getBooleanExtra(ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
-			if (Logging.isLoggingEnabled())
+			if (Logging.isEnabled())
 			{
 				Log.i(LOG_TAG, "EnableViewConnectionBroadcastReciever: "
 						+ (isConnected ? "connection established" : "connection lost"));

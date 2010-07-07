@@ -36,7 +36,7 @@ public final class Logging
 	 * 
 	 * @return
 	 */
-	public final static boolean isLoggingEnabled()
+	public final static boolean isEnabled()
 	{
 		return false;
 	}

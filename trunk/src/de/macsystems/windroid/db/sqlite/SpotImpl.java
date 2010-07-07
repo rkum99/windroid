@@ -83,7 +83,7 @@ public final class SpotImpl extends BaseImpl implements ISpotDAO
 	 */
 	public void insertSpots(final World _world)
 	{
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "executeInsert");
 		}
@@ -156,7 +156,7 @@ public final class SpotImpl extends BaseImpl implements ISpotDAO
 			IOUtils.close(insertRegionStatement);
 			IOUtils.close(insertContinentStatement);
 			IOUtils.close(db);
-			if (Logging.isLoggingEnabled())
+			if (Logging.isEnabled())
 			{
 				final long time = System.currentTimeMillis() - start;
 				Log.d(LOG_TAG, "Insert finished. Time " + time + " ms");
@@ -258,7 +258,7 @@ public final class SpotImpl extends BaseImpl implements ISpotDAO
 	@Override
 	public Cursor fetchBy(final String continentid, final String countryid, final String regionid)
 	{
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d("SpotDAO", "Looking for -> Continent: " + continentid + " Country: " + countryid + " Region: "
 					+ regionid);

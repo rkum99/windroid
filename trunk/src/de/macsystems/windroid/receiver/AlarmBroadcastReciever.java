@@ -48,7 +48,7 @@ public final class AlarmBroadcastReciever extends BroadcastReceiver
 	@Override
 	public void onReceive(final Context _context, final Intent _intent)
 	{
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "AlarmBroadcastReciever::onReceive");
 		}

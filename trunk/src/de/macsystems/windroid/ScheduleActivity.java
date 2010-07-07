@@ -245,7 +245,7 @@ public final class ScheduleActivity extends ChainSubActivity
 							final String time = dateFormat.format(dayTime);
 							timeView.setText(time);
 							//
-							if (Logging.isLoggingEnabled())
+							if (Logging.isEnabled())
 							{
 								Log.d(LOG_TAG, Util.getDayAsString(day) + " Time " + dayTime + " set.");
 								Log.d(LOG_TAG, "Hour " + _hourOfDay + " Minute " + _minute);

@@ -75,7 +75,7 @@ public class UpdateAllActiveSpotReports extends AbstractNotificationTask<Void>
 				final int[] spots = dao.getActivSpotIDs();
 				showStatus("Update " + spots.length + " Spots", "");
 
-				if (Logging.isLoggingEnabled())
+				if (Logging.isEnabled())
 				{
 					Log.i(LOG_TAG, "Found " + spots.length + " Spots to update. IDs : " + Arrays.toString(spots));
 				}
@@ -98,7 +98,7 @@ public class UpdateAllActiveSpotReports extends AbstractNotificationTask<Void>
 
 	private void loadSelectedForecast(final int _selectedID) throws DBException
 	{
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "private void bla(final int _selectedID) : " + _selectedID);
 		}
@@ -114,7 +114,7 @@ public class UpdateAllActiveSpotReports extends AbstractNotificationTask<Void>
 		final boolean available = isNetworkReachable();
 		if (!available)
 		{
-			if (Logging.isLoggingEnabled())
+			if (Logging.isEnabled())
 			{
 				Log.d(LOG_TAG, "Cancel update as network not reachable.");
 			}

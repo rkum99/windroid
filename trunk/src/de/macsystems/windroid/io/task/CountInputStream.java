@@ -66,7 +66,7 @@ public final class CountInputStream extends FilterInputStream
 			isClosed = true;
 			final float kbs = bytes / 1024.0f;
 			final float mb = kbs / 1024.0f;
-			if (Logging.isLoggingEnabled())
+			if (Logging.isEnabled())
 			{
 				Log.d(LOG_TAG, "Read :" + bytes + " Byte, " + kbs + " kB, " + mb + " MB");
 			}

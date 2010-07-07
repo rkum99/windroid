@@ -111,7 +111,7 @@ public final class StationHandler extends DefaultHandler
 	public void endDocument() throws SAXException
 	{
 		final long parsingTime = System.currentTimeMillis() - startTime;
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "Parsing End. Parsing time :" + parsingTime + " ms.");
 		}
@@ -122,7 +122,7 @@ public final class StationHandler extends DefaultHandler
 	public void startDocument() throws SAXException
 	{
 		startTime = System.currentTimeMillis();
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "Parsing Start");
 		}

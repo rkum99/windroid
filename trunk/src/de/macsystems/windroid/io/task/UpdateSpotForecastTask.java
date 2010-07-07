@@ -73,7 +73,7 @@ public class UpdateSpotForecastTask extends AudioFeedbackTask
 			showStatus(getContext().getString(R.string.recieve_forecast_update_title) + vo.getStation().getName(), "");
 			if (!vo.isActiv())
 			{
-				if (Logging.isLoggingEnabled())
+				if (Logging.isEnabled())
 				{
 					Log.d(LOG_TAG, "Cancel update as spot is not active: " + vo.getStation().getName());
 				}
@@ -83,13 +83,13 @@ public class UpdateSpotForecastTask extends AudioFeedbackTask
 			// failed).
 			if (!isNetworkReachable())
 			{
-				if (Logging.isLoggingEnabled())
+				if (Logging.isEnabled())
 				{
 					Log.d(LOG_TAG, "Cancel update as network not reachable.");
 				}
 				return;
 			}
-			if (Logging.isLoggingEnabled())
+			if (Logging.isEnabled())
 			{
 				Log.d(LOG_TAG, "Alarm for: " + vo.getStation().getName());
 			}

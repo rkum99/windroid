@@ -79,7 +79,7 @@ public class StationXMLUpdateTask extends IOTask<Void, InputStream>
 			{
 				fout.write(buffer, 0, bytesRead);
 			}
-			if (Logging.isLoggingEnabled())
+			if (Logging.isEnabled())
 			{
 				Log.d(LOG_TAG, stationsXMLFilePath + " updated");
 			}

@@ -121,7 +121,7 @@ public final class SpotOverviewActivity extends DBListActivity
 		@Override
 		public void onServiceDisconnected(final ComponentName _name)
 		{
-			if (Logging.isLoggingEnabled())
+			if (Logging.isEnabled())
 			{
 				Log.d(LOG_TAG, "onServiceConnected");
 			}
@@ -131,7 +131,7 @@ public final class SpotOverviewActivity extends DBListActivity
 		@Override
 		public void onServiceConnected(final ComponentName _name, final IBinder _service)
 		{
-			if (Logging.isLoggingEnabled())
+			if (Logging.isEnabled())
 			{
 				Log.d(LOG_TAG, "onServiceConnected");
 			}
@@ -193,7 +193,7 @@ public final class SpotOverviewActivity extends DBListActivity
 				 * the i returned is invalid.
 				 */
 				selectedID = (int) ((AdapterContextMenuInfo) menuInfo).id;
-				if (Logging.isLoggingEnabled())
+				if (Logging.isEnabled())
 				{
 					Log.d(LOG_TAG, "Selected item for Context :" + ((AdapterContextMenuInfo) menuInfo).id);
 				}
@@ -244,7 +244,7 @@ public final class SpotOverviewActivity extends DBListActivity
 	@Override
 	protected void onPause()
 	{
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "onPause");
 		}
@@ -258,7 +258,7 @@ public final class SpotOverviewActivity extends DBListActivity
 	 */
 	private Dialog createUpdateProgressDialog()
 	{
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "createUpdateProgressDialog");
 		}
@@ -278,7 +278,7 @@ public final class SpotOverviewActivity extends DBListActivity
 	@Override
 	protected Dialog onCreateDialog(final int _id)
 	{
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "onCreateDialog :" + _id);
 		}
@@ -500,14 +500,14 @@ public final class SpotOverviewActivity extends DBListActivity
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == EDIT_SPOT_REQUEST_CODE)
 		{
-			if (Logging.isLoggingEnabled())
+			if (Logging.isEnabled())
 			{
 				Log.d(LOG_TAG, "Recieved requestcode EDIT_SPOT_REQUEST_CODE");
 			}
 			// --
 			if (resultCode == Activity.RESULT_OK)
 			{
-				if (Logging.isLoggingEnabled())
+				if (Logging.isEnabled())
 				{
 					Log.d(LOG_TAG, "Recieved resultcode RESULT_OK");
 				}
@@ -515,7 +515,7 @@ public final class SpotOverviewActivity extends DBListActivity
 			}
 			else if (resultCode == Activity.RESULT_CANCELED)
 			{
-				if (Logging.isLoggingEnabled())
+				if (Logging.isEnabled())
 				{
 					Log.d(LOG_TAG, "Recieved resultCode RESULT_CANCELED");
 				}
@@ -544,7 +544,7 @@ public final class SpotOverviewActivity extends DBListActivity
 			throw new IllegalArgumentException("No SpotConfiguration found.");
 		}
 		// --
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "Updating Spot in Database");
 		}

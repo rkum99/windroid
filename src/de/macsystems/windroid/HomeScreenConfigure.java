@@ -43,7 +43,7 @@ public class HomeScreenConfigure extends Activity
 	protected void onCreate(final Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "protected void onCreate(Bundle savedInstanceState)");
 		}

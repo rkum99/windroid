@@ -192,7 +192,7 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 		{
 			final String spotID = getSpotIdByID(_id, db);
 
-			if (Logging.isLoggingEnabled())
+			if (Logging.isEnabled())
 			{
 				Log.d("SelectedImpl", "Searched SpotID is :" + spotID);
 			}
@@ -384,7 +384,7 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 				try
 				{
 					final SpotConfigurationVO spot = createSpotConfigurationVO(c);
-					if (Logging.isLoggingEnabled())
+					if (Logging.isEnabled())
 					{
 						Log.d("DEBUG", "Spot from DB " + spot);
 					}

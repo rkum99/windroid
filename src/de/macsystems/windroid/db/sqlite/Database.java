@@ -63,7 +63,7 @@ public final class Database extends SQLiteOpenHelper
 	@Override
 	public void onCreate(final SQLiteDatabase database)
 	{
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "onCreate Database");
 		}
@@ -79,7 +79,7 @@ public final class Database extends SQLiteOpenHelper
 		}
 		finally
 		{
-			if (Logging.isLoggingEnabled())
+			if (Logging.isEnabled())
 			{
 				Log.d(LOG_TAG, "onCreate Database finished");
 			}
@@ -96,7 +96,7 @@ public final class Database extends SQLiteOpenHelper
 	@Override
 	public void onUpgrade(final SQLiteDatabase database, final int oldVersion, final int newVersion)
 	{
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "Upgrade Database from version " + oldVersion + " to " + newVersion);
 		}
@@ -111,7 +111,7 @@ public final class Database extends SQLiteOpenHelper
 		}
 		finally
 		{
-			if (Logging.isLoggingEnabled())
+			if (Logging.isEnabled())
 			{
 				Log.d(LOG_TAG, "Upgrade Database finished");
 			}
@@ -129,7 +129,7 @@ public final class Database extends SQLiteOpenHelper
 			for (int i = 0; i < _script.size(); i++)
 			{
 				final String sql = _script.get(i);
-				if (Logging.isLoggingEnabled())
+				if (Logging.isEnabled())
 				{
 					Log.d(LOG_TAG, "Executing :" + sql);
 				}

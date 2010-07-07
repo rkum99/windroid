@@ -126,14 +126,14 @@ public class WindUtils
 	 */
 	public final static boolean isStationListUpdateAvailable(final Context _context) throws IOException
 	{
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "Updating cache.");
 		}
 
 		if (!isCachedStationXmlValid(_context))
 		{
-			if (Logging.isLoggingEnabled())
+			if (Logging.isEnabled())
 			{
 				Log.d(LOG_TAG, "Station file is not valid, force update.");
 			}
@@ -142,19 +142,19 @@ public class WindUtils
 
 		final Properties config = IOUtils.getConfigProperties(_context);
 		final String md5 = config.getProperty(STATION_MD5);
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "Cached MD5 " + md5);
 		}
 
 		final String serverMD5 = getLatestStationMD5(_context);
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.i(LOG_TAG, "Server MD5 " + serverMD5);
 		}
 
 		final boolean result = md5 != null ? md5.equals(serverMD5) : true;
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.i(LOG_TAG, result ? "Cache must be updated." + serverMD5 : "Cache is uptodate.");
 		}
@@ -184,25 +184,25 @@ public class WindUtils
 			throws RetryLaterException, IOException, InterruptedException
 
 	{
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "Updating cache.");
 		}
 		final Properties config = IOUtils.getConfigProperties(_context);
 		String md5 = config.getProperty(STATION_MD5);
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "Cached MD5 " + md5);
 		}
 
 		final String latestMD5 = getLatestStationMD5(_context);
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.i(LOG_TAG, "Server MD5 " + latestMD5);
 		}
 		if (md5 == null || !md5.equals(latestMD5))
 		{
-			if (Logging.isLoggingEnabled())
+			if (Logging.isEnabled())
 			{
 				Log.i(LOG_TAG, "Station.xml will be updated.");
 			}
@@ -212,14 +212,14 @@ public class WindUtils
 			config.put(STATION_MD5, md5);
 			// TODO: Use PreferenceDAO instead
 			IOUtils.writeConfiguration(_context, config);
-			if (Logging.isLoggingEnabled())
+			if (Logging.isEnabled())
 			{
 				Log.i(LOG_TAG, "Stations list was updated.");
 			}
 		}
 		else
 		{
-			if (Logging.isLoggingEnabled())
+			if (Logging.isEnabled())
 			{
 				Log.i(LOG_TAG, "Cache is up to date.");
 			}

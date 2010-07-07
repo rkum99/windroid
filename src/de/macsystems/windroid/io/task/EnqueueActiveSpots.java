@@ -43,7 +43,7 @@ public class EnqueueActiveSpots extends AbstractNotificationTask<Void>
 			if (dao.isSpotActiv())
 			{
 				final Collection<SpotConfigurationVO> activeSpots = dao.getActivSpots();
-				if (Logging.isLoggingEnabled())
+				if (Logging.isEnabled())
 				{
 					Log.d(LOG_TAG, "Scheduling " + activeSpots.size() + " activ spot(s) after reboot to monitor.");
 				}
@@ -52,7 +52,7 @@ public class EnqueueActiveSpots extends AbstractNotificationTask<Void>
 			}
 			else
 			{
-				if (Logging.isLoggingEnabled())
+				if (Logging.isEnabled())
 				{
 					Log.d(LOG_TAG, "No Spots to enqueue after reboot.");
 				}

@@ -105,13 +105,13 @@ public abstract class IOTask<V, I> implements Task<V, I>
 	{
 		if (!IOUtils.isNetworkReachable(_context))
 		{
-			if (Logging.isLoggingEnabled())
+			if (Logging.isEnabled())
 			{
 				Log.d(LOG_TAG, "Network not reachable.");
 			}
 			throw new RetryLaterException("Cannot execute, Network not reachable.");
 		}
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "Using Network :" + IOUtils.getNetworkName(_context));
 			Log.d(LOG_TAG, "Connecting to :" + uri.toString());
@@ -122,7 +122,7 @@ public abstract class IOTask<V, I> implements Task<V, I>
 		httpGet.setParams(HTTP_PARAMS);
 
 		final HttpResponse response = getHTTPClient().execute(httpGet);
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			final StatusLine status = response.getStatusLine();
 			Log.d(LOG_TAG, "Response Code was : " + status.getStatusCode() + " - " + status.getReasonPhrase());
@@ -145,7 +145,7 @@ public abstract class IOTask<V, I> implements Task<V, I>
 		try
 		{
 			instream = new CountInputStream(response.getEntity().getContent());
-			if (Logging.isLoggingEnabled())
+			if (Logging.isEnabled())
 			{
 				Log.d(LOG_TAG, "HTTP Content Lenght:" + response.getEntity().getContentLength());
 			}

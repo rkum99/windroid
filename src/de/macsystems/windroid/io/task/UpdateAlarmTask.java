@@ -71,7 +71,7 @@ public final class UpdateAlarmTask extends AbstractNotificationTask<Void>
 			try
 			{
 				final Collection<SpotConfigurationVO> spots = dao.getActivSpots();
-				if (Logging.isLoggingEnabled())
+				if (Logging.isEnabled())
 				{
 					Log.i(LOG_TAG, "Found " + spots.size() + " Spots to update.");
 				}

@@ -93,13 +93,13 @@ public final class MainActivity extends DBActivity
 
 		if (requestCode == CONFIGURATION_REQUEST_CODE)
 		{
-			if (Logging.isLoggingEnabled())
+			if (Logging.isEnabled())
 			{
 				Log.d(LOG_TAG, "Recieved requestcode CONFIGURATION_REQUEST_CODE");
 			}
 			if (resultCode == Activity.RESULT_OK)
 			{
-				if (Logging.isLoggingEnabled())
+				if (Logging.isEnabled())
 				{
 					Log.d(LOG_TAG, "Recieved resultcode RESULT_OK");
 				}
@@ -134,7 +134,7 @@ public final class MainActivity extends DBActivity
 			}
 			else if (resultCode == Activity.RESULT_CANCELED)
 			{
-				if (Logging.isLoggingEnabled())
+				if (Logging.isEnabled())
 				{
 					Log.d(LOG_TAG, "Recieved resultCode RESULT_CANCELED");
 				}
@@ -287,7 +287,7 @@ public final class MainActivity extends DBActivity
 			{
 				if (_which == DialogInterface.BUTTON_NEGATIVE)
 				{
-					if (Logging.isLoggingEnabled())
+					if (Logging.isEnabled())
 					{
 						Log.i(LOG_TAG, "GPL not accepted.");
 						Log.i(LOG_TAG, "Closing App.");
@@ -297,7 +297,7 @@ public final class MainActivity extends DBActivity
 				}
 				else
 				{
-					if (Logging.isLoggingEnabled())
+					if (Logging.isEnabled())
 					{
 						Log.i(LOG_TAG, "GPL accepted.");
 						Log.i(LOG_TAG, "Starting App.");
@@ -419,7 +419,7 @@ public final class MainActivity extends DBActivity
 	public boolean onOptionsItemSelected(final MenuItem item)
 	{
 		super.onOptionsItemSelected(item);
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "selected icon id " + item.getItemId());
 		}

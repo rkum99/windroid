@@ -64,7 +64,7 @@ public class SpotAlarmTask implements Callable<Void>
 
 		if (!dao.isSpotActiv())
 		{
-			if (Logging.isLoggingEnabled())
+			if (Logging.isEnabled())
 			{
 				Log.i(LOG_TAG, "No active spot configured.");
 			}
@@ -73,7 +73,7 @@ public class SpotAlarmTask implements Callable<Void>
 		try
 		{
 			final Collection<SpotConfigurationVO> spots = dao.getActivSpots();
-			if (Logging.isLoggingEnabled())
+			if (Logging.isEnabled())
 			{
 				Log.i(LOG_TAG, "Found " + spots.size() + " spot(s) to install alarm trigger(s).");
 			}

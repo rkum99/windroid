@@ -90,7 +90,7 @@ public class SpotService extends Service
 				throw new NullPointerException("IServiceCallbackListener is null");
 			}
 
-			if (Logging.isLoggingEnabled())
+			if (Logging.isEnabled())
 			{
 				Log.d(LOG_TAG, "Insert Task to update spot with selectedID:" + _selectedID + " into scheduler");
 			}
@@ -133,7 +133,7 @@ public class SpotService extends Service
 	{
 		super.onCreate();
 		createThreadPool();
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.i(LOG_TAG, "Service created");
 		}
@@ -150,7 +150,7 @@ public class SpotService extends Service
 	{
 		super.onStart(_intent, _startId);
 		createThreadPool();
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.i(LOG_TAG, "onStart");
 		}
@@ -210,7 +210,7 @@ public class SpotService extends Service
 	{
 		try
 		{
-			if (Logging.isLoggingEnabled())
+			if (Logging.isEnabled())
 			{
 				Log.d(LOG_TAG, "Service#onDestroy");
 			}
@@ -223,7 +223,7 @@ public class SpotService extends Service
 				final boolean isTerminated = threadPool.awaitTermination(4L, TimeUnit.SECONDS);
 				if (!isTerminated)
 				{
-					if (Logging.isLoggingEnabled())
+					if (Logging.isEnabled())
 					{
 						Log.d(LOG_TAG, "soft shutdown failed, trying hard shutdown.");
 					}
@@ -231,7 +231,7 @@ public class SpotService extends Service
 					final List<Runnable> uncompletedTasks = threadPool.shutdownNow();
 					logUncompletedTask(uncompletedTasks);
 				}
-				if (Logging.isLoggingEnabled())
+				if (Logging.isEnabled())
 				{
 					Log.d(LOG_TAG, "shutdown completed.");
 				}
@@ -297,7 +297,7 @@ public class SpotService extends Service
 		{
 			return;
 		}
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			for (final Runnable task : tasks)
 			{

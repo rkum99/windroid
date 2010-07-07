@@ -128,7 +128,7 @@ final class PriorizedFutureTask extends FutureTask<Void>
 			// Broadcast to all clients the new value.
 			final int nrOfCallbacks = callbackListener.beginBroadcast();
 			final int what = msg.what;
-			if (Logging.isLoggingEnabled())
+			if (Logging.isEnabled())
 			{
 				Log.d(LOG_TAG, "broadcast " + what + " to " + nrOfCallbacks + " callback listeners");
 			}

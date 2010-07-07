@@ -237,11 +237,11 @@ public final class Util
 	 * will do nothing.
 	 * 
 	 * @param _cursor
-	 * @see Logging#isLoggingEnabled()
+	 * @see Logging#isEnabled()
 	 */
 	public final static void printCursorColumnNames(final Cursor _cursor)
 	{
-		if (!Logging.isLoggingEnabled())
+		if (!Logging.isEnabled())
 		{
 			return;
 		}
@@ -335,11 +335,11 @@ public final class Util
 	 * @param _activity
 	 *            needed to read display settings from activity.
 	 * @throws NullPointerException
-	 * @see Logging#isLoggingEnabled()
+	 * @see Logging#isEnabled()
 	 */
 	public static void logDisplayMetrics(final Activity _activity) throws NullPointerException
 	{
-		if (!Logging.isLoggingEnabled())
+		if (!Logging.isEnabled())
 		{
 			return;
 		}

@@ -84,7 +84,7 @@ public final class SpotServiceConnection implements ServiceConnection, ISpotServ
 	@Override
 	public void onServiceConnected(final ComponentName name, final IBinder binder)
 	{
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "public void onServiceConnected(ComponentName name, IBinder binder)");
 		}
@@ -102,7 +102,7 @@ public final class SpotServiceConnection implements ServiceConnection, ISpotServ
 	@Override
 	public void onServiceDisconnected(final ComponentName name)
 	{
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "public void onServiceDisconnected(ComponentName name)");
 		}

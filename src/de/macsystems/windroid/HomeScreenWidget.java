@@ -45,7 +45,7 @@ public class HomeScreenWidget extends AppWidgetProvider
 	public void onDeleted(final Context context, final int[] appWidgetIds)
 	{
 		super.onDeleted(context, appWidgetIds);
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "public void onDeleted(Context context, int[] appWidgetIds)");
 		}
@@ -61,7 +61,7 @@ public class HomeScreenWidget extends AppWidgetProvider
 	public void onDisabled(final Context context)
 	{
 		super.onDisabled(context);
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "public void onDisabled(Context context)");
 		}
@@ -77,7 +77,7 @@ public class HomeScreenWidget extends AppWidgetProvider
 	public void onEnabled(final Context context)
 	{
 		super.onEnabled(context);
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "public void onEnabled(Context context)");
 		}
@@ -94,7 +94,7 @@ public class HomeScreenWidget extends AppWidgetProvider
 	public void onReceive(final Context context, final Intent intent)
 	{
 		super.onReceive(context, intent);
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "public void onReceive(Context context, Intent intent)");
 		}
@@ -110,7 +110,7 @@ public class HomeScreenWidget extends AppWidgetProvider
 	@Override
 	public void onUpdate(final Context context, final AppWidgetManager appWidgetManager, final int[] appWidgetIds)
 	{
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "public void onUpdate(final Context context, "
 					+ "final AppWidgetManager appWidgetManager, final int[] appWidgetIds)");

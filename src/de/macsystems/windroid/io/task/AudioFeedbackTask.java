@@ -163,7 +163,7 @@ public abstract class AudioFeedbackTask extends AbstractNotificationTask<Void> i
 	public final void onCompletion(final MediaPlayer _mp)
 	{
 		_mp.release();
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "Media playback end reached.");
 		}

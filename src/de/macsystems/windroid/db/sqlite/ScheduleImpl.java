@@ -77,7 +77,7 @@ public final class ScheduleImpl extends BaseImpl implements IScheduleDAO
 	@Override
 	public Schedule getScheduleByScheduleID(final int _selectedID) throws DBException
 	{
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "getScheduleByScheduleID::selectedID :" + _selectedID);
 		}
@@ -158,7 +158,7 @@ public final class ScheduleImpl extends BaseImpl implements IScheduleDAO
 				repeatValue.put(COLUMN_SELECTED_ID, _selectedID);
 				repeatValue.put(COLUMN_REPEAT_ID, repeat.getId());
 				final int primaryKey = (int) db.insert(tableName, null, repeatValue);
-				if (Logging.isLoggingEnabled())
+				if (Logging.isEnabled())
 				{
 					Log.d(LOG_TAG, "Updated table " + tableName + " by a schedule, primaryKey is:" + primaryKey);
 				}

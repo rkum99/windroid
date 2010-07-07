@@ -126,7 +126,7 @@ public class IOUtils
 					final boolean isRoamingNow = info.isRoaming();
 					if (State.CONNECTED == networkState || State.CONNECTING == networkState)
 					{
-						if (Logging.isLoggingEnabled())
+						if (Logging.isEnabled())
 						{
 							Log.i(LOG_TAG, "Using: ");
 							Log.i(LOG_TAG, "NetworkInfo.extraInfo               : " + info.getExtraInfo());
@@ -195,7 +195,7 @@ public class IOUtils
 	public final static void writeConfiguration(final Context _context, final Properties _properties)
 			throws IOException
 	{
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "Attempt updating configuration.");
 		}
@@ -217,7 +217,7 @@ public class IOUtils
 		{
 			close(outStream);
 		}
-		if (Logging.isLoggingEnabled())
+		if (Logging.isEnabled())
 		{
 			Log.d(LOG_TAG, "Attempt updating configuration successfully.");
 		}

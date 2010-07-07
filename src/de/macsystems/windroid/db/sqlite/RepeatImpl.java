@@ -118,7 +118,7 @@ public final class RepeatImpl extends BaseImpl implements IRepeatDAO
 			value.put(COLUMN_ACTIV, _repeat.isActiv());
 			//
 			db.update(tableName, value, null, null);
-			if (Logging.isLoggingEnabled())
+			if (Logging.isEnabled())
 			{
 				Log.d(LOG_TAG, "updated repeat on " + tableName + " primary key is: " + _repeat.getId());
 			}
@@ -155,7 +155,7 @@ public final class RepeatImpl extends BaseImpl implements IRepeatDAO
 			final int primaryKey = (int) db.insert(tableName, null, value);
 			//
 			_repeat.setId(primaryKey);
-			if (Logging.isLoggingEnabled())
+			if (Logging.isEnabled())
 			{
 				Log.d(LOG_TAG, "Insert repeat on " + tableName + " a repeat, primaryKey is:" + primaryKey);
 			}

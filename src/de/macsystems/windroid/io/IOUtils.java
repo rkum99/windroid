@@ -38,6 +38,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.NetworkInfo.State;
 import android.util.Log;
@@ -65,6 +66,8 @@ public class IOUtils
 
 	public static final int BIG_BUFFER_SIZE = 1024 * 32;
 
+	public static final int EIGHT_KB_BUFFER_SIZE = 1024 * 8;
+
 	public static final int DEFAULT_BUFFER_SIZE = 1024;
 
 	/**
@@ -89,6 +92,7 @@ public class IOUtils
 	 */
 	public static boolean isNetworkReachable(final Context _context)
 	{
+		boolean isNetworkReachable = false;
 		final ConnectivityManager systemService = (ConnectivityManager) _context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -97,14 +101,12 @@ public class IOUtils
 		 */
 		if (systemService.getActiveNetworkInfo() == null)
 		{
-			Log.i(LOG_TAG, "Network not reachable");
+			Log.i(LOG_TAG, "Network not reachable!");
 			return false;
 		}
 
-		final State networkState = systemService.getActiveNetworkInfo().getState();
-		final boolean isRoamingNow = systemService.getActiveNetworkInfo().isRoaming();
-		// Query User Configuration
 		final IPreferencesDAO dao = DAOFactory.getPreferencesDAO(_context);
+		final NetworkInfo[] infos = systemService.getAllNetworkInfo();
 		boolean userWantIOWhileRoaming = false;
 		try
 		{
@@ -114,19 +116,46 @@ public class IOUtils
 		{
 			Log.e(LOG_TAG, "Failed to Query DB", e);
 		}
-
-		if (State.CONNECTED == networkState)
+		for (final NetworkInfo info : infos)
 		{
-			if (userWantIOWhileRoaming)
+			if (info != null)
 			{
-				return true;
-			}
-			else
-			{
-				return isRoamingNow ? false : true;
+				if (info.isConnectedOrConnecting())
+				{
+					final State networkState = info.getState();
+					final boolean isRoamingNow = info.isRoaming();
+					if (State.CONNECTED == networkState || State.CONNECTING == networkState)
+					{
+						if (Logging.isLoggingEnabled())
+						{
+							Log.i(LOG_TAG, "Using: ");
+							Log.i(LOG_TAG, "NetworkInfo.extraInfo               : " + info.getExtraInfo());
+							Log.i(LOG_TAG, "NetworkInfo.reason                  : " + info.getReason());
+							Log.i(LOG_TAG, "NetworkInfo.subtypeName             : " + info.getSubtypeName());
+							Log.i(LOG_TAG, "NetworkInfo.state                   : " + info.getState());
+							Log.i(LOG_TAG, "NetworkInfo.detailedState           : " + info.getDetailedState());
+							Log.i(LOG_TAG, "NetworkInfo.isAvailable             : " + info.isAvailable());
+							Log.i(LOG_TAG, "NetworkInfo.isConnected             : " + info.isConnected());
+							Log.i(LOG_TAG, "NetworkInfo.isConnectedOrConnecting : " + info.isConnectedOrConnecting());
+							Log.i(LOG_TAG, "NetworkInfo.isFailover              : " + info.isFailover());
+							Log.i(LOG_TAG, "NetworkInfo.isRoaming               : " + info.isRoaming());
+						}
+						if (userWantIOWhileRoaming)
+						{
+							isNetworkReachable = true;
+							break;
+						}
+						else
+						{
+							isNetworkReachable = isRoamingNow ? false : true;
+							break;
+						}
+					}
+				}
 			}
 		}
-		return false;
+		return isNetworkReachable;
+
 	}
 
 	/**
@@ -426,8 +455,7 @@ public class IOUtils
 		final StringBuilder builder = new StringBuilder(128);
 		builder.append("android.resource://");
 		builder.append(_context.getPackageName());
-		builder.append("/");
-		builder.append("/");
+		builder.append("//");
 		builder.append(_resourceId);
 
 		return Uri.parse(builder.toString());
@@ -503,7 +531,45 @@ public class IOUtils
 		{
 			close(reader);
 		}
+	}
 
+	/**
+	 * Reads from given <code>InputStream</code> into a
+	 * <code>StringBuffer</code>.
+	 * 
+	 * @param _instream
+	 * @param _bufferSize
+	 * @return
+	 * @throws IOException
+	 */
+	public static StringBuilder asString(final InputStream _instream, int _bufferSize) throws IOException
+	{
+		if (_instream == null)
+		{
+			throw new NullPointerException("InputStream");
+		}
+		if (_bufferSize < 1)
+		{
+			_bufferSize = DEFAULT_BUFFER_SIZE;
+		}
+
+		final BufferedReader reader = new BufferedReader(new InputStreamReader(_instream), _bufferSize);
+
+		try
+		{
+			String line;
+			final StringBuilder builder = new StringBuilder(_bufferSize);
+			while ((line = reader.readLine()) != null)
+			{
+				builder.append(line);
+			}
+			return builder;
+
+		}
+		finally
+		{
+			close(reader);
+		}
 	}
 
 	/**

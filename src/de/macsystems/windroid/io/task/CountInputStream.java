@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import android.util.Log;
+import de.macsystems.windroid.Logging;
 
 /**
  * A Stream which counts read bytes and log them when closed.
@@ -65,7 +66,10 @@ public final class CountInputStream extends FilterInputStream
 			isClosed = true;
 			final float kbs = bytes / 1024.0f;
 			final float mb = kbs / 1024.0f;
-			Log.i(LOG_TAG, "Read :" + bytes + " Byte, " + kbs + " kB, " + mb + " MB");
+			if (Logging.isLoggingEnabled())
+			{
+				Log.d(LOG_TAG, "Read :" + bytes + " Byte, " + kbs + " kB, " + mb + " MB");
+			}
 		}
 	}
 

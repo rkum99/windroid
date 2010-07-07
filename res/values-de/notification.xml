@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+	<!--
+		@version $Id$
+	-->
+
+<resources>
+	<string
+		name="on_reboot.monitored_spots_title">Überwache</string>
+	<string
+		name="on_reboot.monitored_spots_text">
+	$1 spot(s) werden überwacht.</string>
+	<string
+		name="on_reboot.monitored_spots_tickertext">Überwache Spots</string>
+</resources>

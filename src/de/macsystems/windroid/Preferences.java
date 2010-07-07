@@ -94,6 +94,18 @@ public final class Preferences extends PreferenceActivity
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onStop()
+	 */
+	@Override
+	protected void onStop()
+	{
+		daoManager.onStop();
+		super.onStop();
+	}
+
 	/**
 	 * 
 	 */

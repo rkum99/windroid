@@ -24,7 +24,7 @@ import android.content.Context;
 import android.util.Log;
 import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.R;
-import de.macsystems.windroid.alarm.AlarmUtil;
+import de.macsystems.windroid.alarm.AlarmStrategieFactory;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.db.DAOFactory;
 import de.macsystems.windroid.db.DBException;
@@ -80,7 +80,7 @@ public final class UpdateAlarmTask extends AbstractNotificationTask<Void>
 				while (iter.hasNext())
 				{
 					final SpotConfigurationVO spot = iter.next();
-					AlarmUtil.createAlarmForSpot(spot, getContext());
+					AlarmStrategieFactory.getAlarmManager().createAlarmForSpot(spot, getContext(), false);
 				}
 			}
 			catch (final DBException e)

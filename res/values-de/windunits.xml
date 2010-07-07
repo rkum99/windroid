@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-	<!--  
-    		@version $Id$
-	 -->
+	<!--
+		@version $Id$
+	-->
 
 <resources>
 	<string-array
 		name="unit_names">
 		<item>Beaufort</item>
-		<item>Knots</item>
-		<item>Meter per Second (m/s)</item>
-		<item>Miles per Hour</item>
-		<item>Kilometer per Hour</item>
+		<item>Knoten</item>
+		<item>Meter pro Sekunde (m/s)</item>
+		<item>Miles pro Stunde</item>
+		<item>Kilometer pro Stunde</item>
 	</string-array>
 	<string-array
 		name="unit_ids">

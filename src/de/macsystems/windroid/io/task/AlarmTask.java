@@ -26,7 +26,7 @@ import android.util.Log;
 import de.macsystems.windroid.Logging;
 import de.macsystems.windroid.R;
 import de.macsystems.windroid.WindUtils;
-import de.macsystems.windroid.alarm.AlarmUtil;
+import de.macsystems.windroid.alarm.AlarmStrategieFactory;
 import de.macsystems.windroid.alarm.Alert;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.db.DAOFactory;
@@ -53,7 +53,7 @@ public class AlarmTask extends AudioFeedbackTask
 	/**
 	 * Maximum retrys this task trys to get an update before it will be
 	 * scheduled as an retry using
-	 * {@link AlarmUtil#enqueueRetryAlarm(Alert, Context)}.
+	 * {@link BaseStrategie#enqueueRetryAlarm(Alert, Context)}.
 	 */
 	private final int MAX_RETRYS = 3;
 	/**
@@ -70,7 +70,7 @@ public class AlarmTask extends AudioFeedbackTask
 	 */
 	public AlarmTask(final Context _context, final Alert _alert) throws NullPointerException
 	{
-		super(_context);
+		super(_context, NO_SOUND_RES_ID, R.raw.update_failed);
 		if (_alert == null)
 		{
 			throw new NullPointerException("alert");
@@ -100,7 +100,7 @@ public class AlarmTask extends AudioFeedbackTask
 			final boolean available = isNetworkReachable();
 			if (!available)
 			{
-				AlarmUtil.enqueueRetryAlarm(alert, getContext());
+				AlarmStrategieFactory.getAlarmManager().enqueueRetryAlarm(alert, getContext());
 				if (Logging.isLoggingEnabled())
 				{
 					Log.d(LOG_TAG, "Cancel update as network not reachable.");
@@ -108,16 +108,22 @@ public class AlarmTask extends AudioFeedbackTask
 				return;
 			}
 
-			boolean updateSuccessful = false;
+			boolean updateSuccessful = true;
 
 			for (int retry = 0; retry < MAX_RETRYS; retry++)
 			{
 				try
 				{
-					Log.i(LOG_TAG, "Attempt no. " + retry + " to update " + alert.getSpotName() + ".");
+					if (Logging.isLoggingEnabled())
+					{
+						Log.i(LOG_TAG, "Attempt no. " + retry + " to update " + alert.getSpotName() + ".");
+					}
 					tryUpdate(vo);
 					setAsSuccessfull();
-					Log.i(LOG_TAG, "Update successful !");
+					if (Logging.isLoggingEnabled())
+					{
+						Log.i(LOG_TAG, "Update successful !");
+					}
 					// continue after success
 					break;
 				}
@@ -135,7 +141,7 @@ public class AlarmTask extends AudioFeedbackTask
 			}
 			else
 			{
-				AlarmUtil.enqueueRetryAlarm(alert, getContext());
+				AlarmStrategieFactory.getAlarmManager().enqueueRetryAlarm(alert, getContext());
 			}
 
 		}

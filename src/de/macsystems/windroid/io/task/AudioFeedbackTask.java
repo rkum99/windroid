@@ -53,6 +53,10 @@ import de.macsystems.windroid.io.IOUtils;
  */
 public abstract class AudioFeedbackTask extends AbstractNotificationTask<Void> implements OnCompletionListener
 {
+	/**
+	 * ResID which is used to playback no sound.
+	 */
+	public final static int NO_SOUND_RES_ID = 137;
 
 	private final String LOG_TAG = AudioFeedbackTask.class.getSimpleName();
 
@@ -73,6 +77,7 @@ public abstract class AudioFeedbackTask extends AbstractNotificationTask<Void> i
 	 * 
 	 * @param _context
 	 * @throws NullPointerException
+	 * @see {@link #NO_SOUND_RES_ID}
 	 */
 	public AudioFeedbackTask(final Context _context) throws NullPointerException
 	{
@@ -124,7 +129,7 @@ public abstract class AudioFeedbackTask extends AbstractNotificationTask<Void> i
 	 */
 	private void play(final int _resourceID)
 	{
-		if (player != null)
+		if (player != null && _resourceID != NO_SOUND_RES_ID)
 		{
 
 			AssetFileDescriptor afd = null;

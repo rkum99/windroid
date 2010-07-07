@@ -66,7 +66,13 @@ abstract class BaseStrategie implements IAlarmStrategie
 	private final static AtomicInteger RETRY_REQUEST_COUNTER = new AtomicInteger(1);
 
 	/**
-	 * Util class
+	 * 
+	 * @param _normalInterval
+	 *            Interval which is used regularly
+	 * @param _retryInterval
+	 *            delay when an failure occurred before next try
+	 * @param _onRebootDelay
+	 *            delay before first attempt made to get info
 	 */
 	BaseStrategie(final long _normalInterval, final long _retryInterval, final long _onRebootDelay)
 	{

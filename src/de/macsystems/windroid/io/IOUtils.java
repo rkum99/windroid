@@ -92,6 +92,7 @@ public class IOUtils
 	 */
 	public static boolean isNetworkReachable(final Context _context)
 	{
+		boolean isNetworkReachable = false;
 		final ConnectivityManager systemService = (ConnectivityManager) _context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -104,26 +105,8 @@ public class IOUtils
 			return false;
 		}
 
-		final State networkState = systemService.getActiveNetworkInfo().getState();
-		if (Logging.isLoggingEnabled())
-		{
-			final NetworkInfo info = systemService.getActiveNetworkInfo();
-
-			Log.i(LOG_TAG, "NetworkInfo.extraInfo               : " + info.getExtraInfo());
-			Log.i(LOG_TAG, "NetworkInfo.reason                  : " + info.getReason());
-			Log.i(LOG_TAG, "NetworkInfo.subtypeName             : " + info.getSubtypeName());
-			Log.i(LOG_TAG, "NetworkInfo.state                   : " + info.getState());
-			Log.i(LOG_TAG, "NetworkInfo.detailedState           : " + info.getDetailedState());
-			Log.i(LOG_TAG, "NetworkInfo.isAvailable             : " + info.isAvailable());
-			Log.i(LOG_TAG, "NetworkInfo.isConnected             : " + info.isConnected());
-			Log.i(LOG_TAG, "NetworkInfo.isConnectedOrConnecting : " + info.isConnectedOrConnecting());
-			Log.i(LOG_TAG, "NetworkInfo.isFailover              : " + info.isFailover());
-			Log.i(LOG_TAG, "NetworkInfo.isRoaming               : " + info.isRoaming());
-
-		}
-		final boolean isRoamingNow = systemService.getActiveNetworkInfo().isRoaming();
-		// Query User Configuration
 		final IPreferencesDAO dao = DAOFactory.getPreferencesDAO(_context);
+		final NetworkInfo[] infos = systemService.getAllNetworkInfo();
 		boolean userWantIOWhileRoaming = false;
 		try
 		{
@@ -133,19 +116,46 @@ public class IOUtils
 		{
 			Log.e(LOG_TAG, "Failed to Query DB", e);
 		}
-
-		if (State.CONNECTED == networkState)
+		for (final NetworkInfo info : infos)
 		{
-			if (userWantIOWhileRoaming)
+			if (info != null)
 			{
-				return true;
-			}
-			else
-			{
-				return isRoamingNow ? false : true;
+				if (info.isConnectedOrConnecting())
+				{
+					final State networkState = info.getState();
+					final boolean isRoamingNow = info.isRoaming();
+					if (State.CONNECTED == networkState || State.CONNECTING == networkState)
+					{
+						if (Logging.isLoggingEnabled())
+						{
+							Log.i(LOG_TAG, "Using: ");
+							Log.i(LOG_TAG, "NetworkInfo.extraInfo               : " + info.getExtraInfo());
+							Log.i(LOG_TAG, "NetworkInfo.reason                  : " + info.getReason());
+							Log.i(LOG_TAG, "NetworkInfo.subtypeName             : " + info.getSubtypeName());
+							Log.i(LOG_TAG, "NetworkInfo.state                   : " + info.getState());
+							Log.i(LOG_TAG, "NetworkInfo.detailedState           : " + info.getDetailedState());
+							Log.i(LOG_TAG, "NetworkInfo.isAvailable             : " + info.isAvailable());
+							Log.i(LOG_TAG, "NetworkInfo.isConnected             : " + info.isConnected());
+							Log.i(LOG_TAG, "NetworkInfo.isConnectedOrConnecting : " + info.isConnectedOrConnecting());
+							Log.i(LOG_TAG, "NetworkInfo.isFailover              : " + info.isFailover());
+							Log.i(LOG_TAG, "NetworkInfo.isRoaming               : " + info.isRoaming());
+						}
+						if (userWantIOWhileRoaming)
+						{
+							isNetworkReachable = true;
+							break;
+						}
+						else
+						{
+							isNetworkReachable = isRoamingNow ? false : true;
+							break;
+						}
+					}
+				}
 			}
 		}
-		return false;
+		return isNetworkReachable;
+
 	}
 
 	/**

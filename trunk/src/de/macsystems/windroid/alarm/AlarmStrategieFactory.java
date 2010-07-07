@@ -15,29 +15,27 @@
  along with Windroid.  If not, see <http://www.gnu.org/licenses/>.
 
  */
-package de.macsystems.windroid;
+package de.macsystems.windroid.alarm;
 
 /**
- * Simple Class which allows easy Logging on/off. Do not use this for Logging
- * Errors or warnings. just for debugging testing purposes.
- * 
  * @author mac
  * @version $Id$
  */
-public final class Logging
+public final class AlarmStrategieFactory
 {
+	private final static IAlarmStrategie strategie = new ReleaseStrategie();
 
-	private Logging()
+	private AlarmStrategieFactory()
 	{
 	}
 
 	/**
-	 * Returns <code>true</code> if logging is turned on.
+	 * Allows a flexible testing facility.
 	 * 
 	 * @return
 	 */
-	public final static boolean isLoggingEnabled()
+	public final static IAlarmStrategie getAlarmManager()
 	{
-		return false;
+		return strategie;
 	}
 }

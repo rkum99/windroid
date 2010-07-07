@@ -22,9 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.AlertDialog;
-import android.app.ActivityManager.RunningServiceInfo;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -50,7 +48,7 @@ import android.widget.CompoundButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import de.macsystems.windroid.alarm.AlarmUtil;
+import de.macsystems.windroid.alarm.AlarmStrategieFactory;
 import de.macsystems.windroid.common.IntentConstants;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.db.DAOFactory;
@@ -70,8 +68,6 @@ import de.macsystems.windroid.service.SpotService;
 public final class MainActivity extends DBActivity
 {
 
-	private static final String DE_MACSYSTEMS_WINDROID_SPOT_SERVICE = "de.macsystems.windroid.SpotService";
-	private static final String DE_MACSYSTEMS_WINDROID = "de.macsystems.windroid";
 	private final static int OPTION_ABOUT_MENU_ID = 777;
 	/**
 	 * Configuration SubActivities will be launched by this request code
@@ -114,7 +110,7 @@ public final class MainActivity extends DBActivity
 
 					final ISelectedDAO dao = DAOFactory.getSelectedDAO(this);
 					dao.insertSpot(spot);
-					AlarmUtil.createAlarmForSpot(spot, this);
+					AlarmStrategieFactory.getAlarmManager().createAlarmForSpot(spot, this, false);
 
 					// if (Logging.isLoggingEnabled())s
 					// {
@@ -226,7 +222,7 @@ public final class MainActivity extends DBActivity
 
 		showGPL();
 
-		startSpotService();
+		// startSpotService();
 		setContentView(R.layout.main);
 
 		// final View view = findViewById(R.id.background_image_main);
@@ -385,55 +381,6 @@ public final class MainActivity extends DBActivity
 	}
 
 	/**
-	 * Checks if Background SpotService already running. If not it will be
-	 * started.
-	 */
-	private void startSpotService()
-	{
-		final ActivityManager activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-		final List<RunningServiceInfo> services = activityManager.getRunningServices(Integer.MAX_VALUE);
-
-		boolean isServiceFound = false;
-
-		for (int i = 0; i < services.size(); i++)
-		{
-			if (Logging.isLoggingEnabled())
-			{
-				Log.d(LOG_TAG, "Service Nr. " + i + " :" + services.get(i).service);
-				Log.d(LOG_TAG, "Service Nr. " + i + " package name : " + services.get(i).service.getPackageName());
-				Log.d(LOG_TAG, "Service Nr. " + i + " class name   : " + services.get(i).service.getClassName());
-			}
-
-			if (DE_MACSYSTEMS_WINDROID.equals(services.get(i).service.getPackageName()))
-			{
-				if (DE_MACSYSTEMS_WINDROID_SPOT_SERVICE.equals(services.get(i).service.getClassName()))
-				{
-					isServiceFound = true;
-					break;
-				}
-			}
-		}
-
-		if (!isServiceFound)
-		{
-			if (Logging.isLoggingEnabled())
-			{
-				Log.d(LOG_TAG, "Starting Service");
-			}
-			final Intent startServiceIntent = new Intent();
-			startServiceIntent.setAction(IntentConstants.DE_MACSYSTEMS_WINDROID_START_SPOT_SERVICE_ACTION);
-			startService(startServiceIntent);
-		}
-		else
-		{
-			if (Logging.isLoggingEnabled())
-			{
-				Log.i(LOG_TAG, "Nothing to do, SpotService already running !!!!!");
-			}
-		}
-	}
-
-	/**
 	 * Test Code
 	 */
 	@Deprecated
@@ -448,7 +395,7 @@ public final class MainActivity extends DBActivity
 			@Override
 			public final void onClick(final View v)
 			{
-				AlarmUtil.cancelAllAlerts(MainActivity.this);
+				AlarmStrategieFactory.getAlarmManager().cancelAllAlerts(MainActivity.this);
 			}
 		};
 		button.setOnClickListener(listener);

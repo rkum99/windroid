@@ -15,29 +15,19 @@
  along with Windroid.  If not, see <http://www.gnu.org/licenses/>.
 
  */
-package de.macsystems.windroid;
+package de.macsystems.windroid.alarm;
+
+import android.app.AlarmManager;
 
 /**
- * Simple Class which allows easy Logging on/off. Do not use this for Logging
- * Errors or warnings. just for debugging testing purposes.
- * 
  * @author mac
  * @version $Id$
  */
-public final class Logging
+final class ReleaseStrategie extends BaseStrategie
 {
-
-	private Logging()
+	ReleaseStrategie()
 	{
-	}
-
-	/**
-	 * Returns <code>true</code> if logging is turned on.
-	 * 
-	 * @return
-	 */
-	public final static boolean isLoggingEnabled()
-	{
-		return false;
+		super(7L * AlarmManager.INTERVAL_DAY, AlarmManager.INTERVAL_FIFTEEN_MINUTES,
+				AlarmManager.INTERVAL_FIFTEEN_MINUTES / 15);
 	}
 }

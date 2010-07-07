@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-	<!--  
-    		@version $Id$
-	 -->
+	<!--
+		@version $Id$
+	-->
 <resources>
 	<string-array
 		name="continent_names">
-		<item>Africa</item>
-		<item>Asia</item>
-		<item>Australia Oceania</item>
-		<item>Europe</item>
-		<item>North America</item>
-		<item>South America</item>
+		<item>Afrika</item>
+		<item>Asien</item>
+		<item>Australien &amp; Ozeanien</item>
+		<item>Europa</item>
+		<item>Nordamerika</item>
+		<item>Südamerika</item>
 	</string-array>
 	<string-array
 		name="continent_ids">

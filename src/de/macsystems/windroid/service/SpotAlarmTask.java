@@ -35,7 +35,7 @@ import de.macsystems.windroid.db.ISelectedDAO;
  * 
  * @author mac
  * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
- * @see BaseStrategie#createAlarmForSpot(int, Context)
+ * @see BaseStrategie#createAlarmForSpot(int, Context, boolean)
  */
 public class SpotAlarmTask implements Callable<Void>
 {
@@ -82,7 +82,7 @@ public class SpotAlarmTask implements Callable<Void>
 			while (iter.hasNext())
 			{
 				final SpotConfigurationVO spot = iter.next();
-				AlarmStrategieFactory.getAlarmManager().createAlarmForSpot(spot, context);
+				AlarmStrategieFactory.getAlarmManager().createAlarmForSpot(spot, context, false);
 			}
 
 		}

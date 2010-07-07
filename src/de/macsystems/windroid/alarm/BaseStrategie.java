@@ -58,16 +58,21 @@ abstract class BaseStrategie implements IAlarmStrategie
 	 * Interval used for a normal update period
 	 */
 	private final long NORMAL_INTERVAL;
+	/**
+	 * Delay which is added to current time before first alarm get invoked.
+	 */
+	private final long ON_REBOOT_DELAY;
 
 	private final static AtomicInteger RETRY_REQUEST_COUNTER = new AtomicInteger(1);
 
 	/**
 	 * Util class
 	 */
-	BaseStrategie(final long _normalInterval, final long _retryInterval)
+	BaseStrategie(final long _normalInterval, final long _retryInterval, final long _onRebootDelay)
 	{
 		NORMAL_INTERVAL = _normalInterval;
 		RETRY_INTERVAL = _retryInterval;
+		ON_REBOOT_DELAY = _onRebootDelay;
 	}
 
 	/*
@@ -77,7 +82,7 @@ abstract class BaseStrategie implements IAlarmStrategie
 	 * de.macsystems.windroid.alarm.IAlarmStrategie#createAlarmForSpot(de.macsystems
 	 * .windroid.common.SpotConfigurationVO, android.content.Context)
 	 */
-	public void createAlarmForSpot(final SpotConfigurationVO _vo, final Context _context)
+	public void createAlarmForSpot(final SpotConfigurationVO _vo, final Context _context, boolean _isReboot)
 	{
 		if (_context == null)
 		{
@@ -107,9 +112,10 @@ abstract class BaseStrategie implements IAlarmStrategie
 			Alert.writeAlertToIntent(alert, intent);
 			//
 			final PendingIntent pendingIntent = PendingIntent.getBroadcast(_context, alert.getAlertID(), intent, 0);
-			// TODO: Fix Interval in release to 24 Hrs
-			alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), NORMAL_INTERVAL,
-					pendingIntent);
+
+			final long millsToAdd = _isReboot ? ON_REBOOT_DELAY : 0L;
+			alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + millsToAdd,
+					NORMAL_INTERVAL, pendingIntent);
 
 			if (Logging.isLoggingEnabled())
 			{

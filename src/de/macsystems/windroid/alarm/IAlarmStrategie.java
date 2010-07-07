@@ -31,16 +31,17 @@ public interface IAlarmStrategie
 	 * {@link AlarmBroadcastReciever}.<br>
 	 * The Intent will call the {@link AlarmBroadcastReciever} with intent data
 	 * which describe an {@link Alert}.
-	 * 
-	 * @param _id
 	 * @param _context
+	 * @param _isReboot TODO
+	 * @param _id
+	 * 
 	 * @see Alert
 	 * @see Alert#readAlertFormAlarmIntent(Intent) to get an {@link Alert}
 	 *      from an {@link Intent}
 	 * @see Alert#writeAlertToIntent(Alert, Intent) to write an {@link Alert}
 	 *      into an {@link Intent}
 	 */
-	public abstract void createAlarmForSpot(final SpotConfigurationVO _vo, final Context _context);
+	public abstract void createAlarmForSpot(final SpotConfigurationVO _vo, final Context _context, boolean _isReboot);
 
 	/**
 	 * Creates an alarm if network not reachable that will be processed in the

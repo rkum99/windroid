@@ -110,7 +110,7 @@ public final class MainActivity extends DBActivity
 
 					final ISelectedDAO dao = DAOFactory.getSelectedDAO(this);
 					dao.insertSpot(spot);
-					AlarmStrategieFactory.getAlarmManager().createAlarmForSpot(spot, this);
+					AlarmStrategieFactory.getAlarmManager().createAlarmForSpot(spot, this, false);
 
 					// if (Logging.isLoggingEnabled())s
 					// {

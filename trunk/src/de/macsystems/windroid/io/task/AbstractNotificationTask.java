@@ -25,7 +25,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import de.macsystems.windroid.OngoingUpdateActivity;
 import de.macsystems.windroid.R;
 import de.macsystems.windroid.io.IOUtils;
@@ -41,7 +40,6 @@ import de.macsystems.windroid.io.IOUtils;
 public abstract class AbstractNotificationTask<V> implements Callable<V>
 {
 
-	private final String LOG_TAG = AbstractNotificationTask.class.getSimpleName();
 	/**
 	 * Thread save integer which can be used to count notification id.
 	 */
@@ -85,7 +83,8 @@ public abstract class AbstractNotificationTask<V> implements Callable<V>
 	}
 
 	/**
-	 * Implement your Task there
+	 * Implement your Task there. <b>You should report any an Exception back as
+	 * the underlying execution facility relay on that!</b>
 	 */
 	public abstract void execute() throws Exception;
 
@@ -95,16 +94,9 @@ public abstract class AbstractNotificationTask<V> implements Callable<V>
 	 * @see java.util.concurrent.Callable#call()
 	 */
 	@Override
-	public final V call()
+	public final V call() throws Exception
 	{
-		try
-		{
-			execute();
-		}
-		catch (final Exception e)
-		{
-			Log.e(LOG_TAG, "Failed to execute", e);
-		}
+		execute();
 		return null;
 	}
 

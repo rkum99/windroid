@@ -27,7 +27,6 @@ import de.macsystems.windroid.R;
 import de.macsystems.windroid.alarm.AlarmManagerFactory;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.db.DAOFactory;
-import de.macsystems.windroid.db.DBException;
 import de.macsystems.windroid.db.ISelectedDAO;
 
 /**
@@ -55,7 +54,7 @@ public final class UpdateAlarmTask extends AbstractNotificationTask<Void>
 	 * @see java.util.concurrent.Callable#call()
 	 */
 	@Override
-	public void execute()
+	public void execute() throws Exception
 	{
 		showStatus(getContext().getString(R.string.ongoing_update_title), getContext().getString(
 				R.string.ongoing_update_text));
@@ -68,24 +67,17 @@ public final class UpdateAlarmTask extends AbstractNotificationTask<Void>
 				Log.i(LOG_TAG, "No active spot configured, skipping!");
 				return;
 			}
-			try
+			final Collection<SpotConfigurationVO> spots = dao.getActivSpots();
+			if (Logging.isEnabled())
 			{
-				final Collection<SpotConfigurationVO> spots = dao.getActivSpots();
-				if (Logging.isEnabled())
-				{
-					Log.i(LOG_TAG, "Found " + spots.size() + " Spots to update.");
-				}
-
-				final Iterator<SpotConfigurationVO> iter = spots.iterator();
-				while (iter.hasNext())
-				{
-					final SpotConfigurationVO spot = iter.next();
-					AlarmManagerFactory.getAlarmManager().createAlarmForSpot(spot, getContext(), false);
-				}
+				Log.i(LOG_TAG, "Found " + spots.size() + " Spots to update.");
 			}
-			catch (final DBException e)
+
+			final Iterator<SpotConfigurationVO> iter = spots.iterator();
+			while (iter.hasNext())
 			{
-				Log.e(LOG_TAG, "Failure while fetch active spots.", e);
+				final SpotConfigurationVO spot = iter.next();
+				AlarmManagerFactory.getAlarmManager().createAlarmForSpot(spot, getContext(), false);
 			}
 		}
 		finally

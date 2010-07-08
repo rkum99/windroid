@@ -44,6 +44,7 @@ import android.view.WindowManager;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnCreateContextMenuListener;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import de.macsystems.windroid.common.IntentConstants;
 import de.macsystems.windroid.common.SpotConfigurationVO;
@@ -155,10 +156,9 @@ public final class SpotOverviewActivity extends DBListActivity
 		public void onTaskFailed() throws RemoteException
 		{
 			removeDialog(UPDATE_SPOT_DIALOG);
-			// Toast.makeText(SpotOverviewActivity.this,
-			// SpotOverviewActivity.this.getString(R.string.forecast_failed_to_load_forecast),
-			// Toast.LENGTH_LONG)
-			// .show();
+			Toast.makeText(SpotOverviewActivity.this,
+					SpotOverviewActivity.this.getString(R.string.forecast_failed_to_load_forecast), Toast.LENGTH_LONG)
+					.show();
 		}
 	};
 

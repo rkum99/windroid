@@ -70,23 +70,16 @@ public class UpdateAllActiveSpotReports extends AbstractNotificationTask<Void>
 				Log.i(LOG_TAG, "No active spot configured.");
 				return;
 			}
-			try
-			{
-				final int[] spots = dao.getActivSpotIDs();
-				showStatus("Update " + spots.length + " Spots", "");
+			final int[] spots = dao.getActivSpotIDs();
+			showStatus("Update " + spots.length + " Spots", "");
 
-				if (Logging.isEnabled())
-				{
-					Log.i(LOG_TAG, "Found " + spots.length + " Spots to update. IDs : " + Arrays.toString(spots));
-				}
-				for (int i = 0; i < spots.length; i++)
-				{
-					loadSelectedForecast(spots[i]);
-				}
-			}
-			catch (final DBException e)
+			if (Logging.isEnabled())
 			{
-				Log.e(LOG_TAG, "Failed to fetch Spot", e);
+				Log.i(LOG_TAG, "Found " + spots.length + " Spots to update. IDs : " + Arrays.toString(spots));
+			}
+			for (int i = 0; i < spots.length; i++)
+			{
+				loadSelectedForecast(spots[i]);
 			}
 		}
 		finally
@@ -96,7 +89,8 @@ public class UpdateAllActiveSpotReports extends AbstractNotificationTask<Void>
 
 	}
 
-	private void loadSelectedForecast(final int _selectedID) throws DBException
+	private void loadSelectedForecast(final int _selectedID) throws DBException, URISyntaxException, IOException,
+			RetryLaterException, InterruptedException
 	{
 		if (Logging.isEnabled())
 		{
@@ -120,32 +114,14 @@ public class UpdateAllActiveSpotReports extends AbstractNotificationTask<Void>
 			}
 			return;
 		}
-		try
-		{
-			final URI uri = WindUtils.getJSONForcastURL(vo.getStation().getId()).toURI();
-			final ParseForecastTask task = new ParseForecastTask(uri);
-			final Forecast forecast = task.execute(getContext());
-			// Update Forecast in DB
-			final IForecastDAO forecastDAO = DAOFactory.getForecast(getContext());
-			forecastDAO.updateForecast(forecast, _selectedID);
-			//
-			// return forecast;
-		}
-		catch (final IOException e)
-		{
-			Log.e(LOG_TAG, "Failed to create uri", e);
-		}
-		catch (final RetryLaterException e)
-		{
-			Log.e(LOG_TAG, "", e);
-		}
-		catch (final URISyntaxException e)
-		{
-			Log.e(LOG_TAG, "Check URI", e);
-		}
-		catch (final InterruptedException e)
-		{
-			Log.e(LOG_TAG, "", e);
-		}
+		final URI uri = WindUtils.getJSONForcastURL(vo.getStation().getId()).toURI();
+		final ParseForecastTask task = new ParseForecastTask(uri);
+		final Forecast forecast = task.execute(getContext());
+		// Update Forecast in DB
+		final IForecastDAO forecastDAO = DAOFactory.getForecast(getContext());
+		forecastDAO.updateForecast(forecast, _selectedID);
+		//
+		// return forecast;
+
 	}
 }

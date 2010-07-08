@@ -30,7 +30,6 @@ import de.macsystems.windroid.alarm.AlarmManagerFactory;
 import de.macsystems.windroid.alarm.Alert;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.db.DAOFactory;
-import de.macsystems.windroid.db.DBException;
 import de.macsystems.windroid.db.IForecastDAO;
 import de.macsystems.windroid.db.ISelectedDAO;
 import de.macsystems.windroid.forecast.Forecast;
@@ -78,6 +77,11 @@ public class AlarmTask extends AudioFeedbackTask
 		alert = _alert;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.macsystems.windroid.io.task.AbstractNotificationTask#execute()
+	 */
 	@Override
 	public void execute() throws Exception
 	{
@@ -143,11 +147,6 @@ public class AlarmTask extends AudioFeedbackTask
 			{
 				AlarmManagerFactory.getAlarmManager().enqueueRetryAlarm(alert, getContext());
 			}
-
-		}
-		catch (final DBException e)
-		{
-			Log.e(LOG_TAG, "Failed to fetch spotconfiguration", e);
 		}
 		finally
 		{

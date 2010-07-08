@@ -14,7 +14,6 @@ import de.macsystems.windroid.R;
 import de.macsystems.windroid.alarm.AlarmManagerFactory;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.db.DAOFactory;
-import de.macsystems.windroid.db.DBException;
 import de.macsystems.windroid.db.ISelectedDAO;
 
 /**
@@ -37,32 +36,24 @@ public class EnqueueActiveSpots extends AbstractNotificationTask<Void>
 	@Override
 	public void execute() throws Exception
 	{
-		try
+		final ISelectedDAO dao = DAOFactory.getSelectedDAO(getContext());
+		if (dao.isSpotActiv())
 		{
-			final ISelectedDAO dao = DAOFactory.getSelectedDAO(getContext());
-			if (dao.isSpotActiv())
+			final Collection<SpotConfigurationVO> activeSpots = dao.getActivSpots();
+			if (Logging.isEnabled())
 			{
-				final Collection<SpotConfigurationVO> activeSpots = dao.getActivSpots();
-				if (Logging.isEnabled())
-				{
-					Log.d(LOG_TAG, "Scheduling " + activeSpots.size() + " activ spot(s) after reboot to monitor.");
-				}
-				enqueueSpots(activeSpots, getContext());
-				showScheduleNotification(getContext(), activeSpots.size());
+				Log.d(LOG_TAG, "Scheduling " + activeSpots.size() + " activ spot(s) after reboot to monitor.");
 			}
-			else
+			enqueueSpots(activeSpots, getContext());
+			showScheduleNotification(getContext(), activeSpots.size());
+		}
+		else
+		{
+			if (Logging.isEnabled())
 			{
-				if (Logging.isEnabled())
-				{
-					Log.d(LOG_TAG, "No Spots to enqueue after reboot.");
-				}
+				Log.d(LOG_TAG, "No Spots to enqueue after reboot.");
 			}
 		}
-		catch (final DBException e)
-		{
-			Log.e(LOG_TAG, "Failed to fetch active spots.", e);
-		}
-
 	}
 
 	/**

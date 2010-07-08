@@ -17,9 +17,7 @@
  */
 package de.macsystems.windroid.io.task;
 
-import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 
 import android.content.Context;
 import android.util.Log;
@@ -28,11 +26,9 @@ import de.macsystems.windroid.R;
 import de.macsystems.windroid.WindUtils;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.db.DAOFactory;
-import de.macsystems.windroid.db.DBException;
 import de.macsystems.windroid.db.IForecastDAO;
 import de.macsystems.windroid.db.ISelectedDAO;
 import de.macsystems.windroid.forecast.Forecast;
-import de.macsystems.windroid.io.RetryLaterException;
 
 /**
  * Callable which will retrieve current forecast of a spot and updates the
@@ -63,7 +59,7 @@ public class UpdateSpotForecastTask extends AudioFeedbackTask
 	}
 
 	@Override
-	public void execute()
+	public void execute() throws Exception
 	{
 		try
 		{
@@ -93,37 +89,14 @@ public class UpdateSpotForecastTask extends AudioFeedbackTask
 			{
 				Log.d(LOG_TAG, "Alarm for: " + vo.getStation().getName());
 			}
-			try
-			{
-				final URI uri = WindUtils.getJSONForcastURL(vo.getStation().getId()).toURI();
-				final ParseForecastTask task = new ParseForecastTask(uri);
-				final Forecast forecast = task.execute(getContext());
-				// Update Forecast in DB
-				final IForecastDAO forecastDAO = DAOFactory.getForecast(getContext());
-				forecastDAO.updateForecast(forecast, selectedID);
-				// For Audio feedback
-				setAsSuccessfull();
-			}
-			catch (final IOException e)
-			{
-				Log.e(LOG_TAG, "Failed to create uri", e);
-			}
-			catch (final RetryLaterException e)
-			{
-				Log.e(LOG_TAG, "", e);
-			}
-			catch (final URISyntaxException e)
-			{
-				Log.e(LOG_TAG, "Check URI", e);
-			}
-			catch (final InterruptedException e)
-			{
-				Log.e(LOG_TAG, "", e);
-			}
-		}
-		catch (final DBException e)
-		{
-			Log.e(LOG_TAG, "failed to fetch spotconfiguration.", e);
+			final URI uri = WindUtils.getJSONForcastURL(vo.getStation().getId()).toURI();
+			final ParseForecastTask task = new ParseForecastTask(uri);
+			final Forecast forecast = task.execute(getContext());
+			// Update Forecast in DB
+			final IForecastDAO forecastDAO = DAOFactory.getForecast(getContext());
+			forecastDAO.updateForecast(forecast, selectedID);
+			// For Audio feedback
+			setAsSuccessfull();
 		}
 		finally
 		{

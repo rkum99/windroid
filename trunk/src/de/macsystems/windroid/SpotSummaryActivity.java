@@ -39,8 +39,6 @@ import de.macsystems.windroid.custom.view.CompassView;
 public final class SpotSummaryActivity extends Activity
 {
 
-	private final static String LOG_TAG = SpotSummaryActivity.class.getSimpleName();
-
 	private SpotConfigurationVO spotConfiguration = null;
 
 	/*

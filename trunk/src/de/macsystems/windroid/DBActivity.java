@@ -28,8 +28,6 @@ import android.app.Activity;
 public abstract class DBActivity extends Activity
 {
 
-	private final static String LOG_TAG = DBActivity.class.getSimpleName();
-
 	protected final DAOManger daoManager = new DAOManger();
 
 	/*

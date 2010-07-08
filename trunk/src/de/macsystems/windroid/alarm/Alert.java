@@ -21,6 +21,7 @@ import java.util.Calendar;
 
 import android.app.AlarmManager;
 import android.content.Intent;
+import android.os.Bundle;
 import de.macsystems.windroid.identifyable.Repeat;
 import de.macsystems.windroid.identifyable.Station;
 
@@ -267,20 +268,22 @@ public final class Alert
 		{
 			throw new NullPointerException("Intent");
 		}
-		final int NOT_FOUND = -1;
-		final int NOT_FOUND_LONG = -1;
-		//
-		final String spotName = _intent.getStringExtra(SPOTNAME);
-		final int selectedID = _intent.getIntExtra(SELECTED_ID, NOT_FOUND);
-		final int repeatID = _intent.getIntExtra(REPEAT_ID, NOT_FOUND);
-		final int retryCounter = _intent.getIntExtra(RETRYS, NOT_FOUND);
-		final long time = _intent.getLongExtra(TIME, NOT_FOUND_LONG);
-		final int weekday = _intent.getIntExtra(WEEKDAY, NOT_FOUND);
-
-		final boolean result = (spotName != null || selectedID != NOT_FOUND || repeatID != NOT_FOUND
-				|| retryCounter != NOT_FOUND || weekday != NOT_FOUND || time != NOT_FOUND_LONG);
-		return result;
-
+		try
+		{
+			final Bundle bundle = _intent.getExtras();
+			checkForExtraOrThrow(SPOTNAME, bundle);
+			checkForExtraOrThrow(SELECTED_ID, bundle);
+			checkForExtraOrThrow(REPEAT_ID, bundle);
+			checkForExtraOrThrow(RETRYS, bundle);
+			checkForExtraOrThrow(TIME, bundle);
+			checkForExtraOrThrow(WEEKDAY, bundle);
+		}
+		catch (final IllegalArgumentException e)
+		{
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -302,6 +305,15 @@ public final class Alert
 		final int NOT_FOUND = -1;
 		final int NOT_FOUND_LONG = -1;
 		//
+
+		final Bundle bundle = _intent.getExtras();
+		checkForExtraOrThrow(SPOTNAME, bundle);
+		checkForExtraOrThrow(SELECTED_ID, bundle);
+		checkForExtraOrThrow(REPEAT_ID, bundle);
+		checkForExtraOrThrow(RETRYS, bundle);
+		checkForExtraOrThrow(TIME, bundle);
+		checkForExtraOrThrow(WEEKDAY, bundle);
+
 		final String stationName = _intent.getStringExtra(SPOTNAME);
 		final int selectedID = _intent.getIntExtra(SELECTED_ID, NOT_FOUND);
 		final int repeatID = _intent.getIntExtra(REPEAT_ID, NOT_FOUND);
@@ -321,4 +333,15 @@ public final class Alert
 		return alert;
 	}
 
+	private static void checkForExtraOrThrow(final String _key, final Bundle _bundle) throws IllegalArgumentException
+	{
+		if (_bundle == null)
+		{
+			throw new IllegalArgumentException("Bundle null.");
+		}
+		if (!_bundle.containsKey(_key))
+		{
+			throw new IllegalArgumentException("Missing key:" + _key);
+		}
+	}
 }

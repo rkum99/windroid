@@ -231,9 +231,9 @@ public final class Alert
 	 * @param _alert
 	 * @param _intent
 	 * @throws NullPointerException
-	 * @see {@link readAlertFormAlarmIntent}
+	 * @see {@link #read(Intent)}
 	 */
-	public static void writeAlertToIntent(final Alert _alert, final Intent _intent) throws NullPointerException
+	public static void write(final Alert _alert, final Intent _intent) throws NullPointerException
 	{
 		if (_intent == null)
 		{
@@ -252,10 +252,14 @@ public final class Alert
 	}
 
 	/**
+	 * Returns <code>true</code> if <code>Intent</code> represents an
+	 * <code>Alert</code>.
 	 * 
 	 * @param _intent
 	 * @return
 	 * @throws NullPointerException
+	 * @see {@link #read(Intent)}
+	 * @see {@link #write(Alert, Intent)}
 	 */
 	public static boolean isAlertIntent(final Intent _intent) throws NullPointerException
 	{
@@ -280,17 +284,16 @@ public final class Alert
 	}
 
 	/**
-	 * Recreats an <code>Alert</code> from an Intent. (Deserialize)
+	 * Recreate an <code>Alert</code> from an Intent. (Deserialize)
 	 * 
 	 * @param _intent
 	 * @return
 	 * @throws NullPointerException
 	 * @throws IllegalArgumentException
-	 * @see Alert#writeAlertToIntent(Alert, Intent)
+	 * @see Alert#write(Alert, Intent)
 	 * @see Alert#isAlertIntent(Intent)
 	 */
-	public static Alert readAlertFormAlarmIntent(final Intent _intent) throws NullPointerException,
-			IllegalArgumentException
+	public static Alert read(final Intent _intent) throws NullPointerException, IllegalArgumentException
 	{
 		if (_intent == null)
 		{

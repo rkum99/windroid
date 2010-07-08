@@ -115,7 +115,7 @@ abstract class BaseStrategie implements IAlarmManager
 			final Alert alert = alertsToEnqueue.get(i);
 			final Intent intent = new Intent(_context, AlarmBroadcastReciever.class);
 			intent.setAction(IntentConstants.DE_MACSYSTEMS_WINDROID_ALERT_TRIGGER);
-			Alert.writeAlertToIntent(alert, intent);
+			Alert.write(alert, intent);
 			//
 			final PendingIntent pendingIntent = PendingIntent.getBroadcast(_context, alert.getAlertID(), intent, 0);
 
@@ -210,7 +210,7 @@ abstract class BaseStrategie implements IAlarmManager
 
 		//
 		final Intent intent = new Intent(_context, AlarmBroadcastReciever.class);
-		Alert.writeAlertToIntent(_alert, intent);
+		Alert.write(_alert, intent);
 		final int requestID = RETRY_REQUEST_COUNTER.incrementAndGet();
 		final PendingIntent pendingIntent = PendingIntent.getBroadcast(_context, requestID, intent, 0);
 		final AlarmManager alarmManager = (AlarmManager) _context.getSystemService(Context.ALARM_SERVICE);
@@ -284,7 +284,7 @@ abstract class BaseStrategie implements IAlarmManager
 
 		final Intent intent = new Intent(_context, AlarmBroadcastReciever.class);
 		intent.setAction(IntentConstants.DE_MACSYSTEMS_WINDROID_ALERT_TRIGGER);
-		Alert.writeAlertToIntent(_alert, intent);
+		Alert.write(_alert, intent);
 
 		final AlarmManager alarmManager = (AlarmManager) _context.getSystemService(Context.ALARM_SERVICE);
 		final PendingIntent pendingIntent = PendingIntent.getBroadcast(_context, _alert.getAlertID(), intent, 0);

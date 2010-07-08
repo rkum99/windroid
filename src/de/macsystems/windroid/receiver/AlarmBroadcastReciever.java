@@ -57,7 +57,7 @@ public final class AlarmBroadcastReciever extends BroadcastReceiver
 			Log.e(LOG_TAG, "Expected intent which contains alert, skipping!");
 			return;
 		}
-		final Alert alert = Alert.readAlertFormAlarmIntent(_intent);
+		final Alert alert = Alert.read(_intent);
 		handleAlert(_context, alert);
 	}
 
@@ -71,7 +71,7 @@ public final class AlarmBroadcastReciever extends BroadcastReceiver
 	private static void handleAlert(final Context _context, final Alert _alert)
 	{
 		final Intent startServiceIntent = new Intent();
-		Alert.writeAlertToIntent(_alert, startServiceIntent);
+		Alert.write(_alert, startServiceIntent);
 		startServiceIntent.setAction(IntentConstants.DE_MACSYSTEMS_WINDROID_START_SPOT_SERVICE_ACTION);
 		final ComponentName name = _context.startService(startServiceIntent);
 		if (name == null)

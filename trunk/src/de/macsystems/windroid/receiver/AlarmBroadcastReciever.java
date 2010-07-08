@@ -28,8 +28,8 @@ import de.macsystems.windroid.common.IntentConstants;
 import de.macsystems.windroid.service.SpotService;
 
 /**
- * Called when Alarm comes up. The primary key received is the Spot which needs
- * to be monitored.
+ * Called when Alarm comes up. Expect an {@link Alert} is serialized into
+ * Intent.
  * 
  * @author mac
  * @version $Id: AlarmBroadcastReciever.java 190 2010-02-06 01:04:09Z jens.hohl

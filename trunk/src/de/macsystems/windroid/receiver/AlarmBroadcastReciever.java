@@ -52,13 +52,15 @@ public final class AlarmBroadcastReciever extends BroadcastReceiver
 		{
 			Log.d(LOG_TAG, "AlarmBroadcastReciever::onReceive");
 		}
-		if (!Alert.isAlertIntent(_intent))
+		if (Alert.isAlertIntent(_intent))
+		{
+			final Alert alert = Alert.read(_intent);
+			handleAlert(_context, alert);
+		}
+		else
 		{
 			Log.e(LOG_TAG, "Expected intent which contains alert, skipping!");
-			return;
 		}
-		final Alert alert = Alert.read(_intent);
-		handleAlert(_context, alert);
 	}
 
 	/**

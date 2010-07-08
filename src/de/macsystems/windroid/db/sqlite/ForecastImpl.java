@@ -55,8 +55,6 @@ import de.macsystems.windroid.progress.IProgress;
 public class ForecastImpl extends BaseImpl implements IForecastDAO, IForecastRelationDAO
 {
 
-	private final static String LOG_TAG = ForecastImpl.class.getSimpleName();
-
 	/**
 	 * relation table name
 	 */

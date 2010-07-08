@@ -46,6 +46,8 @@ final class PriorizedFutureTask extends FutureTask<Void>
 	private final static int TASK_COMPLETED = 200;
 	private final static int TASK_CANCELLED = 300;
 
+	private Throwable exception = null;
+
 	private final RemoteCallbackList<IServiceCallbackListener> callbackListener = new RemoteCallbackList<IServiceCallbackListener>();
 
 	/**
@@ -94,6 +96,7 @@ final class PriorizedFutureTask extends FutureTask<Void>
 	protected void done()
 	{
 		super.done();
+
 		// Dispatch Message
 		final Message message = Message.obtain();
 		try
@@ -107,11 +110,29 @@ final class PriorizedFutureTask extends FutureTask<Void>
 		}
 		catch (final ExecutionException e)
 		{
+			Log.d(LOG_TAG, "Done :", e);
 			message.what = TASK_FAILED;
 		}
 		finally
 		{
 			mHandler.sendMessage(message);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.util.concurrent.FutureTask#setException(java.lang.Throwable)
+	 */
+	@Override
+	protected void setException(final Throwable _t)
+	{
+		super.setException(_t);
+		exception = _t;
+
+		// if (Logging.isEnabled())
+		{
+			Log.d(LOG_TAG, "sniffed exception :" + exception.getMessage());
 		}
 	}
 

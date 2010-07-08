@@ -216,7 +216,7 @@ public final class ForecastActivity extends DBActivity
 		@Override
 		public void onTaskComplete() throws RemoteException
 		{
-			Forecast aforecast;
+			final Forecast aforecast;
 			try
 			{
 				aforecast = forecastDAO.getForecast(selectedID);

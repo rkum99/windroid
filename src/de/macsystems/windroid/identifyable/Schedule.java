@@ -35,8 +35,6 @@ public final class Schedule implements Serializable
 
 	private static final long serialVersionUID = 1L;
 
-	private final static String LOG_TAG = Schedule.class.getSimpleName();
-
 	/**
 	 * Maps weekdays like Calendar#MONDAY to repeat.
 	 */

@@ -38,9 +38,9 @@ public interface IAlarmManager
 	 * @param _id
 	 * 
 	 * @see Alert
-	 * @see Alert#readAlertFormAlarmIntent(Intent) to get an {@link Alert} from
+	 * @see Alert#read(Intent) to get an {@link Alert} from
 	 *      an {@link Intent}
-	 * @see Alert#writeAlertToIntent(Alert, Intent) to write an {@link Alert}
+	 * @see Alert#write(Alert, Intent) to write an {@link Alert}
 	 *      into an {@link Intent}
 	 */
 	public abstract void createAlarmForSpot(final SpotConfigurationVO _vo, final Context _context, boolean _isReboot);

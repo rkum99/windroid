@@ -164,7 +164,7 @@ public class SpotService extends Service
 		}
 		else if (Alert.isAlertIntent(_intent))
 		{
-			final Alert alert = Alert.readAlertFormAlarmIntent(_intent);
+			final Alert alert = Alert.read(_intent);
 			createAlarmTask(alert);
 		}
 		else

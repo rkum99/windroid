@@ -37,7 +37,7 @@ import de.macsystems.windroid.progress.NullProgressAdapter;
 /**
  * @author Jens Hohl
  * @version $Id$
- * 
+ *
  */
 public class WindUtils
 {
@@ -52,8 +52,8 @@ public class WindUtils
 	/**
 	 * Creates an <code>Intent</code> which ready to invoke next activity. It
 	 * stores <code>SpotConfigurationVO</code> in its extras.
-	 * 
-	 * 
+	 *
+	 *
 	 * @param _source
 	 * @param _activityToLaunch
 	 * @param _spotConfiguration
@@ -72,7 +72,7 @@ public class WindUtils
 	/**
 	 * Returns <code>true</code> when a SpotConfiguration can be found in given
 	 * Intent.
-	 * 
+	 *
 	 * @param _intent
 	 * @return
 	 */
@@ -84,7 +84,7 @@ public class WindUtils
 	/**
 	 * Returns <code>SpotConfigurationVO</code> from given <code>Intent</code>s
 	 * extras.
-	 * 
+	 *
 	 * @param _intent
 	 * @return a SpotConfigurationVO or <code>null</code> if nothing was found.
 	 * @see #isSpotConfigured(Intent)
@@ -97,7 +97,7 @@ public class WindUtils
 
 	/**
 	 * Returns URL where all Stations are defined.
-	 * 
+	 *
 	 * @return
 	 * @throws IOException
 	 */
@@ -108,7 +108,7 @@ public class WindUtils
 
 	/**
 	 * Returns URL on server where MD5 Hash of stations.xml is located.
-	 * 
+	 *
 	 * @return
 	 * @throws IOException
 	 */
@@ -119,21 +119,21 @@ public class WindUtils
 
 	/**
 	 * Returns <code>true</code> whenever a new station list is available.
-	 * 
+	 *
 	 * @param _context
 	 * @return
 	 * @throws IOException
 	 */
 	public final static boolean isStationListUpdateAvailable(final Context _context) throws IOException
 	{
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.d(LOG_TAG, "Updating cache.");
 		}
 
 		if (!isCachedStationXmlValid(_context))
 		{
-			if (Logging.isEnabled())
+			if (Logging.isEnabled)
 			{
 				Log.d(LOG_TAG, "Station file is not valid, force update.");
 			}
@@ -142,19 +142,19 @@ public class WindUtils
 
 		final Properties config = IOUtils.getConfigProperties(_context);
 		final String md5 = config.getProperty(STATION_MD5);
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.d(LOG_TAG, "Cached MD5 " + md5);
 		}
 
 		final String serverMD5 = getLatestStationMD5(_context);
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.i(LOG_TAG, "Server MD5 " + serverMD5);
 		}
 
 		final boolean result = md5 != null ? md5.equals(serverMD5) : true;
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.i(LOG_TAG, result ? "Cache must be updated." + serverMD5 : "Cache is uptodate.");
 		}
@@ -163,7 +163,7 @@ public class WindUtils
 	}
 
 	/**
-	 * 
+	 *
 	 * @param _context
 	 * @return
 	 */
@@ -173,7 +173,7 @@ public class WindUtils
 	}
 
 	/**
-	 * 
+	 *
 	 * @param _context
 	 * @param _downloadProgress
 	 * @throws RetryLaterException
@@ -184,25 +184,25 @@ public class WindUtils
 			throws RetryLaterException, IOException, InterruptedException
 
 	{
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.d(LOG_TAG, "Updating cache.");
 		}
 		final Properties config = IOUtils.getConfigProperties(_context);
 		String md5 = config.getProperty(STATION_MD5);
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.d(LOG_TAG, "Cached MD5 " + md5);
 		}
 
 		final String latestMD5 = getLatestStationMD5(_context);
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.i(LOG_TAG, "Server MD5 " + latestMD5);
 		}
 		if (md5 == null || !md5.equals(latestMD5))
 		{
-			if (Logging.isEnabled())
+			if (Logging.isEnabled)
 			{
 				Log.i(LOG_TAG, "Station.xml will be updated.");
 			}
@@ -212,14 +212,14 @@ public class WindUtils
 			config.put(STATION_MD5, md5);
 			// TODO: Use PreferenceDAO instead
 			IOUtils.writeConfiguration(_context, config);
-			if (Logging.isEnabled())
+			if (Logging.isEnabled)
 			{
 				Log.i(LOG_TAG, "Stations list was updated.");
 			}
 		}
 		else
 		{
-			if (Logging.isEnabled())
+			if (Logging.isEnabled)
 			{
 				Log.i(LOG_TAG, "Cache is up to date.");
 			}
@@ -228,7 +228,7 @@ public class WindUtils
 
 	/**
 	 * Returns MD5 checksum of Station.xml file on Server.
-	 * 
+	 *
 	 * @param _context
 	 * @return
 	 * @throws IOException
@@ -268,7 +268,7 @@ public class WindUtils
 
 	/**
 	 * Return URL of JSON Forecast by id of station.
-	 * 
+	 *
 	 * @return
 	 * @throws IOException
 	 */
@@ -279,14 +279,23 @@ public class WindUtils
 			throw new IllegalArgumentException("Illegal StationID \"" + _stationID + "\".");
 		}
 
-		// http://www.windfinder.com/wind-cgi/xmlforecast.pl?CUSTOMER=windfox&FORMAT=JSON&VERSION=1&STATIONS=nl158
-		return new URL("http://www.windfinder.com/wind-cgi/xmlforecast.pl?CUSTOMER=windfox&FORMAT=JSON&VERSION=1"
-				+ "&STATIONS=" + _stationID);
+		// http: //
+		// www.windfinder.com/wind-cgi/xmlforecast.pl?CUSTOMER=windfox&FORMAT=JSON&VERSION=1&STATIONS=nl158
+
+		// http://www.windfinder.com/api/forecast?CUSTOMER=windfox&FORMAT=JSON&EPOCH=0&MINIFIED=0&VERSION=1.0.3&STATIONS=nl47
+		return new URL(
+				"http://www.windfinder.com/api/forecast?CUSTOMER=windfox&FORMAT=JSON&EPOCH=0&MINIFIED=0&VERSION=1.0.3&STATIONS="
+						+ _stationID);
+		// return new
+		// URL("http://www.windfinder.com/wind-cgi/xmlforecast.pl?CUSTOMER=windfox&FORMAT=JSON&VERSION=1"+
+		// "&STATIONS=" + _stationID);
+
+		// return new URL("http://10.0.2.2:5000");
 	}
 
 	/**
 	 * Return URL of XML Forecast
-	 * 
+	 *
 	 * @return
 	 * @throws IOException
 	 */
@@ -298,9 +307,9 @@ public class WindUtils
 
 	/*
 	 * @param _stationID
-	 * 
+	 *
 	 * @return
-	 * 
+	 *
 	 * @throws IOException
 	 */
 	public static URL createWindreport(final String _stationID) throws IOException
@@ -316,9 +325,9 @@ public class WindUtils
 
 	/*
 	 * @param _stationID
-	 * 
+	 *
 	 * @return
-	 * 
+	 *
 	 * @throws IOException
 	 */
 	public static URL createForecast(final String _stationID) throws IOException
@@ -334,9 +343,9 @@ public class WindUtils
 
 	/*
 	 * @param _stationID
-	 * 
+	 *
 	 * @return
-	 * 
+	 *
 	 * @throws IOException
 	 */
 	public static URL createSuperforecastURL(final String _stationID) throws IOException
@@ -351,7 +360,7 @@ public class WindUtils
 	}
 
 	/**
-	 * 
+	 *
 	 * @param _stationID
 	 * @return
 	 * @throws IOException

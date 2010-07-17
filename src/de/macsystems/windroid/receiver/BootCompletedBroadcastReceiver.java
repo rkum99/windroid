@@ -49,14 +49,14 @@ public final class BootCompletedBroadcastReceiver extends BroadcastReceiver
 	@Override
 	public void onReceive(final Context _context, final Intent _intent)
 	{
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.d(LOG_TAG, "BootCompletedBroadcastReceiver#onRecieve(...) called.");
 		}
 
 		if (Intent.ACTION_BOOT_COMPLETED.equals(_intent.getAction()))
 		{
-			if (Logging.isEnabled())
+			if (Logging.isEnabled)
 			{
 				Log.i(LOG_TAG, "Boot completed.");
 			}
@@ -74,7 +74,7 @@ public final class BootCompletedBroadcastReceiver extends BroadcastReceiver
 		// TODO Use DB!
 		final SharedPreferences preferences = Util.getSharedPreferences(_context);
 		final boolean isLaunchOnBoot = Util.isLaunchOnBoot(preferences);
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.i(LOG_TAG, "Start SpotService on boot :" + isLaunchOnBoot);
 		}

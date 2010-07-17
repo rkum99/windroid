@@ -43,7 +43,7 @@ import de.macsystems.windroid.identifyable.Measure;
  * @author Jens Hohl
  * @version $Id: SpotConfigurationActivity.java 195 2010-02-08 02:02:06Z
  *          jens.hohl $
- * 
+ *
  */
 public final class SpotConfigurationActivity extends ChainSubActivity
 {
@@ -64,7 +64,7 @@ public final class SpotConfigurationActivity extends ChainSubActivity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override
@@ -152,7 +152,7 @@ public final class SpotConfigurationActivity extends ChainSubActivity
 
 	/**
 	 * Creates an OnClickListener which invokes next Activity
-	 * 
+	 *
 	 * @return
 	 */
 	private View.OnClickListener getAcceptOnClickListener()
@@ -161,7 +161,7 @@ public final class SpotConfigurationActivity extends ChainSubActivity
 		{
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see android.view.View.OnClickListener#onClick(android.view.View)
 			 */
 			@Override
@@ -197,7 +197,7 @@ public final class SpotConfigurationActivity extends ChainSubActivity
 		{
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see android.view.View.OnClickListener#onClick(android.view.View)
 			 */
 			@Override
@@ -220,7 +220,7 @@ public final class SpotConfigurationActivity extends ChainSubActivity
 		{
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * android.widget.SeekBar.OnSeekBarChangeListener#onProgressChanged
 			 * (android.widget.SeekBar, int, boolean)
@@ -228,7 +228,7 @@ public final class SpotConfigurationActivity extends ChainSubActivity
 			@Override
 			public final void onProgressChanged(final SeekBar seekBar, int progress, final boolean fromUser)
 			{
-				if (Logging.isEnabled())
+				if (Logging.isEnabled)
 				{
 					Log.d(LOG_TAG, "From user:" + fromUser);
 				}
@@ -241,7 +241,7 @@ public final class SpotConfigurationActivity extends ChainSubActivity
 					vibrator.vibrate(VIBRATE_DURATION);
 				}
 				SpotConfigurationActivity.this.currentMinimum = progress;
-				if (Logging.isEnabled())
+				if (Logging.isEnabled)
 				{
 					Log.d(LOG_TAG, "current minimum:" + SpotConfigurationActivity.this.currentMinimum);
 				}
@@ -251,7 +251,7 @@ public final class SpotConfigurationActivity extends ChainSubActivity
 
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * android.widget.SeekBar.OnSeekBarChangeListener#onStartTrackingTouch
 			 * (android.widget.SeekBar)
@@ -263,7 +263,7 @@ public final class SpotConfigurationActivity extends ChainSubActivity
 
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * android.widget.SeekBar.OnSeekBarChangeListener#onStopTrackingTouch
 			 * (android.widget.SeekBar)
@@ -283,7 +283,7 @@ public final class SpotConfigurationActivity extends ChainSubActivity
 		{
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * android.widget.SeekBar.OnSeekBarChangeListener#onProgressChanged
 			 * (android.widget.SeekBar, int, boolean)
@@ -292,7 +292,7 @@ public final class SpotConfigurationActivity extends ChainSubActivity
 			public final void onProgressChanged(final SeekBar _seekBar, int _progress, final boolean _fromUser)
 			{
 
-				if (Logging.isEnabled())
+				if (Logging.isEnabled)
 				{
 					Log.d(LOG_TAG, "From user:" + _fromUser);
 				}
@@ -303,7 +303,7 @@ public final class SpotConfigurationActivity extends ChainSubActivity
 					vibrator.vibrate(VIBRATE_DURATION);
 				}
 				SpotConfigurationActivity.this.currentMaximum = _progress;
-				if (Logging.isEnabled())
+				if (Logging.isEnabled)
 				{
 					Log.d(LOG_TAG, "current maximum:" + SpotConfigurationActivity.this.currentMaximum);
 				}
@@ -314,7 +314,7 @@ public final class SpotConfigurationActivity extends ChainSubActivity
 
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * android.widget.SeekBar.OnSeekBarChangeListener#onStartTrackingTouch
 			 * (android.widget.SeekBar)
@@ -346,7 +346,7 @@ public final class SpotConfigurationActivity extends ChainSubActivity
 
 			/*
 			 * (non-Javadoc)
-			 * 
+			 *
 			 * @see
 			 * android.widget.AdapterView.OnItemSelectedListener#onNothingSelected
 			 * (android.widget.AdapterView)
@@ -362,7 +362,7 @@ public final class SpotConfigurationActivity extends ChainSubActivity
 
 	/**
 	 * Updates Delta TextView
-	 * 
+	 *
 	 * @param unit
 	 * @param min
 	 * @param max

@@ -63,7 +63,7 @@ import de.macsystems.windroid.service.ISpotService;
 
 /**
  * Displays a Forecast
- * 
+ *
  * @author mac
  * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
  */
@@ -190,7 +190,7 @@ public final class ForecastActivity extends DBActivity
 		@Override
 		public void onServiceDisconnected(final ComponentName _name)
 		{
-			if (Logging.isEnabled())
+			if (Logging.isEnabled)
 			{
 				Log.d(LOG_TAG, "onServiceDisconnected");
 			}
@@ -200,7 +200,7 @@ public final class ForecastActivity extends DBActivity
 		@Override
 		public void onServiceConnected(final ComponentName _name, final IBinder _service)
 		{
-			if (Logging.isEnabled())
+			if (Logging.isEnabled)
 			{
 				Log.d(LOG_TAG, "onServiceConnected");
 			}
@@ -274,7 +274,7 @@ public final class ForecastActivity extends DBActivity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override
@@ -347,7 +347,7 @@ public final class ForecastActivity extends DBActivity
 	protected void onResume()
 	{
 		super.onResume();
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.d(LOG_TAG, "onResume");
 		}
@@ -366,7 +366,7 @@ public final class ForecastActivity extends DBActivity
 	protected void onStart()
 	{
 		super.onStart();
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.d(LOG_TAG, "onStart");
 		}
@@ -377,7 +377,7 @@ public final class ForecastActivity extends DBActivity
 	 * Checks if Forecast is already loaded by using
 	 * {@link #getLastNonConfigurationInstance()} if not we check the Database
 	 * and if there is nothing found we insert a message in the handler.
-	 * 
+	 *
 	 * @param _selectedID
 	 * @throws DBException
 	 */
@@ -386,7 +386,7 @@ public final class ForecastActivity extends DBActivity
 		final Object obj = getLastNonConfigurationInstance();
 		if (obj != null)
 		{
-			if (Logging.isEnabled())
+			if (Logging.isEnabled)
 			{
 				Log.d(LOG_TAG, "Using cached forecast");
 			}
@@ -407,13 +407,13 @@ public final class ForecastActivity extends DBActivity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onRetainNonConfigurationInstance()
 	 */
 	@Override
 	public Object onRetainNonConfigurationInstance()
 	{
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.d(LOG_TAG, "Saving cached forecast.");
 		}
@@ -423,13 +423,13 @@ public final class ForecastActivity extends DBActivity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see de.macsystems.windroid.DBActivity#onStop()
 	 */
 	@Override
 	protected void onStop()
 	{
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.d(LOG_TAG, "onStop");
 		}
@@ -438,13 +438,13 @@ public final class ForecastActivity extends DBActivity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onPause()
 	 */
 	@Override
 	protected void onPause()
 	{
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.d(LOG_TAG, "onPause");
 		}
@@ -453,12 +453,12 @@ public final class ForecastActivity extends DBActivity
 	}
 
 	/**
-	 * 
+	 *
 	 * @return
 	 */
 	private Dialog createUpdateProgressDialog()
 	{
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.d(LOG_TAG, "createUpdateProgressDialog");
 		}
@@ -472,13 +472,13 @@ public final class ForecastActivity extends DBActivity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onCreateDialog(int)
 	 */
 	@Override
 	protected Dialog onCreateDialog(final int _id)
 	{
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.d(LOG_TAG, "onCreateDialog :" + _id);
 		}
@@ -531,7 +531,7 @@ public final class ForecastActivity extends DBActivity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
 	 */
 	@Override
@@ -1059,7 +1059,7 @@ public final class ForecastActivity extends DBActivity
 	}
 
 	/**
-	 * 
+	 *
 	 * @param _intent
 	 * @return
 	 */
@@ -1076,7 +1076,7 @@ public final class ForecastActivity extends DBActivity
 	}
 
 	/**
-	 * 
+	 *
 	 * @param _intent
 	 * @return
 	 */

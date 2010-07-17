@@ -42,7 +42,7 @@ import de.macsystems.windroid.identifyable.Schedule;
 
 /**
  * Activity which allows user to configure update schedule
- * 
+ *
  * @author mac
  * @version $Id$
  */
@@ -65,7 +65,7 @@ public final class ScheduleActivity extends ChainSubActivity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override
@@ -245,7 +245,7 @@ public final class ScheduleActivity extends ChainSubActivity
 							final String time = dateFormat.format(dayTime);
 							timeView.setText(time);
 							//
-							if (Logging.isEnabled())
+							if (Logging.isEnabled)
 							{
 								Log.d(LOG_TAG, Util.getDayAsString(day) + " Time " + dayTime + " set.");
 								Log.d(LOG_TAG, "Hour " + _hourOfDay + " Minute " + _minute);
@@ -284,7 +284,7 @@ public final class ScheduleActivity extends ChainSubActivity
 
 	/**
 	 * Returns time in milliseconds.
-	 * 
+	 *
 	 * @param _hourOfDay
 	 * @param _minute
 	 * @return

@@ -93,7 +93,7 @@ public class AlarmTask extends AudioFeedbackTask
 			showStatus(getContext().getString(R.string.recieve_forecast_update_title) + vo.getStation().getName(), "");
 			if (!vo.isActiv())
 			{
-				if (Logging.isEnabled())
+				if (Logging.isEnabled)
 				{
 					Log.d(LOG_TAG, "Cancel update as spot is not active: " + vo.getStation().getName());
 				}
@@ -105,7 +105,7 @@ public class AlarmTask extends AudioFeedbackTask
 			if (!available)
 			{
 				AlarmManagerFactory.getAlarmManager().enqueueRetryAlarm(alert, getContext());
-				if (Logging.isEnabled())
+				if (Logging.isEnabled)
 				{
 					Log.d(LOG_TAG, "Cancel update as network not reachable.");
 				}
@@ -118,13 +118,13 @@ public class AlarmTask extends AudioFeedbackTask
 			{
 				try
 				{
-					if (Logging.isEnabled())
+					if (Logging.isEnabled)
 					{
 						Log.i(LOG_TAG, "Attempt no. " + retry + " to update " + alert.getSpotName() + ".");
 					}
 					tryUpdate(vo);
 					setAsSuccessfull();
-					if (Logging.isEnabled())
+					if (Logging.isEnabled)
 					{
 						Log.i(LOG_TAG, "Update successful !");
 					}

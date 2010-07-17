@@ -178,7 +178,7 @@ public class BaseImpl implements IDAO
 			c = db.rawQuery("SELECT count(*) from " + tableName, null);
 			if (!c.moveToFirst())
 			{
-				if (Logging.isEnabled())
+				if (Logging.isEnabled)
 				{
 					Log.d(LOG_TAG, "no entrys in " + _tabelName);
 				}
@@ -415,7 +415,7 @@ public class BaseImpl implements IDAO
 	@Override
 	public void onCreate()
 	{
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.d(LOG_TAG, "onCreate");
 		}
@@ -424,7 +424,7 @@ public class BaseImpl implements IDAO
 	@Override
 	public void onStop()
 	{
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.d(LOG_TAG, "onStop");
 		}

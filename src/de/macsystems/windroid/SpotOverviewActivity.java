@@ -56,10 +56,10 @@ import de.macsystems.windroid.service.ISpotService;
 
 /**
  * Shows list of spots configured.
- * 
+ *
  * @author Jens Hohl
  * @version $Id$
- * 
+ *
  */
 public final class SpotOverviewActivity extends DBListActivity
 {
@@ -68,7 +68,7 @@ public final class SpotOverviewActivity extends DBListActivity
 
 	private final static String LOG_TAG = SpotOverviewActivity.class.getSimpleName();
 	/**
-	 * 
+	 *
 	 */
 	private static final int CONTEXT_ENABLE_ITEM_ID = 0;
 	private static final int CONTEXT_DISABLE_ITEM_ID = 1;
@@ -122,7 +122,7 @@ public final class SpotOverviewActivity extends DBListActivity
 		@Override
 		public void onServiceDisconnected(final ComponentName _name)
 		{
-			if (Logging.isEnabled())
+			if (Logging.isEnabled)
 			{
 				Log.d(LOG_TAG, "onServiceConnected");
 			}
@@ -132,7 +132,7 @@ public final class SpotOverviewActivity extends DBListActivity
 		@Override
 		public void onServiceConnected(final ComponentName _name, final IBinder _service)
 		{
-			if (Logging.isEnabled())
+			if (Logging.isEnabled)
 			{
 				Log.d(LOG_TAG, "onServiceConnected");
 			}
@@ -164,7 +164,7 @@ public final class SpotOverviewActivity extends DBListActivity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onResume()
 	 */
 	@Override
@@ -193,7 +193,7 @@ public final class SpotOverviewActivity extends DBListActivity
 				 * the i returned is invalid.
 				 */
 				selectedID = (int) ((AdapterContextMenuInfo) menuInfo).id;
-				if (Logging.isEnabled())
+				if (Logging.isEnabled)
 				{
 					Log.d(LOG_TAG, "Selected item for Context :" + ((AdapterContextMenuInfo) menuInfo).id);
 				}
@@ -223,7 +223,7 @@ public final class SpotOverviewActivity extends DBListActivity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override
@@ -238,13 +238,13 @@ public final class SpotOverviewActivity extends DBListActivity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onPause()
 	 */
 	@Override
 	protected void onPause()
 	{
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.d(LOG_TAG, "onPause");
 		}
@@ -253,12 +253,12 @@ public final class SpotOverviewActivity extends DBListActivity
 	}
 
 	/**
-	 * 
+	 *
 	 * @return
 	 */
 	private Dialog createUpdateProgressDialog()
 	{
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.d(LOG_TAG, "createUpdateProgressDialog");
 		}
@@ -272,13 +272,13 @@ public final class SpotOverviewActivity extends DBListActivity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onCreateDialog(int)
 	 */
 	@Override
 	protected Dialog onCreateDialog(final int _id)
 	{
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.d(LOG_TAG, "onCreateDialog :" + _id);
 		}
@@ -297,7 +297,7 @@ public final class SpotOverviewActivity extends DBListActivity
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	@Override
 	public boolean onCreateOptionsMenu(final Menu menu)
@@ -320,7 +320,7 @@ public final class SpotOverviewActivity extends DBListActivity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onContextItemSelected(android.view.MenuItem)
 	 */
 	@Override
@@ -354,7 +354,7 @@ public final class SpotOverviewActivity extends DBListActivity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
 	 */
 	@Override
@@ -396,7 +396,7 @@ public final class SpotOverviewActivity extends DBListActivity
 			{
 				if (_which == DialogInterface.BUTTON_POSITIVE)
 				{
-					// 
+					//
 					// final ISelectedDAO dao =
 					// DAOFactory.getSelectedDAO(SpotOverviewActivity.this);
 					dao.delete(_id);
@@ -422,7 +422,7 @@ public final class SpotOverviewActivity extends DBListActivity
 	}
 
 	/**
-	 * 
+	 *
 	 * @param _state
 	 */
 	private void setActive(final boolean _state)
@@ -437,7 +437,7 @@ public final class SpotOverviewActivity extends DBListActivity
 	 * Code has some problems, but at the moment its the only solution i found
 	 * as i have to recreate a cursor the binder/cursoradapter to see updates in
 	 * database in view.
-	 * 
+	 *
 	 * @param _cursor
 	 */
 	private void setupMapping(final Cursor _cursor)
@@ -469,7 +469,7 @@ public final class SpotOverviewActivity extends DBListActivity
 	/**
 	 * Creates an {@link SpotConfigurationVO}from primary key and starts
 	 * configuration activity.
-	 * 
+	 *
 	 * @param _id
 	 */
 	private void editSpot(final long _id)
@@ -490,7 +490,7 @@ public final class SpotOverviewActivity extends DBListActivity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onActivityResult(int, int,
 	 * android.content.Intent)
 	 */
@@ -500,14 +500,14 @@ public final class SpotOverviewActivity extends DBListActivity
 		super.onActivityResult(requestCode, resultCode, data);
 		if (requestCode == EDIT_SPOT_REQUEST_CODE)
 		{
-			if (Logging.isEnabled())
+			if (Logging.isEnabled)
 			{
 				Log.d(LOG_TAG, "Recieved requestcode EDIT_SPOT_REQUEST_CODE");
 			}
 			// --
 			if (resultCode == Activity.RESULT_OK)
 			{
-				if (Logging.isEnabled())
+				if (Logging.isEnabled)
 				{
 					Log.d(LOG_TAG, "Recieved resultcode RESULT_OK");
 				}
@@ -515,7 +515,7 @@ public final class SpotOverviewActivity extends DBListActivity
 			}
 			else if (resultCode == Activity.RESULT_CANCELED)
 			{
-				if (Logging.isEnabled())
+				if (Logging.isEnabled)
 				{
 					Log.d(LOG_TAG, "Recieved resultCode RESULT_CANCELED");
 				}
@@ -529,7 +529,7 @@ public final class SpotOverviewActivity extends DBListActivity
 
 	/**
 	 * Updates a Spot
-	 * 
+	 *
 	 * @param _intent
 	 * @throws NullPointerException
 	 */
@@ -544,7 +544,7 @@ public final class SpotOverviewActivity extends DBListActivity
 			throw new IllegalArgumentException("No SpotConfiguration found.");
 		}
 		// --
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.d(LOG_TAG, "Updating Spot in Database");
 		}
@@ -555,7 +555,7 @@ public final class SpotOverviewActivity extends DBListActivity
 
 	/**
 	 * Shows Forecast of selected Spot
-	 * 
+	 *
 	 * @param _id
 	 */
 	private void showForcastForSpot(final int _id)

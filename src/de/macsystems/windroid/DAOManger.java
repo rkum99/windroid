@@ -52,7 +52,7 @@ public final class DAOManger
 		{
 			throw new NullPointerException("dao");
 		}
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.d(LOG_TAG, "DAO setted.");
 		}

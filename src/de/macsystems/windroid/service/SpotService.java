@@ -47,10 +47,10 @@ import de.macsystems.windroid.io.task.UpdateSpotForecastTask;
  * comparator see {@link PriorizedFutureTaskComparator}. Its possible to receive
  * a callback from this service if task finished, see
  * {@link IServiceCallbackListener}.
- * 
+ *
  * @author Jens Hohl
  * @version $Id$
- * 
+ *
  */
 public class SpotService extends Service
 {
@@ -90,7 +90,7 @@ public class SpotService extends Service
 				throw new NullPointerException("IServiceCallbackListener is null");
 			}
 
-			if (Logging.isEnabled())
+			if (Logging.isEnabled)
 			{
 				Log.d(LOG_TAG, "Insert Task to update spot with selectedID:" + _selectedID + " into scheduler");
 			}
@@ -114,7 +114,7 @@ public class SpotService extends Service
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Service#onBind(android.content.Intent)
 	 */
 	@Override
@@ -125,7 +125,7 @@ public class SpotService extends Service
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Service#onCreate()
 	 */
 	@Override
@@ -133,7 +133,7 @@ public class SpotService extends Service
 	{
 		super.onCreate();
 		createThreadPool();
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.i(LOG_TAG, "Service created");
 		}
@@ -141,7 +141,7 @@ public class SpotService extends Service
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Service#onStart(android.content.Intent, int)
 	 */
 	@Override
@@ -150,7 +150,7 @@ public class SpotService extends Service
 	{
 		super.onStart(_intent, _startId);
 		createThreadPool();
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.i(LOG_TAG, "onStart");
 		}
@@ -175,7 +175,7 @@ public class SpotService extends Service
 
 	/**
 	 * Creates an Task for Alarm.
-	 * 
+	 *
 	 * @param _repeatID
 	 */
 	private final void createAlarmTask(final Alert _alert)
@@ -202,7 +202,7 @@ public class SpotService extends Service
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Service#onDestroy()
 	 */
 	@Override
@@ -210,7 +210,7 @@ public class SpotService extends Service
 	{
 		try
 		{
-			if (Logging.isEnabled())
+			if (Logging.isEnabled)
 			{
 				Log.d(LOG_TAG, "Service#onDestroy");
 			}
@@ -223,7 +223,7 @@ public class SpotService extends Service
 				final boolean isTerminated = threadPool.awaitTermination(4L, TimeUnit.SECONDS);
 				if (!isTerminated)
 				{
-					if (Logging.isEnabled())
+					if (Logging.isEnabled)
 					{
 						Log.d(LOG_TAG, "soft shutdown failed, trying hard shutdown.");
 					}
@@ -231,7 +231,7 @@ public class SpotService extends Service
 					final List<Runnable> uncompletedTasks = threadPool.shutdownNow();
 					logUncompletedTask(uncompletedTasks);
 				}
-				if (Logging.isEnabled())
+				if (Logging.isEnabled)
 				{
 					Log.d(LOG_TAG, "shutdown completed.");
 				}
@@ -252,7 +252,7 @@ public class SpotService extends Service
 	}
 
 	/**
-	 * 
+	 *
 	 * @param _task
 	 */
 	private void addTask(final Callable<Void> _task)
@@ -269,7 +269,7 @@ public class SpotService extends Service
 	}
 
 	/**
-	 * 
+	 *
 	 * @param _task
 	 */
 	private void addTask(final Callable<Void> _task, final IServiceCallbackListener _listener)
@@ -288,7 +288,7 @@ public class SpotService extends Service
 	/**
 	 * Lists all uncompleted task.<br>
 	 * Method is more a debug method than very useful yet.
-	 * 
+	 *
 	 * @param tasks
 	 */
 	private void logUncompletedTask(final List<Runnable> tasks)
@@ -297,7 +297,7 @@ public class SpotService extends Service
 		{
 			return;
 		}
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			for (final Runnable task : tasks)
 			{
@@ -307,7 +307,7 @@ public class SpotService extends Service
 	}
 
 	/**
-	 * 
+	 *
 	 * @param _intent
 	 * @return
 	 */

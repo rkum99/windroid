@@ -24,7 +24,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 /**
- * 
+ *
  * @author Jens Hohl
  * @version $Id$
  */
@@ -36,14 +36,14 @@ public class HomeScreenConfigure extends Activity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override
 	protected void onCreate(final Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.d(LOG_TAG, "protected void onCreate(Bundle savedInstanceState)");
 		}

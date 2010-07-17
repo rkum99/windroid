@@ -41,12 +41,12 @@ public final class UpdateConnection implements ServiceConnection
 	private final Handler handler;
 
 	/**
-	 * 
+	 *
 	 * @param _context
 	 */
 	public UpdateConnection(final Context _context, final Handler _handler, final int _selectedID)
 	{
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.d(LOG_TAG, "UpdateConnection::UpdateConnection");
 		}
@@ -92,7 +92,7 @@ public final class UpdateConnection implements ServiceConnection
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * android.content.ServiceConnection#onServiceConnected(android.content.
 	 * ComponentName, android.os.IBinder)
@@ -100,7 +100,7 @@ public final class UpdateConnection implements ServiceConnection
 	@Override
 	public void onServiceConnected(final ComponentName _name, final IBinder _service)
 	{
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.d(LOG_TAG, "onServiceConnected " + _name + " " + _service);
 		}
@@ -120,7 +120,7 @@ public final class UpdateConnection implements ServiceConnection
 
 	/**
 	 * Adds update task for Spot with selected ID into service
-	 * 
+	 *
 	 * @param _selectedID
 	 * @throws RemoteException
 	 */
@@ -135,7 +135,7 @@ public final class UpdateConnection implements ServiceConnection
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * android.content.ServiceConnection#onServiceDisconnected(android.content
 	 * .ComponentName)
@@ -143,7 +143,7 @@ public final class UpdateConnection implements ServiceConnection
 	@Override
 	public void onServiceDisconnected(final ComponentName _name)
 	{
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.d(LOG_TAG, "onServiceDisconnected");
 		}
@@ -156,7 +156,7 @@ public final class UpdateConnection implements ServiceConnection
 		@Override
 		public void onTaskComplete() throws RemoteException
 		{
-			if (Logging.isEnabled())
+			if (Logging.isEnabled)
 			{
 				Log.d(LOG_TAG, "onTaskComplete");
 			}
@@ -167,7 +167,7 @@ public final class UpdateConnection implements ServiceConnection
 		@Override
 		public void onTaskFailed() throws RemoteException
 		{
-			if (Logging.isEnabled())
+			if (Logging.isEnabled)
 			{
 				Log.d(LOG_TAG, "onTaskFailed");
 			}

@@ -34,7 +34,7 @@ import de.macsystems.windroid.identifyable.Measure;
 import de.macsystems.windroid.io.IOUtils;
 
 /**
- * 
+ *
  * @author mac
  * @version $Id$
  */
@@ -43,7 +43,7 @@ public final class PreferenceImpl extends BaseImpl implements IPreferencesDAO
 	private final static String LOG_TAG = PreferenceImpl.class.getSimpleName();
 
 	/**
-	 * 
+	 *
 	 * @param database
 	 */
 	public PreferenceImpl(final Database database)
@@ -150,7 +150,7 @@ public final class PreferenceImpl extends BaseImpl implements IPreferencesDAO
 					builder.append("')");
 
 					db.execSQL(builder.toString());
-					if (Logging.isEnabled())
+					if (Logging.isEnabled)
 					{
 						Log.d(LOG_TAG, "Execute SQL : " + builder.toString());
 					}
@@ -175,7 +175,7 @@ public final class PreferenceImpl extends BaseImpl implements IPreferencesDAO
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see de.macsystems.windroid.db.IPreferencesDAO#useNetworkWhileRoaming()
 	 */
 	@Override

@@ -28,7 +28,7 @@ import de.macsystems.windroid.Logging;
 /**
  * Creates Threads with some default name, which makes debugging a bit easier.
  * This Thread are created with normal priority.
- * 
+ *
  * @author mac
  * @version $Id$
  * @TODO: Android seems to ignore the uncaught Exception Handler
@@ -58,7 +58,7 @@ public final class WindroidThreadFactory implements java.util.concurrent.ThreadF
 	 * Creates a threadfactory which produces Threads with given name and
 	 * priority. Each created threadname will include a number starting with
 	 * '-1'
-	 * 
+	 *
 	 * @param _threadName
 	 * @param _priority
 	 * @throws IllegalArgumentException
@@ -81,7 +81,7 @@ public final class WindroidThreadFactory implements java.util.concurrent.ThreadF
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.util.concurrent.ThreadFactory#newThread(java.lang.Runnable)
 	 */
 	@Override
@@ -92,7 +92,7 @@ public final class WindroidThreadFactory implements java.util.concurrent.ThreadF
 		thread.setUncaughtExceptionHandler(new ThreadLogger());
 		final int counter = count.getAndIncrement();
 		thread.setName(threadname + "-" + Integer.toString(counter));
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.d(LOG_TAG, "Thread created :" + thread.getName());
 		}

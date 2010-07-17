@@ -43,7 +43,7 @@ import de.macsystems.windroid.identifyable.Measure;
 /**
  * @author Jens Hohl
  * @version $Id$
- * 
+ *
  */
 public final class Util
 {
@@ -96,12 +96,12 @@ public final class Util
 	/**
 	 * Returns the <code>SharedPreferences</code> of given
 	 * <code>ContextWrapper</code>.
-	 * 
+	 *
 	 * @param wrapper
 	 * @return
 	 * @throws NullPointerException
 	 *             if context is null
-	 * 
+	 *
 	 */
 	public static final SharedPreferences getSharedPreferences(final ContextWrapper wrapper)
 	{
@@ -113,7 +113,7 @@ public final class Util
 	}
 
 	/**
-	 * 
+	 *
 	 * @param _context
 	 * @return
 	 * @throws NullPointerException
@@ -131,7 +131,7 @@ public final class Util
 	/**
 	 * Returns ID of selected Wind Unit from <code>SharedPreferences</code>. If
 	 * no selection was made the default Value will returned.
-	 * 
+	 *
 	 * @param _pref
 	 * @return
 	 * @see #DEFAULT_WIND_UNIT
@@ -146,7 +146,7 @@ public final class Util
 	/**
 	 * Returns ID of selected Continent from <code>SharedPreferences</code>. If
 	 * no selection was made the default Value will returned.
-	 * 
+	 *
 	 * @param _pref
 	 * @return
 	 * @see #DEFAULT_CONTINENT
@@ -160,7 +160,7 @@ public final class Util
 	/**
 	 * Returns default values which indicates that application should launch
 	 * after system boot completed.
-	 * 
+	 *
 	 * @param _pref
 	 * @return
 	 * @see #DEFAULT_LAUNCH_ON_BOOT
@@ -172,7 +172,7 @@ public final class Util
 
 	/**
 	 * Returns <code>true</code> when user already accepts the licence.
-	 * 
+	 *
 	 * @param _context
 	 * @return
 	 */
@@ -184,7 +184,7 @@ public final class Util
 
 	/**
 	 * Sets the status of end user for licence.
-	 * 
+	 *
 	 */
 	public synchronized final static void setLicenceAccepted(final Context _context, final boolean _accepted)
 	{
@@ -203,7 +203,7 @@ public final class Util
 	/**
 	 * Returns default values which indicates that application should launch
 	 * after system boot completed.
-	 * 
+	 *
 	 * @param _pref
 	 * @return
 	 * @see #DEFAULT_LAUNCH_ON_BOOT
@@ -216,7 +216,7 @@ public final class Util
 	/**
 	 * Returns a Throwable as a String, if Throwable is null the String "null"
 	 * will be returned.
-	 * 
+	 *
 	 * @param aThrowable
 	 * @return
 	 */
@@ -235,13 +235,13 @@ public final class Util
 	/**
 	 * Debug Method which prints column names at index. If Cursor is null method
 	 * will do nothing.
-	 * 
+	 *
 	 * @param _cursor
 	 * @see Logging#isEnabled()
 	 */
 	public final static void printCursorColumnNames(final Cursor _cursor)
 	{
-		if (!Logging.isEnabled())
+		if (!Logging.isEnabled)
 		{
 			return;
 		}
@@ -260,7 +260,7 @@ public final class Util
 	/**
 	 * Checks if result code is valid, else a {@link IllegalArgumentException}
 	 * will be thrown.
-	 * 
+	 *
 	 * @param _resultCode
 	 * @throws IllegalArgumentException
 	 * @see Activity#RESULT_OK
@@ -278,7 +278,7 @@ public final class Util
 	/**
 	 * Returns amount of days to roll to get to next Weekday depending on given
 	 * time (mill).
-	 * 
+	 *
 	 * @param _now
 	 * @param dayInWeek
 	 * @return
@@ -319,7 +319,7 @@ public final class Util
 
 	/**
 	 * Checks if day of week is valid.
-	 * 
+	 *
 	 * @param _day
 	 * @return
 	 * @see Calendar
@@ -331,7 +331,7 @@ public final class Util
 
 	/**
 	 * Logs Display Metrics using Log if Logging is enabled.
-	 * 
+	 *
 	 * @param _activity
 	 *            needed to read display settings from activity.
 	 * @throws NullPointerException
@@ -339,7 +339,7 @@ public final class Util
 	 */
 	public static void logDisplayMetrics(final Activity _activity) throws NullPointerException
 	{
-		if (!Logging.isEnabled())
+		if (!Logging.isEnabled)
 		{
 			return;
 		}
@@ -371,7 +371,7 @@ public final class Util
 	 * Debug Method.<br>
 	 * Returns integer as a human readable String. <code>null</code> returned if
 	 * nothing found.
-	 * 
+	 *
 	 * @param _day
 	 * @return
 	 */
@@ -382,7 +382,7 @@ public final class Util
 
 	/**
 	 * Returns an String which is human readable. Use it to log debug output.
-	 * 
+	 *
 	 * @param _alert
 	 * @return
 	 */

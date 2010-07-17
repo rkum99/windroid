@@ -42,7 +42,7 @@ import de.macsystems.windroid.progress.IProgress;
  * <br>
  * Parameter V is the return value.<br>
  * Parameter I mean the parameter which allows to work with that data.
- * 
+ *
  * @author Jens Hohl
  * @version $Id$
  * @TODO use IProgress
@@ -67,7 +67,7 @@ public abstract class IOTask<V, I> implements Task<V, I>
 	private final int HTTP_TIMEOUT = 1000 * 60;
 
 	/**
-	 * 
+	 *
 	 * @param _uri
 	 *            points to an io resource
 	 * @param _progress
@@ -98,20 +98,20 @@ public abstract class IOTask<V, I> implements Task<V, I>
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see de.macsystems.windroid.io.task.Task#execute(android.content.Context)
 	 */
 	public V execute(final Context _context) throws RetryLaterException, IOException, InterruptedException
 	{
 		if (!IOUtils.isNetworkReachable(_context))
 		{
-			if (Logging.isEnabled())
+			if (Logging.isEnabled)
 			{
 				Log.d(LOG_TAG, "Network not reachable.");
 			}
 			throw new RetryLaterException("Cannot execute, Network not reachable.");
 		}
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.d(LOG_TAG, "Using Network :" + IOUtils.getNetworkName(_context));
 			Log.d(LOG_TAG, "Connecting to :" + uri.toString());
@@ -122,7 +122,7 @@ public abstract class IOTask<V, I> implements Task<V, I>
 		httpGet.setParams(HTTP_PARAMS);
 
 		final HttpResponse response = getHTTPClient().execute(httpGet);
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			final StatusLine status = response.getStatusLine();
 			Log.d(LOG_TAG, "Response Code was : " + status.getStatusCode() + " - " + status.getReasonPhrase());
@@ -145,7 +145,7 @@ public abstract class IOTask<V, I> implements Task<V, I>
 		try
 		{
 			instream = new CountInputStream(response.getEntity().getContent());
-			if (Logging.isEnabled())
+			if (Logging.isEnabled)
 			{
 				Log.d(LOG_TAG, "HTTP Content Lenght:" + response.getEntity().getContentLength());
 			}
@@ -163,7 +163,7 @@ public abstract class IOTask<V, I> implements Task<V, I>
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see de.macsystems.windroid.io.task.Task#process(android.content.Context,
 	 * java.io.InputStream)
 	 */

@@ -19,7 +19,7 @@ import de.macsystems.windroid.db.ISelectedDAO;
 /**
  * Will run after an reboot to create alarms for active spots again. The User
  * gets informed about the scheduling.
- * 
+ *
  * @author mac
  * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
  */
@@ -40,7 +40,7 @@ public class EnqueueActiveSpots extends AbstractNotificationTask<Void>
 		if (dao.isSpotActiv())
 		{
 			final Collection<SpotConfigurationVO> activeSpots = dao.getActivSpots();
-			if (Logging.isEnabled())
+			if (Logging.isEnabled)
 			{
 				Log.d(LOG_TAG, "Scheduling " + activeSpots.size() + " activ spot(s) after reboot to monitor.");
 			}
@@ -49,7 +49,7 @@ public class EnqueueActiveSpots extends AbstractNotificationTask<Void>
 		}
 		else
 		{
-			if (Logging.isEnabled())
+			if (Logging.isEnabled)
 			{
 				Log.d(LOG_TAG, "No Spots to enqueue after reboot.");
 			}
@@ -58,7 +58,7 @@ public class EnqueueActiveSpots extends AbstractNotificationTask<Void>
 
 	/**
 	 * Enqueues all spots again after reboot.
-	 * 
+	 *
 	 * @param _spots
 	 *            can be null
 	 * @param _context

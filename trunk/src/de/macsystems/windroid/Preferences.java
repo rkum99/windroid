@@ -32,10 +32,10 @@ import de.macsystems.windroid.identifyable.WindSpeedConverter;
 
 /**
  * Main Preferences Screen of Windroid
- * 
+ *
  * @author Jens Hohl
  * @version $Id$
- * 
+ *
  */
 public final class Preferences extends PreferenceActivity
 {
@@ -51,7 +51,7 @@ public final class Preferences extends PreferenceActivity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onPause()
 	 */
 	@Override
@@ -73,7 +73,7 @@ public final class Preferences extends PreferenceActivity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override
@@ -87,7 +87,7 @@ public final class Preferences extends PreferenceActivity
 
 		final RingtonePreference ringtonePreference = (RingtonePreference) findPreference(RINGTONE_MANAGER_LOOKUP_KEY);
 		ringtonePreference.setDefaultValue(System.DEFAULT_NOTIFICATION_URI);
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.d(LOG_TAG, "DEFAULT_NOTIFICATION_URI : " + System.DEFAULT_NOTIFICATION_URI.toString());
 		}
@@ -96,7 +96,7 @@ public final class Preferences extends PreferenceActivity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onStop()
 	 */
 	@Override
@@ -107,12 +107,12 @@ public final class Preferences extends PreferenceActivity
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void logSharedPreferences()
 	{
 
-		if (!Logging.isEnabled())
+		if (!Logging.isEnabled)
 		{
 			return;
 		}

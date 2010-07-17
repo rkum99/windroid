@@ -60,10 +60,10 @@ import de.macsystems.windroid.service.SpotService;
 
 /**
  * This is the Entry Point when the Application will be launched.
- * 
+ *
  * @author Jens Hohl
  * @version $Id$
- * 
+ *
  */
 public final class MainActivity extends DBActivity
 {
@@ -82,7 +82,7 @@ public final class MainActivity extends DBActivity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onActivityResult(int, int,
 	 * android.content.Intent)
 	 */
@@ -93,13 +93,13 @@ public final class MainActivity extends DBActivity
 
 		if (requestCode == CONFIGURATION_REQUEST_CODE)
 		{
-			if (Logging.isEnabled())
+			if (Logging.isEnabled)
 			{
 				Log.d(LOG_TAG, "Recieved requestcode CONFIGURATION_REQUEST_CODE");
 			}
 			if (resultCode == Activity.RESULT_OK)
 			{
-				if (Logging.isEnabled())
+				if (Logging.isEnabled)
 				{
 					Log.d(LOG_TAG, "Recieved resultcode RESULT_OK");
 				}
@@ -134,7 +134,7 @@ public final class MainActivity extends DBActivity
 			}
 			else if (resultCode == Activity.RESULT_CANCELED)
 			{
-				if (Logging.isEnabled())
+				if (Logging.isEnabled)
 				{
 					Log.d(LOG_TAG, "Recieved resultCode RESULT_CANCELED");
 				}
@@ -149,7 +149,7 @@ public final class MainActivity extends DBActivity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onResume()
 	 */
 	@Override
@@ -181,7 +181,7 @@ public final class MainActivity extends DBActivity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onStop()
 	 */
 	@Override
@@ -193,7 +193,7 @@ public final class MainActivity extends DBActivity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onStop()
 	 */
 	@Override
@@ -209,7 +209,7 @@ public final class MainActivity extends DBActivity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override
@@ -287,7 +287,7 @@ public final class MainActivity extends DBActivity
 			{
 				if (_which == DialogInterface.BUTTON_NEGATIVE)
 				{
-					if (Logging.isEnabled())
+					if (Logging.isEnabled)
 					{
 						Log.i(LOG_TAG, "GPL not accepted.");
 						Log.i(LOG_TAG, "Closing App.");
@@ -297,7 +297,7 @@ public final class MainActivity extends DBActivity
 				}
 				else
 				{
-					if (Logging.isEnabled())
+					if (Logging.isEnabled)
 					{
 						Log.i(LOG_TAG, "GPL accepted.");
 						Log.i(LOG_TAG, "Starting App.");
@@ -343,7 +343,7 @@ public final class MainActivity extends DBActivity
 	/**
 	 * Installs a Listener for events on Service On/Off toggle button which
 	 * called AIDL interface.
-	 * 
+	 *
 	 * @param _connection
 	 * @return
 	 */
@@ -412,14 +412,14 @@ public final class MainActivity extends DBActivity
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
 	 */
 	@Override
 	public boolean onOptionsItemSelected(final MenuItem item)
 	{
 		super.onOptionsItemSelected(item);
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.d(LOG_TAG, "selected icon id " + item.getItemId());
 		}
@@ -477,7 +477,7 @@ public final class MainActivity extends DBActivity
 	/**
 	 * Launches {@link DownloadActivity} Activity or the
 	 * {@link SpotSelectionActivity} Activity which depends on database
-	 * 
+	 *
 	 */
 	private void launchSetupOrSpotSelectionActivity()
 	{

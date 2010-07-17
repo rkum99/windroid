@@ -33,11 +33,11 @@ import de.macsystems.windroid.forecast.Forecast;
 /**
  * Callable which will retrieve current forecast of a spot and updates the
  * Database. This will be generally used when user forces an update.
- * 
+ *
  * @author Jens Hohl
  * @version $Id: UpdateSpotForecastTask.java 314 2010-04-15 11:50:03Z jens.hohl
  *          $
- * 
+ *
  */
 public class UpdateSpotForecastTask extends AudioFeedbackTask
 {
@@ -47,7 +47,7 @@ public class UpdateSpotForecastTask extends AudioFeedbackTask
 	private final int selectedID;
 
 	/**
-	 * 
+	 *
 	 * @param _selectedID
 	 * @param _context
 	 * @throws NullPointerException
@@ -69,7 +69,7 @@ public class UpdateSpotForecastTask extends AudioFeedbackTask
 			showStatus(getContext().getString(R.string.recieve_forecast_update_title) + vo.getStation().getName(), "");
 			if (!vo.isActiv())
 			{
-				if (Logging.isEnabled())
+				if (Logging.isEnabled)
 				{
 					Log.d(LOG_TAG, "Cancel update as spot is not active: " + vo.getStation().getName());
 				}
@@ -79,13 +79,13 @@ public class UpdateSpotForecastTask extends AudioFeedbackTask
 			// failed).
 			if (!isNetworkReachable())
 			{
-				if (Logging.isEnabled())
+				if (Logging.isEnabled)
 				{
 					Log.d(LOG_TAG, "Cancel update as network not reachable.");
 				}
 				return;
 			}
-			if (Logging.isEnabled())
+			if (Logging.isEnabled)
 			{
 				Log.d(LOG_TAG, "Alarm for: " + vo.getStation().getName());
 			}

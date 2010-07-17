@@ -60,7 +60,7 @@ public final class ScheduleImpl extends BaseImpl implements IScheduleDAO
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see de.macsystems.windroid.db.IScheduleDAO#getSchedule(long)
 	 */
 	@Override
@@ -71,13 +71,13 @@ public final class ScheduleImpl extends BaseImpl implements IScheduleDAO
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see de.macsystems.windroid.db.IScheduleDAO#getScheduleByScheduleID(int)
 	 */
 	@Override
 	public Schedule getScheduleByScheduleID(final int _selectedID) throws DBException
 	{
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.d(LOG_TAG, "getScheduleByScheduleID::selectedID :" + _selectedID);
 		}
@@ -114,7 +114,7 @@ public final class ScheduleImpl extends BaseImpl implements IScheduleDAO
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see de.macsystems.windroid.db.IScheduleDAO#getTime(long)
 	 */
 	@Override
@@ -126,7 +126,7 @@ public final class ScheduleImpl extends BaseImpl implements IScheduleDAO
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see de.macsystems.windroid.db.IScheduleDAO#isActiv(long)
 	 */
 	@Override
@@ -158,7 +158,7 @@ public final class ScheduleImpl extends BaseImpl implements IScheduleDAO
 				repeatValue.put(COLUMN_SELECTED_ID, _selectedID);
 				repeatValue.put(COLUMN_REPEAT_ID, repeat.getId());
 				final int primaryKey = (int) db.insert(tableName, null, repeatValue);
-				if (Logging.isEnabled())
+				if (Logging.isEnabled)
 				{
 					Log.d(LOG_TAG, "Updated table " + tableName + " by a schedule, primaryKey is:" + primaryKey);
 				}

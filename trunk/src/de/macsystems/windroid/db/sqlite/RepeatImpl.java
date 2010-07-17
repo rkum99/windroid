@@ -57,7 +57,7 @@ public final class RepeatImpl extends BaseImpl implements IRepeatDAO
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see de.macsystems.windroid.db.sqlite.IRepeatDAO#getRepeat(int)
 	 */
 	@Override
@@ -94,7 +94,7 @@ public final class RepeatImpl extends BaseImpl implements IRepeatDAO
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * de.macsystems.windroid.db.sqlite.IRepeatDAO#update(de.macsystems.windroid
 	 * .identifyable.Repeat)
@@ -118,7 +118,7 @@ public final class RepeatImpl extends BaseImpl implements IRepeatDAO
 			value.put(COLUMN_ACTIV, _repeat.isActiv());
 			//
 			db.update(tableName, value, null, null);
-			if (Logging.isEnabled())
+			if (Logging.isEnabled)
 			{
 				Log.d(LOG_TAG, "updated repeat on " + tableName + " primary key is: " + _repeat.getId());
 			}
@@ -132,7 +132,7 @@ public final class RepeatImpl extends BaseImpl implements IRepeatDAO
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @seede.macsystems.windroid.db.IRepeatDAO#insert(de.macsystems.windroid.
 	 * identifyable.Repeat)
 	 */
@@ -155,7 +155,7 @@ public final class RepeatImpl extends BaseImpl implements IRepeatDAO
 			final int primaryKey = (int) db.insert(tableName, null, value);
 			//
 			_repeat.setId(primaryKey);
-			if (Logging.isEnabled())
+			if (Logging.isEnabled)
 			{
 				Log.d(LOG_TAG, "Insert repeat on " + tableName + " a repeat, primaryKey is:" + primaryKey);
 			}

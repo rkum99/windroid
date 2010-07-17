@@ -32,7 +32,7 @@ import de.macsystems.windroid.db.ISelectedDAO;
 
 /**
  * Installs on each configured Spot an Alarm.
- * 
+ *
  * @author mac
  * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
  * @see BaseStrategie#createAlarmForSpot(int, Context, boolean)
@@ -45,7 +45,7 @@ public class SpotAlarmTask implements Callable<Void>
 	private final Context context;
 
 	/**
-	 * 
+	 *
 	 * @param _context
 	 */
 	public SpotAlarmTask(final Context _context) throws NullPointerException
@@ -64,7 +64,7 @@ public class SpotAlarmTask implements Callable<Void>
 
 		if (!dao.isSpotActiv())
 		{
-			if (Logging.isEnabled())
+			if (Logging.isEnabled)
 			{
 				Log.i(LOG_TAG, "No active spot configured.");
 			}
@@ -73,7 +73,7 @@ public class SpotAlarmTask implements Callable<Void>
 		try
 		{
 			final Collection<SpotConfigurationVO> spots = dao.getActivSpots();
-			if (Logging.isEnabled())
+			if (Logging.isEnabled)
 			{
 				Log.i(LOG_TAG, "Found " + spots.size() + " spot(s) to install alarm trigger(s).");
 			}

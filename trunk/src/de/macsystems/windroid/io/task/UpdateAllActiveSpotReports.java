@@ -37,7 +37,7 @@ import de.macsystems.windroid.io.RetryLaterException;
 /**
  * A Task which updates all Active Spots. This will be generally used when user
  * forces an update.
- * 
+ *
  * @author mac
  * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
  */
@@ -56,7 +56,7 @@ public class UpdateAllActiveSpotReports extends AbstractNotificationTask<Void>
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see de.macsystems.windroid.service.AbstractNotificationTask#execute()
 	 */
 	@Override
@@ -73,7 +73,7 @@ public class UpdateAllActiveSpotReports extends AbstractNotificationTask<Void>
 			final int[] spots = dao.getActivSpotIDs();
 			showStatus("Update " + spots.length + " Spots", "");
 
-			if (Logging.isEnabled())
+			if (Logging.isEnabled)
 			{
 				Log.i(LOG_TAG, "Found " + spots.length + " Spots to update. IDs : " + Arrays.toString(spots));
 			}
@@ -92,7 +92,7 @@ public class UpdateAllActiveSpotReports extends AbstractNotificationTask<Void>
 	private void loadSelectedForecast(final int _selectedID) throws DBException, URISyntaxException, IOException,
 			RetryLaterException, InterruptedException
 	{
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.d(LOG_TAG, "private void bla(final int _selectedID) : " + _selectedID);
 		}
@@ -108,7 +108,7 @@ public class UpdateAllActiveSpotReports extends AbstractNotificationTask<Void>
 		final boolean available = isNetworkReachable();
 		if (!available)
 		{
-			if (Logging.isEnabled())
+			if (Logging.isEnabled)
 			{
 				Log.d(LOG_TAG, "Cancel update as network not reachable.");
 			}

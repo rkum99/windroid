@@ -41,7 +41,7 @@ public class StationXMLUpdateTask extends IOTask<Void, InputStream>
 	private final String stationsXMLFilePath;
 
 	/**
-	 * 
+	 *
 	 * @param _uri
 	 * @param _progress
 	 * @param _stationsXMLFilePath
@@ -59,7 +59,7 @@ public class StationXMLUpdateTask extends IOTask<Void, InputStream>
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * de.macsystems.windroid.io.task.IOTask#process(android.content.Context,
 	 * java.io.InputStream)
@@ -79,7 +79,7 @@ public class StationXMLUpdateTask extends IOTask<Void, InputStream>
 			{
 				fout.write(buffer, 0, bytesRead);
 			}
-			if (Logging.isEnabled())
+			if (Logging.isEnabled)
 			{
 				Log.d(LOG_TAG, stationsXMLFilePath + " updated");
 			}

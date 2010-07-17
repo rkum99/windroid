@@ -25,7 +25,7 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 /**
- * 
+ *
  * @author Jens Hohl
  * @version $Id$
  */
@@ -36,7 +36,7 @@ public class HomeScreenWidget extends AppWidgetProvider
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * android.appwidget.AppWidgetProvider#onDeleted(android.content.Context,
 	 * int[])
@@ -45,7 +45,7 @@ public class HomeScreenWidget extends AppWidgetProvider
 	public void onDeleted(final Context context, final int[] appWidgetIds)
 	{
 		super.onDeleted(context, appWidgetIds);
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.d(LOG_TAG, "public void onDeleted(Context context, int[] appWidgetIds)");
 		}
@@ -53,7 +53,7 @@ public class HomeScreenWidget extends AppWidgetProvider
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * android.appwidget.AppWidgetProvider#onDisabled(android.content.Context)
 	 */
@@ -61,7 +61,7 @@ public class HomeScreenWidget extends AppWidgetProvider
 	public void onDisabled(final Context context)
 	{
 		super.onDisabled(context);
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.d(LOG_TAG, "public void onDisabled(Context context)");
 		}
@@ -69,7 +69,7 @@ public class HomeScreenWidget extends AppWidgetProvider
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * android.appwidget.AppWidgetProvider#onEnabled(android.content.Context)
 	 */
@@ -77,7 +77,7 @@ public class HomeScreenWidget extends AppWidgetProvider
 	public void onEnabled(final Context context)
 	{
 		super.onEnabled(context);
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.d(LOG_TAG, "public void onEnabled(Context context)");
 		}
@@ -85,7 +85,7 @@ public class HomeScreenWidget extends AppWidgetProvider
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * android.appwidget.AppWidgetProvider#onReceive(android.content.Context,
 	 * android.content.Intent)
@@ -94,7 +94,7 @@ public class HomeScreenWidget extends AppWidgetProvider
 	public void onReceive(final Context context, final Intent intent)
 	{
 		super.onReceive(context, intent);
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.d(LOG_TAG, "public void onReceive(Context context, Intent intent)");
 		}
@@ -102,7 +102,7 @@ public class HomeScreenWidget extends AppWidgetProvider
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * android.appwidget.AppWidgetProvider#onUpdate(android.content.Context,
 	 * android.appwidget.AppWidgetManager, int[])
@@ -110,7 +110,7 @@ public class HomeScreenWidget extends AppWidgetProvider
 	@Override
 	public void onUpdate(final Context context, final AppWidgetManager appWidgetManager, final int[] appWidgetIds)
 	{
-		if (Logging.isEnabled())
+		if (Logging.isEnabled)
 		{
 			Log.d(LOG_TAG, "public void onUpdate(final Context context, "
 					+ "final AppWidgetManager appWidgetManager, final int[] appWidgetIds)");

@@ -125,7 +125,7 @@ public final class DownloadActivity extends ChainSubActivity
 				@Override
 				public final void run()
 				{
-					if (Logging.isEnabled())
+					if (Logging.isEnabled)
 					{
 						Log.d(LOG_TAG, "Parsing Thread started.");
 					}
@@ -192,7 +192,7 @@ public final class DownloadActivity extends ChainSubActivity
 					}
 					finally
 					{
-						if (Logging.isEnabled())
+						if (Logging.isEnabled)
 						{
 							Log.d(LOG_TAG, "Parsing Thread ended.");
 						}
@@ -303,7 +303,7 @@ public final class DownloadActivity extends ChainSubActivity
 	{
 		try
 		{
-			if (Logging.isEnabled())
+			if (Logging.isEnabled)
 			{
 				Log.d(LOG_TAG, "Interrupting thread");
 			}

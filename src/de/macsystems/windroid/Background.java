@@ -29,7 +29,7 @@ import android.view.View;
 
 /**
  * Helper class which allows to set a background for a view/layout.
- * 
+ *
  * @author mac
  * @version $Id$
  */
@@ -42,6 +42,7 @@ public final class Background
 	{
 		bgs.add(new TileModePair(R.drawable.hibiscus_64x64, TileMode.MIRROR, TileMode.MIRROR));
 		bgs.add(new TileModePair(R.drawable.hibiscus_blue_128x128, TileMode.REPEAT, TileMode.REPEAT));
+		bgs.add(new TileModePair(R.drawable.r02_3, TileMode.REPEAT, TileMode.REPEAT));
 	};
 	private static Random random = new Random(bgs.size());
 
@@ -54,9 +55,9 @@ public final class Background
 	}
 
 	/**
-	 * Applys a Background to an activiy. The Activity already must have a
-	 * layout which contains a ID : {@link R.id.background_pattern}.
-	 * 
+	 * Apply a Background to an activity. The Activity must have a layout which
+	 * contains an ID : {@link R.id.background_pattern}.
+	 *
 	 * @param _activity
 	 */
 	public static void apply(final Activity _activity)
@@ -81,7 +82,7 @@ public final class Background
 
 	/**
 	 * Returns {@link TileModePair}
-	 * 
+	 *
 	 * @param _list
 	 * @return
 	 */
@@ -101,7 +102,7 @@ public final class Background
 		private final int resID;
 
 		/**
-		 * 
+		 *
 		 * @param _resID
 		 * @param _x
 		 * @param _y

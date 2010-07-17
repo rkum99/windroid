@@ -54,7 +54,7 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 	private final static String LOG_TAG = SelectedImpl.class.getSimpleName();
 
 	/**
-	 *
+	 * 
 	 * @param _database
 	 */
 	public SelectedImpl(final Database _database)
@@ -63,7 +63,7 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 	}
 
 	/**
-	 *
+	 * 
 	 * @param _database
 	 * @param _progress
 	 */
@@ -74,7 +74,7 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * de.macsystems.windroid.db.ISelectedDAO#insertSpot(de.macsystems.windroid
 	 * .common.SpotConfigurationVO)
@@ -128,7 +128,7 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see de.macsystems.windroid.db.ISelectedDAO#setActiv(long, boolean)
 	 */
 	public void setActiv(final long _id, final boolean _isActiv)
@@ -150,7 +150,7 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see de.macsystems.windroid.db.ISelectedDAO#isActiv(long)
 	 */
 	@Override
@@ -177,7 +177,7 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see de.macsystems.windroid.db.ISelectedDAO#getSpotConfiguration(int)
 	 */
 	@Override
@@ -265,7 +265,7 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 
 	/**
 	 * Returns spotid by its _id.
-	 *
+	 * 
 	 * @param _id
 	 * @param _db
 	 * @return
@@ -409,7 +409,7 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see de.macsystems.windroid.db.ISelectedDAO#delete(int)
 	 */
 	@Override
@@ -477,7 +477,7 @@ public final class SelectedImpl extends BaseImpl implements ISelectedDAO
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see de.macsystems.windroid.db.ISelectedDAO#setAllActiv(boolean)
 	 */
 	@Override

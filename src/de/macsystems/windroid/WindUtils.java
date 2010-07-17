@@ -37,7 +37,7 @@ import de.macsystems.windroid.progress.NullProgressAdapter;
 /**
  * @author Jens Hohl
  * @version $Id$
- *
+ * 
  */
 public class WindUtils
 {
@@ -52,8 +52,8 @@ public class WindUtils
 	/**
 	 * Creates an <code>Intent</code> which ready to invoke next activity. It
 	 * stores <code>SpotConfigurationVO</code> in its extras.
-	 *
-	 *
+	 * 
+	 * 
 	 * @param _source
 	 * @param _activityToLaunch
 	 * @param _spotConfiguration
@@ -72,7 +72,7 @@ public class WindUtils
 	/**
 	 * Returns <code>true</code> when a SpotConfiguration can be found in given
 	 * Intent.
-	 *
+	 * 
 	 * @param _intent
 	 * @return
 	 */
@@ -84,7 +84,7 @@ public class WindUtils
 	/**
 	 * Returns <code>SpotConfigurationVO</code> from given <code>Intent</code>s
 	 * extras.
-	 *
+	 * 
 	 * @param _intent
 	 * @return a SpotConfigurationVO or <code>null</code> if nothing was found.
 	 * @see #isSpotConfigured(Intent)
@@ -97,7 +97,7 @@ public class WindUtils
 
 	/**
 	 * Returns URL where all Stations are defined.
-	 *
+	 * 
 	 * @return
 	 * @throws IOException
 	 */
@@ -108,7 +108,7 @@ public class WindUtils
 
 	/**
 	 * Returns URL on server where MD5 Hash of stations.xml is located.
-	 *
+	 * 
 	 * @return
 	 * @throws IOException
 	 */
@@ -119,7 +119,7 @@ public class WindUtils
 
 	/**
 	 * Returns <code>true</code> whenever a new station list is available.
-	 *
+	 * 
 	 * @param _context
 	 * @return
 	 * @throws IOException
@@ -163,7 +163,7 @@ public class WindUtils
 	}
 
 	/**
-	 *
+	 * 
 	 * @param _context
 	 * @return
 	 */
@@ -173,7 +173,7 @@ public class WindUtils
 	}
 
 	/**
-	 *
+	 * 
 	 * @param _context
 	 * @param _downloadProgress
 	 * @throws RetryLaterException
@@ -228,7 +228,7 @@ public class WindUtils
 
 	/**
 	 * Returns MD5 checksum of Station.xml file on Server.
-	 *
+	 * 
 	 * @param _context
 	 * @return
 	 * @throws IOException
@@ -268,7 +268,7 @@ public class WindUtils
 
 	/**
 	 * Return URL of JSON Forecast by id of station.
-	 *
+	 * 
 	 * @return
 	 * @throws IOException
 	 */
@@ -295,7 +295,7 @@ public class WindUtils
 
 	/**
 	 * Return URL of XML Forecast
-	 *
+	 * 
 	 * @return
 	 * @throws IOException
 	 */
@@ -307,9 +307,9 @@ public class WindUtils
 
 	/*
 	 * @param _stationID
-	 *
+	 * 
 	 * @return
-	 *
+	 * 
 	 * @throws IOException
 	 */
 	public static URL createWindreport(final String _stationID) throws IOException
@@ -325,9 +325,9 @@ public class WindUtils
 
 	/*
 	 * @param _stationID
-	 *
+	 * 
 	 * @return
-	 *
+	 * 
 	 * @throws IOException
 	 */
 	public static URL createForecast(final String _stationID) throws IOException
@@ -343,9 +343,9 @@ public class WindUtils
 
 	/*
 	 * @param _stationID
-	 *
+	 * 
 	 * @return
-	 *
+	 * 
 	 * @throws IOException
 	 */
 	public static URL createSuperforecastURL(final String _stationID) throws IOException
@@ -360,7 +360,7 @@ public class WindUtils
 	}
 
 	/**
-	 *
+	 * 
 	 * @param _stationID
 	 * @return
 	 * @throws IOException

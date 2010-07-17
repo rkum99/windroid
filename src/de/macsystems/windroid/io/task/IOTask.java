@@ -42,7 +42,7 @@ import de.macsystems.windroid.progress.IProgress;
  * <br>
  * Parameter V is the return value.<br>
  * Parameter I mean the parameter which allows to work with that data.
- *
+ * 
  * @author Jens Hohl
  * @version $Id$
  * @TODO use IProgress
@@ -67,7 +67,7 @@ public abstract class IOTask<V, I> implements Task<V, I>
 	private final int HTTP_TIMEOUT = 1000 * 60;
 
 	/**
-	 *
+	 * 
 	 * @param _uri
 	 *            points to an io resource
 	 * @param _progress
@@ -98,7 +98,7 @@ public abstract class IOTask<V, I> implements Task<V, I>
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see de.macsystems.windroid.io.task.Task#execute(android.content.Context)
 	 */
 	public V execute(final Context _context) throws RetryLaterException, IOException, InterruptedException
@@ -163,7 +163,7 @@ public abstract class IOTask<V, I> implements Task<V, I>
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see de.macsystems.windroid.io.task.Task#process(android.content.Context,
 	 * java.io.InputStream)
 	 */

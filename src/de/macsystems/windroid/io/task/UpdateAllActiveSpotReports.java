@@ -37,7 +37,7 @@ import de.macsystems.windroid.io.RetryLaterException;
 /**
  * A Task which updates all Active Spots. This will be generally used when user
  * forces an update.
- *
+ * 
  * @author mac
  * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
  */
@@ -56,7 +56,7 @@ public class UpdateAllActiveSpotReports extends AbstractNotificationTask<Void>
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see de.macsystems.windroid.service.AbstractNotificationTask#execute()
 	 */
 	@Override

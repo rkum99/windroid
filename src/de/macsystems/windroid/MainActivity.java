@@ -60,10 +60,10 @@ import de.macsystems.windroid.service.SpotService;
 
 /**
  * This is the Entry Point when the Application will be launched.
- *
+ * 
  * @author Jens Hohl
  * @version $Id$
- *
+ * 
  */
 public final class MainActivity extends DBActivity
 {
@@ -82,7 +82,7 @@ public final class MainActivity extends DBActivity
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.app.Activity#onActivityResult(int, int,
 	 * android.content.Intent)
 	 */
@@ -149,7 +149,7 @@ public final class MainActivity extends DBActivity
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.app.Activity#onResume()
 	 */
 	@Override
@@ -181,7 +181,7 @@ public final class MainActivity extends DBActivity
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.app.Activity#onStop()
 	 */
 	@Override
@@ -193,7 +193,7 @@ public final class MainActivity extends DBActivity
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.app.Activity#onStop()
 	 */
 	@Override
@@ -209,7 +209,7 @@ public final class MainActivity extends DBActivity
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override
@@ -343,7 +343,7 @@ public final class MainActivity extends DBActivity
 	/**
 	 * Installs a Listener for events on Service On/Off toggle button which
 	 * called AIDL interface.
-	 *
+	 * 
 	 * @param _connection
 	 * @return
 	 */
@@ -412,7 +412,7 @@ public final class MainActivity extends DBActivity
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
 	 */
 	@Override
@@ -477,7 +477,7 @@ public final class MainActivity extends DBActivity
 	/**
 	 * Launches {@link DownloadActivity} Activity or the
 	 * {@link SpotSelectionActivity} Activity which depends on database
-	 *
+	 * 
 	 */
 	private void launchSetupOrSpotSelectionActivity()
 	{

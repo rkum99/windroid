@@ -33,11 +33,11 @@ import de.macsystems.windroid.forecast.Forecast;
 /**
  * Callable which will retrieve current forecast of a spot and updates the
  * Database. This will be generally used when user forces an update.
- *
+ * 
  * @author Jens Hohl
  * @version $Id: UpdateSpotForecastTask.java 314 2010-04-15 11:50:03Z jens.hohl
  *          $
- *
+ * 
  */
 public class UpdateSpotForecastTask extends AudioFeedbackTask
 {
@@ -47,7 +47,7 @@ public class UpdateSpotForecastTask extends AudioFeedbackTask
 	private final int selectedID;
 
 	/**
-	 *
+	 * 
 	 * @param _selectedID
 	 * @param _context
 	 * @throws NullPointerException

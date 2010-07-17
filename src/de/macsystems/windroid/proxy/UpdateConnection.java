@@ -41,7 +41,7 @@ public final class UpdateConnection implements ServiceConnection
 	private final Handler handler;
 
 	/**
-	 *
+	 * 
 	 * @param _context
 	 */
 	public UpdateConnection(final Context _context, final Handler _handler, final int _selectedID)
@@ -92,7 +92,7 @@ public final class UpdateConnection implements ServiceConnection
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * android.content.ServiceConnection#onServiceConnected(android.content.
 	 * ComponentName, android.os.IBinder)
@@ -120,7 +120,7 @@ public final class UpdateConnection implements ServiceConnection
 
 	/**
 	 * Adds update task for Spot with selected ID into service
-	 *
+	 * 
 	 * @param _selectedID
 	 * @throws RemoteException
 	 */
@@ -135,7 +135,7 @@ public final class UpdateConnection implements ServiceConnection
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * android.content.ServiceConnection#onServiceDisconnected(android.content
 	 * .ComponentName)

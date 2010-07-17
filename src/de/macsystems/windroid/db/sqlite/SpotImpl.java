@@ -39,7 +39,7 @@ import de.macsystems.windroid.progress.IProgress;
 import de.macsystems.windroid.progress.NullProgressAdapter;
 
 /**
- *
+ * 
  * @author Jens Hohl
  * @version $Id$
  */
@@ -56,7 +56,7 @@ public final class SpotImpl extends BaseImpl implements ISpotDAO
 	private final static String INSERT_REGION = "INSERT INTO region (id,name,countryid) values (?,?,?);";
 
 	/**
-	 *
+	 * 
 	 * @param _database
 	 * @throws NullPointerException
 	 */
@@ -66,7 +66,7 @@ public final class SpotImpl extends BaseImpl implements ISpotDAO
 	}
 
 	/**
-	 *
+	 * 
 	 * @param _database
 	 * @param _progress
 	 * @throws NullPointerException
@@ -78,7 +78,7 @@ public final class SpotImpl extends BaseImpl implements ISpotDAO
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see de.macsystems.windroid.db.ISpotDAO#insertSpots()
 	 */
 	public void insertSpots(final World _world)
@@ -166,7 +166,7 @@ public final class SpotImpl extends BaseImpl implements ISpotDAO
 	}
 
 	/**
-	 *
+	 * 
 	 * @param insertStatement
 	 * @param country
 	 * @param continent
@@ -180,7 +180,7 @@ public final class SpotImpl extends BaseImpl implements ISpotDAO
 	}
 
 	/**
-	 *
+	 * 
 	 * @param insertStatement
 	 * @param region
 	 * @param county
@@ -206,7 +206,7 @@ public final class SpotImpl extends BaseImpl implements ISpotDAO
 	}
 
 	/**
-	 *
+	 * 
 	 * @param _insertStatement
 	 * @param _continent
 	 * @param _country
@@ -239,7 +239,7 @@ public final class SpotImpl extends BaseImpl implements ISpotDAO
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see de.macsystems.windroid.db.ISpotDAO#hasSpots()
 	 */
 	@Override
@@ -251,7 +251,7 @@ public final class SpotImpl extends BaseImpl implements ISpotDAO
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see de.macsystems.windroid.db.ISpotDAO#fetchBy(java.lang.String,
 	 * java.lang.String, java.lang.String)
 	 */
@@ -273,7 +273,7 @@ public final class SpotImpl extends BaseImpl implements ISpotDAO
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see de.macsystems.windroid.db.ISpotDAO#fetchBy(java.lang.String)
 	 */
 	@Override

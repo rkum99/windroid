@@ -36,12 +36,12 @@ import de.macsystems.windroid.Logging;
  * prevent failures relating in network code. <br>
  * <br>
  * <b>You have to unregister this in your Activity#onStop Method</b>
- *
- *
+ * 
+ * 
  * @author Jens Hohl
  * @version $Id: EnableViewConnectionBroadcastReciever.java 2 2009-07-28
  *          02:15:38Z jens.hohl $
- *
+ * 
  */
 public class EnableViewConnectionBroadcastReciever extends BroadcastReceiver
 {
@@ -55,7 +55,7 @@ public class EnableViewConnectionBroadcastReciever extends BroadcastReceiver
 	 * connection status changes. Views that trigger network related processes
 	 * can be disabled to prevent failures relating in network code. <br>
 	 * <b>You have to unregister this in your Activity#onStop Method:</b>
-	 *
+	 * 
 	 * <pre>
 	 * &#064;Override
 	 * protected void onStop()
@@ -64,8 +64,8 @@ public class EnableViewConnectionBroadcastReciever extends BroadcastReceiver
 	 * 	super.onStop();
 	 * }
 	 * </pre>
-	 *
-	 *
+	 * 
+	 * 
 	 * @param _viewsToEnable
 	 * @param _contextToRegister
 	 *            a valid context to register as broadcast receiver
@@ -122,7 +122,7 @@ public class EnableViewConnectionBroadcastReciever extends BroadcastReceiver
 
 	/**
 	 * Enabled/Disables a list of Views
-	 *
+	 * 
 	 * @param _views
 	 * @param _enable
 	 */

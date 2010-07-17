@@ -31,7 +31,7 @@ import de.macsystems.windroid.Logging;
 /**
  * A Task with a priority. The Task is able to call back after using
  * {@link IServiceCallbackListener}.
- *
+ * 
  * @author mac
  * @version $Id$
  */
@@ -51,11 +51,11 @@ final class PriorizedFutureTask extends FutureTask<Void>
 	private final RemoteCallbackList<IServiceCallbackListener> callbackListener = new RemoteCallbackList<IServiceCallbackListener>();
 
 	/**
-	 *
+	 * 
 	 * @param _prio
 	 * @param _task
 	 * @throws NullPointerException
-	 *
+	 * 
 	 */
 	PriorizedFutureTask(final PRIORITY _prio, final Callable<Void> _task) throws NullPointerException
 	{
@@ -63,14 +63,14 @@ final class PriorizedFutureTask extends FutureTask<Void>
 	}
 
 	/**
-	 *
+	 * 
 	 * @param _prio
 	 * @param _task
 	 * @param _listener
 	 *            <code>null</code> allowed
 	 * @throws NullPointerException
 	 * @see {@link FutureTask}
-	 *
+	 * 
 	 */
 	PriorizedFutureTask(final PRIORITY _prio, final Callable<Void> _task, final IServiceCallbackListener _listener)
 			throws NullPointerException
@@ -89,7 +89,7 @@ final class PriorizedFutureTask extends FutureTask<Void>
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.util.concurrent.FutureTask#done()
 	 */
 	@Override
@@ -121,7 +121,7 @@ final class PriorizedFutureTask extends FutureTask<Void>
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see java.util.concurrent.FutureTask#setException(java.lang.Throwable)
 	 */
 	@Override

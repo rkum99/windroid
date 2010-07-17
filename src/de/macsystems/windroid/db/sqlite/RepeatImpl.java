@@ -57,7 +57,7 @@ public final class RepeatImpl extends BaseImpl implements IRepeatDAO
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see de.macsystems.windroid.db.sqlite.IRepeatDAO#getRepeat(int)
 	 */
 	@Override
@@ -94,7 +94,7 @@ public final class RepeatImpl extends BaseImpl implements IRepeatDAO
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * de.macsystems.windroid.db.sqlite.IRepeatDAO#update(de.macsystems.windroid
 	 * .identifyable.Repeat)
@@ -132,7 +132,7 @@ public final class RepeatImpl extends BaseImpl implements IRepeatDAO
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @seede.macsystems.windroid.db.IRepeatDAO#insert(de.macsystems.windroid.
 	 * identifyable.Repeat)
 	 */

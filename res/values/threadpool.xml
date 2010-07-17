@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--  
-   		@version $Id$
- -->
+	<!--
+		@version $Id$
+	-->
 
 <resources>
 	<item
 		name="schedule_threadpool_size"
 		type="integer">1</item>
+	<item
+		name="schedule_threadpool_max_size"
+		type="integer">5</item>
+	<item
+		name="schedule_threadpool_thread_alive_time_in_seconds"
+		type="integer">60</item>
+
+
 </resources>

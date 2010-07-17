@@ -31,6 +31,7 @@ import de.macsystems.windroid.io.RetryLaterException;
 public interface Task<V, I>
 {
 	/**
+	 * Executes the Task.
 	 * 
 	 * @param _context
 	 * @return

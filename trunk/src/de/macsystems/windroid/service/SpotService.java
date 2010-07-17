@@ -47,10 +47,10 @@ import de.macsystems.windroid.io.task.UpdateSpotForecastTask;
  * comparator see {@link PriorizedFutureTaskComparator}. Its possible to receive
  * a callback from this service if task finished, see
  * {@link IServiceCallbackListener}.
- * 
+ *
  * @author Jens Hohl
  * @version $Id$
- * 
+ *
  */
 public class SpotService extends Service
 {
@@ -114,7 +114,7 @@ public class SpotService extends Service
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Service#onBind(android.content.Intent)
 	 */
 	@Override
@@ -125,7 +125,7 @@ public class SpotService extends Service
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Service#onCreate()
 	 */
 	@Override
@@ -141,7 +141,7 @@ public class SpotService extends Service
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Service#onStart(android.content.Intent, int)
 	 */
 	@Override
@@ -175,7 +175,7 @@ public class SpotService extends Service
 
 	/**
 	 * Creates an Task for Alarm.
-	 * 
+	 *
 	 * @param _repeatID
 	 */
 	private final void createAlarmTask(final Alert _alert)
@@ -192,17 +192,23 @@ public class SpotService extends Service
 		if (threadPool == null)
 		{
 			final int poolSize = getResources().getInteger(R.integer.schedule_threadpool_size);
+			final int poolMaxSize = getResources().getInteger(R.integer.schedule_threadpool_max_size);
+			// Seems items cannot represent float, double or long ?
+			final long keepAlive = (long) getResources().getInteger(
+					R.integer.schedule_threadpool_thread_alive_time_in_seconds);
+
 			final BlockingQueue<? super Runnable> queue = new PriorityBlockingQueue<Runnable>(poolSize,
 					new PriorizedFutureTaskComparator());
 			//
 			final WindroidThreadFactory factory = new WindroidThreadFactory("SpotService", Thread.NORM_PRIORITY);
-			threadPool = new ThreadPoolExecutor(1, 1, 1L, TimeUnit.SECONDS, (BlockingQueue<Runnable>) queue, factory);
+			threadPool = new ThreadPoolExecutor(poolSize, poolMaxSize, keepAlive, TimeUnit.SECONDS,
+					(BlockingQueue<Runnable>) queue, factory);
 		}
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see android.app.Service#onDestroy()
 	 */
 	@Override
@@ -252,7 +258,7 @@ public class SpotService extends Service
 	}
 
 	/**
-	 * 
+	 *
 	 * @param _task
 	 */
 	private void addTask(final Callable<Void> _task)
@@ -269,7 +275,7 @@ public class SpotService extends Service
 	}
 
 	/**
-	 * 
+	 *
 	 * @param _task
 	 */
 	private void addTask(final Callable<Void> _task, final IServiceCallbackListener _listener)
@@ -288,7 +294,7 @@ public class SpotService extends Service
 	/**
 	 * Lists all uncompleted task.<br>
 	 * Method is more a debug method than very useful yet.
-	 * 
+	 *
 	 * @param tasks
 	 */
 	private void logUncompletedTask(final List<Runnable> tasks)
@@ -307,7 +313,7 @@ public class SpotService extends Service
 	}
 
 	/**
-	 * 
+	 *
 	 * @param _intent
 	 * @return
 	 */

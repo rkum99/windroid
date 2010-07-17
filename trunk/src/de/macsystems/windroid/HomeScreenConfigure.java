@@ -24,7 +24,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 /**
- *
+ * 
  * @author Jens Hohl
  * @version $Id$
  */
@@ -36,7 +36,7 @@ public class HomeScreenConfigure extends Activity
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override

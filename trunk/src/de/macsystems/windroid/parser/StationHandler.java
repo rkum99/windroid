@@ -32,7 +32,7 @@ import de.macsystems.windroid.identifyable.World;
 /**
  * @author Jens Hohl
  * @version $Id$
- *
+ * 
  */
 public final class StationHandler extends DefaultHandler
 {
@@ -89,7 +89,7 @@ public final class StationHandler extends DefaultHandler
 
 	/**
 	 * returns the nr of stations found in parsed XML.
-	 *
+	 * 
 	 * @return
 	 */
 	public int getNrOfStations()
@@ -99,7 +99,7 @@ public final class StationHandler extends DefaultHandler
 
 	/**
 	 * returns the world.
-	 *
+	 * 
 	 * @return
 	 */
 	public World getWorld()
@@ -217,7 +217,7 @@ public final class StationHandler extends DefaultHandler
 
 	/**
 	 * Converts "1" into <code>true</code> else false will be returned.
-	 *
+	 * 
 	 * @param _value
 	 * @return
 	 */

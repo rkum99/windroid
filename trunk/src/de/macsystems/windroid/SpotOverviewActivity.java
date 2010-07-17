@@ -56,10 +56,10 @@ import de.macsystems.windroid.service.ISpotService;
 
 /**
  * Shows list of spots configured.
- *
+ * 
  * @author Jens Hohl
  * @version $Id$
- *
+ * 
  */
 public final class SpotOverviewActivity extends DBListActivity
 {
@@ -164,7 +164,7 @@ public final class SpotOverviewActivity extends DBListActivity
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.app.Activity#onResume()
 	 */
 	@Override
@@ -223,7 +223,7 @@ public final class SpotOverviewActivity extends DBListActivity
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override
@@ -238,7 +238,7 @@ public final class SpotOverviewActivity extends DBListActivity
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.app.Activity#onPause()
 	 */
 	@Override
@@ -253,7 +253,7 @@ public final class SpotOverviewActivity extends DBListActivity
 	}
 
 	/**
-	 *
+	 * 
 	 * @return
 	 */
 	private Dialog createUpdateProgressDialog()
@@ -272,7 +272,7 @@ public final class SpotOverviewActivity extends DBListActivity
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.app.Activity#onCreateDialog(int)
 	 */
 	@Override
@@ -320,7 +320,7 @@ public final class SpotOverviewActivity extends DBListActivity
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.app.Activity#onContextItemSelected(android.view.MenuItem)
 	 */
 	@Override
@@ -354,7 +354,7 @@ public final class SpotOverviewActivity extends DBListActivity
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
 	 */
 	@Override
@@ -422,7 +422,7 @@ public final class SpotOverviewActivity extends DBListActivity
 	}
 
 	/**
-	 *
+	 * 
 	 * @param _state
 	 */
 	private void setActive(final boolean _state)
@@ -437,7 +437,7 @@ public final class SpotOverviewActivity extends DBListActivity
 	 * Code has some problems, but at the moment its the only solution i found
 	 * as i have to recreate a cursor the binder/cursoradapter to see updates in
 	 * database in view.
-	 *
+	 * 
 	 * @param _cursor
 	 */
 	private void setupMapping(final Cursor _cursor)
@@ -469,7 +469,7 @@ public final class SpotOverviewActivity extends DBListActivity
 	/**
 	 * Creates an {@link SpotConfigurationVO}from primary key and starts
 	 * configuration activity.
-	 *
+	 * 
 	 * @param _id
 	 */
 	private void editSpot(final long _id)
@@ -490,7 +490,7 @@ public final class SpotOverviewActivity extends DBListActivity
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.app.Activity#onActivityResult(int, int,
 	 * android.content.Intent)
 	 */
@@ -529,7 +529,7 @@ public final class SpotOverviewActivity extends DBListActivity
 
 	/**
 	 * Updates a Spot
-	 *
+	 * 
 	 * @param _intent
 	 * @throws NullPointerException
 	 */
@@ -555,7 +555,7 @@ public final class SpotOverviewActivity extends DBListActivity
 
 	/**
 	 * Shows Forecast of selected Spot
-	 *
+	 * 
 	 * @param _id
 	 */
 	private void showForcastForSpot(final int _id)

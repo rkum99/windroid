@@ -35,10 +35,10 @@ import de.macsystems.windroid.service.SpotService;
 /**
  * Proxy Class with implements the ISpotService Interface to control the
  * SpotService Implementation.
- *
+ * 
  * @author Jens Hohl
  * @version $Id$
- *
+ * 
  */
 public final class SpotServiceConnection implements ServiceConnection, ISpotService
 {
@@ -53,7 +53,7 @@ public final class SpotServiceConnection implements ServiceConnection, ISpotServ
 	private final AtomicReference<ISpotService> reference = new AtomicReference<ISpotService>();
 
 	/**
-	 *
+	 * 
 	 * @param _viewToEnable
 	 *            typical a Button which toggle service on/off
 	 * @param _context
@@ -76,7 +76,7 @@ public final class SpotServiceConnection implements ServiceConnection, ISpotServ
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * android.content.ServiceConnection#onServiceConnected(android.content.
 	 * ComponentName, android.os.IBinder)
@@ -94,7 +94,7 @@ public final class SpotServiceConnection implements ServiceConnection, ISpotServ
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * android.content.ServiceConnection#onServiceDisconnected(android.content
 	 * .ComponentName)
@@ -134,7 +134,7 @@ public final class SpotServiceConnection implements ServiceConnection, ISpotServ
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.os.IInterface#asBinder()
 	 */
 	@Override

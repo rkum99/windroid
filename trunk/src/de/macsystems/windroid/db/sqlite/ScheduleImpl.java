@@ -60,7 +60,7 @@ public final class ScheduleImpl extends BaseImpl implements IScheduleDAO
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see de.macsystems.windroid.db.IScheduleDAO#getSchedule(long)
 	 */
 	@Override
@@ -71,7 +71,7 @@ public final class ScheduleImpl extends BaseImpl implements IScheduleDAO
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see de.macsystems.windroid.db.IScheduleDAO#getScheduleByScheduleID(int)
 	 */
 	@Override
@@ -114,7 +114,7 @@ public final class ScheduleImpl extends BaseImpl implements IScheduleDAO
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see de.macsystems.windroid.db.IScheduleDAO#getTime(long)
 	 */
 	@Override
@@ -126,7 +126,7 @@ public final class ScheduleImpl extends BaseImpl implements IScheduleDAO
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see de.macsystems.windroid.db.IScheduleDAO#isActiv(long)
 	 */
 	@Override

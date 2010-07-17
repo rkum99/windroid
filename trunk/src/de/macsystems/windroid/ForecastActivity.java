@@ -63,7 +63,7 @@ import de.macsystems.windroid.service.ISpotService;
 
 /**
  * Displays a Forecast
- *
+ * 
  * @author mac
  * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
  */
@@ -274,7 +274,7 @@ public final class ForecastActivity extends DBActivity
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override
@@ -377,7 +377,7 @@ public final class ForecastActivity extends DBActivity
 	 * Checks if Forecast is already loaded by using
 	 * {@link #getLastNonConfigurationInstance()} if not we check the Database
 	 * and if there is nothing found we insert a message in the handler.
-	 *
+	 * 
 	 * @param _selectedID
 	 * @throws DBException
 	 */
@@ -407,7 +407,7 @@ public final class ForecastActivity extends DBActivity
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.app.Activity#onRetainNonConfigurationInstance()
 	 */
 	@Override
@@ -423,7 +423,7 @@ public final class ForecastActivity extends DBActivity
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see de.macsystems.windroid.DBActivity#onStop()
 	 */
 	@Override
@@ -438,7 +438,7 @@ public final class ForecastActivity extends DBActivity
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.app.Activity#onPause()
 	 */
 	@Override
@@ -453,7 +453,7 @@ public final class ForecastActivity extends DBActivity
 	}
 
 	/**
-	 *
+	 * 
 	 * @return
 	 */
 	private Dialog createUpdateProgressDialog()
@@ -472,7 +472,7 @@ public final class ForecastActivity extends DBActivity
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.app.Activity#onCreateDialog(int)
 	 */
 	@Override
@@ -531,7 +531,7 @@ public final class ForecastActivity extends DBActivity
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
 	 */
 	@Override
@@ -1059,7 +1059,7 @@ public final class ForecastActivity extends DBActivity
 	}
 
 	/**
-	 *
+	 * 
 	 * @param _intent
 	 * @return
 	 */
@@ -1076,7 +1076,7 @@ public final class ForecastActivity extends DBActivity
 	}
 
 	/**
-	 *
+	 * 
 	 * @param _intent
 	 * @return
 	 */

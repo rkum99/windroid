@@ -25,7 +25,7 @@ import android.util.Log;
 import android.widget.RemoteViews;
 
 /**
- *
+ * 
  * @author Jens Hohl
  * @version $Id$
  */
@@ -36,7 +36,7 @@ public class HomeScreenWidget extends AppWidgetProvider
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * android.appwidget.AppWidgetProvider#onDeleted(android.content.Context,
 	 * int[])
@@ -53,7 +53,7 @@ public class HomeScreenWidget extends AppWidgetProvider
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * android.appwidget.AppWidgetProvider#onDisabled(android.content.Context)
 	 */
@@ -69,7 +69,7 @@ public class HomeScreenWidget extends AppWidgetProvider
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * android.appwidget.AppWidgetProvider#onEnabled(android.content.Context)
 	 */
@@ -85,7 +85,7 @@ public class HomeScreenWidget extends AppWidgetProvider
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * android.appwidget.AppWidgetProvider#onReceive(android.content.Context,
 	 * android.content.Intent)
@@ -102,7 +102,7 @@ public class HomeScreenWidget extends AppWidgetProvider
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see
 	 * android.appwidget.AppWidgetProvider#onUpdate(android.content.Context,
 	 * android.appwidget.AppWidgetManager, int[])

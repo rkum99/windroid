@@ -105,7 +105,8 @@ abstract class BaseStrategie implements IAlarmManager
 			Log.d(LOG_TAG, "Creating alarm for spot " + _vo.getStation().getName());
 		}
 
-		final List<Alert> alertsToEnqueue = getAlertsFromSpotConfiguration(_vo);
+		// PECS
+		final List<? extends Alert> alertsToEnqueue = getAlertsFromSpotConfiguration(_vo);
 
 		final AlarmManager alarmManager = (AlarmManager) _context.getSystemService(Context.ALARM_SERVICE);
 		//
@@ -140,7 +141,7 @@ abstract class BaseStrategie implements IAlarmManager
 	 * @param _vo
 	 * @return
 	 */
-	private static List<Alert> getAlertsFromSpotConfiguration(final SpotConfigurationVO _vo)
+	private static List<? extends Alert> getAlertsFromSpotConfiguration(final SpotConfigurationVO _vo)
 	{
 		final Schedule schedule = _vo.getSchedule();
 		final Iterator<Integer> iter = schedule.getRepeatIterator();
@@ -251,7 +252,7 @@ abstract class BaseStrategie implements IAlarmManager
 			while (iter.hasNext())
 			{
 				final SpotConfigurationVO spot = iter.next();
-				final List<Alert> alertsToCancel = getAlertsFromSpotConfiguration(spot);
+				final List<? extends Alert> alertsToCancel = getAlertsFromSpotConfiguration(spot);
 				for (final Alert alert : alertsToCancel)
 				{
 					cancelAlarm(alert, _context);

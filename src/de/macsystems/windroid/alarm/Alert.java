@@ -28,7 +28,7 @@ import de.macsystems.windroid.identifyable.Station;
 /**
  * Represents an alarm queued in AlarmManager. This Class is designed to be
  * serialized into an {@link Intent}.
- * 
+ *
  * @author mac
  * @version $Id$
  */
@@ -95,7 +95,7 @@ public final class Alert
 	private final String spotName;
 
 	/**
-	 * 
+	 *
 	 * @param _spotName
 	 * @param _selectedID
 	 * @param _repeatId
@@ -119,7 +119,7 @@ public final class Alert
 
 	/**
 	 * ID which is used to create or cancel Alerts using {@link AlarmManager}
-	 * 
+	 *
 	 * @return
 	 * @see Repeat#getId()
 	 */
@@ -130,7 +130,7 @@ public final class Alert
 
 	/**
 	 * Retrieve selected id
-	 * 
+	 *
 	 * @return
 	 * @see Station#getId()
 	 */
@@ -141,7 +141,7 @@ public final class Alert
 
 	/**
 	 * retry counter for this alarm.
-	 * 
+	 *
 	 * @return
 	 */
 	public int getRetryCounter()
@@ -151,7 +151,7 @@ public final class Alert
 
 	/**
 	 * returns daytime this alert happen first in mills.
-	 * 
+	 *
 	 * @return
 	 */
 	public long getTime()
@@ -161,7 +161,7 @@ public final class Alert
 
 	/**
 	 * Returns day of week this alert happen
-	 * 
+	 *
 	 * @return
 	 * @see Calendar#DAY_OF_WEEK
 	 */
@@ -172,7 +172,7 @@ public final class Alert
 
 	/**
 	 * Call this method if you want to re-queue this alert as a retry.
-	 * 
+	 *
 	 * @see #isRetry()
 	 */
 	void incrementRetryCounter()
@@ -182,7 +182,7 @@ public final class Alert
 
 	/**
 	 * Returns <code>true</code> if this alert represents a retry.
-	 * 
+	 *
 	 * @return
 	 * @see #incrementRetryCounter()
 	 */
@@ -193,7 +193,7 @@ public final class Alert
 
 	/**
 	 * Returns <code>true</code> if alert is expired (too many retrys).
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean isExpired()
@@ -203,7 +203,7 @@ public final class Alert
 
 	/**
 	 * Returns <code>true</code> if no retry are made for this alert.
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean isNormalAlert()
@@ -228,7 +228,7 @@ public final class Alert
 
 	/**
 	 * Writes all info needed to recreate an alert from an intent (Serialize).
-	 * 
+	 *
 	 * @param _alert
 	 * @param _intent
 	 * @throws NullPointerException
@@ -255,7 +255,7 @@ public final class Alert
 	/**
 	 * Returns <code>true</code> if <code>Intent</code> represents an
 	 * <code>Alert</code>.
-	 * 
+	 *
 	 * @param _intent
 	 * @return
 	 * @throws NullPointerException
@@ -280,7 +280,6 @@ public final class Alert
 		}
 		catch (final IllegalArgumentException e)
 		{
-			e.printStackTrace();
 			return false;
 		}
 		return true;
@@ -288,7 +287,7 @@ public final class Alert
 
 	/**
 	 * Recreate an <code>Alert</code> from an Intent. (Deserialize)
-	 * 
+	 *
 	 * @param _intent
 	 * @return
 	 * @throws NullPointerException

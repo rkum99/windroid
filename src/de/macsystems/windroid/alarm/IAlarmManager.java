@@ -22,6 +22,13 @@ import android.content.Intent;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.receiver.AlarmBroadcastReciever;
 
+/**
+ * Accessory Interface for alarm management. See {@link Alert}
+ *
+ *
+ * @author mac
+ * @version $Id$
+ */
 public interface IAlarmManager
 {
 
@@ -31,16 +38,19 @@ public interface IAlarmManager
 	 * {@link AlarmBroadcastReciever}.<br>
 	 * The Intent will call the {@link AlarmBroadcastReciever} with intent data
 	 * which describe an {@link Alert}.
-	 * 
+	 *
 	 * @param _context
 	 * @param _isReboot
 	 *            TODO
 	 * @param _id
-	 * 
+	 * @throws NullPointerException
+	 *             if any parameter is null
+	 *
 	 * @see Alert
 	 * @see Alert#read(Intent) to get an {@link Alert} from an {@link Intent}
 	 * @see Alert#write(Alert, Intent) to write an {@link Alert} into an
 	 *      {@link Intent}
+	 * @see SpotConfigurationVO
 	 */
 	public abstract void createAlarmForSpot(final SpotConfigurationVO _vo, final Context _context, boolean _isReboot);
 
@@ -49,17 +59,20 @@ public interface IAlarmManager
 	 * future using {@link BaseStrategie}.<br>
 	 * It is possible that an alert will not be processed as the alert already
 	 * reached max retrys.
-	 * 
+	 *
 	 * @param _alert
 	 * @param _context
 	 * @return <code>true</code> if alarm is enqueued.
 	 * @throws NullPointerException
+	 *             if any parameter is null
+	 *
+	 * @see Alert
 	 */
 	public abstract boolean enqueueRetryAlarm(final Alert _alert, final Context _context) throws NullPointerException;
 
 	/**
 	 * Cancels all regular alerts for all active spots. still be processed!
-	 * 
+	 *
 	 * @param _context
 	 * @TODO: retry alerts will still be processed
 	 */
@@ -67,10 +80,12 @@ public interface IAlarmManager
 
 	/**
 	 * Cancels an alert!
-	 * 
+	 *
 	 * @param _alert
 	 * @param _context
 	 * @throws NullPointerException
+	 *             if any parameter is null
+	 * @see Alert
 	 */
 	public abstract void cancelAlarm(final Alert _alert, final Context _context) throws NullPointerException;
 

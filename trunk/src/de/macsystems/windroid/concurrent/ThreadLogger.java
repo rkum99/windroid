@@ -10,9 +10,13 @@ public final class ThreadLogger implements Thread.UncaughtExceptionHandler
 {
 	private final static String LOG_TAG = ThreadLogger.class.getSimpleName();
 
+	ThreadLogger()
+	{
+	}
+
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * java.lang.Thread.UncaughtExceptionHandler#uncaughtException(java.lang
 	 * .Thread, java.lang.Throwable)

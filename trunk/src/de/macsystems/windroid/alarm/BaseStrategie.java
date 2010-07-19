@@ -42,8 +42,8 @@ import de.macsystems.windroid.identifyable.Schedule;
 import de.macsystems.windroid.receiver.AlarmBroadcastReciever;
 
 /**
- * Util class for Alert/Alarm handling
- * 
+ * Base implementation of Alert/Alarm handling.
+ *
  * @author mac
  * @version $Id$
  */
@@ -66,7 +66,7 @@ abstract class BaseStrategie implements IAlarmManager
 	private final static AtomicInteger RETRY_REQUEST_COUNTER = new AtomicInteger(1);
 
 	/**
-	 * 
+	 *
 	 * @param _normalInterval
 	 *            Interval which is used regularly
 	 * @param _retryInterval
@@ -83,7 +83,7 @@ abstract class BaseStrategie implements IAlarmManager
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * de.macsystems.windroid.alarm.IAlarmStrategie#createAlarmForSpot(de.macsystems
 	 * .windroid.common.SpotConfigurationVO, android.content.Context)
@@ -136,7 +136,7 @@ abstract class BaseStrategie implements IAlarmManager
 
 	/**
 	 * Returns all alerts which are active for spot
-	 * 
+	 *
 	 * @param _vo
 	 * @return
 	 */
@@ -178,7 +178,7 @@ abstract class BaseStrategie implements IAlarmManager
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * de.macsystems.windroid.alarm.IAlarmStrategie#enqueueRetryAlarm(de.macsystems
 	 * .windroid.alarm.Alert, android.content.Context)
@@ -226,7 +226,7 @@ abstract class BaseStrategie implements IAlarmManager
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * de.macsystems.windroid.alarm.IAlarmStrategie#cancelAllAlerts(android.
 	 * content.Context)
@@ -266,7 +266,7 @@ abstract class BaseStrategie implements IAlarmManager
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * de.macsystems.windroid.alarm.IAlarmStrategie#cancelAlarm(de.macsystems
 	 * .windroid.alarm.Alert, android.content.Context)

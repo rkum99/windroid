@@ -58,9 +58,9 @@ public class SpotService extends Service
 	private final static String LOG_TAG = SpotService.class.getSimpleName();
 
 	/**
-	 * The Threadpool used to schedule all kind of tasks.
+	 * The Threadpool/Queue used to schedule all kind of tasks.
 	 */
-	private ExecutorService threadPool;
+	private ExecutorService taskQueue;
 
 	private final ISpotService serviceBinder = new ISpotService.Stub()
 	{
@@ -132,7 +132,7 @@ public class SpotService extends Service
 	public void onCreate()
 	{
 		super.onCreate();
-		createThreadPool();
+		createTaskQueue();
 		if (Logging.isEnabled)
 		{
 			Log.i(LOG_TAG, "Service created");
@@ -149,7 +149,7 @@ public class SpotService extends Service
 	public void onStart(final Intent _intent, final int _startId)
 	{
 		super.onStart(_intent, _startId);
-		createThreadPool();
+		createTaskQueue();
 		if (Logging.isEnabled)
 		{
 			Log.i(LOG_TAG, "onStart");
@@ -185,11 +185,11 @@ public class SpotService extends Service
 	}
 
 	/**
-	 * Checks if ThreadPool already created, if not it creates it
+	 * Checks if Queue already created, if not it creates it
 	 */
-	private synchronized void createThreadPool()
+	private synchronized void createTaskQueue()
 	{
-		if (threadPool == null)
+		if (taskQueue == null)
 		{
 			final int poolSize = getResources().getInteger(R.integer.schedule_threadpool_size);
 			final int poolMaxSize = getResources().getInteger(R.integer.schedule_threadpool_max_size);
@@ -201,7 +201,7 @@ public class SpotService extends Service
 					new PriorizedFutureTaskComparator());
 			//
 			final WindroidThreadFactory factory = new WindroidThreadFactory("SpotService", Thread.NORM_PRIORITY);
-			threadPool = new ThreadPoolExecutor(poolSize, poolMaxSize, keepAlive, TimeUnit.SECONDS,
+			taskQueue = new ThreadPoolExecutor(poolSize, poolMaxSize, keepAlive, TimeUnit.SECONDS,
 					(BlockingQueue<Runnable>) queue, factory);
 		}
 	}
@@ -221,12 +221,12 @@ public class SpotService extends Service
 				Log.d(LOG_TAG, "Service#onDestroy");
 			}
 			//
-			if (threadPool != null)
+			if (taskQueue != null)
 			{
 				// First we try a 'soft' shutdown
-				threadPool.shutdown();
+				taskQueue.shutdown();
 				// waiting for termination.
-				final boolean isTerminated = threadPool.awaitTermination(4L, TimeUnit.SECONDS);
+				final boolean isTerminated = taskQueue.awaitTermination(4L, TimeUnit.SECONDS);
 				if (!isTerminated)
 				{
 					if (Logging.isEnabled)
@@ -234,7 +234,7 @@ public class SpotService extends Service
 						Log.d(LOG_TAG, "soft shutdown failed, trying hard shutdown.");
 					}
 					// Do a hard termination.
-					final List<Runnable> uncompletedTasks = threadPool.shutdownNow();
+					final List<Runnable> uncompletedTasks = taskQueue.shutdownNow();
 					logUncompletedTask(uncompletedTasks);
 				}
 				if (Logging.isEnabled)
@@ -266,7 +266,7 @@ public class SpotService extends Service
 		try
 		{
 			final PriorizedFutureTask task = new PriorizedFutureTask(PRIORITY.NORMAL, _task);
-			threadPool.execute(task);
+			taskQueue.execute(task);
 		}
 		catch (final Exception e)
 		{
@@ -283,7 +283,7 @@ public class SpotService extends Service
 		try
 		{
 			final PriorizedFutureTask task = new PriorizedFutureTask(PRIORITY.NORMAL, _task, _listener);
-			threadPool.execute(task);
+			taskQueue.execute(task);
 		}
 		catch (final Exception e)
 		{

@@ -22,6 +22,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -43,16 +44,16 @@ import de.macsystems.windroid.io.task.UpdateSpotForecastTask;
 
 /**
  * The background service which inits all tasks thru the AIDL interface. The
- * Service manages a ThreadPool. Each containing thread can be priorized using a
- * comparator see {@link PriorizedFutureTaskComparator}. Its possible to receive
- * a callback from this service if task finished, see
+ * Service manages a ThreadPool/Queue. Each containing thread can be priorized
+ * using a comparator see {@link PriorizedFutureTaskComparator}. Its possible to
+ * receive a callback from this service if task finished, see
  * {@link IServiceCallbackListener}.
  *
  * @author Jens Hohl
  * @version $Id$
  *
  */
-public class SpotService extends Service
+public final class SpotService extends Service
 {
 
 	private final static String LOG_TAG = SpotService.class.getSimpleName();
@@ -191,17 +192,24 @@ public class SpotService extends Service
 	{
 		if (taskQueue == null)
 		{
-			final int poolSize = getResources().getInteger(R.integer.schedule_threadpool_size);
-			final int poolMaxSize = getResources().getInteger(R.integer.schedule_threadpool_max_size);
+			final int threadPoolSize = getResources().getInteger(R.integer.schedule_threadpool_thread_min_count);
+			final int queueDeep = getResources().getInteger(R.integer.schedule_queue_deep);
+
 			// Seems items cannot represent float, double or long ?
 			final long keepAlive = (long) getResources().getInteger(
 					R.integer.schedule_threadpool_thread_alive_time_in_seconds);
 
-			final BlockingQueue<? super Runnable> queue = new PriorityBlockingQueue<Runnable>(poolSize,
+			Log.d(LOG_TAG, "poolMinSize:" + threadPoolSize);
+			Log.d(LOG_TAG, "queueDeep  :" + queueDeep);
+			Log.d(LOG_TAG, "keepAlive  :" + keepAlive + " seconds");
+
+			// PECS ?
+			final BlockingQueue<? extends Runnable> queue = new PriorityBlockingQueue<Runnable>(queueDeep,
 					new PriorizedFutureTaskComparator());
+
 			//
 			final WindroidThreadFactory factory = new WindroidThreadFactory("SpotService", Thread.NORM_PRIORITY);
-			taskQueue = new ThreadPoolExecutor(poolSize, poolMaxSize, keepAlive, TimeUnit.SECONDS,
+			taskQueue = new ThreadPoolExecutor(threadPoolSize, threadPoolSize, keepAlive, TimeUnit.SECONDS,
 					(BlockingQueue<Runnable>) queue, factory);
 		}
 	}
@@ -268,9 +276,9 @@ public class SpotService extends Service
 			final PriorizedFutureTask task = new PriorizedFutureTask(PRIORITY.NORMAL, _task);
 			taskQueue.execute(task);
 		}
-		catch (final Exception e)
+		catch (final RejectedExecutionException e)
 		{
-			Log.e(LOG_TAG, "Failed to queue task", e);
+			Log.e(LOG_TAG, "Queue max capacity.", e);
 		}
 	}
 
@@ -285,9 +293,9 @@ public class SpotService extends Service
 			final PriorizedFutureTask task = new PriorizedFutureTask(PRIORITY.NORMAL, _task, _listener);
 			taskQueue.execute(task);
 		}
-		catch (final Exception e)
+		catch (final RejectedExecutionException e)
 		{
-			Log.e(LOG_TAG, "Failed to queue task", e);
+			Log.e(LOG_TAG, "Queue max capacity.", e);
 		}
 	}
 
@@ -317,7 +325,7 @@ public class SpotService extends Service
 	 * @param _intent
 	 * @return
 	 */
-	public static boolean isRestartActiveSpotsIntent(final Intent _intent)
+	public final static boolean isRestartActiveSpotsIntent(final Intent _intent)
 	{
 		if (_intent != null)
 		{

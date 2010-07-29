@@ -36,7 +36,7 @@
 		<TextView
 			android:id="@+id/about_data_provider"
 			android:gravity="center_horizontal"
-			android:text="Data : http://windfinder.com"
+			android:text="Data : http://yourserver.com"
 			android:layout_width="fill_parent"
 			android:layout_height="fill_parent"
 			android:linksClickable="true"

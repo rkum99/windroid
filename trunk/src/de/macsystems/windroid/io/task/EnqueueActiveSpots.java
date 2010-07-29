@@ -19,7 +19,7 @@ import de.macsystems.windroid.db.ISelectedDAO;
 /**
  * Will run after an reboot to create alarms for active spots again. The User
  * gets informed about the scheduling.
- * 
+ *
  * @author mac
  * @version $Id: org.eclipse.jdt.ui.prefs 44 2009-10-02 15:22:27Z jens.hohl $
  */
@@ -39,7 +39,7 @@ public class EnqueueActiveSpots extends AbstractNotificationTask<Void>
 		final ISelectedDAO dao = DAOFactory.getSelectedDAO(getContext());
 		if (dao.isSpotActiv())
 		{
-			final Collection<SpotConfigurationVO> activeSpots = dao.getActivSpots();
+			final Collection<? extends SpotConfigurationVO> activeSpots = dao.getActivSpots();
 			if (Logging.isEnabled)
 			{
 				Log.d(LOG_TAG, "Scheduling " + activeSpots.size() + " activ spot(s) after reboot to monitor.");
@@ -58,14 +58,14 @@ public class EnqueueActiveSpots extends AbstractNotificationTask<Void>
 
 	/**
 	 * Enqueues all spots again after reboot.
-	 * 
+	 *
 	 * @param _spots
 	 *            can be null
 	 * @param _context
 	 * @throws NullPointerException
 	 *             if context is null
 	 */
-	private static void enqueueSpots(final Collection<SpotConfigurationVO> _spots, final Context _context)
+	private static void enqueueSpots(final Collection<? extends SpotConfigurationVO> _spots, final Context _context)
 			throws NullPointerException
 	{
 		if (_spots == null)

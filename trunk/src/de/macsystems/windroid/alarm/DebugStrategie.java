@@ -21,7 +21,7 @@ import android.app.AlarmManager;
 
 /**
  * A Strategie which allows better debugging control.
- * 
+ *
  * @author mac
  * @version $Id$
  */
@@ -29,6 +29,8 @@ final class DebugStrategie extends BaseStrategie
 {
 	DebugStrategie()
 	{
-		super(AlarmManager.INTERVAL_FIFTEEN_MINUTES * 2, AlarmManager.INTERVAL_FIFTEEN_MINUTES / 3, 10L * 1000L);
+		// super(AlarmManager.INTERVAL_FIFTEEN_MINUTES * 2,
+		// AlarmManager.INTERVAL_FIFTEEN_MINUTES / 3, 10L * 1000L);
+		super(10 * 1000L, 60 * 1000L, 10L * 1000L);
 	}
 }

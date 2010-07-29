@@ -25,9 +25,9 @@ import java.util.TreeSet;
 
 /**
  * A Continent has country's and a display name id is DB id not primary key..
- * 
+ *
  * @author mac
- * @version $Id: Continent.java 172 2010-01-27 02:09:20Z jens.hohl $
+ * @version $Id$
  */
 public class Continent implements IdentifyAble, Node<Country>
 {
@@ -38,24 +38,25 @@ public class Continent implements IdentifyAble, Node<Country>
 
 	private final Set<Country> countrys;
 
-	public static class ContinentComparator implements Comparator<Continent>, Serializable
+	// PECS
+	public final static class ContinentComparator<T extends Continent> implements Comparator<T>, Serializable
 	{
 		private static final long serialVersionUID = 1L;
 
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 		 */
 		@Override
-		public int compare(final Continent object1, final Continent object2)
+		public int compare(final T object1, final T object2)
 		{
 			return object1.getId().compareTo(object2.getId());
 		}
 	}
 
 	/**
-	 * 
+	 *
 	 * @param _key
 	 * @param _name
 	 */
@@ -72,7 +73,7 @@ public class Continent implements IdentifyAble, Node<Country>
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see de.macsystems.windroid.identifyable.IdentifyAble#getId()
 	 */
 	@Override
@@ -82,7 +83,7 @@ public class Continent implements IdentifyAble, Node<Country>
 	}
 
 	/**
-	 * 
+	 *
 	 * @return
 	 */
 	public String getName()
@@ -92,7 +93,7 @@ public class Continent implements IdentifyAble, Node<Country>
 
 	/**
 	 * Returns an Iterator over all Country's of this Continent.
-	 * 
+	 *
 	 * @return
 	 */
 	@Override
@@ -126,7 +127,7 @@ public class Continent implements IdentifyAble, Node<Country>
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -142,7 +143,7 @@ public class Continent implements IdentifyAble, Node<Country>
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override

@@ -37,7 +37,7 @@ import de.macsystems.windroid.progress.NullProgressAdapter;
 /**
  * @author Jens Hohl
  * @version $Id$
- * 
+ *
  */
 public class WindUtils
 {
@@ -52,8 +52,8 @@ public class WindUtils
 	/**
 	 * Creates an <code>Intent</code> which ready to invoke next activity. It
 	 * stores <code>SpotConfigurationVO</code> in its extras.
-	 * 
-	 * 
+	 *
+	 *
 	 * @param _source
 	 * @param _activityToLaunch
 	 * @param _spotConfiguration
@@ -72,7 +72,7 @@ public class WindUtils
 	/**
 	 * Returns <code>true</code> when a SpotConfiguration can be found in given
 	 * Intent.
-	 * 
+	 *
 	 * @param _intent
 	 * @return
 	 */
@@ -84,7 +84,7 @@ public class WindUtils
 	/**
 	 * Returns <code>SpotConfigurationVO</code> from given <code>Intent</code>s
 	 * extras.
-	 * 
+	 *
 	 * @param _intent
 	 * @return a SpotConfigurationVO or <code>null</code> if nothing was found.
 	 * @see #isSpotConfigured(Intent)
@@ -97,29 +97,29 @@ public class WindUtils
 
 	/**
 	 * Returns URL where all Stations are defined.
-	 * 
+	 *
 	 * @return
 	 * @throws IOException
 	 */
 	public final static URL getStationXMLUrl() throws IOException
 	{
-		return new URL("http://www.windfinder.com/windfox/stations.xml");
+		return new URL("http://www.yourserver.com");
 	}
 
 	/**
-	 * Returns URL on server where MD5 Hash of stations.xml is located.
-	 * 
+	 * Returns URL on server where MD5 Hash of file is located.
+	 *
 	 * @return
 	 * @throws IOException
 	 */
 	public final static URL getStationMD5URL() throws IOException
 	{
-		return new URL("http://www.windfinder.com/windfox/stations.md5");
+		return new URL("http://www.yourserver.com");
 	}
 
 	/**
 	 * Returns <code>true</code> whenever a new station list is available.
-	 * 
+	 *
 	 * @param _context
 	 * @return
 	 * @throws IOException
@@ -163,7 +163,7 @@ public class WindUtils
 	}
 
 	/**
-	 * 
+	 *
 	 * @param _context
 	 * @return
 	 */
@@ -173,7 +173,7 @@ public class WindUtils
 	}
 
 	/**
-	 * 
+	 *
 	 * @param _context
 	 * @param _downloadProgress
 	 * @throws RetryLaterException
@@ -227,8 +227,8 @@ public class WindUtils
 	}
 
 	/**
-	 * Returns MD5 checksum of Station.xml file on Server.
-	 * 
+	 * Returns MD5 checksum of file on Server.
+	 *
 	 * @param _context
 	 * @return
 	 * @throws IOException
@@ -268,7 +268,7 @@ public class WindUtils
 
 	/**
 	 * Return URL of JSON Forecast by id of station.
-	 * 
+	 *
 	 * @return
 	 * @throws IOException
 	 */
@@ -279,117 +279,18 @@ public class WindUtils
 			throw new IllegalArgumentException("Illegal StationID \"" + _stationID + "\".");
 		}
 
-		// http: //
-		// www.windfinder.com/wind-cgi/xmlforecast.pl?CUSTOMER=windfox&FORMAT=JSON&VERSION=1&STATIONS=nl158
-
-		// http://www.windfinder.com/api/forecast?CUSTOMER=windfox&FORMAT=JSON&EPOCH=0&MINIFIED=0&VERSION=1.0.3&STATIONS=nl47
-		return new URL(
-				"http://www.windfinder.com/api/forecast?CUSTOMER=windfox&FORMAT=JSON&EPOCH=0&MINIFIED=0&VERSION=1.0.3&STATIONS="
-						+ _stationID);
-		// return new
-		// URL("http://www.windfinder.com/wind-cgi/xmlforecast.pl?CUSTOMER=windfox&FORMAT=JSON&VERSION=1"+
-		// "&STATIONS=" + _stationID);
-
-		// return new URL("http://10.0.2.2:5000");
+		return new URL("http://www.yourserver.com");
 	}
 
 	/**
 	 * Return URL of XML Forecast
-	 * 
+	 *
 	 * @return
 	 * @throws IOException
 	 */
 	public final static URL getXMLForcastURL(final String _stationID) throws IOException
 	{
-		return new URL("http://www.windfinder.com/wind-cgi/xmlforecast.pl?CUSTOMER=windfox&FORMAT=xml" + "&STATIONS="
-				+ _stationID);
+		return new URL("http://www.yourserver.com");
 	}
 
-	/*
-	 * @param _stationID
-	 * 
-	 * @return
-	 * 
-	 * @throws IOException
-	 */
-	public static URL createWindreport(final String _stationID) throws IOException
-	{
-		if (_stationID == null)
-		{
-			throw new IllegalArgumentException("invalid station id");
-		}
-
-		final URL reportURL = new URL("http://www.windfinder.com/report/" + _stationID);
-		return reportURL;
-	}
-
-	/*
-	 * @param _stationID
-	 * 
-	 * @return
-	 * 
-	 * @throws IOException
-	 */
-	public static URL createForecast(final String _stationID) throws IOException
-	{
-		if (_stationID == null)
-		{
-			throw new IllegalArgumentException("invalid station id");
-		}
-
-		final URL reportURL = new URL("http://www.windfinder.com/forecast/" + _stationID);
-		return reportURL;
-	}
-
-	/*
-	 * @param _stationID
-	 * 
-	 * @return
-	 * 
-	 * @throws IOException
-	 */
-	public static URL createSuperforecastURL(final String _stationID) throws IOException
-	{
-		if (_stationID == null)
-		{
-			throw new IllegalArgumentException("invalid station id");
-		}
-
-		final URL reportURL = new URL("http://www.windfinder.com/weatherforecast/" + _stationID);
-		return reportURL;
-	}
-
-	/**
-	 * 
-	 * @param _stationID
-	 * @return
-	 * @throws IOException
-	 */
-	public static URL createGetReportURL(final String _stationID) throws IOException
-	{
-		if (_stationID == null)
-		{
-			throw new IllegalArgumentException("invalid station id");
-		}
-
-		final URL reportURL = new URL("http://www.windfinder.com/wind-cgi/xmlreport.pl?CUSTOMER=windfox&STATIONS="
-				+ _stationID);
-		return reportURL;
-	}
-
-	public static URL createStatisicURL(final String _stationID) throws IOException
-	{
-		if (_stationID == null)
-		{
-			throw new IllegalArgumentException("invalid station id");
-		}
-
-		final StringBuilder urlBuffer = new StringBuilder(256);
-		urlBuffer.append("http://www.windfinder.com/windstats/windstatistic_");
-		urlBuffer.append(_stationID);
-		urlBuffer.append(".htm");
-
-		final URL statisticURL = new URL(urlBuffer.toString());
-		return statisticURL;
-	}
 }

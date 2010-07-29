@@ -75,14 +75,14 @@ public interface ISelectedDAO extends IDAO
 
 	/**
 	 * Adds a Spot
-	 * 
+	 *
 	 * @param _vo
 	 */
 	public void insertSpot(SpotConfigurationVO _vo);
 
 	/**
 	 * Enables or Disables a Spot
-	 * 
+	 *
 	 * @param _id
 	 * @param isActiv
 	 */
@@ -90,7 +90,7 @@ public interface ISelectedDAO extends IDAO
 
 	/**
 	 * Returns <code>true<code> if spot is activ.
-	 * 
+	 *
 	 * @param _id
 	 * @return
 	 * @throws DBException
@@ -99,7 +99,7 @@ public interface ISelectedDAO extends IDAO
 
 	/**
 	 * Returns an Configuration Object
-	 * 
+	 *
 	 * @param _id
 	 *            primary key
 	 * @return
@@ -109,50 +109,50 @@ public interface ISelectedDAO extends IDAO
 
 	/**
 	 * Updates an Spot by using given {@link SpotConfigurationVO}
-	 * 
+	 *
 	 * @param _vo
 	 */
 	public void update(final SpotConfigurationVO _vo);
 
 	/**
 	 * Deletes a spot from selected table using its primary key.
-	 * 
+	 *
 	 * @param _id
 	 */
 	public void delete(final int _id);
 
 	/**
 	 * Enables / Disables all Spots
-	 * 
+	 *
 	 * @param active
 	 */
 	public void setAllActiv(final boolean active);
 
 	/**
 	 * Returns a cursor with all spots configured.
-	 * 
+	 *
 	 * @return
 	 */
 	public Cursor getConfiguredSpots();
 
 	/**
 	 * Returns true when at least one spot is configured and activ.
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean isSpotActiv();
 
 	/**
 	 * Returns a Collection of Spots which are active.
-	 * 
+	 *
 	 * @return
 	 * @throws DBException
 	 */
-	public Collection<SpotConfigurationVO> getActivSpots() throws DBException;
+	public Collection<? extends SpotConfigurationVO> getActivSpots() throws DBException;
 
 	/**
 	 * Returns selectedid array of active spots
-	 * 
+	 *
 	 * @return
 	 * @throws DBException
 	 */

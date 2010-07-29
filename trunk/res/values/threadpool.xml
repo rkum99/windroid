@@ -4,15 +4,15 @@
 	-->
 
 <resources>
-	<item
-		name="schedule_threadpool_size"
-		type="integer">1</item>
-	<item
-		name="schedule_threadpool_max_size"
-		type="integer">5</item>
-	<item
-		name="schedule_threadpool_thread_alive_time_in_seconds"
+	<!--
+		The minimum of active threads, we specify no maximum as queue is an
+		unbound queue. This prevents creating to much threads on a embedded
+		system
+	-->
+	<item name="schedule_threadpool_thread_min_count" type="integer">3</item>
+	<!-- Size of queue before task get rejected -->
+	<item name="schedule_queue_deep" type="integer">30</item>
+	<!-- The lifetime of an idle thread in seconds before it gets killed -->
+	<item name="schedule_threadpool_thread_alive_time_in_seconds"
 		type="integer">60</item>
-
-
 </resources>

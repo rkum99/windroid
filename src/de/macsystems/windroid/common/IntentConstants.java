@@ -21,7 +21,7 @@ package de.macsystems.windroid.common;
 /**
  * @author Jens Hohl
  * @version $Id$
- * 
+ *
  */
 public final class IntentConstants
 {
@@ -42,11 +42,6 @@ public final class IntentConstants
 	public static final String ALARM_NOTIFICATION = "ALARM_NOTIFICATION";
 
 	/**
-	 * Used to retrieve the repeat id from an intent {@value #REPEAT_ID}
-	 */
-	public static final String REPEAT_ID = "repeat_id";
-
-	/**
 	 * Name of Action which will start this Service
 	 * {@value #DE_MACSYSTEMS_WINDROID_START_SPOT_SERVICE_ACTION}
 	 */
@@ -55,22 +50,6 @@ public final class IntentConstants
 	 * Name of Action for Alert {@value #DE_MACSYSTEMS_WINDROID_ALERT_TRIGGER}
 	 */
 	public static final String DE_MACSYSTEMS_WINDROID_ALERT_TRIGGER = "de.macsystems.windroid.ALERT_TRIGGER";
-
-	/**
-	 * Name of Intent Action which will be broadcasted on Spot update (use a
-	 * IntentFilter). {@value #DE_MACSYSTEMS_WINDROID_SPOT_UPDATE_ACTION}
-	 */
-	public static final String DE_MACSYSTEMS_WINDROID_SPOT_UPDATE_ACTION = "de.macsystems.windroid.SPOT_UPDATE_ACTION";
-
-	/**
-	 * Lookup Key for primary key in a Intent {@value #SELECTED_PRIMARY_KEY}
-	 */
-	public final static String SELECTED_PRIMARY_KEY = "selected primary key";
-
-	/**
-	 * Lookup Key for retry counter in a Intent {@value #SELECTED_RETRY_COUNTER}
-	 */
-	public final static String SELECTED_RETRY_COUNTER = "selected retry counter";
 
 	/**
 	 * Lookup Key for primary key of forecast to show.

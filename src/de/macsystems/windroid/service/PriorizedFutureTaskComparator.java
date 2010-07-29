@@ -21,7 +21,7 @@ import java.util.Comparator;
 
 /**
  * Compares {@link PRIORITY}
- * 
+ *
  * @author mac
  * @version $Id: PriorizedFutureTaskComparator.java 330 2010-04-24 14:23:11Z
  *          jens.hohl $
@@ -31,7 +31,7 @@ final class PriorizedFutureTaskComparator<T> implements Comparator<PriorizedFutu
 {
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 	 */
 	@Override

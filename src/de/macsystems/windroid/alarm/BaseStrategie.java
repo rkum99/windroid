@@ -242,13 +242,13 @@ abstract class BaseStrategie implements IAlarmManager
 		}
 		try
 		{
-			final Collection<SpotConfigurationVO> spots = dao.getActivSpots();
+			final Collection<? extends SpotConfigurationVO> spots = dao.getActivSpots();
 			if (Logging.isEnabled)
 			{
 				Log.i(LOG_TAG, "Found " + spots.size() + " Spots which are active.");
 			}
 
-			final Iterator<SpotConfigurationVO> iter = spots.iterator();
+			final Iterator<? extends SpotConfigurationVO> iter = spots.iterator();
 			while (iter.hasNext())
 			{
 				final SpotConfigurationVO spot = iter.next();

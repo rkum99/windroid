@@ -31,7 +31,7 @@ import de.macsystems.windroid.progress.NullProgressAdapter;
 
 /**
  * Base Implementation for DAOs
- * 
+ *
  * @author Jens Hohl
  * @version $Id$
  */
@@ -41,11 +41,11 @@ public class BaseImpl implements IDAO
 
 	public final static int INITIAL_COLLECTION_CAPACITY = 16;
 	/**
-	 * 
+	 *
 	 */
 	private final Database database;
 	/**
-	 * 
+	 *
 	 */
 	private final IProgress progress;
 	/**
@@ -60,7 +60,7 @@ public class BaseImpl implements IDAO
 	private final static Object LOCK = new Object();
 
 	/**
-	 * 
+	 *
 	 * @param _database
 	 * @param _tableName
 	 *            default name of the table this class uses.
@@ -92,7 +92,7 @@ public class BaseImpl implements IDAO
 
 	/**
 	 * A Base Implementation with a {@link NullProgressAdapter}
-	 * 
+	 *
 	 * @param _database
 	 * @param _tableName
 	 * @see NullProgressAdapter
@@ -105,7 +105,7 @@ public class BaseImpl implements IDAO
 	}
 
 	/**
-	 * 
+	 *
 	 * @return
 	 */
 	protected IProgress getProgress()
@@ -115,7 +115,7 @@ public class BaseImpl implements IDAO
 
 	/**
 	 * returns a readable {@link SQLiteDatabase}
-	 * 
+	 *
 	 * @return
 	 */
 	protected SQLiteDatabase getReadableDatabase()
@@ -128,28 +128,30 @@ public class BaseImpl implements IDAO
 			}
 		}
 		return cachedDB;
+//		return getDatabase().getReadableDatabase();
 	}
 
 	/**
 	 * returns a writable {@link SQLiteDatabase}
-	 * 
+	 *
 	 * @return
 	 */
 	protected SQLiteDatabase getWritableDatabase()
 	{
-		synchronized (LOCK)
-		{
-			if (cachedDB == null || !cachedDB.isOpen())
-			{
-				cachedDB = getDatabase().getReadableDatabase();
-			}
-		}
-		return cachedDB;
+		 synchronized (LOCK)
+		 {
+		 if (cachedDB == null || !cachedDB.isOpen())
+		 {
+		 cachedDB = getDatabase().getWritableDatabase();
+		 }
+		 }
+		 return cachedDB;
+		//		return getDatabase().getWritableDatabase();
 	}
 
 	/**
 	 * Returns the Database
-	 * 
+	 *
 	 * @return
 	 */
 	protected Database getDatabase()
@@ -160,13 +162,13 @@ public class BaseImpl implements IDAO
 	/**
 	 * Returns the count(*) of given table name like a 'select count(*) from
 	 * table'
-	 * 
+	 *
 	 * @return
 	 * @throws IllegalArgumentException
 	 */
-	protected int getCount(final String _tabelName) throws IllegalArgumentException
+	protected int getCount(final String _tableName) throws IllegalArgumentException
 	{
-		if (_tabelName == null)
+		if (_tableName == null)
 		{
 			throw new IllegalArgumentException("invalid table name");
 		}
@@ -180,7 +182,7 @@ public class BaseImpl implements IDAO
 			{
 				if (Logging.isEnabled)
 				{
-					Log.d(LOG_TAG, "no entrys in " + _tabelName);
+					Log.d(LOG_TAG, "no entrys in " + _tableName);
 				}
 				return result;
 			}
@@ -203,7 +205,7 @@ public class BaseImpl implements IDAO
 	 * Returns a Cursor which contains result of a SQL like<br>
 	 * 'SELECT * from tablename WHERE column='value'. The Tablename is the
 	 * default table name.
-	 * 
+	 *
 	 * @param _columnName
 	 * @param _value
 	 * @return
@@ -227,7 +229,7 @@ public class BaseImpl implements IDAO
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see de.macsystems.windroid.db.IDAO#fetchAll()
 	 */
 	@Override
@@ -238,7 +240,7 @@ public class BaseImpl implements IDAO
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see de.macsystems.windroid.db.IDAO#getSize()
 	 */
 	@Override
@@ -249,7 +251,7 @@ public class BaseImpl implements IDAO
 
 	/**
 	 * Converts an Boolean to an Integer representation
-	 * 
+	 *
 	 * @param _boolean
 	 * @return
 	 */
@@ -260,7 +262,7 @@ public class BaseImpl implements IDAO
 
 	/**
 	 * Converts an Integer to an Boolean representation
-	 * 
+	 *
 	 * @param _value
 	 * @return
 	 */
@@ -271,7 +273,7 @@ public class BaseImpl implements IDAO
 
 	/**
 	 * Returns value found in column as String
-	 * 
+	 *
 	 * @param _c
 	 * @param _columnName
 	 * @return
@@ -285,7 +287,7 @@ public class BaseImpl implements IDAO
 
 	/**
 	 * Returns value found in column as float
-	 * 
+	 *
 	 * @param _c
 	 * @param _columnName
 	 * @return
@@ -300,7 +302,7 @@ public class BaseImpl implements IDAO
 
 	/**
 	 * Returns value found in column as long
-	 * 
+	 *
 	 * @param _c
 	 * @param _columnName
 	 * @return
@@ -315,7 +317,7 @@ public class BaseImpl implements IDAO
 
 	/**
 	 * Returns value found in column as integer
-	 * 
+	 *
 	 * @param _c
 	 * @param _columnName
 	 * @return
@@ -330,7 +332,7 @@ public class BaseImpl implements IDAO
 
 	/**
 	 * Returns value found in column as double
-	 * 
+	 *
 	 * @param _c
 	 * @param _columnName
 	 * @return
@@ -345,7 +347,7 @@ public class BaseImpl implements IDAO
 
 	/**
 	 * Returns value found in column as boolean
-	 * 
+	 *
 	 * @param _c
 	 * @param _columnName
 	 * @return
@@ -360,7 +362,7 @@ public class BaseImpl implements IDAO
 
 	/**
 	 * Returns value found in column as short
-	 * 
+	 *
 	 * @param _c
 	 * @param _columnName
 	 * @return
@@ -376,7 +378,7 @@ public class BaseImpl implements IDAO
 	/**
 	 * Moves Cursor to first position or if cursor is empty it throws an
 	 * {@link EmptyCursorException}
-	 * 
+	 *
 	 * @param _c
 	 */
 	public static final void moveToFirstOrThrow(final Cursor _c) throws EmptyCursorException
@@ -393,7 +395,7 @@ public class BaseImpl implements IDAO
 	 * SELECT MAX (_id) from table;<br>
 	 * <br>
 	 * Database will not be closed!
-	 * 
+	 *
 	 * @param _db
 	 * @return
 	 */

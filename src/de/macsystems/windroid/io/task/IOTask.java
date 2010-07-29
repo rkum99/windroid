@@ -20,15 +20,26 @@ package de.macsystems.windroid.io.task;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.util.zip.GZIPInputStream;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.HttpVersion;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.params.ConnManagerParams;
+import org.apache.http.conn.scheme.PlainSocketFactory;
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
+import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
+import org.apache.http.params.HttpProtocolParams;
+import org.apache.http.protocol.HTTP;
 
 import android.content.Context;
 import android.util.Log;
@@ -51,8 +62,6 @@ public abstract class IOTask<V, I> implements Task<V, I>
 {
 	private final static String LOG_TAG = IOTask.class.getSimpleName();
 
-	private final static HttpClient client = new DefaultHttpClient();
-	private final static HttpParams HTTP_PARAMS = client.getParams();
 	/**
 	 * HTTP User Agent
 	 */
@@ -64,7 +73,29 @@ public abstract class IOTask<V, I> implements Task<V, I>
 	/**
 	 * One Minute Timeout.
 	 */
-	private final int HTTP_TIMEOUT = 1000 * 60;
+	private final static int HTTP_TIMEOUT = 1000 * 60;
+	/**
+	 * We use only 1 connection as request are queued
+	 */
+	private final static int MAX_CONNECTIONS = 3;
+
+	private final static HttpClient client;
+
+	static
+	{
+		final HttpParams parameters = new BasicHttpParams();
+		HttpProtocolParams.setVersion(parameters, HttpVersion.HTTP_1_1);
+		HttpProtocolParams.setContentCharset(parameters, HTTP.UTF_8);
+		HttpProtocolParams.setUseExpectContinue(parameters, false);
+		ConnManagerParams.setMaxTotalConnections(parameters, MAX_CONNECTIONS);
+		HttpConnectionParams.setConnectionTimeout(parameters, HTTP_TIMEOUT);
+		HttpConnectionParams.setSoTimeout(parameters, HTTP_TIMEOUT);
+		//
+		final SchemeRegistry schReg = new SchemeRegistry();
+		schReg.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
+		//
+		client = new DefaultHttpClient(new ThreadSafeClientConnManager(parameters, schReg), parameters);
+	}
 
 	/**
 	 *
@@ -86,9 +117,6 @@ public abstract class IOTask<V, I> implements Task<V, I>
 		}
 		uri = _uri;
 		progress = _progress;
-		//
-		HttpConnectionParams.setConnectionTimeout(HTTP_PARAMS, HTTP_TIMEOUT);
-		HttpConnectionParams.setSoTimeout(HTTP_PARAMS, HTTP_TIMEOUT);
 	}
 
 	protected URI getURI()
@@ -113,7 +141,7 @@ public abstract class IOTask<V, I> implements Task<V, I>
 		}
 		final HttpGet httpGet = new HttpGet(uri);
 		httpGet.addHeader("User-Agent", MOZILLA_5_0);
-		httpGet.setParams(HTTP_PARAMS);
+		httpGet.addHeader("Accept-Encoding", "gzip,deflate");
 
 		final HttpResponse response = getHTTPClient().execute(httpGet);
 		if (Logging.isEnabled)
@@ -135,14 +163,26 @@ public abstract class IOTask<V, I> implements Task<V, I>
 		 * Every Exception behind is catched using 'Exception Firewall' and
 		 * translated into a RetryLaterException.
 		 */
-		CountInputStream instream = null;
+		InputStream instream = null;
 		try
 		{
-			instream = new CountInputStream(response.getEntity().getContent());
+			// instream = new CountInputStream((response.getEntity()));
+
+			// instream = new GZIPInputStream(new
+			// CountInputStream(response.getEntity().getContent()));
+
+			instream = handleContent(response.getEntity());
+
 			if (Logging.isEnabled)
 			{
 				Log.d(LOG_TAG, "HTTP Content Lenght:" + response.getEntity().getContentLength());
+				Log.d(LOG_TAG, "HTTP Content Encoding:" + response.getEntity().getContentEncoding());
+				Log.d(LOG_TAG, "HTTP Content Content Type:" + response.getEntity().getContentType());
+				Log.d(LOG_TAG, "HTTP Content isChunked:" + response.getEntity().isChunked());
+				Log.d(LOG_TAG, "HTTP Content isRepeatable:" + response.getEntity().isRepeatable());
+				Log.d(LOG_TAG, "HTTP Content isStreaming:" + response.getEntity().isStreaming());
 			}
+
 			return process(_context, instream);
 		}
 		catch (final Exception e)
@@ -153,6 +193,7 @@ public abstract class IOTask<V, I> implements Task<V, I>
 		{
 			IOUtils.close(instream);
 		}
+
 	}
 
 	/*
@@ -171,6 +212,24 @@ public abstract class IOTask<V, I> implements Task<V, I>
 	protected IProgress getProgress()
 	{
 		return progress;
+	}
+
+	private InputStream handleContent(final HttpEntity _entity) throws IllegalStateException, IOException
+	{
+		if (_entity.getContentEncoding() == null)
+		{
+			return new CountInputStream(_entity.getContent());
+		}
+
+		final String encoding = _entity.getContentEncoding().getValue();
+
+		if ("gzip".equalsIgnoreCase(encoding))
+		{
+			return new GZIPInputStream(new CountInputStream(_entity.getContent()));
+		}
+
+		throw new IllegalArgumentException("unknown encoding :" + encoding);
+
 	}
 
 }

@@ -58,10 +58,22 @@ public enum Measure implements IdentifyAble
 	/**
 	 * 
 	 * @param _id
+	 *            unique id
+	 * @param _description
+	 * @param _shortDisplayName
+	 *            name may be used to display name
+	 * @param _max
+	 * @throws NullPointerException
+	 *             if any parameter passed in is <code>null</code>.
 	 */
-	// private Measure(final String _id, final String _shortDisplayName)
 	private Measure(final String _id, final String _description, final String _shortDisplayName, final float _max)
+			throws NullPointerException
 	{
+		if (_id == null || _description == null || _shortDisplayName == null)
+		{
+			throw new NullPointerException();
+		}
+
 		id = _id;
 		shortDisplayName = _shortDisplayName;
 		description = _description;

@@ -335,7 +335,7 @@ public final class Util
 	 * @param _activity
 	 *            needed to read display settings from activity.
 	 * @throws NullPointerException
-	 * @see Logging#isEnabled()
+	 * @see {@link Logging#isEnabled}
 	 */
 	public static void logDisplayMetrics(final Activity _activity) throws NullPointerException
 	{

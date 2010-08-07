@@ -201,6 +201,10 @@ public final class MainActivity extends DBActivity
 	{
 		/**
 		 * Destroy the Service. As we not using it any more.
+		 * 
+		 * 
+		 * TODO: Is this correct there ? As the Service is running we may
+		 * interrupt it there.
 		 */
 		final Intent stopIntent = new Intent(this, SpotService.class);
 		stopService(stopIntent);

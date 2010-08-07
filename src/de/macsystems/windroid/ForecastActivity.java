@@ -169,7 +169,7 @@ public final class ForecastActivity extends DBActivity
 	private final Handler handler = new Handler()
 	{
 		@Override
-		public void handleMessage(final Message _msg)
+		public final void handleMessage(final Message _msg)
 		{
 			try
 			{
@@ -188,7 +188,7 @@ public final class ForecastActivity extends DBActivity
 	{
 
 		@Override
-		public void onServiceDisconnected(final ComponentName _name)
+		public final void onServiceDisconnected(final ComponentName _name)
 		{
 			if (Logging.isEnabled)
 			{
@@ -198,7 +198,7 @@ public final class ForecastActivity extends DBActivity
 		}
 
 		@Override
-		public void onServiceConnected(final ComponentName _name, final IBinder _service)
+		public final void onServiceConnected(final ComponentName _name, final IBinder _service)
 		{
 			if (Logging.isEnabled)
 			{
@@ -214,7 +214,7 @@ public final class ForecastActivity extends DBActivity
 	{
 
 		@Override
-		public void onTaskComplete() throws RemoteException
+		public final void onTaskComplete() throws RemoteException
 		{
 			final Forecast aforecast;
 			try
@@ -233,7 +233,7 @@ public final class ForecastActivity extends DBActivity
 		}
 
 		@Override
-		public void onTaskFailed() throws RemoteException
+		public final void onTaskFailed() throws RemoteException
 		{
 			removeDialog(UPDATE_SPOT_DIALOG);
 			Toast.makeText(ForecastActivity.this,
@@ -249,7 +249,8 @@ public final class ForecastActivity extends DBActivity
 		private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 
 		@Override
-		public boolean onFling(final MotionEvent e1, final MotionEvent e2, final float velocityX, final float velocityY)
+		public final boolean onFling(final MotionEvent e1, final MotionEvent e2, final float velocityX,
+				final float velocityY)
 		{
 			if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
 			{

@@ -32,10 +32,10 @@ import de.macsystems.windroid.identifyable.WindSpeedConverter;
 
 /**
  * Main Preferences Screen of Windroid
- *
+ * 
  * @author Jens Hohl
  * @version $Id$
- *
+ * 
  */
 public final class Preferences extends PreferenceActivity
 {
@@ -51,7 +51,7 @@ public final class Preferences extends PreferenceActivity
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.app.Activity#onPause()
 	 */
 	@Override
@@ -73,7 +73,7 @@ public final class Preferences extends PreferenceActivity
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override
@@ -96,7 +96,7 @@ public final class Preferences extends PreferenceActivity
 
 	/*
 	 * (non-Javadoc)
-	 *
+	 * 
 	 * @see android.app.Activity#onStop()
 	 */
 	@Override
@@ -118,10 +118,10 @@ public final class Preferences extends PreferenceActivity
 		}
 		final SharedPreferences pref = Util.getSharedPreferences(this);
 		Log.d(LOG_TAG, "SharedPreferences contain " + pref.getAll().size() + " Entry(s).");
-		final Iterator<?> keyIter = pref.getAll().keySet().iterator();
+		final Iterator<String> keyIter = pref.getAll().keySet().iterator();
 		while (keyIter.hasNext())
 		{
-			final Object o = keyIter.next();
+			final String o = keyIter.next();
 			Log.d(LOG_TAG, "Preference Key:" + o + "=" + pref.getAll().get(o));
 		}
 	}

@@ -1062,6 +1062,7 @@ public final class ForecastActivity extends DBActivity
 	 * 
 	 * @param _intent
 	 * @return
+	 * @see #getForecastID(Intent)
 	 */
 	private static final boolean isForecastID(final Intent _intent)
 	{
@@ -1078,7 +1079,9 @@ public final class ForecastActivity extends DBActivity
 	/**
 	 * 
 	 * @param _intent
-	 * @return
+	 * @return the id or -1 if not found or <code>Intent</code> was
+	 *         <code>null</code>.
+	 * @see #isForecastID(Intent)
 	 */
 	private static final int getForecastID(final Intent _intent)
 	{

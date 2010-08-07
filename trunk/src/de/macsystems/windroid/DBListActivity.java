@@ -20,7 +20,7 @@ package de.macsystems.windroid;
 import android.app.ListActivity;
 
 /**
- * A List activity which also provides DAO management features
+ * A List activity whith {@link DAOManger} features.
  * 
  * @author mac
  * @version $Id$

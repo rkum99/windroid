@@ -65,11 +65,17 @@ public final class DAOManger
 	 */
 	protected void onStop()
 	{
-		for (final IDAO dao : daos)
+		try
 		{
-			dao.onStop();
+			for (final IDAO dao : daos)
+			{
+				dao.onStop();
+			}
 		}
-		daos.clear();
+		finally
+		{
+			daos.clear();
+		}
 	}
 
 	/*

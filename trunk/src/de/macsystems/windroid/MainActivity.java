@@ -277,6 +277,10 @@ public final class MainActivity extends DBActivity
 		setupCancelAlarmTest();
 	}
 
+	/**
+	 * Check if the GPL Dialog should be shown or it was already accepted, it it
+	 * was already accepted the method will just return.
+	 */
 	final private void showGPL()
 	{
 		if (Util.isLicenceAccepted(this))
@@ -316,12 +320,17 @@ public final class MainActivity extends DBActivity
 	}
 
 	/**
+	 * 
+	 * @param _titleResID
+	 * @param _textResID
 	 * @param listener
 	 * @throws NotFoundException
 	 */
 	private void showAlertDialogWithLinks(final int _titleResID, final int _textResID,
 			final android.content.DialogInterface.OnClickListener listener) throws NotFoundException
 	{
+		final int PADDING = 10;
+
 		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setIcon(R.drawable.launcher);
 		builder.setCancelable(false);
@@ -331,7 +340,7 @@ public final class MainActivity extends DBActivity
 
 		final TextView gplTextView = new TextView(this);
 		final ScrollView scrollView = new ScrollView(this);
-		scrollView.setPadding(10, 10, 10, 10);
+		scrollView.setPadding(PADDING, PADDING, PADDING, PADDING);
 
 		scrollView.addView(gplTextView);
 		final SpannableString spanned = new SpannableString(Html.fromHtml(getResources().getString(_textResID)));

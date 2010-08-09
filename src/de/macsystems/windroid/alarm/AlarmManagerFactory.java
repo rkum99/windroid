@@ -18,6 +18,8 @@
 package de.macsystems.windroid.alarm;
 
 /**
+ * Simple Factory which creates a concrete alarm handling strategy.
+ * 
  * @author mac
  * @version $Id$
  */

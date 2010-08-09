@@ -123,7 +123,7 @@ public final class PreferenceImpl extends BaseImpl implements IPreferencesDAO
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void update(final Map<?, ?> sharedPreferences)
+	public void update(final Map<String, ?> sharedPreferences)
 	{
 
 		if (sharedPreferences == null)

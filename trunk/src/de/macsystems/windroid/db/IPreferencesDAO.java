@@ -89,7 +89,7 @@ public interface IPreferencesDAO extends IDAO
 	 * 
 	 * @param
 	 */
-	public void update(final Map<?, ?> sharedPreferences);
+	public void update(final Map<String, ?> sharedPreferences);
 
 	/**
 	 * Returns <code>true</code> if network can access the network while

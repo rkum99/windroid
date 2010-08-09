@@ -158,6 +158,11 @@ public final class CompassView extends ImageView
 		overlayRadius = resources.getDimensionPixelOffset(R.dimen.compass_overlay_radius);
 	}
 
+	/**
+	 * 
+	 * @param _fromDirection
+	 * @throws NullPointerException
+	 */
 	public void setFromDirection(final CardinalDirection _fromDirection) throws NullPointerException
 	{
 		if (_fromDirection == null)
@@ -168,6 +173,11 @@ public final class CompassView extends ImageView
 		fromDirection = _fromDirection;
 	}
 
+	/**
+	 * 
+	 * @param _toDirection
+	 * @throws NullPointerException
+	 */
 	public void setToDirection(final CardinalDirection _toDirection) throws NullPointerException
 	{
 		if (_toDirection == null)

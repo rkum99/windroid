@@ -25,8 +25,8 @@ import de.macsystems.windroid.Logging;
 
 /**
  * A base implementation of an activity which acts as a sub activity by passing
- * recieved result back to caller. A chain is no endpoint in a sequence of
- * Activitys
+ * received result back to caller. A {@link ChainSubActivity} is no endpoint in
+ * a sequence of Activitys
  * 
  * @author mac
  * @version $Id$

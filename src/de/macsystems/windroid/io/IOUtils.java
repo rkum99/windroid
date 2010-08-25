@@ -51,7 +51,7 @@ import de.macsystems.windroid.progress.IProgress;
 
 /**
  * Utility Class for IO related tasks.
- *
+ * 
  * @author Jens Hohl
  * @version $Id$
  */
@@ -72,7 +72,7 @@ public class IOUtils
 
 	/**
 	 * Complete Path to configuration file.
-	 *
+	 * 
 	 * @deprecated used to store md5 which should be stored in Database
 	 */
 	@Deprecated
@@ -85,7 +85,7 @@ public class IOUtils
 
 	/**
 	 * Returns <code>true</code> when Network is reachable and connected.
-	 *
+	 * 
 	 * @param _context
 	 * @return
 	 * @todo also check configuration if roaming needs to be checked.
@@ -142,12 +142,16 @@ public class IOUtils
 						}
 						if (userWantIOWhileRoaming)
 						{
+							Log.i(LOG_TAG, "Allowed Netword Access (userWantIOWhileRoaming) : "
+									+ userWantIOWhileRoaming);
 							isNetworkReachable = true;
 							break;
 						}
 						else
 						{
 							isNetworkReachable = isRoamingNow ? false : true;
+							Log.i(LOG_TAG, "User wants IO while roaming and network is reachable: "
+									+ isNetworkReachable);
 							break;
 						}
 					}
@@ -160,7 +164,7 @@ public class IOUtils
 
 	/**
 	 * Returns the Name of the Network Connection eg. WIFI, MOBILE.
-	 *
+	 * 
 	 * @param _context
 	 * @return the name of the network or "Network not found!"
 	 * @see #isNetworkReachable(Context)
@@ -188,7 +192,7 @@ public class IOUtils
 
 	/**
 	 * Writes <code>Properties</code> as configuration file.
-	 *
+	 * 
 	 * @param _properties
 	 * @throws IOException
 	 */
@@ -225,7 +229,7 @@ public class IOUtils
 
 	/**
 	 * Stores 'station.xml' on local file system.
-	 *
+	 * 
 	 * @param _context
 	 * @param _stationXMLURL
 	 * @param _progress
@@ -253,7 +257,7 @@ public class IOUtils
 
 	/**
 	 * Returns <code>InputStream</code> of local cached 'station.xml' file
-	 *
+	 * 
 	 * @param _context
 	 * @return
 	 * @throws IOException
@@ -265,7 +269,7 @@ public class IOUtils
 
 	/**
 	 * Returns <code>OutputStream</code> to configuration file.
-	 *
+	 * 
 	 * @param _context
 	 * @return
 	 * @throws IOException
@@ -282,7 +286,7 @@ public class IOUtils
 	/**
 	 * Returns a <code>Properties</code> Object which contains current
 	 * configuration properties.
-	 *
+	 * 
 	 * @return
 	 * @throws IOException
 	 */
@@ -309,7 +313,7 @@ public class IOUtils
 
 	/**
 	 * Checks if File already exists else it creates an empty file.
-	 *
+	 * 
 	 * @param _context
 	 * @param filename
 	 * @return true if file already existed
@@ -340,7 +344,7 @@ public class IOUtils
 	/**
 	 * Checks if a file exists in directory returned by
 	 * {@link Context#getFilesDir()} with given name.
-	 *
+	 * 
 	 * @param _filename
 	 * @param _context
 	 * @return
@@ -357,7 +361,7 @@ public class IOUtils
 
 	/**
 	 * closes inputstream, parameter can be null.
-	 *
+	 * 
 	 * @param _inputStream
 	 */
 	public final static void close(final InputStream _inputStream)
@@ -377,7 +381,7 @@ public class IOUtils
 
 	/**
 	 * disconnects connection, parameter can be null.
-	 *
+	 * 
 	 * @param _connection
 	 */
 	public final static void disconnect(final HttpURLConnection _connection)
@@ -397,7 +401,7 @@ public class IOUtils
 
 	/**
 	 * closes reader, parameter can be null.
-	 *
+	 * 
 	 * @param _reader
 	 */
 	public final static void close(final Reader _reader)
@@ -418,7 +422,7 @@ public class IOUtils
 
 	/**
 	 * closes stream, parameter can be null.
-	 *
+	 * 
 	 * @param _outputStream
 	 */
 	public final static void close(final OutputStream _outputStream)
@@ -439,7 +443,7 @@ public class IOUtils
 	/**
 	 * Returns an <code>Uri</code> to an Resource in form:
 	 * android.resource://de.macsystems.windroid//id
-	 *
+	 * 
 	 * @param _context
 	 * @param _resourceId
 	 * @return
@@ -463,7 +467,7 @@ public class IOUtils
 
 	/**
 	 * closes database, parameter can be null.
-	 *
+	 * 
 	 * @param _db
 	 */
 	public final static void close(final SQLiteDatabase _db)
@@ -476,7 +480,7 @@ public class IOUtils
 
 	/**
 	 * closes statement, parameter can be null.
-	 *
+	 * 
 	 * @param _statement
 	 */
 	public final static void close(final SQLiteStatement _statement)
@@ -489,7 +493,7 @@ public class IOUtils
 
 	/**
 	 * Untested yet.
-	 *
+	 * 
 	 * @param _context
 	 * @return
 	 * @throws SecurityException
@@ -502,7 +506,7 @@ public class IOUtils
 	/**
 	 * Reads from given <code>InputStream</code> into a
 	 * <code>StringBuffer</code>.
-	 *
+	 * 
 	 * @param _instream
 	 * @return
 	 * @throws IOException
@@ -536,7 +540,7 @@ public class IOUtils
 	/**
 	 * Reads from given <code>InputStream</code> into a
 	 * <code>StringBuffer</code>.
-	 *
+	 * 
 	 * @param _instream
 	 * @param _bufferSize
 	 * @return
@@ -574,7 +578,7 @@ public class IOUtils
 
 	/**
 	 * Reads a text file line by line.
-	 *
+	 * 
 	 * @param _context
 	 * @param _resourceId
 	 * @return
@@ -612,7 +616,7 @@ public class IOUtils
 
 	/**
 	 * Closes Cursor.
-	 *
+	 * 
 	 * @param _cursor
 	 */
 	public static void close(final Cursor _cursor)
@@ -626,7 +630,7 @@ public class IOUtils
 
 	/**
 	 * Closes AssetFileDescriptor.
-	 *
+	 * 
 	 * @param _assetFileDescriptor
 	 */
 	public static void close(final AssetFileDescriptor _assetFileDescriptor)

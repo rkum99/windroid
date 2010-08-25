@@ -23,7 +23,6 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -31,7 +30,6 @@ import android.widget.Checkable;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import de.macsystems.windroid.common.IntentConstants;
 import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.custom.activity.ChainSubActivity;
@@ -68,7 +66,7 @@ public final class SpotConfigurationActivity extends ChainSubActivity
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override
-	protected void onCreate(final Bundle savedInstanceState)
+	protected void onCreate(final Bundle savedInstanceState) throws IllegalArgumentException
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.spotconfiguration);
@@ -331,33 +329,6 @@ public final class SpotConfigurationActivity extends ChainSubActivity
 
 		};
 		return listener;
-	}
-
-	private OnItemSelectedListener getUnitsListener()
-	{
-		final OnItemSelectedListener selectionHandler = new OnItemSelectedListener()
-		{
-			@Override
-			public final void onItemSelected(final AdapterView<?> parent, final View view, final int position,
-					final long id)
-			{
-				throw new IllegalArgumentException("Unit Lister aufgerufen.");
-			}
-
-			/*
-			 * (non-Javadoc)
-			 * 
-			 * @see
-			 * android.widget.AdapterView.OnItemSelectedListener#onNothingSelected
-			 * (android.widget.AdapterView)
-			 */
-			@Override
-			public final void onNothingSelected(final AdapterView<?> arg0)
-			{
-			}
-
-		};
-		return selectionHandler;
 	}
 
 	/**

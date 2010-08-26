@@ -29,7 +29,7 @@ import android.view.View;
 
 /**
  * Helper class which allows to set a background for a view/layout.
- *
+ * 
  * @author mac
  * @version $Id$
  */
@@ -56,11 +56,14 @@ public final class Background
 
 	/**
 	 * Apply a Background to an activity. The Activity must have a layout which
-	 * contains an ID : {@link R.id.background_pattern}.
-	 *
+	 * contains an ID : {@link R.id.background_pattern}. If ID is not found the
+	 * method just returns.
+	 * 
 	 * @param _activity
+	 * @throws NullPointerException
+	 *             if activiy is <code>null</code>
 	 */
-	public static void apply(final Activity _activity)
+	public static void apply(final Activity _activity) throws NullPointerException
 	{
 		if (_activity == null)
 		{
@@ -82,7 +85,7 @@ public final class Background
 
 	/**
 	 * Returns {@link TileModePair}
-	 *
+	 * 
 	 * @param _list
 	 * @return
 	 */
@@ -102,7 +105,7 @@ public final class Background
 		private final int resID;
 
 		/**
-		 *
+		 * 
 		 * @param _resID
 		 * @param _x
 		 * @param _y

@@ -69,7 +69,7 @@ public final class ScheduleActivity extends ChainSubActivity
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
 	@Override
-	protected void onCreate(final Bundle savedInstanceState)
+	protected void onCreate(final Bundle savedInstanceState) throws IllegalArgumentException
 	{
 		super.onCreate(savedInstanceState);
 		/**
@@ -82,7 +82,7 @@ public final class ScheduleActivity extends ChainSubActivity
 
 		if (!WindUtils.isSpotConfigured(getIntent()))
 		{
-			new IllegalArgumentException("Spot Configuration missing.");
+			throw new IllegalArgumentException("Spot Configuration missing.");
 		}
 		spotInfo = WindUtils.getConfigurationFromIntent(getIntent());
 

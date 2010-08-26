@@ -88,7 +88,7 @@ public final class SpotConfigurationActivity extends ChainSubActivity
 		}
 		else
 		{
-			new IllegalArgumentException("Spot Configuration missing.");
+			throw new IllegalArgumentException("Spot Configuration missing.");
 		}
 		vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		final ArrayAdapter<Measure> continentAdapter = new ArrayAdapter<Measure>(this,

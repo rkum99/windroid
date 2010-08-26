@@ -30,6 +30,7 @@ import de.macsystems.windroid.db.DBException;
 import de.macsystems.windroid.db.ISpotDAO;
 import de.macsystems.windroid.identifyable.Continent;
 import de.macsystems.windroid.identifyable.Country;
+import de.macsystems.windroid.identifyable.IdentifyAble;
 import de.macsystems.windroid.identifyable.Region;
 import de.macsystems.windroid.identifyable.Schedule;
 import de.macsystems.windroid.identifyable.Station;
@@ -213,8 +214,8 @@ public final class SpotImpl extends BaseImpl implements ISpotDAO
 	 * @param _region
 	 * @param _station
 	 */
-	private final static void updateSpotTable(final SQLiteStatement _insertStatement, final Continent _continent,
-			final Country _country, final Region _region, final Station _station)
+	private final static void updateSpotTable(final SQLiteStatement _insertStatement, final IdentifyAble _continent,
+			final IdentifyAble _country, final IdentifyAble _region, final Station _station)
 	{
 		final String spotID = _station.getId();
 		final String continentID = _continent.getId();

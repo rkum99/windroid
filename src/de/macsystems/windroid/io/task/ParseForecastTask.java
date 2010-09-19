@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.net.URI;
 
 import android.content.Context;
+import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.forecast.Forecast;
 import de.macsystems.windroid.io.IOUtils;
 import de.macsystems.windroid.parser.ForecastParser;
@@ -39,15 +40,18 @@ import de.macsystems.windroid.progress.NullProgressAdapter;
 public class ParseForecastTask extends IOTask<Forecast, InputStream>
 {
 
+	private final SpotConfigurationVO spotConfig;
+
 	/**
 	 * 
 	 * @param _uri
 	 *            the json url
+	 * @param _vo
 	 * @throws NullPointerException
 	 */
-	public ParseForecastTask(final URI _uri) throws NullPointerException
+	public ParseForecastTask(final URI _uri, final SpotConfigurationVO _vo) throws NullPointerException
 	{
-		super(_uri, NullProgressAdapter.INSTANCE);
+		this(_uri, NullProgressAdapter.INSTANCE, _vo);
 	}
 
 	/**
@@ -55,17 +59,25 @@ public class ParseForecastTask extends IOTask<Forecast, InputStream>
 	 * @param _uri
 	 *            the json url
 	 * @param _progress
+	 * @param _vo
 	 * @throws NullPointerException
 	 */
-	public ParseForecastTask(final URI _uri, final IProgress _progress) throws NullPointerException
+	public ParseForecastTask(final URI _uri, final IProgress _progress, final SpotConfigurationVO _vo)
+			throws NullPointerException
 	{
 		super(_uri, _progress);
+		if (_vo == null)
+		{
+			throw new NullPointerException("vo");
+		}
+		spotConfig = _vo;
+
 	}
 
 	@Override
 	public Forecast process(final Context _context, final InputStream _instream) throws IOException, Exception
 	{
 		final StringBuilder builder = IOUtils.asString(_instream, IOUtils.EIGHT_KB_BUFFER_SIZE);
-		return ForecastParser.parse(builder);
+		return ForecastParser.parse(builder, spotConfig);
 	}
 }

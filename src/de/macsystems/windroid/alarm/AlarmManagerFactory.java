@@ -25,7 +25,7 @@ package de.macsystems.windroid.alarm;
  */
 public final class AlarmManagerFactory
 {
-	private final static IAlarmManager strategie = new DebugStrategie();
+	private final static IAlarmManager strategie = new ReleaseStrategie();
 
 	private AlarmManagerFactory()
 	{

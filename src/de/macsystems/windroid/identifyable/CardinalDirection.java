@@ -18,6 +18,7 @@
 package de.macsystems.windroid.identifyable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import de.macsystems.windroid.R;
@@ -161,18 +162,14 @@ public enum CardinalDirection implements IdentifyAble
 	}
 
 	/**
-	 * Returns an array of selectable values not including 'no selection'.
+	 * Returns an array of selectable values not including {@link #NO_DIRECTION}
+	 * .
 	 * 
 	 * @return
 	 */
 	public static CardinalDirection[] getValues()
 	{
-		final List<CardinalDirection> temp = new ArrayList<CardinalDirection>();
-		final CardinalDirection[] values = values();
-		for (int i = 0; i < values.length; i++)
-		{
-			temp.add(values[i]);
-		}
+		final List<CardinalDirection> temp = Arrays.asList(values());
 		temp.remove(NO_DIRECTION);
 		return temp.toArray(new CardinalDirection[temp.size()]);
 	}

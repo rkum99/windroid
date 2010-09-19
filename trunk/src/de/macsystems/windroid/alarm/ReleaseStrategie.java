@@ -25,8 +25,7 @@ import android.app.AlarmManager;
  */
 final class ReleaseStrategie extends BaseStrategie
 {
-	ReleaseStrategie()
-	throws IllegalArgumentException
+	ReleaseStrategie() throws IllegalArgumentException
 	{
 		super(7L * AlarmManager.INTERVAL_DAY, AlarmManager.INTERVAL_FIFTEEN_MINUTES,
 				AlarmManager.INTERVAL_FIFTEEN_MINUTES / 15);

@@ -90,7 +90,7 @@ public class UpdateSpotForecastTask extends AudioFeedbackTask
 				Log.d(LOG_TAG, "Alarm for: " + vo.getStation().getName());
 			}
 			final URI uri = WindUtils.getJSONForcastURL(vo.getStation().getId()).toURI();
-			final ParseForecastTask task = new ParseForecastTask(uri);
+			final ParseForecastTask task = new ParseForecastTask(uri, vo);
 			final Forecast forecast = task.execute(getContext());
 			// Update Forecast in DB
 			final IForecastDAO forecastDAO = DAOFactory.getForecast(getContext());

@@ -17,7 +17,6 @@
  */
 package de.macsystems.windroid.identifyable;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

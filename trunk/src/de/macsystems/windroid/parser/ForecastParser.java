@@ -27,6 +27,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import android.util.Log;
+import de.macsystems.windroid.common.SpotConfigurationVO;
 import de.macsystems.windroid.forecast.Forecast;
 import de.macsystems.windroid.forecast.ForecastDetail;
 import de.macsystems.windroid.forecast.ForecastDetail.Builder;
@@ -35,6 +36,7 @@ import de.macsystems.windroid.identifyable.Cavok;
 import de.macsystems.windroid.identifyable.IdentityUtil;
 import de.macsystems.windroid.identifyable.Precipitation;
 import de.macsystems.windroid.identifyable.Pressure;
+import de.macsystems.windroid.identifyable.Station;
 import de.macsystems.windroid.identifyable.Temperature;
 import de.macsystems.windroid.identifyable.WaveHeight;
 import de.macsystems.windroid.identifyable.WavePeriod;
@@ -246,15 +248,22 @@ public final class ForecastParser
 	 * Parsing ignores the time zone.
 	 * 
 	 * @param _forecast
+	 * @param _vo
 	 * @return a Forecast
 	 * @throws JSONException
 	 */
-	public static Forecast parse(final StringBuilder _forecast) throws JSONException
+	public static Forecast parse(final StringBuilder _forecast, final SpotConfigurationVO _vo) throws JSONException
 	{
 		if (_forecast == null)
 		{
 			throw new NullPointerException("StringBuilder");
 		}
+		if (_vo == null)
+		{
+			throw new NullPointerException("vo");
+		}
+
+		final Station station = _vo.getStation();
 
 		final JSONTokener tokener = new JSONTokener(_forecast.toString());
 		final JSONObject jsonRoot = new JSONObject(tokener);
@@ -280,7 +289,7 @@ public final class ForecastParser
 			parseWavePeriod(wavePeriodMap, builder);
 			final JSONObject waveHeightMap = forecastDetailMap.getJSONObject("wave_height");
 			parseWaveHeight(waveHeightMap, builder);
-			parseWaveDirection(forecastDetailMap, builder);
+			parseWaveDirection(forecastDetailMap, builder, station);
 			parseWindDirection(forecastDetailMap, builder);
 			parseTime(forecastDetailMap, builder);
 			parseDate(forecastDetailMap, builder);
@@ -308,13 +317,21 @@ public final class ForecastParser
 	 * @param _builder
 	 * @throws JSONException
 	 */
-	private static void parseWaveDirection(final JSONObject waveDirectionMap, final Builder _builder)
-			throws JSONException
+	private static void parseWaveDirection(final JSONObject waveDirectionMap, final Builder _builder,
+			final Station _station) throws JSONException
 	{
-		final String directionString = waveDirectionMap.getString(WAVE_DIRECTION);
-		final int index = IdentityUtil.indexOf(directionString, CardinalDirection.values());
-		final CardinalDirection direction = CardinalDirection.values()[index];
-		_builder.setWaveDirection(direction);
+
+		if (_station.hasWaveforecast())
+		{
+			final String directionString = waveDirectionMap.getString(WAVE_DIRECTION);
+			final int index = IdentityUtil.indexOf(directionString, CardinalDirection.values());
+			final CardinalDirection direction = CardinalDirection.values()[index];
+			_builder.setWaveDirection(direction);
+		}
+		else
+		{
+			_builder.setWaveDirection(CardinalDirection.NO_DIRECTION);
+		}
 
 	}
 

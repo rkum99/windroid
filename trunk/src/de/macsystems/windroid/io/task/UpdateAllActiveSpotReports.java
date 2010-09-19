@@ -115,7 +115,7 @@ public class UpdateAllActiveSpotReports extends AbstractNotificationTask<Void>
 			return;
 		}
 		final URI uri = WindUtils.getJSONForcastURL(vo.getStation().getId()).toURI();
-		final ParseForecastTask task = new ParseForecastTask(uri);
+		final ParseForecastTask task = new ParseForecastTask(uri, vo);
 		final Forecast forecast = task.execute(getContext());
 		// Update Forecast in DB
 		final IForecastDAO forecastDAO = DAOFactory.getForecast(getContext());

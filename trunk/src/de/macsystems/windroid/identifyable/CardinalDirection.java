@@ -17,6 +17,7 @@
  */
 package de.macsystems.windroid.identifyable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -168,7 +169,7 @@ public enum CardinalDirection implements IdentifyAble
 	 */
 	public static CardinalDirection[] getValues()
 	{
-		final List<CardinalDirection> temp = Arrays.asList(values());
+		final List<CardinalDirection> temp = new ArrayList<CardinalDirection>(Arrays.asList(values()));
 		temp.remove(NO_DIRECTION);
 		return temp.toArray(new CardinalDirection[temp.size()]);
 	}
